@@ -1501,17 +1501,30 @@
         }
 
         .range-control input[type="range"]::-webkit-slider-thumb {
-            width: 16px;
-            height: 16px;
+            width: 20px;
+            height: 20px;
             background: #4ecdc4;
             border-radius: 50%;
             -webkit-appearance: none;
             cursor: pointer;
+            box-shadow: 0 2px 6px rgba(78, 205, 196, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .range-control input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(78, 205, 196, 0.5);
         }
 
         .range-value {
-            min-width: 40px;
+            min-width: 50px;
             text-align: center;
+            font-weight: bold;
+            color: #4ecdc4;
+            background: rgba(78, 205, 196, 0.1);
+            padding: 5px 10px;
+            border-radius: 15px;
+            transition: all 0.2s ease;
         }
 
         /* Music Library Styles */
@@ -7688,7 +7701,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
 
-            console.log('✅ LED-Musik-Control Funktionen geladen');
+            // ✅ AUTO-RECONNECT für gespeicherte BLE-Geräte (aus LedMusicControl.html)\n            setTimeout(() => {\n                try {\n                    if (typeof Storage !== 'undefined') {\n                        const savedDevices = JSON.parse(localStorage.getItem('led-devices') || '[]');\n                        if (Array.isArray(savedDevices)) {\n                            for (const device of savedDevices) {\n                                if (device && device.autoConnect) {\n                                    console.log(`🔄 Auto-Reconnect: Versuche Verbindung zu ${device.name}`);\n                                    // Verbindung wird über den globalen BLE-Controller versucht\n                                    if (window.parent?.bleController?.connect) {\n                                        window.parent.bleController.connect(device.mac, device.protocol)\n                                            .then(() => console.log(`✅ Auto-Reconnect erfolgreich: ${device.name}`))\n                                            .catch(err => console.warn(`⚠️ Auto-Reconnect fehlgeschlagen: ${device.name}`, err));\n                                    }\n                                }\n                            }\n                        }\n                    }\n                } catch (error) {\n                    console.warn('⚠️ Auto-Reconnect Fehler:', error);\n                }\n            }, 2000); // 2 Sekunden warten für BLE-Controller Initialisierung\n            \n            console.log('✅ LED-Musik-Control Funktionen geladen');
         });
 
         // Cleanup beim Verlassen
