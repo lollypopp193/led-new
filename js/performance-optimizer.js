@@ -368,8 +368,12 @@ class PerformanceOptimizer {
     }
     
     calculateCacheHitRate() {
-        // Implementation depends on cache usage tracking
-        return '85%'; // Placeholder
+        // Berechne echte Cache Hit Rate basierend auf gespeicherten Metriken
+        const totalRequests = this.metrics.cacheHits + this.metrics.cacheMisses;
+        if (totalRequests === 0) return '0%';
+        
+        const hitRate = (this.metrics.cacheHits / totalRequests) * 100;
+        return `${hitRate.toFixed(1)}%`;
     }
     
     async sendImmediate(command) {
