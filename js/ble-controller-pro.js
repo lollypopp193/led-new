@@ -371,6 +371,16 @@ class BLEController {
     }
 
     try {
+      // ✅ ELK-BLEDOM FLOOD PROTECTION (aus LedMusicControl.html)
+      if (this.deviceProtocol === 'ELK_BLEDOM') {
+        // Begrenze Update-Rate für ELK-BLEDOM Geräte
+        const now = Date.now();
+        if (this.lastMusicFrameTime && (now - this.lastMusicFrameTime) < 50) {
+          return true; // Skip Frame - zu schnell
+        }
+        this.lastMusicFrameTime = now;
+      }
+
       // Audio-Daten zu Farbe konvertieren
       const bass = audioData.bass || 0;
       const mid = audioData.mid || 0;
