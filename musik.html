@@ -7701,7 +7701,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
 
-            // ✅ AUTO-RECONNECT für gespeicherte BLE-Geräte (aus LedMusicControl.html)\n            setTimeout(() => {\n                try {\n                    if (typeof Storage !== 'undefined') {\n                        const savedDevices = JSON.parse(localStorage.getItem('led-devices') || '[]');\n                        if (Array.isArray(savedDevices)) {\n                            for (const device of savedDevices) {\n                                if (device && device.autoConnect) {\n                                    console.log(`🔄 Auto-Reconnect: Versuche Verbindung zu ${device.name}`);\n                                    // Verbindung wird über den globalen BLE-Controller versucht\n                                    if (window.parent?.bleController?.connect) {\n                                        window.parent.bleController.connect(device.mac, device.protocol)\n                                            .then(() => console.log(`✅ Auto-Reconnect erfolgreich: ${device.name}`))\n                                            .catch(err => console.warn(`⚠️ Auto-Reconnect fehlgeschlagen: ${device.name}`, err));\n                                    }\n                                }\n                            }\n                        }\n                    }\n                } catch (error) {\n                    console.warn('⚠️ Auto-Reconnect Fehler:', error);\n                }\n            }, 2000); // 2 Sekunden warten für BLE-Controller Initialisierung\n            \n            console.log('✅ LED-Musik-Control Funktionen geladen');
+            // ✅ AUTO-RECONNECT für gespeicherte BLE-Geräte (aus LedMusicControl.html)
+            setTimeout(() => {
+                try {
+                    if (typeof Storage !== 'undefined') {
+                        const savedDevices = JSON.parse(localStorage.getItem('led-devices') || '[]');
+                        if (Array.isArray(savedDevices)) {
+                            for (const device of savedDevices) {
+                                if (device && device.autoConnect) {
+                                    console.log(`🔄 Auto-Reconnect: Versuche Verbindung zu ${device.name}`);
+                                    // Verbindung wird über den globalen BLE-Controller versucht
+                                    if (window.parent?.bleController?.connect) {
+                                        window.parent.bleController.connect(device.mac, device.protocol)
+                                            .then(() => console.log(`✅ Auto-Reconnect erfolgreich: ${device.name}`))
+                                            .catch(err => console.warn(`⚠️ Auto-Reconnect fehlgeschlagen: ${device.name}`, err));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.warn('⚠️ Auto-Reconnect Fehler:', error);
+                }
+            }, 2000); // 2 Sekunden warten für BLE-Controller Initialisierung
+            
+            console.log('✅ LED-Musik-Control Funktionen geladen');
         });
 
         // Cleanup beim Verlassen
@@ -7906,6 +7930,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
     }); // Ende DOMContentLoaded
+    
+    // ✅ GLOBALE FUNKTIONEN (außerhalb DOMContentLoaded)
     
     // Copy LED Band Settings to Others
     function copyLEDBandToOthers(bandIndex) {
