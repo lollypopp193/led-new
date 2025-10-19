@@ -7957,5 +7957,29 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         showNotification(`✅ Auf ${bandCount - 1} Bänder kopiert!`, 'success');
-    }\n</script>\n\n<!-- 🔧 DEBUG-CODE - NUR ZUM TESTEN -->\n<script>\n// TEST-CODE - NUR ZUM DEBUGGEN\nwindow.addEventListener('load', function() {\n    console.log('=== MUSIK.HTML DEBUG ===');\n    console.log('Taskbar Buttons:', document.querySelectorAll('.taskbar-btn').length);\n    console.log('Content Panels:', document.querySelectorAll('.content-panel').length);\n    \n    // Liste alle Panel-IDs\n    document.querySelectorAll('.content-panel').forEach(panel => {\n        console.log('Panel gefunden:', panel.id);\n    });\n    \n    // Teste Event-Listener\n    document.querySelectorAll('.taskbar-btn').forEach((btn, index) => {\n        console.log(`Button ${index + 1}:`, btn.getAttribute('data-content'));\n    });\n});\n</script>\n\n</body>
+    }
+
+    </script>
+
+    <!-- 🔧 DEBUG-CODE - NUR ZUM TESTEN -->
+    <script>
+    // TEST-CODE - NUR ZUM DEBUGGEN
+    window.addEventListener('load', function() {
+        console.log('=== MUSIK.HTML DEBUG ===');
+        console.log('Taskbar Buttons:', document.querySelectorAll('.taskbar-btn').length);
+        console.log('Content Panels:', document.querySelectorAll('.content-panel').length);
+
+        // Liste alle Panel-IDs
+        document.querySelectorAll('.content-panel').forEach(panel => {
+            console.log('Panel gefunden:', panel.id);
+        });
+
+        // Teste Event-Listener
+        document.querySelectorAll('.taskbar-btn').forEach((btn, index) => {
+            console.log(`Button ${index + 1}:`, btn.getAttribute('data-content'));
+        });
+    });
+    </script>
+
+    </body>
 </html>
