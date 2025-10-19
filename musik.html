@@ -5375,15 +5375,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         console.log('⚙️ Einstellungen Panel aktiviert');
                         break;
                     case 'player':
-                        console.log('▶️ Player Panel aktiviert');
+                        console.log(' Player Panel aktiviert');
                         break;
                 }
             } else {
-                console.error(`❌ Panel '${content}' nicht gefunden!`);
+                console.error(` Panel '${content}' nicht gefunden!`);
             }
         });
-    });
-    
+    }); // ← Schließt forEach
     // Initial Player-Tab aktivieren
     const playerTab = document.querySelector('.taskbar-btn[data-content="player"]');
     if (playerTab) {
@@ -7958,8 +7957,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         showNotification(`✅ Auf ${bandCount - 1} Bänder kopiert!`, 'success');
-    }
-</script>
-
-</body>
+    }\n</script>\n\n<!-- 🔧 DEBUG-CODE - NUR ZUM TESTEN -->\n<script>\n// TEST-CODE - NUR ZUM DEBUGGEN\nwindow.addEventListener('load', function() {\n    console.log('=== MUSIK.HTML DEBUG ===');\n    console.log('Taskbar Buttons:', document.querySelectorAll('.taskbar-btn').length);\n    console.log('Content Panels:', document.querySelectorAll('.content-panel').length);\n    \n    // Liste alle Panel-IDs\n    document.querySelectorAll('.content-panel').forEach(panel => {\n        console.log('Panel gefunden:', panel.id);\n    });\n    \n    // Teste Event-Listener\n    document.querySelectorAll('.taskbar-btn').forEach((btn, index) => {\n        console.log(`Button ${index + 1}:`, btn.getAttribute('data-content'));\n    });\n});\n</script>\n\n</body>
 </html>
