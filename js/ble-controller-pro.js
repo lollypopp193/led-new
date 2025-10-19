@@ -770,6 +770,9 @@ console.log('   Beispiel: bleDebug.scan() | bleDebug.red() | bleDebug.test()');
 // EXPORT (für Module)
 // ===================================================================
 
+// Browser-kompatible Exports
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = BLEController;
+} else if (typeof window !== 'undefined') {
+  window.BLEController = BLEController;
 }

@@ -1,20 +1,26 @@
 // ✅ SERVICE WORKER FÜR PWA
 // Macht aus der Web-App eine installierbare Android-App
 
-const CACHE_NAME = 'lights-space-world-v1';
+const CACHE_NAME = 'lights-space-world-v2';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/Farbe.html',
-  '/Effekt.html', 
-  '/Timer.html',
-  '/Einstellungen.html',
-  '/musik.html',
-  '/css/shared-styles.css',
-  '/js/app.js',
-  '/js/ble-controller-pro.js',
-  '/js/device-manager.js',
-  '/js/audio-reactive-engine.js'
+  './',
+  './index.html',
+  './Farbe.html',
+  './Effekt.html', 
+  './Timer.html',
+  './Einstellungen.html',
+  './musik.html',
+  './css/shared-styles.css',
+  './js/app.js',
+  './js/ble-controller-pro.js',
+  './js/device-manager.js',
+  './js/event-manager.js',
+  './js/led-abstraction-layer.js',
+  './js/performance-optimizer.js',
+  './js/scenes-manager.js',
+  './js/audio-reactive-engine.js',
+  './js/musik-integration.js',
+  './js/music-library-manager.js'
 ];
 
 // Installation

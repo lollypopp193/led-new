@@ -936,6 +936,9 @@ window.addEventListener('scene-activated', (e) => {
 // EXPORT (für Module)
 // ===================================================================
 
+// Browser-kompatible Exports
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = ScenesManager;
+} else if (typeof window !== 'undefined') {
+  window.ScenesManager = ScenesManager;
 }

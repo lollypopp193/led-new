@@ -1291,9 +1291,13 @@ console.log('✅ Musik-Integration geladen');
 // EXPORT
 // ===================================================================
 
+// Browser-kompatible Exports
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     MusicPlayer,
     MusicUIController
   };
+} else if (typeof window !== 'undefined') {
+  window.MusicPlayer = MusicPlayer;
+  window.MusicUIController = MusicUIController;
 }

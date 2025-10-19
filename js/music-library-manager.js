@@ -1099,6 +1099,7 @@ console.log('✅ Music Library Manager global verfügbar als window.musicLibrary
 // EXPORT
 // ===================================================================
 
+// Browser-kompatible Exports
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     MusicLibraryManager,
@@ -1106,4 +1107,9 @@ if (typeof module !== 'undefined' && module.exports) {
     FileSystemManager,
     MetadataExtractor
   };
+} else if (typeof window !== 'undefined') {
+  window.MusicLibraryManager = MusicLibraryManager;
+  window.MusicDatabase = MusicDatabase;
+  window.FileSystemManager = FileSystemManager;
+  window.MetadataExtractor = MetadataExtractor;
 }

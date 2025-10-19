@@ -1029,6 +1029,9 @@ window.addEventListener('device-disconnected', () => {
 // EXPORT
 // ===================================================================
 
+// Browser-kompatible Exports
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = DeviceManager;
+} else if (typeof window !== 'undefined') {
+  window.DeviceManager = DeviceManager;
 }

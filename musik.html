@@ -7907,28 +7907,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
     }); // Ende DOMContentLoaded
     
-    // ✅ GLOBALE FUNKTIONEN (außerhalb von DOMContentLoaded)
-    // Reset LED Band to Default
-    function resetLEDBandToDefault(bandIndex) {
-        if (!confirm('LED-Band auf Standardeinstellungen zurücksetzen?')) return;
-        
-        const bandContent = document.getElementById(`ledBandContent-${bandIndex}`);
-        if (!bandContent) return;
-        
-        const defaultColors = ['#3A86FF', '#FF006E', '#FFBE0B', '#8B5CF6', '#06D6A0', '#F72585', '#4361EE', '#F77F00', '#C77DFF', '#7209B7'];
-        
-        if (bandContent.querySelector('.band-enabled')) bandContent.querySelector('.band-enabled').checked = true;
-        if (bandContent.querySelector('.band-color')) bandContent.querySelector('.band-color').value = defaultColors[bandIndex] || '#4ecdc4';
-        if (bandContent.querySelector('.band-effect')) bandContent.querySelector('.band-effect').value = 'pulse';
-        if (bandContent.querySelector('.band-react-to')) bandContent.querySelector('.band-react-to').value = 'rhythm';
-        if (bandContent.querySelector('.band-freq-range')) bandContent.querySelector('.band-freq-range').value = 'all';
-        if (bandContent.querySelector('.band-sensitivity')) bandContent.querySelector('.band-sensitivity').value = 65;
-        if (bandContent.querySelector('.band-speed')) bandContent.querySelector('.band-speed').value = 50;
-        if (bandContent.querySelector('.band-brightness')) bandContent.querySelector('.band-brightness').value = 80;
-        
-        showNotification('✅ Zurückgesetzt!', 'success');
-    }
-    
     // Copy LED Band Settings to Others
     function copyLEDBandToOthers(bandIndex) {
         if (!confirm('Einstellungen auf alle anderen Bänder kopieren?')) return;
