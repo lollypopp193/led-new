@@ -7928,6 +7928,61 @@ document.addEventListener('DOMContentLoaded', function() {
                 showNotification('❌ Fehler beim Laden', 'error');
             }
         }
+        
+        // Reset LED Band to Default Settings
+        function resetLEDBandToDefault(bandIndex) {
+            if (!confirm('Einstellungen auf Standardwerte zurücksetzen?')) return;
+            
+            try {
+                const bandContent = document.getElementById(`ledBandContent-${bandIndex}`);
+                if (!bandContent) return;
+                
+                // Standardwerte
+                if (bandContent.querySelector('.band-enabled')) bandContent.querySelector('.band-enabled').checked = true;
+                if (bandContent.querySelector('.band-color')) bandContent.querySelector('.band-color').value = '#4ecdc4';
+                if (bandContent.querySelector('.band-effect')) bandContent.querySelector('.band-effect').value = 'pulse';
+                if (bandContent.querySelector('.band-react-to')) bandContent.querySelector('.band-react-to').value = 'bass';
+                if (bandContent.querySelector('.band-freq-range')) bandContent.querySelector('.band-freq-range').value = 'low';
+                if (bandContent.querySelector('.band-sensitivity')) bandContent.querySelector('.band-sensitivity').value = '50';
+                if (bandContent.querySelector('.band-speed')) bandContent.querySelector('.band-speed').value = '50';
+                if (bandContent.querySelector('.band-brightness')) bandContent.querySelector('.band-brightness').value = '80';
+                
+                showNotification('✅ Auf Standardwerte zurückgesetzt!', 'success');
+            } catch (error) {
+                console.error('Fehler beim Zurücksetzen:', error);
+                showNotification('❌ Fehler beim Zurücksetzen', 'error');
+            }
+        }
+        
+        // Reset Tempo and Pitch to defaults
+        function resetTempoAndPitch() {
+            try {
+                const tempoSlider = document.getElementById('tempoControl');
+                const pitchSlider = document.getElementById('pitchControl');
+                const audioElement = document.getElementById('audioPlayer');
+                
+                if (tempoSlider) {
+                    tempoSlider.value = 1;
+                    document.getElementById('tempoValue').textContent = '1.0x';
+                }
+                
+                if (pitchSlider) {
+                    pitchSlider.value = 0;
+                    document.getElementById('pitchValue').textContent = '0';
+                }
+                
+                // Reset Audio Playback Rate
+                if (audioElement) {
+                    audioElement.playbackRate = 1.0;
+                }
+                
+                showNotification('✅ Tempo & Tonhöhe zurückgesetzt!', 'success');
+                console.log('🎵 Tempo und Tonhöhe zurückgesetzt');
+            } catch (error) {
+                console.error('Fehler beim Zurücksetzen von Tempo/Pitch:', error);
+                showNotification('❌ Fehler beim Zurücksetzen', 'error');
+            }
+        }
     </script>
     
     <!-- ✅ GLOBALE FUNKTIONEN (außerhalb DOMContentLoaded) -->
