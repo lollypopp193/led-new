@@ -5343,6 +5343,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const targetPanel = document.getElementById(content);
             if (targetPanel) {
                 targetPanel.style.display = 'block';
+                targetPanel.style.visibility = 'visible';
+                targetPanel.style.opacity = '1';
                 targetPanel.classList.add('active');
                 console.log(`✅ Panel '${content}' angezeigt`);
             
@@ -5389,10 +5391,28 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('✅ Player-Tab initial aktiviert');
     }
     
+    // Player initialisieren (direkt hier statt über separate Funktion)
+    // Initialize visualizer on page load
+    if (typeof updateVisualizerType === 'function') {
+        updateVisualizerType();
+    }
+    
+    // Initialize player
+    if (typeof initializePlayer === 'function') {
+        initializePlayer();
+    }
+    
+    // Load saved playlist on page load
+    if (typeof loadPlaylist === 'function') {
+        loadPlaylist();
+    }
+    
+    console.log('🎵 Musik-App vollständig initialisiert - Persistente Wiedergabe aktiviert');
+    
     // Equalizer Toggle - Echte Audio-Filterung
-        const eqToggle = document.getElementById('eqToggle');
-        if (eqToggle) {
-            eqToggle.addEventListener('change', function() {
+    const eqToggle = document.getElementById('eqToggle');
+    if (eqToggle) {
+        eqToggle.addEventListener('change', function() {
             const sliders = document.querySelectorAll('.eq-slider');
             const presets = document.querySelectorAll('.preset-btn');
             
@@ -6200,27 +6220,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log(`⏮️ Vorheriger Titel: ${playlist[currentTrackIndex].name}`);
         }
 
-        // Initialize with first tab active
-        document.addEventListener('DOMContentLoaded', function() {
-            // ✅ DOPPELTER EVENT LISTENER ENTFERNT!
-            // Event Listener sind bereits in Zeile 5911 registriert!
-            
-            // Set initial active panel
-            document.querySelector('.taskbar-btn[data-content="player"]').click();
-            
-            // Initialize visualizer on page load
-            updateVisualizerType();
-            
-            // Visualizer bereits durch initializePlayer() gestartet - keine doppelte Animation
-            
-            // Initialize player
-            initializePlayer();
-            
-            // Load saved playlist on page load
-            loadPlaylist();
-            
-            console.log('🎵 Musik-App vollständig initialisiert - Persistente Wiedergabe aktiviert');
-        });
+        // ✅ DOPPELTER DOMCONTENTLOADED ENTFERNT - Initialisierung erfolgt in Haupt-DOMContentLoaded (Zeile 5267)
 
         // Animate visualizer elements based on audio or random data
         function animateVisualizer() {
