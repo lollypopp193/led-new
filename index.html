@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lights Space World - LED Controller</title>
+    
+    <!-- ✅ PWA MANIFEST FÜR ANDROID-APP -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4ecdc4">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="LED Control">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
+        crossorigin="anonymous" onerror="this.remove()">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" 
+        onerror="this.remove()">
+  <link rel="stylesheet" href="css/shared-styles.css" onerror="console.warn('shared-styles.css nicht gefunden')">
+  <!-- css/style.css removed - not found -->
+  <style>
+    /* Font bereits in HTML-Head geladen - doppelter Import entfernt */
+
+    /* Erweiterte Styles für Hauptapp */
+    body {
+      margin: 0;
+      background: var(--bg-primary, #0a0a0a);
+      font-family: var(--font-primary, 'Orbitron', 'Arial', sans-serif);
+      color: var(--text-primary, #ffffff);
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      position: relative;
+    }
+
+    /* Canvas für Glitzer-Partikel-Hintergrund */
+    #backgroundCanvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      background: radial-gradient(circle at center, var(--bg-secondary, #1a1a2e) 0%, var(--bg-primary, #0a0a0a) 100%);
+    }
+
+    /* === STARTSCREEN === */
+    #startscreen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100vw;
+      text-align: center;
+      position: relative;
+      background: transparent;
+    }
+
+    .title {
+      font-weight: 700;
+      font-size: 3rem;
+      letter-spacing: 0.15em;
+      background: var(--primary-gradient, linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: rainbowMove 6s linear infinite;
+      background-size: 400% 400%;
+      position: relative;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+
+    .title .line2 {
+      display: block;
+      font-size: 2.1rem;
+      margin-top: 0.2rem;
+    }
+
+    .subtitle {
+      font-weight: 500;
+      font-size: 1.2rem;
+      color: #a0f0ff;
+      opacity: 0.8;
+      font-style: italic;
+      letter-spacing: 0.07em;
+      margin-top: 1rem;
+    }
+
+    @keyframes rainbowMove {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    /* === APP SCREEN === */
+    #appscreen {
+      display: none;
+      flex-direction: column;
+      height: 100vh;
+      width: 100vw;
+      background: #000;
+      color: #0ff;
+    }
+
+    /* Content Area */
+    .content-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 1400px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* IFRAME CONTAINER */
+    .iframe-container {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 0;
+      overflow: hidden;
+      border: none;
+      position: relative;
+    }
+
+    .app-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: white;
+    }
+
+    /* Loading Animation */
+    .loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      z-index: 10;
+    }
+
+    .loading.hidden {
+      display: none;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(0, 255, 255, 0.3);
+      border-top: 3px solid #0ff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Welcome Screen */
+    .welcome-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+      background: radial-gradient(circle at center, rgba(0, 255, 255, 0.1), transparent);
+      border-radius: 20px;
+      padding: 40px;
+    }
+
+    .welcome-title {
+      font-size: 3rem;
+      font-weight: bold;
+      background: var(--primary-gradient, linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 400% 400%;
+      margin-bottom: 20px;
+    }
+
+    .welcome-subtitle {
+      font-size: 1.5rem;
+      color: #a0f0ff;
+      opacity: 0.8;
+      margin-bottom: 40px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      cursor: pointer;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      color: #0ff;
+    }
+
+    .feature-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .feature-desc {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      line-height: 1.4;
+    }
+
+    /* Navigation Leiste UNTEN */
+    .nav-bar {
+      display: flex;
+      justify-content: space-around;
+      background: linear-gradient(135deg, #111, #222);
+      padding: 15px 5px;
+      border-top: 2px solid #0ff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      color: #ccc;
+      user-select: none;
+      position: relative;
+      z-index: 100;
+      box-shadow: 0 -5px 15px rgba(0, 255, 255, 0.3);
+    }
+
+    .nav-item {
+      flex: 1;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 10px 5px;
+      border-radius: 12px;
+      margin: 0 2px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .nav-item:hover {
+      color: #0ff;
+      background: rgba(0, 255, 255, 0.1);
+      transform: translateY(-3px);
+    }
+
+    .nav-item.active {
+      color: #0ff;
+      background: rgba(0, 255, 255, 0.2);
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+      transform: translateY(-3px);
+    }
+
+    .nav-item i {
+      font-size: 1.2em;
+    }
+
+    .nav-item-text {
+      font-size: 0.8em;
+      font-weight: bold;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .nav-bar {
+        font-size: 0.7rem;
+        padding: 10px 2px;
+      }
+
+      .nav-item {
+        padding: 8px 2px;
+      }
+
+      .nav-item i {
+        font-size: 1em;
+      }
+
+      .nav-item-text {
+        font-size: 0.7em;
+      }
+
+      .title {
+        font-size: 2rem;
+      }
+
+      .title .line2 {
+        font-size: 1.4rem;
+      }
+
+      .content-area {
+        padding: 0;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      .welcome-title {
+        font-size: 2rem;
+      }
+
+      .welcome-subtitle {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="backgroundCanvas"></canvas>
+
+  <!-- Startscreen -->
+  <div id="startscreen">
+    <div class="title">
+      LIGHTS SPACE
+      <span class="line2">WORLD</span>
+    </div>
+    <div class="subtitle">Komplette LED-App der nächsten Generation</div>
+  </div>
+
+  <!-- Appscreen -->
+  <div id="appscreen">
+    <div class="content-area">
+      <div class="app-container">
+
+        <!-- App Content -->
+        <div class="iframe-container">
+          
+          <!-- Loading removed -->
+  
+          <!-- Welcome Screen -->
+          <div class="welcome-screen" id="welcome-content">
+            <div class="welcome-title">
+              <i class="fas fa-lightbulb"></i> Willkommen
+            </div>
+            <div class="welcome-subtitle">
+              Ihre komplette LED-Steuerung - Alle Funktionen verfügbar!
+            </div>
+            
+            <div class="feature-grid">
+              <div class="feature-card" data-app="farbe" role="button" tabindex="0" aria-label="Farb-Tool öffnen">
+                <div class="feature-icon">🎨</div>
+                <div class="feature-title">Farb-Tool</div>
+                <div class="feature-desc">✅ Live RGB-Vorschau repariert<br>✅ Farbe bleibt nach "Anwenden"<br>✅ Farbrad & RGB synchronisiert</div>
+              </div>
+              
+              <div class="feature-card" data-app="effekte" role="button" tabindex="0" aria-label="LED-Effekte öffnen">
+                <div class="feature-icon">✨</div>
+                <div class="feature-title">LED-Effekte</div>
+                <div class="feature-desc">✅ Alle Effekte mit CSS-Animationen<br>✅ Welle, Feuer, Matrix, Plasma etc.<br>✅ Vollständige Vorschau-Galerie</div>
+              </div>
+              
+              <div class="feature-card" data-app="musik" role="button" tabindex="0" aria-label="Musik-Player öffnen">
+                <div class="feature-icon">🎵</div>
+                <div class="feature-title">Musik-Player</div>
+                <div class="feature-desc">✅ Persistente Wiedergabe<br>✅ Automatische Metadaten-Sortierung<br>✅ Musik läuft beim Kategorie-Wechsel</div>
+              </div>
+              
+              <div class="feature-card" data-app="timer" role="button" tabindex="0" aria-label="Timer öffnen">
+                <div class="feature-icon">⏰</div>
+                <div class="feature-title">Timer</div>
+                <div class="feature-desc">✅ Saubere Timer-Verwaltung<br>✅ Wochentage-Auswahl<br>✅ Redundante Aktionen entfernt</div>
+              </div>
+              
+              <div class="feature-card" data-app="einstellungen" role="button" tabindex="0" aria-label="Einstellungen öffnen">
+                <div class="feature-icon">⚙️</div>
+                <div class="feature-title">Einstellungen</div>
+                <div class="feature-desc">✅ Saubere BLE-Konfiguration<br>✅ Technische Details ausgeblendet<br>✅ Benutzerfreundliche UI</div>
+              </div>
+            </div>
+
+            <div style="margin-top: 40px; padding: 20px; background: rgba(0, 255, 255, 0.1); border-radius: 15px; border: 1px solid rgba(0, 255, 255, 0.3);">
+              <h3 style="color: #0ff; margin-bottom: 15px;"><i class="fas fa-check-circle"></i> Alle Features optimiert & vollständig funktionsfähig:</h3>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; text-align: left;">
+                <div>🎨 <strong>Farb-Tool:</strong> Live RGB-Vorschau, Farbe bleibt nach "Anwenden"</div>
+                <div>✨ <strong>LED-Effekte:</strong> Alle Effekte mit CSS-Animationen (Welle, Feuer, Matrix)</div>
+                <div>🎵 <strong>Musik-Player:</strong> Persistente Wiedergabe, automatische Metadaten-Sortierung</div>
+                <div>⏰ <strong>Timer:</strong> Saubere UI, redundante Aktionen entfernt</div>
+                <div>⚙️ <strong>Einstellungen:</strong> Technische Details ausgeblendet, benutzerfreundlich</div>
+                <div>🔧 <strong>Dashboard:</strong> Komplett entfernt für saubere Navigation</div>
+                <div>🎯 <strong>Party-Modus:</strong> Bereinigt, erweiterte LED-Sync verschoben</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Single App IFrame -->
+          <iframe class="app-iframe" id="app-iframe" style="border: none; width: 100%; height: 100%;"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sprachsteuerung Button -->
+    <button id="voiceControlBtn" style="
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      z-index: 1000;
+      transition: all 0.3s;
+    " aria-label="Sprachsteuerung">
+      <i class="fas fa-microphone"></i>
+    </button>
+    
+    <!-- Navigation unten -->
+    <div class="nav-bar">
+
+      <div class="nav-item" data-app="farbe" role="button" tabindex="0" aria-label="Farbauswahl öffnen">
+        <i class="fas fa-palette" aria-hidden="true"></i>
+        <div class="nav-item-text">Farbe</div>
+      </div>
+      <div class="nav-item" data-app="effekt" role="button" tabindex="0" aria-label="LED-Effekte öffnen">
+        <i class="fas fa-magic" aria-hidden="true"></i>
+        <div class="nav-item-text">Effekte</div>
+      </div>
+      <div class="nav-item" data-app="musik" role="button" tabindex="0" aria-label="Musik-Player öffnen">
+        <i class="fas fa-music" aria-hidden="true"></i>
+        <div class="nav-item-text">Musik</div>
+      </div>
+      <div class="nav-item" data-app="timer" role="button" tabindex="0" aria-label="Timer öffnen">
+        <i class="fas fa-clock" aria-hidden="true"></i>
+        <div class="nav-item-text">Timer</div>
+      </div>
+      <div class="nav-item" data-app="einstellungen" role="button" tabindex="0" aria-label="Einstellungen öffnen">
+        <i class="fas fa-cog" aria-hidden="true"></i>
+        <div class="nav-item-text">Einstellungen</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ KRITISCH: BLE-CONTROLLER MUSS ZUERST GELADEN WERDEN! -->
+  <script src="js/ble-controller-pro.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/device-manager.js"></script>
+  <script src="js/event-manager.js"></script>
+  <script src="js/led-abstraction-layer.js"></script>
+  <script src="js/performance-optimizer.js"></script>
+  <script src="js/scenes-manager.js"></script>
+  
+  <!-- Zusätzliche inline Scripts für mobile Kompatibilität -->
+  <script>
+  console.log('✅ Initialisiere App...');
+  
+  // Warte bis BLE-Controller geladen ist
+  if (typeof BLEController === 'undefined') {
+    console.error('❌ KRITISCH: BLEController nicht geladen!');
+    // Versuche nochmal nach kurzer Wartezeit
+    setTimeout(() => {
+      if (typeof BLEController === 'undefined') {
+        console.error('❌ BLEController immer noch nicht geladen! Prüfe ob js/ble-controller-pro.js existiert.');
+      } else {
+        console.log('✅ BLEController nachträglich geladen');
+        // Initialisiere Controller
+        if (!window.bleController) {
+          window.bleController = new BLEController();
+          window.ledController = window.bleController;
+        }
+      }
+    }, 500);
+  } else {
+    console.log('✅ BLEController verfügbar');
+    // Initialisiere Controller sofort
+    if (!window.bleController) {
+      window.bleController = new BLEController();
+      window.ledController = window.bleController;
+    }
+  }
+  
+  // Die Module werden jetzt extern geladen
+  
+  // ============= EVENT-MANAGER.JS =============
+  class EventManager {
+    constructor() {
+        this.events = new Map();
+        this.listeners = new Map();
+        this.queue = [];
+        this.processing = false;
+    }
+    
+    emit(eventName, data = {}, priority = 'normal') {
+        const event = {
+            name: eventName,
+            data: data,
+            timestamp: Date.now(),
+            priority: priority
+        };
+        
+        if (priority === 'high') {
+            this.executeEvent(event);
+        } else {
+            this.queue.push(event);
+            this.processQueue();
+        }
+        
+        console.log(`📢 Event: ${eventName}`, data);
+    }
+    
+    on(eventName, callback) {
+        if (!this.listeners.has(eventName)) {
+            this.listeners.set(eventName, []);
+        }
+        this.listeners.get(eventName).push(callback);
+    }
+    
+    async executeEvent(event) {
+        const handlers = this.listeners.get(event.name) || [];
+        
+        for (const handler of handlers) {
+            try {
+                await handler(event.data);
+            } catch (error) {
+                console.error(`Handler-Fehler für ${event.name}:`, error);
+            }
+        }
+    }
+    
+    async processQueue() {
+        if (this.processing || this.queue.length === 0) return;
+        
+        this.processing = true;
+        
+        while (this.queue.length > 0) {
+            const event = this.queue.shift();
+            
+            try {
+                await this.executeEvent(event);
+            } catch (error) {
+                console.error('Event-Verarbeitung fehlgeschlagen:', error);
+            }
+        }
+        
+        this.processing = false;
+    }
+  }
+  window.EventManager = EventManager;
+  window.eventManager = new EventManager();
+  
+  // ============= PERFORMANCE-OPTIMIZER.JS =============
+  class PerformanceOptimizer {
+    constructor() {
+        this.metrics = {
+            commandLatency: [],
+            frameRate: [],
+            memoryUsage: [],
+            bluetoothLatency: []
+        };
+        
+        this.commandQueue = [];
+        this.batchSize = 10;
+        this.throttleTime = 16;
+        this.lastCommandTime = 0;
+    }
+    
+    debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+    
+    throttle(func, limit) {
+        let inThrottle;
+        return function(...args) {
+            if (!inThrottle) {
+                func.apply(this, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
+        };
+    }
+  }
+  window.PerformanceOptimizer = PerformanceOptimizer;
+  window.performanceOptimizer = new PerformanceOptimizer();
+  
+  // ============= BLE-CONTROLLER-PRO.JS KOMPLETT =============
+  console.log('📱 Lade BLE Controller...');
+  
+  class BLEController {
+    constructor() {
+      this.device = null;
+      this.server = null;
+      this.service = null;
+      this.characteristic = null;
+      this.isConnected = false;
+      this.protocol = null;
+      this.deviceName = null;
+      this.deviceId = null;
+
+      this.SERVICES = {
+        ELK_BLEDOM: '0000fff0-0000-1000-8000-00805f9b34fb',
+        GENERIC: '0000ffe0-0000-1000-8000-00805f9b34fb'
+      };
+
+      this.CHARACTERISTICS = {
+        ELK_BLEDOM: '0000fff3-0000-1000-8000-00805f9b34fb',
+        GENERIC: '0000ffe1-0000-1000-8000-00805f9b34fb'
+      };
+
+      this.COMMANDS = {
+        ELK_BLEDOM: {
+          POWER_ON: [0x7e, 0x04, 0x04, 0x01, 0xff, 0xff, 0xff, 0x00, 0xef],
+          POWER_OFF: [0x7e, 0x04, 0x04, 0x00, 0xff, 0xff, 0xff, 0x00, 0xef],
+          COLOR: (r, g, b) => [0x7e, 0x07, 0x05, 0x03, r, g, b, 0x00, 0xef],
+          BRIGHTNESS: (level) => [0x7e, 0x04, 0x01, level, 0xff, 0xff, 0xff, 0x00, 0xef],
+          EFFECT: (id) => [0x7e, 0x05, 0x03, id, 0x03, 0xff, 0xff, 0x00, 0xef]
+        },
+        GENERIC: {
+          POWER_ON: [0x7e, 0x00, 0x04, 0xf0, 0x00, 0x01, 0xff, 0x00, 0xef],
+          POWER_OFF: [0x7e, 0x00, 0x04, 0x00, 0x00, 0x00, 0xff, 0x00, 0xef],
+          COLOR: (r, g, b) => {
+            const checksum = (r + g + b) & 0xFF;
+            return [0x7e, 0x00, 0x05, 0x03, r, g, b, 0x00, checksum, 0xef];
+          },
+          BRIGHTNESS: (level) => [0x7e, 0x00, 0x01, level, 0xff, 0xff, 0xff, 0x00, 0xef],
+          EFFECT: (id) => [0x7e, 0x00, 0x03, id, 0x03, 0xff, 0xff, 0x00, 0xef]
+        }
+      };
+
+      this.lastCommandTime = 0;
+      this.commandDelay = 50;
+      console.log('✅ BLE-Controller initialisiert');
+    }
+
+    isBluetoothAvailable() {
+      if (!navigator.bluetooth) {
+        console.error('❌ Web Bluetooth API nicht verfügbar');
+        return false;
+      }
+      return true;
+    }
+
+    async scan(protocol = 'ELK_BLEDOM') {
+      if (!this.isBluetoothAvailable()) {
+        throw new Error('Web Bluetooth API nicht verfügbar');
+      }
+
+      try {
+        console.log('🔍 Scanne nach BLE-Geräten...');
+        const options = {
+          filters: [
+            { namePrefix: 'ELK-BLEDOM' },
+            { namePrefix: 'BLE-LED' },
+            { namePrefix: 'LED' }
+          ],
+          optionalServices: [
+            this.SERVICES.ELK_BLEDOM,
+            this.SERVICES.GENERIC
+          ]
+        };
+
+        this.device = await navigator.bluetooth.requestDevice(options);
+        console.log('✅ Gerät gefunden:', this.device.name);
+        return this.device;
+      } catch (error) {
+        console.error('❌ Scan fehlgeschlagen:', error);
+        throw error;
+      }
+    }
+
+    async connect(deviceId = null, protocol = 'ELK_BLEDOM') {
+      try {
+        if (!this.device) {
+          await this.scan(protocol);
+        }
+
+        console.log('🔗 Verbinde mit', this.device.name);
+        this.server = await this.device.gatt.connect();
+        
+        const serviceUUID = this.SERVICES[protocol] || this.SERVICES.ELK_BLEDOM;
+        this.service = await this.server.getPrimaryService(serviceUUID);
+        
+        const charUUID = this.CHARACTERISTICS[protocol] || this.CHARACTERISTICS.ELK_BLEDOM;
+        this.characteristic = await this.service.getCharacteristic(charUUID);
+        
+        this.isConnected = true;
+        this.protocol = protocol;
+        this.deviceName = this.device.name;
+        this.deviceId = this.device.id;
+
+        this.device.addEventListener('gattserverdisconnected', () => {
+          console.warn('⚠️ Gerät getrennt');
+          this.isConnected = false;
+        });
+
+        console.log('✅ Erfolgreich verbunden');
+        return true;
+      } catch (error) {
+        console.error('❌ Verbindung fehlgeschlagen:', error);
+        this.isConnected = false;
+        throw error;
+      }
+    }
+
+    async sendCommand(command, retries = 3) {
+      if (!this.isConnected || !this.characteristic) {
+        console.warn('⚠️ Nicht verbunden');
+        return false;
+      }
+
+      try {
+        const data = new Uint8Array(command);
+        await this.characteristic.writeValue(data);
+        console.log('📤 Befehl gesendet');
+        return true;
+      } catch (error) {
+        console.error('❌ Befehl senden fehlgeschlagen:', error);
+        return false;
+      }
+    }
+
+    async setColorRGB(r, g, b) {
+      r = Math.max(0, Math.min(255, parseInt(r) || 0));
+      g = Math.max(0, Math.min(255, parseInt(g) || 0));
+      b = Math.max(0, Math.min(255, parseInt(b) || 0));
+
+      const command = this.COMMANDS[this.protocol || 'GENERIC'].COLOR(r, g, b);
+      return await this.sendCommand(command);
+    }
+
+    async setBrightness(level) {
+      level = Math.max(0, Math.min(100, parseInt(level) || 0));
+      const brightnessValue = Math.round((level / 100) * 255);
+      const command = this.COMMANDS[this.protocol || 'GENERIC'].BRIGHTNESS(brightnessValue);
+      return await this.sendCommand(command);
+    }
+
+    async setEffect(effectId) {
+      effectId = Math.max(0, Math.min(255, parseInt(effectId) || 0));
+      const command = this.COMMANDS[this.protocol || 'GENERIC'].EFFECT(effectId);
+      return await this.sendCommand(command);
+    }
+
+    async setPower(state) {
+      const command = state
+        ? this.COMMANDS[this.protocol || 'GENERIC'].POWER_ON
+        : this.COMMANDS[this.protocol || 'GENERIC'].POWER_OFF;
+      return await this.sendCommand(command);
+    }
+
+    disconnect() {
+      if (this.device && this.device.gatt.connected) {
+        this.device.gatt.disconnect();
+      }
+      this.isConnected = false;
+      console.log('🔌 Verbindung getrennt');
+    }
+
+    getConnectionStatus() {
+      return {
+        connected: this.isConnected,
+        device: this.device ? {
+          name: this.deviceName,
+          id: this.deviceId,
+          protocol: this.protocol
+        } : null
+      };
+    }
+  }
+
+  // Global verfügbar machen
+  window.ledController = new BLEController();
+  window.BLEController = BLEController;
+  console.log('✅ BLE-Controller global verfügbar als window.ledController');
+  
+  // ============= SCENES-MANAGER.JS (VEREINFACHT) =============
+  class ScenesManager {
+    constructor() {
+      this.scenes = [];
+      this.currentScene = null;
+      this.storageKey = 'saved-scenes';
+      this.loadScenes();
+      console.log('✅ Szenen-Manager initialisiert');
+    }
+
+    createScene(sceneData) {
+      const scene = {
+        id: 'scene_' + Date.now(),
+        name: sceneData.name || 'Neue Szene',
+        color: sceneData.color || { r: 255, g: 255, b: 255 },
+        brightness: sceneData.brightness || 100,
+        effect: sceneData.effect || 0,
+        createdAt: Date.now()
+      };
+      this.scenes.push(scene);
+      this.saveScenes();
+      return scene;
+    }
+
+    async activateScene(sceneId) {
+      const scene = this.scenes.find(s => s.id === sceneId);
+      if (!scene) return false;
+
+      if (window.ledController && window.ledController.isConnected) {
+        await window.ledController.setBrightness(scene.brightness);
+        await window.ledController.setColorRGB(scene.color.r, scene.color.g, scene.color.b);
+        if (scene.effect > 0) {
+          await window.ledController.setEffect(scene.effect);
+        }
+      }
+
+      this.currentScene = scene;
+      return true;
+    }
+
+    saveScenes() {
+      try {
+        localStorage.setItem(this.storageKey, JSON.stringify(this.scenes));
+      } catch (e) {
+        console.error('Speichern fehlgeschlagen:', e);
+      }
+    }
+
+    loadScenes() {
+      try {
+        const saved = localStorage.getItem(this.storageKey);
+        if (saved) {
+          this.scenes = JSON.parse(saved);
+        }
+      } catch (e) {
+        console.error('Laden fehlgeschlagen:', e);
+      }
+    }
+  }
+
+  
+  // ============= ESSENZIELLE APP-FUNKTIONEN =============
+  console.log('🎮 Lade App-Logik...');
+  
+  // Globale Variablen
+  // Globale Variablen werden von den externen Modulen gesetzt
+  window.currentColor = window.currentColor || { r: 255, g: 0, b: 0 };
+  
+  // App-Konfiguration
+  const APP_CONFIG = {
+    DOM_READY_DELAY: 5000,
+    ANIMATION_DELAY: 300,
+    NOTIFICATION_DURATION: 3000
+  };
+  
+  // Navigation-Funktion
+  function openApp(appName) {
+    console.log('🚀 Öffne App:', appName);
+    
+    // Verstecke Startscreen falls noch sichtbar
+    const startscreen = document.getElementById('startscreen');
+    const appscreen = document.getElementById('appscreen');
+    
+    if (startscreen) {
+      startscreen.style.display = 'none';
+    }
+    
+    if (appscreen) {
+      appscreen.style.display = 'flex';
+    }
+    
+    // Lade iFrame
+    const iframe = document.getElementById('app-iframe');
+    if (iframe) {
+      const appFiles = {
+        'farbe': 'Farbe.html',
+        'effekt': 'Effekt.html',
+        'musik': 'musik.html',
+        'timer': 'Timer.html',
+        'einstellungen': 'Einstellungen.html'
+      };
+      
+      const filename = appFiles[appName];
+      if (filename) {
+        iframe.src = filename;
+        console.log('✅ Lade:', filename);
+      }
+    }
+    
+    // Markiere aktives Nav-Item
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+      item.classList.remove('active');
+      if (item.dataset.app === appName) {
+        item.classList.add('active');
+      }
+    });
+  }
+  
+  // Globale Notification-Funktion
+  window.showGlobalNotification = function(message, type = 'info', duration = 3000) {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
+    
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      background: ${type === 'success' ? '#2ed573' : type === 'error' ? '#ff4757' : '#4ecdc4'};
+      color: white;
+      border-radius: 10px;
+      z-index: 10000;
+      animation: slideIn 0.3s ease;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.style.animation = 'slideOut 0.3s ease';
+      setTimeout(() => notification.remove(), 300);
+    }, duration);
+  };
+  
+  // BLE Funktionen
+  window.connectBluetooth = async () => {
+    try {
+      await window.bleController.connect();
+      window.showGlobalNotification('Bluetooth verbunden!', 'success');
+      return true;
+    } catch (error) {
+      window.showGlobalNotification('Bluetooth-Verbindung fehlgeschlagen', 'error');
+      return false;
+    }
+  };
+  
+  window.sendColorToLED = async (r, g, b) => {
+    if (!window.bleController || !window.bleController.isConnected) {
+      console.warn('⚠️ Keine Bluetooth-Verbindung');
+      return false;
+    }
+    return await window.bleController.setColorRGB(r, g, b);
+  };
+  
+  // CSS Animationen
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOut {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(100%); opacity: 0; }
+    }
+    .notification {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .nav-item.active {
+      background: rgba(78, 205, 196, 0.2) !important;
+      border-bottom: 3px solid #4ecdc4 !important;
+    }
+  `;
+  document.head.appendChild(style);
+  
+  // DOMContentLoaded Event
+  window.addEventListener('DOMContentLoaded', function() {
+    console.log('🎆 DOM geladen - Initialisiere App...');
+    
+    // Navigation Event-Listener
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+      item.addEventListener('click', function() {
+        const appName = this.dataset.app;
+        if (appName) {
+          openApp(appName);
+        }
+      });
+    });
+    
+    // Startscreen nach 5 Sekunden ausblenden
+    setTimeout(() => {
+      const startscreen = document.getElementById('startscreen');
+      const appscreen = document.getElementById('appscreen');
+      
+      if (startscreen && appscreen) {
+        startscreen.style.transition = 'opacity 0.5s ease';
+        startscreen.style.opacity = '0';
+        
+        setTimeout(() => {
+          startscreen.style.display = 'none';
+          appscreen.style.display = 'flex';
+          openApp('farbe'); // Standard-App öffnen
+        }, 500);
+      }
+    }, APP_CONFIG.DOM_READY_DELAY);
+    
+    // Bluetooth Button
+    const bleButton = document.getElementById('bluetooth-button');
+    if (bleButton) {
+      bleButton.addEventListener('click', async () => {
+        await connectBluetooth();
+      });
+    }
+    
+    console.log('✅ App vollständig initialisiert!');
+    console.log('📡 Bluetooth verfügbar:', navigator.bluetooth ? 'JA' : 'NEIN');
+    console.log('🎮 Navigation bereit');
+  });
+  
+  // Global verfügbar machen
+  window.openApp = openApp;
+  
+  console.log('✅✅✅ ALLE SCRIPTS INLINE GELADEN - APP BEREIT! ✅✅✅');
+  </script>
+  
+  <!-- ✅ PWA SERVICE WORKER FÜR ANDROID-APP -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then((registration) => {
+            console.log('✅ PWA Service Worker registriert:', registration.scope);
+          })
+          .catch((error) => {
+            console.log('❌ PWA Service Worker Fehler:', error);
+          });
+      });
+    }
+  </script>
+  
+  <!-- Gesamte App-Logik ist jetzt in app.js - kein inline Code mehr nötig -->
+
+</body>
+</html>

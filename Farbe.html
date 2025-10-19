@@ -1,0 +1,2368 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarbWorld - Farbauswahl-Tool</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="css/shared-styles.css">
+    <style>
+        :root {
+            --primary-color: #6a5af9;
+            --active-color: #ffcc00;
+            --dark-bg: #121212;
+            --card-bg: #1e1e1e;
+            --light-bg: #2d2d2d;
+            --text-light: #f0f0f0;
+            --text-muted: #a0a0a0;
+            --border-color: #444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Exo 2', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a2e, #16213e);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 1rem;
+            position: relative;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(120deg); }
+            66% { transform: translateY(10px) rotate(240deg); }
+        }
+        
+        body::after {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.03) 2px,
+                    rgba(255, 255, 255, 0.03) 4px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.03) 2px,
+                    rgba(255, 255, 255, 0.03) 4px
+                );
+            animation: float 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(25px);
+            border-radius: 20px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+            z-index: 2;
+            box-shadow: 
+                0 4px 15px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .header-buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(106, 90, 249, 0.5), transparent);
+        }
+        
+        .settings-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .settings-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+        
+        .rgb-btn {
+            background: linear-gradient(90deg, #ff0000, #00ff00, #0000ff);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .rgb-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7);
+        }
+        
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .toggle-label {
+            font-weight: bold;
+            color: var(--text-muted);
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            -webkit-background-clip: text;
+            background-clip: text;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: var(--active-color);
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+        
+        .style-selector {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+            z-index: 2;
+            box-shadow: 
+                0 4px 15px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .style-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 4px 15px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        
+        .style-btn::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .style-btn:hover::after {
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .style-btn.active {
+            transform: scale(1.1);
+            box-shadow: 
+                0 0 20px var(--active-color),
+                0 0 40px rgba(255, 204, 0, 0.3),
+                0 4px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        .style-btn.active::after {
+            border-color: var(--active-color);
+        }
+        
+        
+        .rainbow {
+            background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);
+        }
+        
+        .color-picker-container {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(25px);
+            position: relative;
+            z-index: 2;
+            box-shadow: 
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .color-wheel-container {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            margin: 0 auto;
+        }
+        
+        .color-wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(
+                red, yellow, lime, aqua, blue, magenta, red
+            );
+            position: relative;
+            cursor: pointer;
+            box-shadow: 
+                0 0 30px rgba(106, 90, 249, 0.4),
+                0 8px 25px rgba(0, 0, 0, 0.6),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .color-wheel::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 50%;
+            background: conic-gradient(
+                rgba(255, 0, 0, 0.8), 
+                rgba(255, 255, 0, 0.8), 
+                rgba(0, 255, 0, 0.8), 
+                rgba(0, 255, 255, 0.8), 
+                rgba(0, 0, 255, 0.8), 
+                rgba(255, 0, 255, 0.8), 
+                rgba(255, 0, 0, 0.8)
+            );
+            filter: blur(3px);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: -1;
+        }
+        
+        .color-wheel:hover {
+            transform: scale(1.02);
+            box-shadow: 
+                0 0 40px rgba(106, 90, 249, 0.6),
+                0 12px 35px rgba(0, 0, 0, 0.7),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+        }
+        
+        .color-wheel:hover::before {
+            opacity: 1;
+        }
+        
+        
+        .color-preview {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #ff0000;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                0 0 20px rgba(0, 0, 0, 0.8),
+                0 0 40px rgba(255, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            z-index: 10;
+            backdrop-filter: blur(5px);
+        }
+        
+        .color-pointer {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+            border: 2px solid rgba(0, 0, 0, 0.8);
+            border-radius: 50%;
+            box-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.8),
+                0 2px 5px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+            pointer-events: none;
+            z-index: 5;
+            left: 175px;
+            top: 8px;
+        }
+        
+        .controls {
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(25px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .control-group {
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        .control-title {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #00dbde, #fc00ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 219, 222, 0.3);
+        }
+        
+        .brightness-slider-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+        
+        .brightness-slider {
+            width: 80%;
+            max-width: 400px;
+            height: 12px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background: linear-gradient(to right, #000, #fff);
+            border-radius: 10px;
+            outline: none;
+            box-shadow: 
+                0 0 10px rgba(106, 90, 249, 0.3),
+                inset 0 1px 3px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .brightness-slider::-webkit-slider-thumb, .temperature-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(240, 240, 240, 0.9) 100%);
+            border: 2px solid rgba(106, 90, 249, 0.8);
+            cursor: pointer;
+            box-shadow: 
+                0 0 15px rgba(106, 90, 249, 0.6),
+                0 4px 8px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            transition: all 0.2s;
+        }
+        
+        .brightness-slider::-webkit-slider-thumb:hover, .temperature-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 
+                0 0 20px rgba(106, 90, 249, 0.8),
+                0 6px 12px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        }
+        
+        /* Farbtemperatur-Slider */
+        .temperature-slider {
+            width: 80%;
+            max-width: 400px;
+            height: 12px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background: linear-gradient(to right, #ff6b35, #ffd700, #87ceeb, #4169e1);
+            border-radius: 10px;
+            outline: none;
+            box-shadow: 
+                0 0 10px rgba(255, 107, 53, 0.3),
+                inset 0 1px 3px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .temperature-slider-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+        
+        .temperature-labels {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            max-width: 400px;
+            font-size: 0.9em;
+        }
+        
+        .temp-label.warm {
+            color: #ff6b35;
+        }
+        
+        .temp-label.cool {
+            color: #4169e1;
+        }
+        
+        .temperature-value {
+            text-align: center;
+            font-family: 'Orbitron', monospace;
+            font-weight: 600;
+            font-size: 1.1em;
+            color: #4ecdc4;
+            text-shadow: 0 0 8px rgba(78, 205, 196, 0.5);
+            letter-spacing: 1px;
+        }
+        
+        /* Preset-Kategorien */
+        .preset-categories {
+            width: 100%;
+        }
+        
+        .preset-category {
+            margin-bottom: 20px;
+        }
+        
+        .category-title {
+            font-size: 0.95em;
+            font-family: 'Orbitron', monospace;
+            font-weight: 500;
+            color: #4ecdc4;
+            margin-bottom: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(78, 205, 196, 0.4);
+        }
+        
+        
+        .preset-colors {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 10px 0;
+        }
+        
+        .preset-color {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+            position: relative;
+            backdrop-filter: blur(5px);
+        }
+        
+        .preset-color:hover {
+            transform: scale(1.15) translateY(-2px);
+            box-shadow: 
+                0 0 20px rgba(255, 255, 255, 0.4),
+                0 6px 15px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+        
+        .preset-color::after {
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .preset-color:hover::after {
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .save-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+        }
+        
+        .save-btn {
+            background: linear-gradient(135deg, var(--primary-color), #4a00e0);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 
+                0 4px 15px rgba(106, 90, 249, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .save-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 8px 25px rgba(106, 90, 249, 0.7),
+                0 0 0 1px rgba(255, 255, 255, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+        
+        .saved-colors {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 400px;
+            min-height: 40px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 
+                0 4px 15px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+        
+        .saved-color {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            position: relative;
+            transition: transform 0.2s;
+        }
+        
+        .saved-color:hover {
+            transform: scale(1.1);
+        }
+        
+        .saved-color::after {
+            content: '×';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff4757;
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        
+        .saved-color:hover::after {
+            opacity: 1;
+            width: 100%;
+            height: 60px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 99;
+            display: none;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
+
+        /* ===== RGB POPUP STYLES ===== */
+        .rgb-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .rgb-popup.active {
+            display: flex;
+        }
+        
+        .rgb-popup-content {
+            background: rgba(30, 30, 46, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 25px;
+            width: 400px;
+            max-width: 90vw;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        .rgb-popup-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        
+        .rgb-title {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-align: center;
+            /* ✅ GLEICHE FARBE WIE FARBWORLD ÜBERSCHRIFT */
+            background: linear-gradient(135deg, #00dbde, #fc00ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 219, 222, 0.3);
+        }
+        
+        .rgb-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .rgb-slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .rgb-label {
+            font-weight: 600;
+            min-width: 80px;
+            color: #ffffff;
+        }
+        
+        /* ✅ RGB LABELS IN RICHTIGEN FARBEN */
+        .red-label {
+            color: #ff4757 !important;
+            text-shadow: 0 0 10px rgba(255, 71, 87, 0.5);
+        }
+        
+        .green-label {
+            color: #2ed573 !important;
+            text-shadow: 0 0 10px rgba(46, 213, 115, 0.3);
+        }
+        
+        .blue-label {
+            color: #3742fa !important;
+            text-shadow: 0 0 10px rgba(55, 66, 250, 0.3);
+        }
+        
+        .rgb-preview {
+            width: 100%;
+            height: 60px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+            background: rgb(255, 0, 0);
+        }
+        
+        /* Nebeneinstellungen Panel */
+        .side-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100vh;
+            background: var(--card-bg);
+            border-left: 1px solid var(--border-color);
+            z-index: 1000;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .side-panel.active {
+            right: 0;
+        }
+        
+        .side-panel-header {
+            background: var(--dark-bg);
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .side-panel-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--active-color);
+        }
+        
+        .close-panel-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        
+        .close-panel-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(90deg);
+        }
+        
+        .side-panel-content {
+            padding: 20px;
+        }
+        
+        .panel-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .panel-section-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--active-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .quick-colors {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .quick-color {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .quick-color:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .quick-color::after {
+            content: attr(title);
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .quick-color:hover::after {
+            opacity: 1;
+        }
+        
+        .temp-slider-container {
+            margin-top: 15px;
+        }
+        
+        .temp-slider {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background: linear-gradient(to right, #ff6b35, #ffd700, #87ceeb, #4169e1);
+            border-radius: 10px;
+            outline: none;
+        }
+        
+        .temp-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--text-light);
+            border: 2px solid #333;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        .temp-display {
+            text-align: center;
+            font-weight: bold;
+            color: var(--active-color);
+        }
+        
+        
+        .current-color-display {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            text-align: center;
+            color: var(--text-light);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-buttons">
+                <button class="rgb-btn" id="rgbBtn">
+                    <i class="fas fa-palette"></i>
+                    RGB
+                </button>
+            </div>
+            
+            <h1 style="font-size: 2.8rem; margin: 0; background: linear-gradient(135deg, #00dbde, #fc00ff); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; display: inline-block; text-shadow: 0 0 20px rgba(0, 219, 222, 0.3); position: relative; letter-spacing: 0.1em;">FarbWorld</h1>
+            
+            <div class="toggle-container">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="powerToggle">
+                    <span class="toggle-slider"></span>
+                </label>
+                <span class="toggle-label">LED Ein/Aus</span>
+            </div>
+        </header>
+
+
+        <div class="color-picker-container">
+            <div class="color-wheel-container">
+                <div class="color-wheel" id="colorWheel">
+                    <div class="color-preview" id="colorPreview"></div>
+                    <div class="color-pointer" id="colorPointer"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <div class="control-title">Helligkeit</div>
+                <div class="brightness-slider-container">
+                    <input type="range" class="brightness-slider" id="brightnessSlider" min="0" max="100" value="100">
+                    <div class="brightness-value" id="brightnessValue">100%</div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="preset-category">
+                    <div class="category-title">Basic-Farben</div>
+                    <div class="preset-colors">
+                        <div class="preset-color" style="background-color: #ff0000;" title="Rot"></div>
+                        <div class="preset-color" style="background-color: #00ff00;" title="Grün"></div>
+                        <div class="preset-color" style="background-color: #0000ff;" title="Blau"></div>
+                        <div class="preset-color" style="background-color: #ffff00;" title="Gelb"></div>
+                        <div class="preset-color" style="background-color: #ff00ff;" title="Magenta"></div>
+                        <div class="preset-color" style="background-color: #00ffff;" title="Cyan"></div>
+                        <div class="preset-color" style="background-color: #ffffff;" title="Weiß"></div>
+                        <div class="preset-color" style="background-color: #000000;" title="Schwarz"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="save-section">
+                <button class="save-btn" id="saveColorBtn">
+                    <i class="fas fa-save"></i>
+                    Farbe speichern
+                </button>
+                <div class="saved-colors-container">
+                    <div class="saved-colors-header" style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; margin-bottom: 10px;">
+                        <h4 style="color: #fff; margin: 0; font-size: 16px;">Gespeicherte Farben</h4>
+                        <button id="clearAllColorsBtn" style="
+                            background: #ff4757;
+                            color: white;
+                            border: none;
+                            padding: 6px 12px;
+                            border-radius: 20px;
+                            font-size: 12px;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+                        " onmouseover="this.style.background='#ff3742'" onmouseout="this.style.background='#ff4757'">
+                            <i class="fas fa-trash"></i> Alle löschen
+                        </button>
+                    </div>
+                    <div class="saved-colors" id="savedColors" style="
+                        min-height: 80px;
+                        background: rgba(255,255,255,0.05);
+                        border: 2px solid rgba(255,255,255,0.2);
+                        border-radius: 15px;
+                        padding: 15px;
+                        text-align: center;
+                        backdrop-filter: blur(10px);
+                        box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);
+                    ">
+                        <!-- Gespeicherte Farben werden hier angezeigt -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RGB Popup -->
+    <div class="rgb-popup" id="rgbPopup">
+        <div class="rgb-popup-content">
+            <div class="rgb-popup-header">
+                <h3 class="rgb-title" style="color: var(--color-primary); font-size: 1.5em; text-align: center; width: 100%; margin: 0;">RGB Farbauswahl</h3>
+            </div>
+            <div class="rgb-controls">
+                <div class="rgb-slider-group">
+                    <label style="color: #ff4444; font-weight: bold;">Rot (R)</label>
+                    <input type="range" id="redSlider" min="0" max="255" value="255">
+                    <span id="redValue">255</span>
+                </div>
+                <div class="rgb-slider-group">
+                    <label style="color: #44ff44; font-weight: bold;">Grün (G)</label>
+                    <input type="range" id="greenSlider" min="0" max="255" value="0">
+                    <span id="greenValue">0</span>
+                </div>
+                <div class="rgb-slider-group">
+                    <label style="color: #4444ff; font-weight: bold;">Blau (B)</label>
+                    <input type="range" id="blueSlider" min="0" max="255" value="0">
+                    <span id="blueValue">0</span>
+                </div>
+            </div>
+            <div class="rgb-preview" id="rgbPreview"></div>
+        </div>
+    </div>
+
+    <!-- Nebeneinstellungen Panel -->
+    <div class="side-panel" id="sidePanel">
+        <div class="panel-header">
+            <h2>Erweiterte Einstellungen</h2>
+            <button class="close-panel-btn" id="closePanelBtn">&times;</button>
+        </div>
+        <div class="panel-content">
+            <!-- Farbtemperatur Sektion -->
+            <div class="panel-section">
+                <h3 class="panel-section-title">
+                    <i class="fas fa-thermometer-half"></i>
+                    Farbtemperatur
+                </h3>
+                <div class="temperature-slider-container">
+                    <input type="range" class="temperature-slider" id="temperatureSlider" min="2700" max="6500" value="4000">
+                    <div class="temperature-labels">
+                        <span class="temp-label warm">2700K</span>
+                        <span class="temp-label cool">6500K</span>
+                    </div>
+                    <div class="temperature-value" id="temperatureValue">4000K</div>
+                </div>
+            </div>
+
+            <!-- Warmtöne Sektion -->
+            <div class="panel-section">
+                <h3 class="panel-section-title">
+                    <i class="fas fa-fire"></i>
+                    Warmtöne
+                </h3>
+                <div class="preset-colors">
+                    <div class="preset-color" style="background-color: #ff6b35;" title="Warmes Orange"></div>
+                    <div class="preset-color" style="background-color: #f7931e;" title="Bernstein"></div>
+                    <div class="preset-color" style="background-color: #ffd700;" title="Gold"></div>
+                    <div class="preset-color" style="background-color: #ff8c42;" title="Pfirsich"></div>
+                    <div class="preset-color" style="background-color: #d2691e;" title="Schokolade"></div>
+                    <div class="preset-color" style="background-color: #cd853f;" title="Sandbraun"></div>
+                    <div class="preset-color" style="background-color: #daa520;" title="Goldgelb"></div>
+                    <div class="preset-color" style="background-color: #b8860b;" title="Dunkelgold"></div>
+                </div>
+            </div>
+
+            <!-- Kalttöne Sektion -->
+            <div class="panel-section">
+                <h3 class="panel-section-title">
+                    <i class="fas fa-snowflake"></i>
+                    Kalttöne
+                </h3>
+                <div class="preset-colors">
+                    <div class="preset-color" style="background-color: #4169e1;" title="Königsblau"></div>
+                    <div class="preset-color" style="background-color: #00bfff;" title="Tiefes Himmelblau"></div>
+                    <div class="preset-color" style="background-color: #87ceeb;" title="Himmelblau"></div>
+                    <div class="preset-color" style="background-color: #20b2aa;" title="Helles Seegrün"></div>
+                    <div class="preset-color" style="background-color: #008b8b;" title="Dunkelcyan"></div>
+                    <div class="preset-color" style="background-color: #4682b4;" title="Stahlblau"></div>
+                    <div class="preset-color" style="background-color: #5f9ea0;" title="Kadettenblau"></div>
+                    <div class="preset-color" style="background-color: #708090;" title="Schiefergrau"></div>
+                </div>
+            </div>
+
+            <!-- Pastelltöne Sektion -->
+            <div class="panel-section">
+                <h3 class="panel-section-title">
+                    <i class="fas fa-heart"></i>
+                    Pastelltöne
+                </h3>
+                <div class="preset-colors">
+                    <div class="preset-color" style="background-color: #ffb6c1;" title="Hellrosa"></div>
+                    <div class="preset-color" style="background-color: #ffc0cb;" title="Rosa"></div>
+                    <div class="preset-color" style="background-color: #e6e6fa;" title="Lavendel"></div>
+                    <div class="preset-color" style="background-color: #f0e68c;" title="Khaki"></div>
+                    <div class="preset-color" style="background-color: #98fb98;" title="Blassgrün"></div>
+                    <div class="preset-color" style="background-color: #afeeee;" title="Blassturkis"></div>
+                    <div class="preset-color" style="background-color: #f5deb3;" title="Weizen"></div>
+                    <div class="preset-color" style="background-color: #dda0dd;" title="Pflaume"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Globale Variablen
+        let currentMode = 'rainbow';
+        let currentColor = { r: 255, g: 0, b: 0 };
+        // ✅ IMMER den globalen bleController aus app.js verwenden!
+        function getLEDController() {
+            // In iframe? Dann parent.bleController
+            if (window.parent && window.parent !== window && window.parent.bleController) {
+                console.log('🔗 Verwende Parent bleController');
+                return window.parent.bleController;
+            }
+            // Direkt? Dann window.bleController
+            if (window.bleController) {
+                console.log('🔗 Verwende lokalen bleController');
+                return window.bleController;
+            }
+            
+            console.error('❌ KRITISCH: Kein bleController gefunden!');
+            return null;
+        }
+
+        // BLE Status prüfen
+        function isConnected() {
+            // ✅ IMMER den globalen bleController aus app.js verwenden!
+            const controller = getLEDController();
+            if (controller) {
+                return controller.isConnected;
+            }
+            return false;
+        }
+
+        // BLE Initialisierung (nutzt Parent Controller)
+        async function initBLE() {
+            const controller = getLEDController();
+            if (controller) {
+                console.log('✅ Zentrale BLE-Controller gefunden');
+            } else {
+                console.warn('⚠️ BLE-Controller nicht verfügbar - bitte in Hauptseite verbinden');
+            }
+        }
+
+        // ✅ ECHTE HARDWARE LED-STEUERUNG - VERWENDET GLOBALE FUNKTIONEN
+        async function sendColorToBLE(r, g, b) {
+            try {
+                // ✅ VERWENDE DIE GLOBALE sendColorToLED FUNKTION AUS app.js!
+                if (window.parent && window.parent.sendColorToLED) {
+                    const success = await window.parent.sendColorToLED(r, g, b);
+                    if (success) {
+                        console.log(`🎨 ✅ ECHTE Hardware-Farbe gesendet: RGB(${r}, ${g}, ${b})`);
+                        showNotification(`LED-Farbe gesetzt: RGB(${r}, ${g}, ${b})`, 'success');
+                        return true;
+                    } else {
+                        console.warn('⚠️ Bluetooth nicht verbunden');
+                        showNotification('Bitte erst Bluetooth in Einstellungen verbinden!', 'warning');
+                        return false;
+                    }
+                }
+                
+                // Fallback: Direkter Zugriff auf bleController
+                if (window.bleController && window.bleController.isConnected) {
+                    const success = await window.bleController.setColorRGB(r, g, b);
+                    if (success) {
+                        console.log(`🎨 ✅ Direkt: Hardware-Farbe gesendet: RGB(${r}, ${g}, ${b})`);
+                        showNotification(`LED-Farbe gesetzt: RGB(${r}, ${g}, ${b})`, 'success');
+                        return true;
+                    }
+                }
+                
+                // Keine Verbindung verfügbar
+                console.error('❌ KRITISCH: Keine Bluetooth-Verbindung!');
+                showNotification('FEHLER: Bluetooth nicht verbunden! Bitte in Einstellungen verbinden.', 'error');
+                return false;
+                
+            } catch (error) {
+                console.error('❌ Hardware-Fehler:', error);
+                showNotification(`Fehler beim Senden: ${error.message}`, 'error');
+                return false;
+            }
+        }
+
+        // Farbe anwenden
+        function applyColor(r, g, b) {
+            currentColor = { r, g, b };
+            
+            // UI aktualisieren
+            const colorPreview = document.getElementById('colorPreview');
+            if (colorPreview) {
+                colorPreview.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+            }
+            
+            // Helligkeit anwenden und an LED senden
+            const brightnessSlider = document.getElementById('brightnessSlider');
+            const brightness = brightnessSlider ? brightnessSlider.value / 100 : 1;
+            const adjustedR = Math.round(r * brightness);
+            const adjustedG = Math.round(g * brightness);
+            const adjustedB = Math.round(b * brightness);
+            
+            // Nur einmal an LED senden mit angepasster Helligkeit
+            sendColorToBLE(adjustedR, adjustedG, adjustedB);
+        }
+
+        // Farbkreis Event-Listener
+        const colorWheel = document.getElementById('colorWheel');
+        const colorPointer = document.getElementById('colorPointer');
+
+        colorWheel.addEventListener('click', function(e) {
+            const rect = this.getBoundingClientRect();
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const x = e.clientX - rect.left - centerX;
+            const y = e.clientY - rect.top - centerY;
+            
+            const distance = Math.sqrt(x * x + y * y);
+            const angle = Math.atan2(y, x) * 180 / Math.PI;
+            
+            // Nur innerhalb des Farbkreises klickbar
+            if (distance <= 175) {
+                updateColorFromClick(x, y, Math.min(distance, 175), angle, currentMode);
+            }
+        });
+
+        let isDragging = false;
+        
+        colorWheel.addEventListener('mousemove', function(e) {
+            if (isDragging) return; // Nicht bewegen wenn gerade gezogen wird
+            
+            const rect = this.getBoundingClientRect();
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const x = e.clientX - rect.left - centerX;
+            const y = e.clientY - rect.top - centerY;
+            
+            const distance = Math.sqrt(x * x + y * y);
+            const angle = Math.atan2(y, x) * 180 / Math.PI;
+            
+            if (distance <= 175) {
+                const color = getColorFromPosition(x, y, distance, angle, currentMode);
+                if (color) {
+                    // Nur Preview aktualisieren, nicht den Pointer
+                    const colorPreview = document.getElementById('colorPreview');
+                    colorPreview.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
+                }
+            }
+        });
+
+        colorWheel.addEventListener('mousedown', function(e) {
+            isDragging = true;
+            selectColorAtPosition(e);
+        });
+
+        colorWheel.addEventListener('mouseup', function() {
+            isDragging = false;
+        });
+
+        colorWheel.addEventListener('mouseleave', function() {
+            isDragging = false;
+        });
+        
+        // Touch-Events für mobile Geräte
+        colorWheel.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            isDragging = true;
+            const touch = e.touches[0];
+            const mockEvent = {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            };
+            selectColorAtPosition(mockEvent);
+        });
+        
+        colorWheel.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+            if (isDragging) {
+                const touch = e.touches[0];
+                const mockEvent = {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                };
+                selectColorAtPosition(mockEvent);
+            }
+        });
+        
+        colorWheel.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            isDragging = false;
+        });
+
+        function selectColorAtPosition(e) {
+            const rect = colorWheel.getBoundingClientRect();
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+            const x = clientX - rect.left - centerX;
+            const y = clientY - rect.top - centerY;
+            
+            const distance = Math.sqrt(x * x + y * y);
+            const angle = Math.atan2(y, x) * 180 / Math.PI;
+            
+            if (distance <= 175) {
+                const color = getColorFromPosition(x, y, distance, angle, currentMode);
+                if (color) {
+                    // ✅ FARBE ANWENDEN UND CURRENTCOLOR EXPLIZIT SETZEN
+                    currentColor = {r: color.r, g: color.g, b: color.b};
+                    console.log('🎨 Farbkreis-Klick - currentColor gesetzt:', currentColor);
+                    
+                    // ✅ GLOBALE CURRENTCOLOR SYNCHRONISIEREN
+                    if (window.parent && window.parent.setGlobalCurrentColor) {
+                        window.parent.setGlobalCurrentColor(currentColor);
+                    }
+                    
+                    applyColor(color.r, color.g, color.b);
+                    
+                    // Pointer an Klick-Position setzen (begrenzt auf Farbkreis)
+                    const pointer = document.getElementById('colorPointer');
+                    const clampedDistance = Math.min(distance, 175);
+                    const angleRad = angle * Math.PI / 180;
+                    const pointerX = Math.cos(angleRad) * clampedDistance + centerX;
+                    const pointerY = Math.sin(angleRad) * clampedDistance + centerY;
+                    
+                    pointer.style.left = (pointerX - 8) + 'px';
+                    pointer.style.top = (pointerY - 8) + 'px';
+                    
+                    // RGB-Popup aktualisieren falls offen
+                    updateRgbSlidersFromColor(color);
+                    
+                    // ✅ RGB POPUP AUTOMATISCH SCHLIESSEN
+                    const rgbPopup = document.getElementById('rgbPopup');
+                    if (rgbPopup && rgbPopup.classList.contains('active')) {
+                        rgbPopup.classList.remove('active');
+                    }
+                }
+            }
+        }
+
+        // Farbberechnung basierend auf Position
+        function getColorFromPosition(x, y, distance, angle, mode) {
+            let color;
+            
+            // Rainbow mode
+            const hue = (angle + 90 + 360) % 360;
+            const saturation = Math.min(distance / 175, 1);
+            const lightness = 0.5;
+            
+            color = hslToRgb(hue / 360, saturation, lightness);
+            
+            return color;
+        }
+
+        // Farbe bei Klick aktualisieren
+        function updateColorFromClick(x, y, distance, angle, mode) {
+            let color;
+            
+            if (mode === 'rainbow') {
+                const hue = (angle + 90 + 360) % 360;
+                const saturation = Math.min(distance / 175, 1);
+                const lightness = 0.5;
+                
+                color = hslToRgb(hue / 360, saturation, lightness);
+            }
+            
+            if (color) {
+                applyColor(color.r, color.g, color.b);
+                updateColorPointer(angle, distance);
+            }
+        }
+
+        // Color-Pointer Position aktualisieren - STRIKT innerhalb des Farbkreises
+        function updateColorPointer(angle, distance) {
+            if (angle !== undefined && distance !== undefined) {
+                const pointer = document.getElementById('colorPointer');
+                const colorWheel = document.getElementById('colorWheel');
+                const rect = colorWheel.getBoundingClientRect();
+                
+                // Farbkreis-Zentrum
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                // Maximaler Radius = Farbkreis-Radius
+                const maxRadius = 175;
+                const radius = Math.min(distance, maxRadius);
+                
+                // Position berechnen
+                const x = Math.cos((angle - 90) * Math.PI / 180) * radius;
+                const y = Math.sin((angle - 90) * Math.PI / 180) * radius;
+                
+                // Absolute Position setzen
+                pointer.style.left = (centerX + x - 8) + 'px';
+                pointer.style.top = (centerY + y - 8) + 'px';
+            }
+        }
+
+        // HSL zu RGB Konvertierung
+        function hslToRgb(h, s, l) {
+            let r, g, b;
+
+            if (s === 0) {
+                r = g = b = l;
+            } else {
+                const hue2rgb = (p, q, t) => {
+                    if (t < 0) t += 1;
+                    if (t > 1) t -= 1;
+                    if (t < 1/6) return p + (q - p) * 6 * t;
+                    if (t < 1/2) return q;
+                    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                    return p;
+                };
+
+                const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                const p = 2 * l - q;
+                r = hue2rgb(p, q, h + 1/3);
+                g = hue2rgb(p, q, h);
+                b = hue2rgb(p, q, h - 1/3);
+            }
+
+            return {
+                r: Math.round(r * 255),
+                g: Math.round(g * 255),
+                b: Math.round(b * 255)
+            };
+        }
+
+        // Helligkeit Event-Listener
+        const brightnessSlider = document.getElementById('brightnessSlider');
+        const brightnessValue = document.getElementById('brightnessValue');
+        
+        brightnessSlider.addEventListener('input', async function() {
+            document.getElementById('brightnessValue').textContent = `${this.value}%`;
+            
+            // ✅ SENDE HELLIGKEIT DIREKT AN LED!
+            try {
+                let success = false;
+                
+                if (window.parent && window.parent.setBrightnessLED) {
+                    success = await window.parent.setBrightnessLED(parseInt(this.value));
+                } else if (window.setBrightnessLED) {
+                    success = await window.setBrightnessLED(parseInt(this.value));
+                }
+                
+                if (success) {
+                    console.log(`💡 Helligkeit gesetzt: ${this.value}%`);
+                }
+                
+                // Zusätzlich Farbe mit Helligkeit senden
+                if (currentColor.r !== undefined) {
+                    const brightness = this.value / 100;
+                    const r = Math.round(currentColor.r * brightness);
+                    const g = Math.round(currentColor.g * brightness);
+                    const b = Math.round(currentColor.b * brightness);
+                    await sendColorToBLE(r, g, b);
+                }
+            } catch (error) {
+                console.error('❌ Helligkeit-Fehler:', error);
+            }
+        });
+
+        // RGB Popup Event-Listener
+        const rgbBtn = document.getElementById('rgbBtn');
+        const rgbPopup = document.getElementById('rgbPopup');
+        const closeRgbPopup = document.getElementById('closeRgbPopup');
+
+        rgbBtn.addEventListener('click', () => {
+            rgbPopup.classList.add('active');
+        });
+
+        // ✅ CLOSE BUTTON FÜR RGB POPUP
+        if (closeRgbPopup) {
+            closeRgbPopup.addEventListener('click', () => {
+                rgbPopup.classList.remove('active');
+            });
+        }
+
+        // Auto-Close: Klick außerhalb des Popups schließt es
+        rgbPopup.addEventListener('click', (e) => {
+            if (e.target === rgbPopup) {
+                rgbPopup.classList.remove('active');
+            }
+        });
+
+        // Escape-Taste schließt das Popup
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && rgbPopup.classList.contains('active')) {
+                rgbPopup.classList.remove('active');
+            }
+        });
+
+        // RGB Slider Event-Listener
+        const redSlider = document.getElementById('redSlider');
+        const greenSlider = document.getElementById('greenSlider');
+        const blueSlider = document.getElementById('blueSlider');
+        const redValue = document.getElementById('redValue');
+        const greenValue = document.getElementById('greenValue');
+        const blueValue = document.getElementById('blueValue');
+        const rgbPreview = document.getElementById('rgbPreview');
+
+        function updateRgbPreview() {
+            const r = redSlider.value;
+            const g = greenSlider.value;
+            const b = blueSlider.value;
+            
+            redValue.textContent = r;
+            greenValue.textContent = g;
+            blueValue.textContent = b;
+            
+            rgbPreview.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+            
+            // currentColor aktualisieren
+            currentColor = { r: parseInt(r), g: parseInt(g), b: parseInt(b) };
+            applyColor(parseInt(r), parseInt(g), parseInt(b));
+            console.log('currentColor von RGB aktualisiert:', currentColor);
+        }
+
+        redSlider.addEventListener('input', updateRgbPreview);
+        greenSlider.addEventListener('input', updateRgbPreview);
+        blueSlider.addEventListener('input', updateRgbPreview);
+
+        // RGB-Slider mit Farbe aktualisieren
+        function updateRgbSlidersFromColor(color) {
+            if (redSlider && greenSlider && blueSlider) {
+                redSlider.value = color.r;
+                greenSlider.value = color.g;
+                blueSlider.value = color.b;
+                
+                redValue.textContent = color.r;
+                greenValue.textContent = color.g;
+                blueValue.textContent = color.b;
+                
+                rgbPreview.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
+            }
+        }
+
+        // Außerhalb des Popups klicken zum Schließen
+        rgbPopup.addEventListener('click', (e) => {
+            if (e.target === rgbPopup) {
+                rgbPopup.classList.remove('active');
+            }
+        });
+
+        // Nebeneinstellungen Panel Event-Listener
+        const settingsBtn = document.getElementById('settingsBtn');
+        const sidePanel = document.getElementById('sidePanel');
+        const closePanelBtn = document.getElementById('closePanelBtn');
+
+        settingsBtn.addEventListener('click', () => {
+            sidePanel.classList.add('active');
+        });
+
+        closePanelBtn.addEventListener('click', () => {
+            sidePanel.classList.remove('active');
+        });
+
+        function closePanel() {
+            sidePanel.classList.remove('active');
+        }
+
+        // Außerhalb des Panels klicken zum Schließen
+        sidePanel.addEventListener('click', (e) => {
+            if (e.target === sidePanel) {
+                closePanel();
+            }
+        });
+
+        // ✅ FARBTEMPERATUR MIT HARDWARE-STEUERUNG
+        const temperatureSlider = document.getElementById('temperatureSlider');
+        const temperatureValue = document.getElementById('temperatureValue');
+
+        if (temperatureSlider) {
+            temperatureSlider.addEventListener('input', function() {
+                const temp = parseInt(this.value);
+                temperatureValue.textContent = temp + 'K';
+                
+                // Konvertiere Kelvin zu RGB
+                const rgb = kelvinToRgb(temp);
+                
+                // ✅ SENDE TEMPERATUR AN HARDWARE
+                applyColor(rgb.r, rgb.g, rgb.b);
+                
+                // Speichere Temperatur-Einstellung
+                localStorage.setItem('ledTemperature', temp);
+                
+                console.log(`🌡️ Farbtemperatur ${temp}K → RGB(${rgb.r}, ${rgb.g}, ${rgb.b})`);
+            });
+        }
+
+        // Kelvin zu RGB Konvertierung
+        function kelvinToRgb(kelvin) {
+            const temp = kelvin / 100;
+            let red, green, blue;
+
+            if (temp <= 66) {
+                red = 255;
+                green = temp;
+                green = 99.4708025861 * Math.log(green) - 161.1195681661;
+                
+                if (temp >= 19) {
+                    blue = temp - 10;
+                    blue = 138.5177312231 * Math.log(blue) - 305.0447927307;
+                } else {
+                    blue = 0;
+                }
+            } else {
+                red = temp - 60;
+                red = 329.698727446 * Math.pow(red, -0.1332047592);
+                
+                green = temp - 60;
+                green = 288.1221695283 * Math.pow(green, -0.0755148492);
+                
+                blue = 255;
+            }
+
+            return {
+                r: Math.max(0, Math.min(255, Math.round(red))),
+                g: Math.max(0, Math.min(255, Math.round(green))),
+                b: Math.max(0, Math.min(255, Math.round(blue)))
+            };
+        }
+
+        // Notification System
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 12px 20px;
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                border-radius: 8px;
+                z-index: 10000;
+                font-size: 14px;
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            `;
+            
+            if (type === 'success') {
+                notification.style.background = 'rgba(0, 150, 0, 0.8)';
+            } else if (type === 'error') {
+                notification.style.background = 'rgba(150, 0, 0, 0.8)';
+            }
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Erweiterte Preset-Farben Event-Listener (alle Kategorien)
+        function initPresetColors() {
+            document.querySelectorAll('.preset-color').forEach(preset => {
+                preset.addEventListener('click', function() {
+                    const bgColor = window.getComputedStyle(this).backgroundColor;
+                    const rgbMatch = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+                    
+                    if (rgbMatch) {
+                        const r = parseInt(rgbMatch[1]);
+                        const g = parseInt(rgbMatch[2]);
+                        const b = parseInt(rgbMatch[3]);
+                        
+                        console.log(`🎨 Basic-Farbe geklickt: RGB(${r}, ${g}, ${b})`);
+                        
+                        // ✅ CURRENTCOLOR EXPLIZIT SETZEN UND DEBUGGEN
+                        currentColor = { r, g, b };
+                        console.log('🎨 Preset-Farbe ausgewählt - currentColor gesetzt:', currentColor);
+                        applyColor(r, g, b);
+                        
+                        // ✅ FARBKREIS-VORSCHAU AKTUALISIEREN
+                        updateColorPreview(r, g, b);
+                        
+                        // RGB-Slider aktualisieren falls Popup offen
+                        updateRgbSlidersFromColor(currentColor);
+                        
+                        // RGB-Preview aktualisieren
+                        updateRgbPreview();
+                        
+                        // Farbkreis-Pointer aktualisieren (falls möglich)
+                        updateColorWheelPointer(r, g, b);
+                        
+                        // ✅ RGB POPUP AUTOMATISCH SCHLIESSEN
+                        const rgbPopup = document.getElementById('rgbPopup');
+                        if (rgbPopup && rgbPopup.classList.contains('active')) {
+                            rgbPopup.classList.remove('active');
+                        }
+                        
+                        const colorName = this.title || 'Preset-Farbe';
+                        showNotification(`${colorName} angewendet`, 'success');
+                    }
+                });
+            });
+        }
+        
+        // Funktion zum Aktualisieren der Farbvorschau
+        function updateColorPreview(r, g, b) {
+            const colorPreview = document.getElementById('colorPreview');
+            if (colorPreview) {
+                colorPreview.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+                console.log(`🎨 Farbvorschau aktualisiert: RGB(${r}, ${g}, ${b})`);
+            }
+        }
+        
+        // Funktion zum Aktualisieren des Farbkreis-Pointers (vereinfacht)
+        function updateColorWheelPointer(r, g, b) {
+            // Diese Funktion ist komplex, da RGB → Farbkreis-Position nicht trivial ist
+            // Für jetzt setzen wir den Pointer auf eine geschätzte Position
+            const colorPointer = document.getElementById('colorPointer');
+            if (colorPointer) {
+                // Vereinfachte Positionierung basierend auf Hue
+                const hue = rgbToHue(r, g, b);
+                const angle = (hue * Math.PI) / 180;
+                const radius = 80; // Geschätzter Radius
+                
+                const x = Math.cos(angle) * radius + 100; // 100 = center offset
+                const y = Math.sin(angle) * radius + 100;
+                
+                colorPointer.style.left = x + 'px';
+                colorPointer.style.top = y + 'px';
+                
+                console.log(`🎯 Farbkreis-Pointer aktualisiert: Hue=${hue}°, Position=(${x}, ${y})`);
+            }
+        }
+        
+        // Hilfsfunktion: RGB zu Hue konvertieren
+        function rgbToHue(r, g, b) {
+            r /= 255;
+            g /= 255;
+            b /= 255;
+            
+            const max = Math.max(r, g, b);
+            const min = Math.min(r, g, b);
+            const delta = max - min;
+            
+            if (delta === 0) return 0;
+            
+            let hue;
+            if (max === r) {
+                hue = ((g - b) / delta) % 6;
+            } else if (max === g) {
+                hue = (b - r) / delta + 2;
+            } else {
+                hue = (r - g) / delta + 4;
+            }
+            
+            hue = Math.round(hue * 60);
+            if (hue < 0) hue += 360;
+            
+            return hue;
+        }
+        
+        // Preset-Farben initialisieren
+        initPresetColors();
+
+        // ✅ SICHERES FARBE SPEICHERN SYSTEM MIT XSS-SCHUTZ
+        const saveColorBtn = document.getElementById('saveColorBtn');
+        const savedColorsDiv = document.getElementById('savedColors');
+        
+        // ✅ SICHERE LOCALSTORAGE-DATEN LADEN MIT VALIDIERUNG
+        let savedColorsArray = [];
+        try {
+            const storedData = localStorage.getItem('ledSavedColors');
+            if (storedData) {
+                const parsed = JSON.parse(storedData);
+                // ✅ VALIDIERUNG: Nur sichere Farb-Objekte akzeptieren
+                savedColorsArray = Array.isArray(parsed) ? parsed.filter(color => 
+                    color && 
+                    typeof color.r === 'number' && color.r >= 0 && color.r <= 255 &&
+                    typeof color.g === 'number' && color.g >= 0 && color.g <= 255 &&
+                    typeof color.b === 'number' && color.b >= 0 && color.b <= 255 &&
+                    typeof color.hex === 'string' && /^#[0-9A-F]{6}$/i.test(color.hex)
+                ) : [];
+            }
+        } catch (error) {
+            console.error('❌ Fehler beim Laden gespeicherter Farben:', error);
+            savedColorsArray = [];
+        }
+
+        // Funktion zum Speichern einer Farbe
+        function saveCurrentColor() {
+            console.log('🎨 Speichere Farbe:', currentColor);
+            
+            if (!currentColor || currentColor.r === undefined) {
+                console.error('❌ Keine gültige Farbe zum Speichern');
+                showNotification('Keine Farbe ausgewählt', 'warning');
+                return;
+            }
+
+            const colorData = {
+                r: Math.round(currentColor.r),
+                g: Math.round(currentColor.g),
+                b: Math.round(currentColor.b),
+                hex: '#' + [Math.round(currentColor.r), Math.round(currentColor.g), Math.round(currentColor.b)].map(x => x.toString(16).padStart(2, '0')).join('').toUpperCase(),
+                timestamp: Date.now(),
+                id: 'color_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9)
+            };
+
+            console.log('🎨 Farb-Daten erstellt:', colorData);
+
+            // Prüfen ob Farbe bereits gespeichert
+            const existingColor = savedColorsArray.find(color => 
+                Math.round(color.r) === Math.round(colorData.r) && 
+                Math.round(color.g) === Math.round(colorData.g) && 
+                Math.round(color.b) === Math.round(colorData.b)
+            );
+            
+            if (existingColor) {
+                showNotification('Farbe bereits gespeichert', 'warning');
+                return;
+            }
+
+            // Farbe zum Array hinzufügen
+            savedColorsArray.push(colorData);
+            console.log('✅ Farbe zu Array hinzugefügt. Gesamt:', savedColorsArray.length);
+            
+            // In localStorage speichern
+            try {
+                localStorage.setItem('ledSavedColors', JSON.stringify(savedColorsArray));
+                console.log('✅ Farben in localStorage gespeichert');
+            } catch (error) {
+                console.error('❌ localStorage Fehler:', error);
+                showNotification('Speichern fehlgeschlagen', 'error');
+                return;
+            }
+            
+            // Anzeige aktualisieren
+            displaySavedColors();
+            
+            showNotification(`Farbe ${colorData.hex} gespeichert!`, 'success');
+        }
+
+        // Funktion zum Anzeigen aller gespeicherten Farben
+        function displaySavedColors() {
+            if (!savedColorsDiv) return;
+            
+            // Container leeren
+            savedColorsDiv.innerHTML = '';
+            
+            if (savedColorsArray.length === 0) {
+                const emptyMessage = document.createElement('p');
+                emptyMessage.style.cssText = 'color: #ccc; text-align: center; margin: 20px 0;';
+                emptyMessage.textContent = 'Noch keine Farben gespeichert';
+                savedColorsDiv.appendChild(emptyMessage);
+                return;
+            }
+
+            // Für jede gespeicherte Farbe einen Kreis erstellen
+            savedColorsArray.forEach((colorData, index) => {
+                const colorCircle = createColorCircle(colorData, index);
+                savedColorsDiv.appendChild(colorCircle);
+            });
+        }
+
+        // Funktion zum Erstellen eines Farbkreises
+        function createColorCircle(colorData, index) {
+            const colorCircle = document.createElement('div');
+            colorCircle.className = 'saved-color-circle';
+            colorCircle.dataset.colorId = colorData.id;
+            colorCircle.dataset.index = index;
+            
+            colorCircle.style.cssText = `
+                width: 60px;
+                height: 60px;
+                background-color: rgb(${colorData.r}, ${colorData.g}, ${colorData.b});
+                border-radius: 50%;
+                position: relative;
+                display: inline-block;
+                margin: 8px;
+                border: 3px solid rgba(255,255,255,0.8);
+                cursor: pointer;
+                position: relative;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 20px rgba(${colorData.r}, ${colorData.g}, ${colorData.b}, 0.4);
+                transition: all 0.3s ease;
+                vertical-align: top;
+            `;
+            
+            // Tooltip mit Farbwerten
+            colorCircle.title = `RGB(${colorData.r}, ${colorData.g}, ${colorData.b})\nHEX: ${colorData.hex}`;
+            
+            // Hover-Effekte
+            colorCircle.addEventListener('mouseenter', () => {
+                colorCircle.style.transform = 'scale(1.15)';
+                colorCircle.style.boxShadow = `0 6px 20px rgba(0,0,0,0.4), 0 0 30px rgba(${colorData.r}, ${colorData.g}, ${colorData.b}, 0.6)`;
+            });
+            
+            colorCircle.addEventListener('mouseleave', () => {
+                colorCircle.style.transform = 'scale(1)';
+                colorCircle.style.boxShadow = `0 4px 12px rgba(0,0,0,0.3), 0 0 20px rgba(${colorData.r}, ${colorData.g}, ${colorData.b}, 0.4)`;
+            });
+            
+            // ✅ KLICK: GESPEICHERTE FARBE ANWENDEN
+            colorCircle.addEventListener('click', (e) => {
+                if (!e.target.classList.contains('delete-btn')) {
+                    currentColor = { r: colorData.r, g: colorData.g, b: colorData.b };
+                    console.log('🎨 Gespeicherte Farbe ausgewählt - currentColor gesetzt:', currentColor);
+                    applyColor(colorData.r, colorData.g, colorData.b);
+                    updateRgbPreview();
+                    
+                    // ✅ AUCH RGB-SLIDER AKTUALISIEREN
+                    updateRgbSlidersFromColor(currentColor);
+                    
+                    showNotification(`Farbe ${colorData.hex} angewendet`, 'success');
+                }
+            });
+            
+            // Lösch-Button (X) erstellen
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.innerHTML = '×';
+            deleteBtn.style.cssText = `
+                position: absolute;
+                top: -10px;
+                right: -10px;
+                background: #ff4757;
+                color: white;
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                border: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                font-weight: bold;
+                font-size: 16px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+                transition: all 0.2s ease;
+                z-index: 10;
+            `;
+            
+            // Hover-Effekt für Lösch-Button
+            deleteBtn.addEventListener('mouseenter', () => {
+                deleteBtn.style.background = '#ff3742';
+                deleteBtn.style.transform = 'scale(1.1)';
+            });
+            
+            deleteBtn.addEventListener('mouseleave', () => {
+                deleteBtn.style.background = '#ff4757';
+                deleteBtn.style.transform = 'scale(1)';
+            });
+            
+            // Lösch-Funktion
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                deleteColor(colorData.id, index);
+            });
+            
+            colorCircle.appendChild(deleteBtn);
+            return colorCircle;
+        }
+
+        // Funktion zum Löschen einer Farbe
+        function deleteColor(colorId, index) {
+            console.log('🗑️ Lösche Farbe:', colorId, 'Index:', index);
+            
+            // Bestätigung anzeigen
+            const confirmDelete = confirm('Möchten Sie diese Farbe wirklich löschen?');
+            if (!confirmDelete) return;
+            
+            // Aus Array entfernen
+            const originalLength = savedColorsArray.length;
+            savedColorsArray = savedColorsArray.filter(color => color.id !== colorId);
+            
+            console.log(`🗑️ Farben reduziert von ${originalLength} auf ${savedColorsArray.length}`);
+            
+            // localStorage aktualisieren
+            try {
+                localStorage.setItem('ledSavedColors', JSON.stringify(savedColorsArray));
+                console.log('✅ localStorage nach Löschung aktualisiert');
+            } catch (error) {
+                console.error('❌ localStorage Update Fehler:', error);
+                showNotification('Löschen fehlgeschlagen', 'error');
+                return;
+            }
+            
+            // Anzeige aktualisieren
+            displaySavedColors();
+            
+            showNotification('Farbe erfolgreich gelöscht', 'success');
+        }
+        
+        // Funktion zum Löschen aller Farben
+        async function clearAllColors() {
+            if (savedColorsArray.length === 0) {
+                showNotification('Keine Farben zum Löschen vorhanden', 'info');
+                return;
+            }
+            
+            const confirmClear = confirm(`Möchten Sie wirklich alle ${savedColorsArray.length} gespeicherten Farben löschen?`);
+            if (!confirmClear) return;
+            
+            console.log('🗑️ Lösche alle Farben...');
+            
+            // Array leeren
+            savedColorsArray = [];
+            
+            // localStorage leeren
+            try {
+                localStorage.setItem('ledSavedColors', JSON.stringify(savedColorsArray));
+                console.log('✅ Alle Farben aus localStorage entfernt');
+            } catch (error) {
+                console.error('❌ localStorage Clear Fehler:', error);
+                showNotification('Löschen fehlgeschlagen', 'error');
+                return;
+            }
+            
+            // Anzeige aktualisieren
+            displaySavedColors();
+            
+            showNotification('Alle Farben erfolgreich gelöscht', 'success');
+        }
+
+        // Moderne Bestätigungsdialog-Funktion
+        function showModernConfirmDialog(title, message, confirmText, cancelText) {
+            return new Promise((resolve) => {
+                // Overlay erstellen
+                const overlay = document.createElement('div');
+                overlay.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.7);
+                    backdrop-filter: blur(5px);
+                    z-index: 10000;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                `;
+                
+                // Dialog erstellen
+                const dialog = document.createElement('div');
+                dialog.style.cssText = `
+                    background: rgba(30, 30, 30, 0.95);
+                    border-radius: 20px;
+                    padding: 30px;
+                    max-width: 400px;
+                    width: 90%;
+                    text-align: center;
+                    border: 2px solid rgba(255, 255, 255, 0.2);
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+                    backdrop-filter: blur(20px);
+                    transform: scale(0.8);
+                    transition: transform 0.3s ease;
+                `;
+                
+                // Titel
+                const titleEl = document.createElement('h3');
+                titleEl.textContent = title;
+                titleEl.style.cssText = `
+                    color: #fff;
+                    margin: 0 0 15px 0;
+                    font-size: 1.4rem;
+                    font-weight: bold;
+                `;
+                
+                // Nachricht
+                const messageEl = document.createElement('p');
+                messageEl.textContent = message;
+                messageEl.style.cssText = `
+                    color: #ccc;
+                    margin: 0 0 25px 0;
+                    line-height: 1.5;
+                    font-size: 1rem;
+                `;
+                
+                // Button-Container
+                const buttonContainer = document.createElement('div');
+                buttonContainer.style.cssText = `
+                    display: flex;
+                    gap: 15px;
+                    justify-content: center;
+                `;
+                
+                // Abbrechen-Button
+                const cancelBtn = document.createElement('button');
+                cancelBtn.textContent = cancelText;
+                cancelBtn.style.cssText = `
+                    background: rgba(255, 255, 255, 0.1);
+                    color: #fff;
+                    border: 2px solid rgba(255, 255, 255, 0.3);
+                    padding: 12px 24px;
+                    border-radius: 25px;
+                    cursor: pointer;
+                    font-size: 1rem;
+                    font-weight: bold;
+                    transition: all 0.3s ease;
+                    min-width: 100px;
+                `;
+                
+                // Bestätigen-Button
+                const confirmBtn = document.createElement('button');
+                confirmBtn.textContent = confirmText;
+                confirmBtn.style.cssText = `
+                    background: #ff4757;
+                    color: white;
+                    border: 2px solid #ff4757;
+                    padding: 12px 24px;
+                    border-radius: 25px;
+                    cursor: pointer;
+                    font-size: 1rem;
+                    font-weight: bold;
+                    transition: all 0.3s ease;
+                    min-width: 100px;
+                `;
+                
+                // Hover-Effekte
+                cancelBtn.addEventListener('mouseenter', () => {
+                    cancelBtn.style.background = 'rgba(255, 255, 255, 0.2)';
+                    cancelBtn.style.transform = 'translateY(-2px)';
+                });
+                
+                cancelBtn.addEventListener('mouseleave', () => {
+                    cancelBtn.style.background = 'rgba(255, 255, 255, 0.1)';
+                    cancelBtn.style.transform = 'translateY(0)';
+                });
+                
+                confirmBtn.addEventListener('mouseenter', () => {
+                    confirmBtn.style.background = '#ff3742';
+                    confirmBtn.style.transform = 'translateY(-2px)';
+                });
+                
+                confirmBtn.addEventListener('mouseleave', () => {
+                    confirmBtn.style.background = '#ff4757';
+                    confirmBtn.style.transform = 'translateY(0)';
+                });
+                
+                // Event-Listener
+                cancelBtn.addEventListener('click', () => {
+                    closeDialog(false);
+                });
+                
+                confirmBtn.addEventListener('click', () => {
+                    closeDialog(true);
+                });
+                
+                // ESC-Taste
+                const handleKeydown = (e) => {
+                    if (e.key === 'Escape') {
+                        closeDialog(false);
+                    }
+                };
+                
+                document.addEventListener('keydown', handleKeydown);
+                
+                // Overlay-Klick
+                overlay.addEventListener('click', (e) => {
+                    if (e.target === overlay) {
+                        closeDialog(false);
+                    }
+                });
+                
+                function closeDialog(result) {
+                    document.removeEventListener('keydown', handleKeydown);
+                    overlay.style.opacity = '0';
+                    dialog.style.transform = 'scale(0.8)';
+                    
+                    setTimeout(() => {
+                        if (overlay.parentNode) {
+                            overlay.parentNode.removeChild(overlay);
+                        }
+                        resolve(result);
+                    }, 300);
+                }
+                
+                // Dialog zusammenbauen
+                buttonContainer.appendChild(cancelBtn);
+                buttonContainer.appendChild(confirmBtn);
+                
+                dialog.appendChild(titleEl);
+                dialog.appendChild(messageEl);
+                dialog.appendChild(buttonContainer);
+                
+                overlay.appendChild(dialog);
+                document.body.appendChild(overlay);
+                
+                // Animation starten
+                setTimeout(() => {
+                    overlay.style.opacity = '1';
+                    dialog.style.transform = 'scale(1)';
+                }, 10);
+                
+                // Focus auf Bestätigen-Button
+                setTimeout(() => {
+                    confirmBtn.focus();
+                }, 100);
+            });
+        }
+
+        // ✅ KONSOLIDIERTE INITIALISIERUNG - ALLE EVENT-LISTENER IN EINEM BLOCK
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🎨 Farbe.html wird initialisiert...');
+            
+            // Basic-Farben initialisieren
+            initPresetColors();
+            
+            // BLE initialisieren
+            initBLE();
+            
+            // Initial currentColor setzen falls noch nicht definiert
+            if (!currentColor || currentColor.r === undefined) {
+                currentColor = { r: 255, g: 0, b: 0 };
+                console.log('🎨 Initial currentColor gesetzt:', currentColor);
+            }
+            
+            // RGB-Preview mit currentColor initialisieren
+            updateRgbSlidersFromColor(currentColor);
+            updateRgbPreview();
+            
+            // Gespeicherte Farben laden und anzeigen
+            displaySavedColors();
+            
+            // Color Preview initialisieren
+            const colorPreview = document.getElementById('colorPreview');
+            if (colorPreview) {
+                colorPreview.style.backgroundColor = `rgb(${currentColor.r}, ${currentColor.g}, ${currentColor.b})`;
+            }
+            
+            // ✅ EVENT-LISTENER FÜR SPEICHERN-BUTTON
+            const saveColorBtn = document.getElementById('saveColorBtn');
+            if (saveColorBtn) {
+                saveColorBtn.addEventListener('click', () => {
+                    console.log('🎨 Speichern-Button geklickt, currentColor:', currentColor);
+                    saveCurrentColor();
+                });
+                console.log('✅ Speichern-Button Event-Listener hinzugefügt');
+            } else {
+                console.error('❌ saveColorBtn nicht gefunden!');
+            }
+            
+            // ✅ EVENT-LISTENER FÜR "ALLE LÖSCHEN" BUTTON
+            const clearAllBtn = document.getElementById('clearAllColorsBtn');
+            if (clearAllBtn) {
+                clearAllBtn.addEventListener('click', async () => {
+                    await clearAllColors();
+                });
+                console.log('✅ Alle-Löschen-Button Event-Listener hinzugefügt');
+            }
+            
+            // ✅ EVENT-LISTENER FÜR POWER TOGGLE
+            const powerToggle = document.getElementById('powerToggle');
+            if (powerToggle) {
+                powerToggle.addEventListener('change', async function() {
+                    const isOn = this.checked;
+                    
+                    // ✅ VERWENDE GLOBALE toggleLEDPower FUNKTION!
+                    try {
+                        let success = false;
+                        
+                        if (window.parent && window.parent.toggleLEDPower) {
+                            success = await window.parent.toggleLEDPower(isOn);
+                        } else if (window.toggleLEDPower) {
+                            success = await window.toggleLEDPower(isOn);
+                        }
+                        
+                        if (success) {
+                            console.log(`🔌 LED ${isOn ? 'EIN' : 'AUS'}geschaltet`);
+                            showNotification(`LED ${isOn ? 'eingeschaltet' : 'ausgeschaltet'}`, 'success');
+                        } else {
+                            showNotification('Keine Bluetooth-Verbindung! Bitte in Einstellungen verbinden.', 'warning');
+                            this.checked = !isOn; // Toggle zurücksetzen
+                        }
+                    } catch (error) {
+                        console.error('❌ Power-Toggle Fehler:', error);
+                        showNotification('Fehler beim Schalten der LED', 'error');
+                        this.checked = !isOn;
+                    }
+                });
+                console.log('✅ Power-Toggle Event-Listener hinzugefügt');
+            }
+            
+            // ✅ LÖSCH-FUNKTION FÜR EINZELNE FARBEN
+            window.deleteSavedColor = function(index) {
+                if (confirm('Diese Farbe wirklich löschen?')) {
+                    savedColorsArray.splice(index, 1);
+                    localStorage.setItem('ledSavedColors', JSON.stringify(savedColorsArray));
+                    renderSavedColors();
+                    showNotification('Farbe gelöscht!', 'info');
+                }
+            };
+
+            console.log('🎨 Farbe.html Initialisierung abgeschlossen!');
+        });
+    </script>
+
+</body>
+</html>

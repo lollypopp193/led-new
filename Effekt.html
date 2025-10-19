@@ -1,0 +1,1833 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EffektWorld</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap">
+  <style>
+    :root {
+      --font-primary: 'Orbitron', sans-serif;
+      --font-secondary: 'Orbitron', sans-serif;
+      --bg-primary: linear-gradient(135deg, #0a0a0a, #1a1a2e, #16213e);
+      --text-primary: #ffffff;
+      --primary-gradient: linear-gradient(135deg, #00dbde, #fc00ff);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-secondary);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 1rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .app-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .app-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      margin: 0;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      display: inline-block;
+      text-shadow: 0 0 20px rgba(0, 219, 222, 0.3);
+      position: relative;
+      letter-spacing: 0.1em;
+    }
+    h1 i {
+      margin-right: 15px;
+    }
+    .global-controls {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+      max-width: 800px;
+      margin: 1.5rem auto 0;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, rgba(0, 219, 222, 0.1), rgba(252, 0, 255, 0.1));
+      border-radius: 1.5rem;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(102, 250, 255, 0.2);
+    }
+    .speed-control {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1.5rem;
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .speed-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .speed-label {
+      font-size: 1.1rem;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+    }
+
+    .speed-value {
+      font-size: 1.2rem;
+      color: #00dbde;
+      font-weight: bold;
+      background: rgba(0, 219, 222, 0.1);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 219, 222, 0.3);
+    }
+
+    .speed-slider-container {
+      width: 100%;
+      padding: 0.5rem 0;
+    }
+
+    .global-slider {
+      width: 100%;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none; /* Standard-Eigenschaft für Kompatibilität */
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .global-slider:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scaleY(1.1);
+    }
+
+    .global-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 24px;
+      height: 24px;
+      background: var(--primary-gradient);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(0, 219, 222, 0.5);
+      transition: all 0.3s ease;
+    }
+
+    .global-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 20px rgba(0, 219, 222, 0.8);
+    }
+
+    .global-slider::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      background: var(--primary-gradient);
+      border-radius: 50%;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 0 15px rgba(0, 219, 222, 0.5);
+    }
+
+    .save-reset {
+      display: flex;
+      gap: 1rem;
+    }
+    .control-btn {
+      background: linear-gradient(135deg, #00dbde, #fc00ff);
+      border: none;
+      color: white;
+      padding: 0.7rem 1.5rem;
+      border-radius: 50px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+    .control-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(252, 0, 255, 0.4);
+    }
+    .control-btn:active {
+      transform: translateY(1px);
+    }
+    .grid-container {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+    .section-title {
+      font-size: 1.7rem;
+      margin: 1.5rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid rgba(102, 250, 255, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      color: #66faff;
+      text-shadow: 0 0 10px rgba(102, 250, 255, 0.3);
+    }
+    .section-title i {
+      color: #ffd700;
+    }
+    .grid-effekte {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 2rem;
+    }
+    .effekt-tile {
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      text-align: center;
+      position: relative;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      border: 2px solid transparent;
+    }
+    .effekt-tile:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(102, 250, 255, 0.3);
+    }
+    .effekt-tile.active {
+      background: rgba(102, 250, 255, 0.12);
+      border: 2px solid #66faff;
+      box-shadow: 0 0 30px rgba(102, 250, 255, 0.4);
+    }
+    .effekt-tile.active::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #00dbde, #fc00ff);
+    }
+    .active-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: linear-gradient(135deg, #00dbde, #fc00ff);
+      color: #1a1a2e;
+      font-size: 0.75rem;
+      font-weight: bold;
+      padding: 0.4rem 0.8rem;
+      border-radius: 50px;
+      z-index: 2;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    }
+    .effekt-image {
+      width: 100%;
+      height: 160px;
+      border-radius: 0.8rem;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Effekt-Animationen */
+    .effect-animation {
+      width: 100%;
+      height: 100%;
+      border-radius: 0.8rem;
+      position: relative;
+    }
+
+    /* Welle Effekt */
+    .effect-welle {
+      background: linear-gradient(90deg, #001a33, #0066cc, #33aaff, #0066cc, #001a33);
+      background-size: 200% 100%;
+      animation: wave-flow 2s ease-in-out infinite;
+    }
+
+    /* Regenbogen Effekt */
+    .effect-regenbogen {
+      background: linear-gradient(90deg, 
+        #ff0000 0%, #ff8000 14%, #ffff00 28%, 
+        #80ff00 42%, #00ff00 56%, #00ff80 70%, 
+        #0080ff 84%, #0000ff 100%);
+      background-size: 300% 100%;
+      animation: rainbow-flow 3s linear infinite;
+    }
+
+    /* Feuer Effekt */
+    .effect-feuer {
+      background: radial-gradient(ellipse at bottom, #ff6600 0%, #ff3300 30%, #cc1100 60%, #660000 100%);
+      animation: fire-flicker 0.8s ease-in-out infinite alternate;
+    }
+    .effect-feuer::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 80%, rgba(255, 200, 0, 0.8) 0%, transparent 50%);
+      animation: fire-spark 1.2s ease-in-out infinite;
+    }
+
+    /* Blitz Effekt */
+    .effect-blitz {
+      background: #000033;
+      animation: lightning-flash 2s infinite;
+    }
+    .effect-blitz::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent 40%, #ffffff 45%, #ccccff 50%, #ffffff 55%, transparent 60%);
+      opacity: 0;
+      animation: lightning-bolt 2s infinite;
+    }
+
+    /* Pulsieren Effekt */
+    .effect-pulsieren {
+      background: radial-gradient(circle, #ff0080, #8000ff, #0020aa);
+      animation: pulse-glow 1.5s ease-in-out infinite;
+    }
+
+    /* Atmen Effekt */
+    .effect-atmen {
+      background: radial-gradient(circle, #00aaff, #0066cc, #003366);
+      animation: breathe-effect 3s ease-in-out infinite;
+    }
+
+    /* Lauflicht Effekt */
+    .effect-lauflicht {
+      background: #001122;
+      position: relative;
+    }
+    .effect-lauflicht::before {
+      content: '';
+      position: absolute;
+      width: 20%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, #00ff00, transparent);
+      animation: chase-light 2s linear infinite;
+    }
+
+    /* Stroboskop Effekt */
+    .effect-stroboskop {
+      background: #ffffff;
+      animation: strobe-flash 0.3s linear infinite;
+    }
+
+    /* Farbverlauf Effekt */
+    .effect-farbverlauf {
+      background: linear-gradient(45deg, #ff0080, #8000ff, #0080ff, #00ff80);
+      background-size: 400% 400%;
+      animation: gradient-shift 4s ease infinite;
+    }
+
+    /* Zufallsfarben Effekt */
+    .effect-zufallsfarben {
+      background: #ff0000;
+      animation: random-colors 1s infinite;
+    }
+
+    /* Disco Effekt */
+    .effect-disco {
+      background: #000000;
+      position: relative;
+    }
+    .effect-disco::before,
+    .effect-disco::after {
+      content: '';
+      position: absolute;
+      width: 25%;
+      height: 25%;
+      border-radius: 50%;
+      animation: disco-lights 0.5s infinite;
+    }
+    .effect-disco::before {
+      top: 25%;
+      left: 20%;
+      background: #ff0080;
+    }
+    .effect-disco::after {
+      bottom: 25%;
+      right: 20%;
+      background: #00ff80;
+      animation-delay: 0.25s;
+    }
+
+    /* Polizei Effekt */
+    .effect-polizei {
+      background: linear-gradient(90deg, #ff0000 50%, #0000ff 50%);
+      animation: police-flash 0.8s infinite;
+    }
+
+    /* Meteorregen Effekt */
+    .effect-meteorregen {
+      background: #000033;
+      position: relative;
+    }
+    .effect-meteorregen::before,
+    .effect-meteorregen::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      height: 30px;
+      background: linear-gradient(180deg, #ffffff, transparent);
+      animation: meteor-fall 2s linear infinite;
+    }
+    .effect-meteorregen::before {
+      left: 30%;
+      animation-delay: 0s;
+    }
+    .effect-meteorregen::after {
+      left: 70%;
+      animation-delay: 1s;
+    }
+
+    /* Matrix Effekt */
+    .effect-matrix {
+      background: #000000;
+      position: relative;
+    }
+    .effect-matrix::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 8px,
+        #00ff00 8px,
+        #00ff00 10px
+      );
+      animation: matrix-code 1.5s linear infinite;
+    }
+
+    /* Kristall Effekt */
+    .effect-kristall {
+      background: radial-gradient(circle at center, #ffffff 0%, #ccffff 30%, #66ccff 60%, #003366 100%);
+      animation: crystal-sparkle 2s ease-in-out infinite;
+    }
+    .effect-kristall::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.8) 0%, transparent 20%),
+                  radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.8) 0%, transparent 20%);
+      animation: sparkle-twinkle 1.5s ease-in-out infinite alternate;
+    }
+
+    /* Nordlicht Effekt */
+    .effect-nordlicht {
+      background: linear-gradient(135deg, #004466 0%, #0088cc 50%, #00aaff 100%);
+      background-size: 300% 300%;
+      animation: aurora-flow 5s ease-in-out infinite;
+    }
+    .effect-nordlicht::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent 30%, rgba(0, 255, 136, 0.6) 50%, transparent 70%);
+      animation: aurora-wave 3s ease-in-out infinite;
+    }
+
+    /* Lava Effekt */
+    .effect-lava {
+      background: radial-gradient(ellipse at bottom, #ff4400 0%, #cc2200 50%, #660000 100%);
+      animation: lava-bubble 2s ease-in-out infinite;
+    }
+    .effect-lava::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 40% 60%, rgba(255, 136, 0, 0.8) 0%, transparent 40%);
+      animation: lava-flow 3s ease-in-out infinite;
+    }
+
+    /* Unterwasser Effekt */
+    .effect-unterwasser {
+      background: linear-gradient(180deg, #004488 0%, #0066cc 50%, #0088ff 100%);
+      animation: water-flow 3s ease-in-out infinite;
+    }
+    .effect-unterwasser::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 15px,
+        rgba(255, 255, 255, 0.1) 15px,
+        rgba(255, 255, 255, 0.1) 30px
+      );
+      animation: water-ripple 2s ease-in-out infinite;
+    }
+
+    /* Glitzer Effekt */
+    .effect-glitzer {
+      background: #000066;
+      position: relative;
+    }
+    .effect-glitzer::before,
+    .effect-glitzer::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #ffffff;
+      border-radius: 50%;
+      animation: sparkle-twinkle 1s ease-in-out infinite;
+    }
+    .effect-glitzer::before {
+      top: 30%;
+      left: 25%;
+      animation-delay: 0s;
+    }
+    .effect-glitzer::after {
+      bottom: 30%;
+      right: 25%;
+      animation-delay: 0.5s;
+    }
+
+    /* Weitere Effekte */
+    .effect-herzschlag {
+      background: radial-gradient(circle, #ff2244, #cc0022, #660011);
+      animation: heartbeat 1.2s ease-in-out infinite;
+    }
+
+    .effect-spirale {
+      background: conic-gradient(from 0deg, #ff0080, #8000ff, #0080ff, #00ff80, #ff0080);
+      animation: spiral-rotate 3s linear infinite;
+    }
+
+    .effect-plasma {
+      background: radial-gradient(ellipse at center, #ff00ff 0%, #00ffff 30%, #ffff00 60%, #ff00ff 100%);
+      background-size: 200% 200%;
+      animation: plasma-flow 2s ease-in-out infinite;
+    }
+
+    .effect-konfetti {
+      background: #000000;
+      position: relative;
+    }
+    .effect-konfetti::before {
+      content: '🎉';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem;
+      animation: confetti-fall 2s linear infinite;
+    }
+
+    /* Keyframes für Animationen */
+    @keyframes wave-flow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    @keyframes rainbow-flow {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    @keyframes fire-flicker {
+      0%, 100% { transform: scale(1) translateY(0); opacity: 1; }
+      25% { transform: scale(1.05) translateY(-2px); opacity: 0.9; }
+      50% { transform: scale(0.95) translateY(1px); opacity: 0.8; }
+      75% { transform: scale(1.02) translateY(-1px); opacity: 0.95; }
+    }
+
+    @keyframes fire-spark {
+      0%, 100% { opacity: 0; transform: translateY(0) scale(1); }
+      50% { opacity: 1; transform: translateY(-10px) scale(1.2); }
+    }
+
+    @keyframes lightning-flash {
+      0%, 90%, 100% { background-color: #000033; }
+      5%, 10% { background-color: #ffffff; }
+    }
+
+    @keyframes lightning-bolt {
+      0%, 90%, 100% { opacity: 0; }
+      5%, 10% { opacity: 1; }
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { transform: scale(0.9); opacity: 0.7; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+
+    @keyframes breathe-effect {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.05); opacity: 1; }
+    }
+
+    @keyframes chase-light {
+      0% { left: -20%; }
+      100% { left: 100%; }
+    }
+
+    @keyframes strobe-flash {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0.1; }
+    }
+
+    @keyframes gradient-shift {
+      0%, 100% { background-position: 0% 50%; }
+      25% { background-position: 100% 50%; }
+      50% { background-position: 100% 100%; }
+      75% { background-position: 0% 100%; }
+    }
+
+    @keyframes random-colors {
+      0% { background-color: #ff0000; }
+      16% { background-color: #ff8000; }
+      32% { background-color: #ffff00; }
+      48% { background-color: #00ff00; }
+      64% { background-color: #0080ff; }
+      80% { background-color: #8000ff; }
+      100% { background-color: #ff0080; }
+    }
+
+    @keyframes disco-lights {
+      0%, 50% { opacity: 1; transform: scale(1); }
+      25% { opacity: 0.3; transform: scale(1.2); }
+      75% { opacity: 0.8; transform: scale(0.8); }
+    }
+
+    @keyframes police-flash {
+      0%, 50% { background: linear-gradient(90deg, #ff0000 50%, #000066 50%); }
+      51%, 100% { background: linear-gradient(90deg, #000066 50%, #ff0000 50%); }
+    }
+
+    @keyframes meteor-fall {
+      0% { top: -30px; opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+
+    @keyframes matrix-code {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+
+    @keyframes crystal-sparkle {
+      0%, 100% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(180deg) scale(1.1); }
+    }
+
+    @keyframes sparkle-twinkle {
+      0%, 100% { opacity: 0.3; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    @keyframes aurora-flow {
+      0%, 100% { background-position: 0% 0%; }
+      50% { background-position: 100% 100%; }
+    }
+
+    @keyframes aurora-wave {
+      0%, 100% { transform: translateX(0) scaleX(1); }
+      50% { transform: translateX(20px) scaleX(1.1); }
+    }
+
+    @keyframes lava-bubble {
+      0%, 100% { transform: scale(1) translateY(0); }
+      50% { transform: scale(1.1) translateY(-5px); }
+    }
+
+    @keyframes lava-flow {
+      0%, 100% { opacity: 0.8; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(-10px); }
+    }
+
+    @keyframes water-flow {
+      0%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(1.1); }
+    }
+
+    @keyframes water-ripple {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(10px); }
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      15% { transform: scale(1.3); }
+      30% { transform: scale(1); }
+      45% { transform: scale(1.2); }
+      60% { transform: scale(1); }
+    }
+
+    @keyframes spiral-rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes plasma-flow {
+      0%, 100% { background-position: 0% 0%; }
+      50% { background-position: 100% 100%; }
+    }
+
+    @keyframes confetti-fall {
+      0% { top: -10px; transform: translateX(-50%) rotate(0deg); }
+      100% { top: 120%; transform: translateX(-50%) rotate(360deg); }
+    }
+    
+    .effekt-name {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 1.2rem;
+      flex-grow: 1;
+    }
+    .favorit-button {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 1.6rem;
+      cursor: pointer;
+      color: #bbb;
+      transition: all 0.3s ease;
+      z-index: 2;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    .favorit-button.favorit {
+      color: gold;
+      text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+    }
+    .favorit-button:hover {
+      transform: scale(1.2);
+    }
+    .favorit-badge {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: linear-gradient(135deg, #ffd700, #ffa500);
+      color: #1a1a2e;
+      font-size: 0.7rem;
+      font-weight: bold;
+      padding: 0.3rem 0.8rem;
+      border-radius: 0 0 1rem 0;
+      z-index: 2;
+    }
+    /* Notification System */
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 0.8rem;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      z-index: 1000;
+      transform: translateX(200%);
+      transition: transform 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      border-left: 4px solid #66faff;
+    }
+    .notification.active {
+      transform: translateX(0);
+    }
+    .notification i {
+      font-size: 1.5rem;
+      color: #66faff;
+    }
+    @media (max-width: 1100px) {
+      .grid-effekte {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      }
+    }
+    /* ===== ANIMIERTE EFFEKT-VORSCHAUEN ===== */
+    
+    /* Sinus-Effekt Animation */
+    .effekt-preview.sinus {
+      background: linear-gradient(90deg, 
+        #ff0080 0%, #ff4080 25%, #ff8080 50%, #ff4080 75%, #ff0080 100%);
+      animation: sinusWave 2s ease-in-out infinite;
+    }
+    @keyframes sinusWave {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* Fade-Effekt Animation */
+    .effekt-preview.fade {
+      background: linear-gradient(45deg, #00dbde, #fc00ff);
+      animation: fadeEffect 3s ease-in-out infinite;
+    }
+    @keyframes fadeEffect {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    /* Scanner-Effekt Animation */
+    .effekt-preview.scanner {
+      background: linear-gradient(90deg, 
+        transparent 0%, transparent 40%, #00ff00 50%, transparent 60%, transparent 100%);
+      background-size: 200% 100%;
+      animation: scannerMove 2s linear infinite;
+    }
+    @keyframes scannerMove {
+      0% { background-position: -100% 0; }
+      100% { background-position: 100% 0; }
+    }
+
+    /* Twinkle-Effekt Animation */
+    .effekt-preview.twinkle {
+      background: #1a1a2e;
+      position: relative;
+      overflow: hidden;
+    }
+    .effekt-preview.twinkle::before,
+    .effekt-preview.twinkle::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #fff;
+      border-radius: 50%;
+      animation: twinkleStars 2s ease-in-out infinite;
+    }
+    .effekt-preview.twinkle::before {
+      top: 20%;
+      left: 30%;
+      animation-delay: 0s;
+    }
+    .effekt-preview.twinkle::after {
+      top: 60%;
+      right: 25%;
+      animation-delay: 1s;
+    }
+    @keyframes twinkleStars {
+      0%, 100% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1.5); }
+    }
+
+    /* Kometen-Effekt Animation */
+    .effekt-preview.kometen {
+      background: radial-gradient(circle at 0% 0%, #00ff88 0%, transparent 50%);
+      background-size: 50% 50%;
+      animation: cometTrail 3s linear infinite;
+    }
+    @keyframes cometTrail {
+      0% { background-position: -50% -50%; }
+      100% { background-position: 150% 150%; }
+    }
+
+    /* Feuerzauber-Effekt Animation */
+    .effekt-preview.feuerzauber {
+      background: linear-gradient(0deg, #ff4500 0%, #ff6500 30%, #ff8500 60%, #ffaa00 100%);
+      animation: fireFlicker 1.5s ease-in-out infinite alternate;
+    }
+    @keyframes fireFlicker {
+      0% { filter: brightness(0.8) hue-rotate(0deg); }
+      100% { filter: brightness(1.2) hue-rotate(10deg); }
+    }
+
+    /* Neonröhre-Effekt Animation */
+    .effekt-preview.neonroehre {
+      background: #00ffff;
+      animation: neonFlicker 0.8s ease-in-out infinite;
+      box-shadow: 0 0 20px #00ffff;
+    }
+    @keyframes neonFlicker {
+      0%, 100% { opacity: 1; }
+      10% { opacity: 0.8; }
+      20% { opacity: 1; }
+      30% { opacity: 0.9; }
+      40% { opacity: 1; }
+      90% { opacity: 0.7; }
+    }
+
+    /* Lasershow-Effekt Animation */
+    .effekt-preview.lasershow {
+      background: linear-gradient(45deg, 
+        transparent 0%, #ff0000 20%, transparent 40%, 
+        #00ff00 60%, transparent 80%, #0000ff 100%);
+      background-size: 200% 200%;
+      animation: laserBeams 1s linear infinite;
+    }
+    @keyframes laserBeams {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 100% 100%; }
+    }
+
+    /* Borealis-Effekt Animation */
+    .effekt-preview.borealis {
+      background: linear-gradient(45deg, 
+        #00ff88 0%, #0088ff 25%, #8800ff 50%, #ff0088 75%, #00ff88 100%);
+      background-size: 300% 300%;
+      animation: auroraWave 4s ease-in-out infinite;
+    }
+    @keyframes auroraWave {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* ✅ FEHLENDE ANIMATIONEN HINZUGEFÜGT */
+    
+    /* Sinus-Effekt */
+    .effekt-preview.sinus {
+      background: linear-gradient(90deg, #4ecdc4, #44a3aa, #4ecdc4);
+      background-size: 200% 100%;
+      animation: sinusWave 2s ease-in-out infinite;
+    }
+    @keyframes sinusWave {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* Fade-Effekt */
+    .effekt-preview.fade {
+      background: radial-gradient(circle, #ff6b6b, #4ecdc4);
+      animation: fadeInOut 3s ease-in-out infinite;
+    }
+    @keyframes fadeInOut {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    /* Scanner-Effekt */
+    .effekt-preview.scanner {
+      background: linear-gradient(90deg, 
+        transparent 0%, transparent 40%, 
+        #00ff00 45%, #00ff00 55%, 
+        transparent 60%, transparent 100%);
+      background-size: 200% 100%;
+      animation: scannerMove 1.5s linear infinite;
+    }
+    @keyframes scannerMove {
+      0% { background-position: -100% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    /* Twinkle-Effekt */
+    .effekt-preview.twinkle {
+      background: #1a1a2e;
+      position: relative;
+    }
+    .effekt-preview.twinkle::before,
+    .effekt-preview.twinkle::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #fff;
+      border-radius: 50%;
+      animation: twinkleStars 2s ease-in-out infinite;
+    }
+    .effekt-preview.twinkle::before {
+      top: 20%;
+      left: 30%;
+      animation-delay: 0s;
+    }
+    .effekt-preview.twinkle::after {
+      top: 70%;
+      right: 25%;
+      animation-delay: 1s;
+    }
+    @keyframes twinkleStars {
+      0%, 100% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1.5); }
+    }
+
+    /* Kometen-Effekt */
+    .effekt-preview.kometen {
+      background: linear-gradient(135deg, 
+        transparent 0%, #4ecdc4 20%, #fff 30%, 
+        transparent 40%, transparent 100%);
+      background-size: 300% 300%;
+      animation: cometTrail 2s linear infinite;
+    }
+    @keyframes cometTrail {
+      0% { background-position: -100% -100%; }
+      100% { background-position: 200% 200%; }
+    }
+
+    /* Feuerzauber-Effekt */
+    .effekt-preview.feuerzauber {
+      background: radial-gradient(ellipse at center, 
+        #ff6600 0%, #ff3300 30%, #cc1100 60%, #660000 100%);
+      animation: magicFire 1s ease-in-out infinite alternate;
+    }
+    @keyframes magicFire {
+      0% { transform: scale(0.9); filter: hue-rotate(0deg); }
+      100% { transform: scale(1.1); filter: hue-rotate(30deg); }
+    }
+
+    /* Neonröhre-Effekt */
+    .effekt-preview.neonroehre {
+      background: linear-gradient(90deg, #0ff, #f0f, #0ff);
+      animation: neonFlicker 0.5s ease-in-out infinite;
+    }
+    @keyframes neonFlicker {
+      0%, 100% { opacity: 1; box-shadow: 0 0 20px #0ff; }
+      50% { opacity: 0.7; box-shadow: 0 0 10px #f0f; }
+    }
+
+    /* Lasershow-Effekt */
+    .effekt-preview.lasershow {
+      background: linear-gradient(45deg, 
+        #ff0000 0%, #00ff00 25%, #0000ff 50%, 
+        #ffff00 75%, #ff0000 100%);
+      background-size: 400% 400%;
+      animation: laserBeams 0.8s linear infinite;
+    }
+    @keyframes laserBeams {
+      0% { background-position: 0% 0%; transform: rotate(0deg); }
+      100% { background-position: 100% 100%; transform: rotate(360deg); }
+    }
+
+    /* ✅ FEHLENDE ANIMATIONEN FÜR ALLE ANDEREN EFFEKTE */
+    
+    /* Blitz-Effekt */
+    .effect-blitz {
+      background: linear-gradient(45deg, #fff, #ffff00, #fff);
+      animation: blitzFlash 0.3s ease-in-out infinite;
+    }
+    @keyframes blitzFlash {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+
+    /* Pulsieren-Effekt */
+    .effect-pulsieren {
+      background: radial-gradient(circle, #ff6b6b, #4ecdc4);
+      animation: pulseEffect 1.5s ease-in-out infinite;
+    }
+    @keyframes pulseEffect {
+      0%, 100% { transform: scale(1); opacity: 0.7; }
+      50% { transform: scale(1.2); opacity: 1; }
+    }
+
+    /* Atmen-Effekt */
+    .effect-atmen {
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      animation: breatheEffect 3s ease-in-out infinite;
+    }
+    @keyframes breatheEffect {
+      0%, 100% { opacity: 0.3; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+
+    /* Lauflicht-Effekt */
+    .effect-lauflicht {
+      background: linear-gradient(90deg, 
+        transparent 0%, #00ff00 10%, transparent 20%, 
+        transparent 80%, #00ff00 90%, transparent 100%);
+      background-size: 300% 100%;
+      animation: runningLight 2s linear infinite;
+    }
+    @keyframes runningLight {
+      0% { background-position: -100% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    /* Stroboskop-Effekt */
+    .effect-stroboskop {
+      background: #fff;
+      animation: strobeEffect 0.2s ease-in-out infinite;
+    }
+    @keyframes strobeEffect {
+      0%, 50% { opacity: 0; }
+      51%, 100% { opacity: 1; }
+    }
+
+    /* Farbverlauf-Effekt */
+    .effect-farbverlauf {
+      background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+      background-size: 400% 400%;
+      animation: gradientShift 4s ease-in-out infinite;
+    }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* Zufallsfarben-Effekt */
+    .effect-zufallsfarben {
+      background: #ff6b6b;
+      animation: randomColors 1s ease-in-out infinite;
+    }
+    @keyframes randomColors {
+      0% { background: #ff6b6b; }
+      25% { background: #4ecdc4; }
+      50% { background: #45b7d1; }
+      75% { background: #96ceb4; }
+      100% { background: #feca57; }
+    }
+
+    /* Disco-Effekt */
+    .effect-disco {
+      background: linear-gradient(45deg, #ff0080, #00ff80, #8000ff, #ff8000);
+      background-size: 200% 200%;
+      animation: discoEffect 0.5s linear infinite;
+    }
+    @keyframes discoEffect {
+      0% { background-position: 0% 0%; filter: hue-rotate(0deg); }
+      100% { background-position: 100% 100%; filter: hue-rotate(360deg); }
+    }
+
+    /* Polizei-Effekt */
+    .effect-polizei {
+      background: linear-gradient(90deg, #0000ff 50%, #ff0000 50%);
+      animation: policeFlash 0.8s ease-in-out infinite;
+    }
+    @keyframes policeFlash {
+      0%, 50% { background-position: 0% 0%; }
+      51%, 100% { background-position: 100% 0%; }
+    }
+
+    /* Meteorregen-Effekt */
+    .effect-meteorregen {
+      background: linear-gradient(135deg, 
+        transparent 0%, #fff 10%, transparent 20%,
+        transparent 40%, #fff 50%, transparent 60%,
+        transparent 80%, #fff 90%, transparent 100%);
+      background-size: 300% 300%;
+      animation: meteorShower 3s linear infinite;
+    }
+    @keyframes meteorShower {
+      0% { background-position: 200% -200%; }
+      100% { background-position: -200% 200%; }
+    }
+
+    /* Matrix-Effekt */
+    .effect-matrix {
+      background: linear-gradient(180deg, 
+        transparent 0%, #00ff00 20%, transparent 40%,
+        transparent 60%, #00ff00 80%, transparent 100%);
+      background-size: 100% 400%;
+      animation: matrixRain 2s linear infinite;
+    }
+    @keyframes matrixRain {
+      0% { background-position: 0% -100%; }
+      100% { background-position: 0% 100%; }
+    }
+
+    /* Kristall-Effekt */
+    .effect-kristall {
+      background: radial-gradient(circle at 30% 30%, #fff, transparent 50%),
+                  radial-gradient(circle at 70% 70%, #4ecdc4, transparent 50%);
+      animation: crystalSparkle 2s ease-in-out infinite;
+    }
+    @keyframes crystalSparkle {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+
+    /* Nordlicht-Effekt */
+    .effect-nordlicht {
+      background: linear-gradient(45deg, #00ff88, #0088ff, #8800ff);
+      background-size: 300% 300%;
+      animation: auroraFlow 5s ease-in-out infinite;
+    }
+    @keyframes auroraFlow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* Lava-Effekt */
+    .effect-lava {
+      background: radial-gradient(ellipse at bottom, #ff4500, #ff6600, #ff8800);
+      animation: lavaFlow 3s ease-in-out infinite;
+    }
+    @keyframes lavaFlow {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      50% { transform: scale(1.1) rotate(5deg); }
+    }
+
+    /* Unterwasser-Effekt */
+    .effect-unterwasser {
+      background: linear-gradient(45deg, #006994, #0099cc, #00ccff);
+      background-size: 200% 200%;
+      animation: underwaterWave 4s ease-in-out infinite;
+    }
+    @keyframes underwaterWave {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* Glitzer-Effekt */
+    .effect-glitzer {
+      background: #1a1a2e;
+      position: relative;
+    }
+    .effect-glitzer::before,
+    .effect-glitzer::after {
+      content: '';
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: #fff;
+      border-radius: 50%;
+      animation: glitterSparkle 1.5s ease-in-out infinite;
+    }
+    .effect-glitzer::before {
+      top: 25%;
+      left: 25%;
+      animation-delay: 0s;
+    }
+    .effect-glitzer::after {
+      top: 75%;
+      right: 25%;
+      animation-delay: 0.7s;
+    }
+    @keyframes glitterSparkle {
+      0%, 100% { opacity: 0; transform: scale(0); }
+      50% { opacity: 1; transform: scale(2); }
+    }
+
+    /* Herzschlag-Effekt */
+    .effect-herzschlag {
+      background: radial-gradient(circle, #ff1744, #ff5722);
+      animation: heartbeat 1.2s ease-in-out infinite;
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      14% { transform: scale(1.3); }
+      28% { transform: scale(1); }
+      42% { transform: scale(1.3); }
+      70% { transform: scale(1); }
+    }
+
+    /* Spirale-Effekt */
+    .effect-spirale {
+      background: conic-gradient(#ff6b6b, #4ecdc4, #45b7d1, #ff6b6b);
+      animation: spiralRotate 3s linear infinite;
+    }
+    @keyframes spiralRotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Plasma-Effekt */
+    .effect-plasma {
+      background: radial-gradient(ellipse at center, #ff00ff, #00ffff, #ffff00);
+      background-size: 200% 200%;
+      animation: plasmaEffect 2s ease-in-out infinite;
+    }
+    @keyframes plasmaEffect {
+      0%, 100% { background-position: 0% 50%; filter: hue-rotate(0deg); }
+      50% { background-position: 100% 50%; filter: hue-rotate(180deg); }
+    }
+
+    /* Konfetti-Effekt */
+    .effect-konfetti {
+      background: linear-gradient(45deg, 
+        #ff6b6b 0%, #4ecdc4 25%, #45b7d1 50%, 
+        #96ceb4 75%, #feca57 100%);
+      background-size: 400% 400%;
+      animation: confettifall 2s ease-in-out infinite;
+    }
+    @keyframes confettifall {
+      0% { background-position: 0% 0%; transform: translateY(-20px); }
+      100% { background-position: 100% 100%; transform: translateY(20px); }
+    }
+
+    /* Default-Effekt für unbekannte Effekte */
+    .effect-default {
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      animation: defaultPulse 2s ease-in-out infinite;
+    }
+    @keyframes defaultPulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      .grid-effekte {
+        grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+        gap: 1.5rem;
+      }
+      h1 {
+        font-size: 2.2rem;
+      }
+      .effekt-image {
+        height: 140px;
+      }
+      .global-controls {
+        flex-direction: column;
+        align-items: center;
+      }
+      .speed-control {
+        max-width: 100%;
+      }
+      .save-reset {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+    @media (max-width: 480px) {
+      .grid-effekte {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1.2rem;
+      }
+      .effekt-tile {
+        padding: 1.2rem;
+      }
+      .effekt-name {
+        font-size: 1.1rem;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      .effekt-image {
+        height: 120px;
+      }
+      .section-title {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <h1 class="app-title">EffektWorld</h1>
+      <div class="global-controls">
+        <div class="speed-control">
+          <div class="speed-header">
+            <span class="speed-label">
+              <i class="fas fa-tachometer-alt"></i>
+              Geschwindigkeit:
+            </span>
+            <span id="speedValue" class="speed-value">5</span>
+          </div>
+          <div class="speed-slider-container">
+            <input type="range" id="globalSpeed" class="global-slider enhanced" min="1" max="10" value="5">
+          </div>
+        </div>
+        <div class="save-reset">
+          <button class="control-btn" id="saveBtn">
+            <i class="fas fa-save"></i> Speichern
+          </button>
+          <button class="control-btn" id="resetBtn">
+            <i class="fas fa-redo"></i> Zurücksetzen
+          </button>
+        </div>
+      </div>
+    </header>
+    <div class="grid-container">
+      <div class="favorites-section">
+        <h2 class="section-title"><i class="fas fa-star"></i> Favoriten</h2>
+        <div class="grid-effekte" id="favoritesGrid">
+          <!-- Favoriten werden dynamisch eingefügt -->
+        </div>
+      </div>
+      <div class="all-effects-section">
+        <h2 class="section-title"><i class="fas fa-th-large"></i> Alle Effekte</h2>
+        <div class="grid-effekte" id="effektGrid">
+          <!-- Alle Effekte werden dynamisch eingefügt -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="notification" id="notification">
+    <i class="fas fa-check-circle"></i>
+    <div class="notification-content">Effekt erfolgreich angewendet!</div>
+  </div>
+  <script>
+    // ✅ BLE-Controller zentral importieren mit Fallbacks
+    function getLEDController() {
+      // Parent Window (wenn iframe)
+      if (window.parent && window.parent.ledController) {
+        return window.parent.ledController;
+      }
+      // Eigenes Window
+      if (window.ledController) {
+        return window.ledController;
+      }
+      // Top-Level Window
+      if (window.top && window.top.ledController) {
+        return window.top.ledController;
+      }
+      return null;
+    }
+
+    // Verbesserte Effekt-Daten mit realistischen Animationen
+    const effekte = [
+      { name: "Welle", description: "Hin- und herbewegende Lichtwelle" },
+      { name: "Regenbogen", description: "Sanfter Farbwechsel durch das Spektrum" },
+      { name: "Feuer", description: "Flackernde Orange- und Rottöne" },
+      { name: "Blitz", description: "Schnelle, helle Lichtblitze" },
+      { name: "Pulsieren", description: "Rhythmisches Ein- und Ausatmen des Lichts" },
+      { name: "Atmen", description: "Sanftes Ein- und Ausfaden" },
+      { name: "Lauflicht", description: "Lichtpunkt wandert entlang des Strips" },
+      { name: "Stroboskop", description: "Schnelle, rhythmische Blitze" },
+      { name: "Farbverlauf", description: "Sanfter Übergang zwischen Farben" },
+      { name: "Zufallsfarben", description: "Dynamische, zufällige Farbwechsel" },
+      { name: "Disco", description: "Schnelle, bunte Lichtwechsel" },
+      { name: "Polizei", description: "Blaue und rote Blitzlichter" },
+      { name: "Meteorregen", description: "Fallende Lichtspuren wie Meteore" },
+      { name: "Matrix", description: "Grüne fallende Lichtlinien" },
+      { name: "Kristall", description: "Funkelnde kristalline Lichteffekte" },
+      { name: "Nordlicht", description: "Sanfte grün-blaue Lichtwellen" },
+      { name: "Lava", description: "Langsam fließende rot-orange Muster" },
+      { name: "Unterwasser", description: "Blaue wellenförmige Bewegungen" },
+      { name: "Glitzer", description: "Zufällig funkelnde Lichtpunkte" },
+      { name: "Herzschlag", description: "Rhythmisches Pulsieren wie ein Herzschlag" },
+      { name: "Spirale", description: "Spiralförmige Lichtbewegung" },
+      { name: "Plasma", description: "Elektrische Plasma-ähnliche Effekte" },
+      { name: "Konfetti", description: "Bunte fallende Konfetti-Partikel" },
+      { name: "Sinus", description: "Mathematische Sinuswellen-Bewegung" },
+      { name: "Fade", description: "Sanftes Ein- und Ausblenden" },
+      { name: "Scanner", description: "Hin- und herwandernder Lichtbalken" },
+      { name: "Twinkle", description: "Sanft twinkelnde Sterne" },
+      { name: "Kometen", description: "Vorbeifliegende Kometen mit Schweif" },
+      { name: "Feuerzauber", description: "Magische Feuereffekte" },
+      { name: "Neonröhre", description: "Flackernde Neonröhren-Simulation" },
+      { name: "Lasershow", description: "Schnelle Laserstrahl-Bewegungen" },
+      { name: "Borealis", description: "Aurora Borealis Simulation" }
+    ];
+
+    // Daten aus localStorage laden mit Fehlerbehandlung
+    let favoriten = {};
+    let globalSpeed = 5;
+    let activeEffect = null;
+    
+    try {
+      favoriten = JSON.parse(localStorage.getItem('favoriten')) || {};
+      globalSpeed = localStorage.getItem('globalSpeed') || 5;
+      activeEffect = localStorage.getItem('activeEffect') || null;
+    } catch (error) {
+      console.error('Fehler beim Laden der Einstellungen:', error);
+    }
+
+    // DOM-Elemente
+    const favoritesGrid = document.getElementById('favoritesGrid');
+    const effektGrid = document.getElementById('effektGrid');
+    const saveBtn = document.getElementById('saveBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const globalSpeedSlider = document.getElementById('globalSpeed');
+    const speedValue = document.getElementById('speedValue');
+    const notification = document.getElementById('notification');
+
+    // Globale Geschwindigkeit einstellen
+    globalSpeedSlider.value = globalSpeed;
+    speedValue.textContent = globalSpeed;
+    globalSpeedSlider.addEventListener('input', async (e) => {
+      globalSpeed = e.target.value;
+      speedValue.textContent = globalSpeed;
+      
+      try {
+        localStorage.setItem('globalSpeed', globalSpeed);
+        // Geschwindigkeit auf alle Animationen anwenden
+        updateAnimationSpeed(globalSpeed);
+        
+        // ✅ SENDE GESCHWINDIGKEIT AN HARDWARE!
+        const controller = getLEDController();
+        if (controller && controller.isConnected) {
+          // Geschwindigkeit als Helligkeit interpretieren (manche Controller)
+          const brightness = Math.round((globalSpeed / 10) * 100); // Speed 1-10 zu Brightness 10-100%
+          const success = await controller.setBrightness(brightness);
+          
+          if (success) {
+            console.log(`✅ Geschwindigkeit ${globalSpeed} an Hardware gesendet (als Helligkeit ${brightness}%)`);
+            showNotification(`Geschwindigkeit ${globalSpeed} gesetzt`, 'success');
+          } else {
+            console.warn('⚠️ Fehler beim Senden der Geschwindigkeit');
+          }
+        } else {
+          console.warn('⚠️ Keine BLE-Verbindung für Geschwindigkeit');
+        }
+      } catch (error) {
+        console.error('Fehler beim Speichern der Geschwindigkeit:', error);
+      }
+    });
+
+    // ✅ FAVORITEN-TOGGLE FUNKTION
+    window.toggleFavorite = function(effectName, event) {
+      event.stopPropagation(); // Verhindere Auswahl des Effekts beim Stern-Klick
+      
+      // Toggle Favorit-Status
+      if (favoriten[effectName]) {
+        delete favoriten[effectName];
+        console.log(`❌ ${effectName} aus Favoriten entfernt`);
+        showNotification(`${effectName} aus Favoriten entfernt`, 'info');
+      } else {
+        favoriten[effectName] = true;
+        console.log(`⭐ ${effectName} zu Favoriten hinzugefügt`);
+        showNotification(`${effectName} zu Favoriten hinzugefügt`, 'success');
+      }
+      
+      // LocalStorage aktualisieren
+      try {
+        localStorage.setItem('favoriten', JSON.stringify(favoriten));
+        console.log('✅ Favoriten in localStorage gespeichert');
+      } catch (error) {
+        console.error('❌ Fehler beim Speichern der Favoriten:', error);
+        showNotification('Fehler beim Speichern der Favoriten', 'error');
+      }
+      
+      // UI neu rendern
+      renderEffekte();
+    };
+
+    // Funktion zum Anpassen der Animationsgeschwindigkeit
+    function updateAnimationSpeed(speed) {
+      const speedFactor = (11 - speed) / 5; // Invertiert: 1 = schnell, 10 = langsam
+      const style = document.createElement('style');
+      style.id = 'dynamic-animation-speed';
+      
+      // Entferne vorherigen Style wenn vorhanden
+      const oldStyle = document.getElementById('dynamic-animation-speed');
+      if (oldStyle) {
+        oldStyle.remove();
+      }
+      
+      // CSS für angepasste Animationsgeschwindigkeit
+      style.textContent = `
+        .effect-animation {
+          animation-duration: ${speedFactor}s !important;
+        }
+        .effect-animation::before,
+        .effect-animation::after {
+          animation-duration: ${speedFactor}s !important;
+        }
+      `;
+      
+      document.head.appendChild(style);
+    }
+
+    // Effekte rendern
+    function renderEffekte() {
+      // Grids sicher leeren
+      while (favoritesGrid.firstChild) {
+        favoritesGrid.removeChild(favoritesGrid.firstChild);
+      }
+      while (effektGrid.firstChild) {
+        effektGrid.removeChild(effektGrid.firstChild);
+      }
+
+      effekte.forEach(effekt => {
+        const card = createEffektCard(effekt, favoriten[effekt.name]);
+        if (favoriten[effekt.name]) {
+          favoritesGrid.appendChild(card);
+        } else {
+          effektGrid.appendChild(card);
+        }
+      });
+    }
+
+    // Effekt-Karten erstellen
+    function createEffektCard(effekt, isFavorite = false) {
+      const card = document.createElement('div');
+      card.className = 'effekt-card';
+      
+      // Bestimme die CSS-Klasse für die Animation basierend auf dem Effekt-Namen
+      const animationClass = getAnimationClass(effekt.name);
+      
+      card.innerHTML = `
+        <div class="effekt-image effekt-preview ${animationClass}">
+          <div class="favorite-badge ${isFavorite ? 'active' : ''}" onclick="toggleFavorite('${effekt.name}', event)">
+            <i class="fas fa-star"></i>
+          </div>
+        </div>
+        <div class="effekt-info">
+          <h3 class="effekt-name">${effekt.name}</h3>
+          <p class="effekt-description">${effekt.description}</p>
+        </div>
+      `;
+      
+      // ✅ JEDER KLICK SENDET SOFORT AN HARDWARE!
+      card.addEventListener('click', async () => {
+        console.log(`🎯 Effekt-Karte "${effekt.name}" geklickt!`);
+        await selectEffekt(effekt.name);
+      });
+      return card;
+    }
+
+    // ✅ selectEffekt FUNKTION - SENDET SOFORT AN HARDWARE!
+    async function selectEffekt(effectName) {
+      // Alle aktiven Effekte entfernen
+      document.querySelectorAll('.effekt-tile').forEach(tile => {
+        tile.classList.remove('active');
+      });
+      
+      // Aktuellen Effekt setzen
+      activeEffect = effectName;
+      
+      // Aktiven Effekt markieren
+      const activeTile = document.querySelector(`.effekt-tile[data-effect="${effectName}"]`);
+      if (activeTile) {
+        activeTile.classList.add('active');
+      }
+      
+      // ✅ SOFORT ECHTEN EFFEKT AN HARDWARE SENDEN!
+      console.log(`🎯 User klickt Effekt "${effectName}" → LED zeigt Effekt!`);
+      const success = await sendEffectToBLE(effectName, globalSpeed);
+      
+      if (!success) {
+        // Bei Fehler: Markierung entfernen
+        if (activeTile) {
+          activeTile.classList.remove('active');
+        }
+        activeEffect = null;
+      }
+    }
+
+    // ✅ VOLLSTÄNDIGE ANIMATIONS-ZUORDNUNG FÜR ALLE 32 EFFEKTE
+    function getAnimationClass(effectName) {
+      const animationMap = {
+        // ✅ Bereits vorhandene Animationen
+        'Welle': 'effect-welle',
+        'Regenbogen': 'effect-regenbogen', 
+        'Feuer': 'effect-feuer',
+        'Blitz': 'effect-blitz',
+        'Pulsieren': 'effect-pulsieren',
+        'Atmen': 'effect-atmen',
+        'Lauflicht': 'effect-lauflicht',
+        'Stroboskop': 'effect-stroboskop',
+        'Farbverlauf': 'effect-farbverlauf',
+        'Zufallsfarben': 'effect-zufallsfarben',
+        'Disco': 'effect-disco',
+        'Polizei': 'effect-polizei',
+        'Meteorregen': 'effect-meteorregen',
+        'Matrix': 'effect-matrix',
+        'Kristall': 'effect-kristall',
+        'Nordlicht': 'effect-nordlicht',
+        'Lava': 'effect-lava',
+        'Unterwasser': 'effect-unterwasser',
+        'Glitzer': 'effect-glitzer',
+        'Herzschlag': 'effect-herzschlag',
+        'Spirale': 'effect-spirale',
+        'Plasma': 'effect-plasma',
+        'Konfetti': 'effect-konfetti',
+        
+        // ✅ Neu hinzugefügte Animationen
+        'Sinus': 'sinus',
+        'Fade': 'fade', 
+        'Scanner': 'scanner',
+        'Twinkle': 'twinkle',
+        'Kometen': 'kometen',
+        'Feuerzauber': 'feuerzauber',
+        'Neonröhre': 'neonroehre',
+        'Lasershow': 'lasershow',
+        'Borealis': 'borealis'
+      };
+      
+      return animationMap[effectName] || 'effect-default';
+    }
+
+    // Benachrichtigung anzeigen
+    function showNotification(message) {
+      const content = notification.querySelector('.notification-content');
+      content.textContent = message;
+      notification.classList.add('active');
+      
+      setTimeout(() => {
+        notification.classList.remove('active');
+      }, 3000);
+    }
+
+    // ✅ ECHTE HARDWARE-STEUERUNG FÜR EFFEKTE - NUTZT GLOBALEN BLE CONTROLLER!
+    async function sendEffectToBLE(effectName, speed) {
+      try {
+        // ✅ VERWENDE DEN GLOBALEN BLE CONTROLLER AUS app.js!
+        let controller = null;
+        
+        // In iframe? Dann parent.bleController verwenden
+        if (window.parent && window.parent !== window) {
+          controller = window.parent.bleController;
+          console.log('✨ Effekt nutzt Parent bleController');
+        } else if (window.bleController) {
+          controller = window.bleController;
+          console.log('✨ Effekt nutzt lokalen bleController');
+        }
+        
+        if (!controller) {
+          console.error('❌ KRITISCH: Kein bleController verfügbar!');
+          showNotification('❌ FEHLER: Bluetooth-Controller nicht gefunden!', 'error');
+          return false;
+        }
+        
+        if (!controller.isConnected) {
+          console.warn('⚠️ Bluetooth nicht verbunden');
+          showNotification('⚠️ Bitte erst Bluetooth in Einstellungen verbinden!', 'warning');
+          return false;
+        }
+        
+        // ✅ HOLE EFFEKT-ID AUS GLOBALER KONFIGURATION
+        let effectId = 1; // Standard
+        
+        // Versuche die Effekt-ID aus der globalen Config zu holen
+        if (window.parent && window.parent.APP_CONFIG && window.parent.APP_CONFIG.EFFECT_IDS) {
+          effectId = window.parent.APP_CONFIG.EFFECT_IDS[effectName] || 1;
+        } else if (window.APP_CONFIG && window.APP_CONFIG.EFFECT_IDS) {
+          effectId = window.APP_CONFIG.EFFECT_IDS[effectName] || 1;
+        } else {
+          // Fallback auf lokale Zuordnung
+          const localEffectIds = {
+            'Welle': 1, 'Regenbogen': 2, 'Feuer': 3, 'Blitz': 4,
+            'Pulsieren': 5, 'Atmen': 6, 'Lauflicht': 7, 'Stroboskop': 8,
+            'Farbverlauf': 9, 'Zufallsfarben': 10, 'Disco': 11, 'Polizei': 12,
+            'Meteorregen': 13, 'Matrix': 14, 'Kristall': 15, 'Nordlicht': 16,
+            'Lava': 17, 'Unterwasser': 18, 'Glitzer': 19, 'Herzschlag': 20,
+            'Spirale': 21, 'Plasma': 22, 'Konfetti': 23, 'Sinus': 24,
+            'Fade': 25, 'Scanner': 26, 'Twinkle': 27, 'Kometen': 28,
+            'Feuerzauber': 29, 'Neonröhre': 30, 'Lasershow': 31, 'Borealis': 32
+          };
+          effectId = localEffectIds[effectName] || 1;
+        }
+        
+        // ✅ SENDE ECHTEN HARDWARE-BEFEHL!
+        console.log(`✨ Sende Effekt "${effectName}" (ID: ${effectId}, Speed: ${speed}) an Hardware...`);
+        
+        // Effekt senden
+        const success = await controller.setEffect(effectId);
+        
+        if (success) {
+          // Geschwindigkeit als Helligkeit interpretieren (manche Controller)
+          const brightness = Math.round((speed / 10) * 100); // Speed 1-10 zu Brightness 10-100%
+          await controller.setBrightness(brightness);
+          
+          console.log(`✅ Effekt "${effectName}" erfolgreich an LED gesendet!`);
+          showNotification(`✅ Effekt "${effectName}" aktiviert!`, 'success');
+          
+          // Speichere aktiven Effekt
+          localStorage.setItem('activeEffect', effectName);
+          localStorage.setItem('effectSpeed', speed);
+          
+          return true;
+        } else {
+          console.error('❌ Effekt konnte nicht gesendet werden');
+          showNotification('❌ Fehler beim Senden des Effekts', 'error');
+          return false;
+        }
+        
+      } catch (error) {
+        console.error('❌ Hardware-Fehler beim Effekt:', error);
+        showNotification(`❌ Fehler: ${error.message}`, 'error');
+        return false;
+      }
+    }
+
+    // Event-Listener für Speichern-Button
+    saveBtn.addEventListener('click', () => {
+      try {
+        // Speichere aktuelle Einstellungen
+        const settings = {
+          favoriten: favoriten,
+          globalSpeed: globalSpeed,
+          activeEffect: activeEffect,
+          timestamp: new Date().toISOString()
+        };
+        
+        localStorage.setItem('effektSettings', JSON.stringify(settings));
+        showNotification('Einstellungen erfolgreich gespeichert!');
+      } catch (error) {
+        console.error('Fehler beim Speichern:', error);
+        showNotification('Fehler beim Speichern der Einstellungen');
+      }
+    });
+
+    // Event-Listener für Reset-Button
+    resetBtn.addEventListener('click', async () => {
+      // Bestätigungsdialog
+      const confirmReset = confirm('Möchten Sie wirklich alle Einstellungen zurücksetzen?');
+      if (!confirmReset) return;
+      
+      favoriten = {};
+      globalSpeed = 5;
+      activeEffect = null;
+      
+      globalSpeedSlider.value = globalSpeed;
+      speedValue.textContent = globalSpeed;
+      
+      try {
+        localStorage.setItem('favoriten', JSON.stringify(favoriten));
+        localStorage.setItem('globalSpeed', globalSpeed);
+        localStorage.removeItem('activeEffect');
+        localStorage.removeItem('effektSettings');
+      } catch (error) {
+        console.error('Fehler beim Zurücksetzen:', error);
+      }
+      
+      // Setze Animationsgeschwindigkeit zurück
+      updateAnimationSpeed(globalSpeed);
+      
+      // ✅ SENDE RESET AN ECHTE HARDWARE!
+      let controller = null;
+      if (window.parent && window.parent !== window && window.parent.bleController) {
+        controller = window.parent.bleController;
+      } else if (window.bleController) {
+        controller = window.bleController;
+      }
+      
+      if (controller && controller.isConnected) {
+        try {
+          // LEDs ausschalten als Reset
+          await controller.setPower(false);
+          await new Promise(resolve => setTimeout(resolve, 500));
+          await controller.setPower(true);
+          await controller.setColorRGB(255, 255, 255);
+          console.log('✅ Hardware wurde zurückgesetzt');
+        } catch (error) {
+          console.error('Fehler beim Hardware-Reset:', error);
+        }
+      }
+      
+      renderEffekte();
+      showNotification('Alle Einstellungen zurückgesetzt');
+    });
+
+    // Initiales Rendern der Effekte
+    renderEffekte();
+    
+    // Initiale Animationsgeschwindigkeit setzen
+    updateAnimationSpeed(globalSpeed);
+    
+    // Wenn ein Effekt aktiv ist, sende ihn an BLE
+    if (activeEffect) {
+      sendEffectToBLE(activeEffect, globalSpeed);
+    }
+  </script>
+</body>
+</html>

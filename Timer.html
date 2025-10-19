@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time World</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-blue: #1f1a2f;
+            --light-blue: #2c2b4a;
+            --accent-blue: #3499db;
+            --light-text: #f1f0f0;
+            --light-gray: #bdc4c7;
+            --success: #3ecc71;
+            --warning: #e75c3c;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a2e, #16213e);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 1rem;
+            position: relative;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(120deg); }
+            66% { transform: translateY(10px) rotate(240deg); }
+        }
+        
+        body::after {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.03) 2px,
+                    rgba(255, 255, 255, 0.03) 4px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.03) 2px,
+                    rgba(255, 255, 255, 0.03) 4px
+                );
+            animation: float 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(25px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+            z-index: 2;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin: 0;
+            background: linear-gradient(135deg, #00dbde, #fc00ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            display: inline-block;
+            text-shadow: 0 0 20px rgba(0, 219, 222, 0.3);
+            position: relative;
+            letter-spacing: 0.1em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: var(--light-gray);
+            font-size: 1.1rem;
+        }
+        
+        section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 
+                0 4px 15px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        h2 {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(135deg, #00dbde, #fc00ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 219, 222, 0.3);
+            letter-spacing: 0.1em;
+        }
+        
+        h2 i {
+            margin-right: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .time-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        
+        .time-input {
+            flex: 1;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--light-gray);
+            font-weight: 500;
+        }
+        
+        input[type="time"] {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: 
+                inset 0 2px 4px rgba(0, 0, 0, 0.1),
+                0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+        
+        input[type="time"]:focus {
+            border-color: #4ecdc4;
+            box-shadow: 
+                0 0 0 3px rgba(78, 205, 196, 0.3),
+                inset 0 2px 4px rgba(0, 0, 0, 0.1),
+                0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .weekdays {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        
+        .weekday-btn {
+            flex: 1;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+            color: var(--light-gray);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 2px 8px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+        
+        .weekday-btn.active {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            border-color: #4ecdc4;
+            box-shadow: 
+                0 0 15px rgba(78, 205, 196, 0.5),
+                0 2px 8px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        
+        .color-preview {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff0000, #ff9900, #ffff00, #00ff00, #00ffff, #0000ff, #9900ff, #ff00ff, #ff0000);
+            margin: 0 auto 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
+            box-shadow: 
+                0 0 20px rgba(255, 255, 255, 0.3),
+                0 4px 15px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        
+        .color-modes {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .action-modes {
+            display: flex;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .action-mode {
+            flex: 1;
+            padding: 15px;
+            background: rgba(78, 205, 196, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(78, 205, 196, 0.3);
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 
+                0 2px 10px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+        
+        .action-mode:hover {
+            background: rgba(78, 205, 196, 0.2);
+            border-color: rgba(78, 205, 196, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 
+                0 4px 20px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .action-mode.active {
+            background: linear-gradient(45deg, rgba(78, 205, 196, 0.3), rgba(68, 160, 141, 0.3));
+            border-color: #4ecdc4;
+            color: #4ecdc4;
+            box-shadow: 
+                0 0 15px rgba(78, 205, 196, 0.4),
+                0 2px 10px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        
+        .color-mode {
+            padding: 10px 15px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: var(--light-gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 2px 8px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+        
+        .color-mode.active {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            border-color: #4ecdc4;
+            box-shadow: 
+                0 0 15px rgba(78, 205, 196, 0.4),
+                0 2px 8px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        
+        .color-palette {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(3px);
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 2px 8px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1) translateY(-2px);
+            box-shadow: 
+                0 4px 15px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        
+        .color-option.selected {
+            transform: scale(1.2);
+            border-color: #4ecdc4;
+            box-shadow: 
+                0 0 0 3px rgba(78, 205, 196, 0.5),
+                0 0 15px rgba(78, 205, 196, 0.7),
+                0 4px 20px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+        
+        .brightness-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .brightness-slider {
+            flex: 1;
+            height: 10px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: linear-gradient(to right, #000, #fff);
+            border-radius: 5px;
+            outline: none;
+        }
+        
+        .brightness-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .brightness-value {
+            min-width: 50px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .save-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(90deg, var(--accent-blue), #2ecc71);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .save-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .save-btn:active {
+            transform: translateY(0);
+        }
+        
+        .timers-list {
+            margin-top: 30px;
+        }
+        
+        .timer-item {
+            background: rgba(15, 26, 47, 0.7);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border-left: 4px solid var(--accent-blue);
+        }
+        
+        .timer-details {
+            flex: 1;
+        }
+        
+        .timer-time {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .timer-settings {
+            display: flex;
+            gap: 10px;
+            color: var(--light-gray);
+            font-size: 0.9rem;
+        }
+        
+        .timer-color {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .timer-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .timer-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .timer-btn.edit {
+            color: var(--accent-blue);
+        }
+        
+        .timer-btn.delete {
+            color: var(--warning);
+        }
+        
+        .timer-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--light-gray);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 500px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .time-container {
+                flex-direction: column;
+            }
+            
+            .weekdays {
+                flex-wrap: wrap;
+            }
+            
+            .weekday-btn {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<!-- External CSS removed - all styles are inline for better compatibility -->
+<body>
+    <div class="container">
+        <header>
+            <h1>Time World</h1>
+        </header>
+        
+        <section>
+            <h2 style="letter-spacing: 0.05em; font-weight: 600;">⏰ Zeiteinstellung</h2>
+            <div class="time-container">
+                <div class="time-input">
+                    <label for="start-time">Einschalten um</label>
+                    <input type="time" id="start-time" value="10:00">
+                </div>
+                <div class="time-input">
+                    <label for="end-time">Ausschalten um</label>
+                    <input type="time" id="end-time" value="20:00">
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <h2>🎬 Aktion</h2>
+            <div class="action-modes" style="display: flex; gap: 10px; justify-content: center;">
+                <button class="action-mode active" data-action="on" style="padding: 12px 20px; background: rgba(46, 213, 115, 0.2); border: 2px solid #2ed573; border-radius: 10px; color: white; cursor: pointer;">
+                    🟢 LEDs einschalten
+                </button>
+                <button class="action-mode" data-action="off" style="padding: 12px 20px; background: rgba(255, 107, 107, 0.2); border: 2px solid #ff6b6b; border-radius: 10px; color: white; cursor: pointer;">
+                    🔴 LEDs ausschalten
+                </button>
+            </div>
+        </section>
+        
+        <section>
+            <h2><i>📅</i> Wochentage</h2>
+            <div class="weekdays">
+                <button class="weekday-btn" data-day="mo">Mo</button>
+                <button class="weekday-btn" data-day="di">Di</button>
+                <button class="weekday-btn" data-day="mi">Mi</button>
+                <button class="weekday-btn" data-day="do">Do</button>
+                <button class="weekday-btn" data-day="fr">Fr</button>
+                <button class="weekday-btn active" data-day="sa">Sa</button>
+                <button class="weekday-btn active" data-day="so">So</button>
+            </div>
+        </section>
+        
+
+        
+        <button class="save-btn" id="save-btn">Timer speichern</button>
+        
+        <section>
+            <h2>📋 Gespeicherte Timer</h2>
+            <div class="timers-list" id="timers-list">
+                <!-- Timer werden hier dynamisch eingefügt -->
+            </div>
+        </section>
+    </div>
+    
+
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wochentage Toggle
+            const weekdayButtons = document.querySelectorAll('.weekday-btn');
+            weekdayButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    button.classList.toggle('active');
+                });
+            });
+            
+            // Timer-Aktionen Toggle
+            const actionModes = document.querySelectorAll('.action-mode');
+            actionModes.forEach(mode => {
+                mode.addEventListener('click', () => {
+                    actionModes.forEach(m => m.classList.remove('active'));
+                    mode.classList.add('active');
+                });
+            });
+            
+            // ✅ TIMER SPEICHERN MIT VOLLSTÄNDIGER FUNKTIONALITÄT
+            const saveButton = document.getElementById('save-btn');
+            saveButton.addEventListener('click', () => {
+                const startTime = document.getElementById('start-time').value;
+                const endTime = document.getElementById('end-time').value;
+                
+                if (!startTime || !endTime) {
+                    showNotification('Bitte Start- und Endzeit eingeben!', 'error');
+                    return;
+                }
+                
+                // Aktive Wochentage sammeln
+                const activeWeekdays = [];
+                document.querySelectorAll('.weekday-btn.active').forEach(btn => {
+                    activeWeekdays.push(btn.getAttribute('data-day'));
+                });
+                
+                if (activeWeekdays.length === 0) {
+                    showNotification('Bitte mindestens einen Wochentag auswählen!', 'error');
+                    return;
+                }
+                
+                // Aktive Aktion ermitteln
+                const activeAction = document.querySelector('.action-mode.active');
+                const action = activeAction ? activeAction.getAttribute('data-action') : 'on';
+                
+                // Timer-Objekt erstellen
+                const timer = {
+                    id: Date.now().toString(),
+                    startTime: startTime,
+                    endTime: endTime,
+                    weekdays: activeWeekdays,
+                    action: action,
+                    enabled: true,
+                    createdAt: new Date().toISOString()
+                };
+                
+                // Timer speichern
+                saveTimer(timer);
+                
+                // Timer-Liste aktualisieren
+                renderTimerList();
+                
+                showNotification('Timer erfolgreich gespeichert!', 'success');
+            });
+            
+            // Lade gespeicherte Timer
+            renderTimerList();
+            
+            // Starte Timer-Überprüfung
+            startTimerCheck();
+            
+            // ✅ SOFORT-TEST BUTTON FÜR HARDWARE-VERBINDUNG
+            const testBtn = document.createElement('button');
+            testBtn.textContent = '🧪 LED-Test';
+            testBtn.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                border: none;
+                padding: 12px 20px;
+                border-radius: 25px;
+                cursor: pointer;
+                font-weight: bold;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+                z-index: 1000;
+                transition: all 0.3s;
+            `;
+            testBtn.onmouseover = () => testBtn.style.transform = 'scale(1.05)';
+            testBtn.onmouseout = () => testBtn.style.transform = 'scale(1)';
+            testBtn.onclick = async () => {
+                console.log('🧪 Teste Timer-LED-Verbindung...');
+                const success = await executeLEDAction('toggle', 'Manueller Test');
+                if (success) {
+                    showNotification('✅ LED-Test erfolgreich!', 'success');
+                } else {
+                    showNotification('❌ LED-Test fehlgeschlagen - Bitte Bluetooth verbinden!', 'error');
+                }
+            };
+            document.body.appendChild(testBtn);
+            
+        });
+        
+        // Timer-Management Funktionen
+        // In-memory storage for compatibility (replaces localStorage)
+        let timerStorage = [];
+        
+        function saveTimer(timer) {
+            try {
+                // Validate timer data
+                if (!timer.startTime || !timer.endTime) {
+                    throw new Error('Start- und Endzeit sind erforderlich');
+                }
+                
+                // Validate time format
+                const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
+                if (!timeRegex.test(timer.startTime) || !timeRegex.test(timer.endTime)) {
+                    throw new Error('Ungültiges Zeitformat');
+                }
+                
+                const timers = getTimers();
+                timers.push(timer);
+                timerStorage = timers;
+                
+                // Try to save to localStorage if available
+                try {
+                    if (typeof Storage !== 'undefined') {
+                        localStorage.setItem('ledTimers', JSON.stringify(timers));
+                    }
+                } catch (e) {
+                    console.warn('LocalStorage nicht verfügbar, verwende In-Memory-Speicher');
+                }
+            } catch (error) {
+                console.error('Fehler beim Speichern des Timers:', error);
+                throw error;
+            }
+        }
+        
+        function getTimers() {
+            try {
+                // Try localStorage first
+                if (typeof Storage !== 'undefined') {
+                    const stored = localStorage.getItem('ledTimers');
+                    if (stored) {
+                        const parsed = JSON.parse(stored);
+                        if (Array.isArray(parsed)) {
+                            timerStorage = parsed;
+                            return parsed;
+                        }
+                    }
+                }
+            } catch (error) {
+                console.warn('Fehler beim Laden aus localStorage:', error);
+            }
+            
+            // Return empty array as fallback
+            return timerStorage;
+        }
+        
+        function renderTimerList() {
+            const timersList = document.getElementById('timers-list');
+            const timers = getTimers();
+            
+            // Liste leeren
+            if (!timersList) {
+                console.error('❌ Timer-Liste Element nicht gefunden');
+                return;
+            }
+            timersList.innerHTML = '';
+            
+            if (timers.length === 0) {
+                const emptyMsg = document.createElement('p');
+                emptyMsg.style.cssText = 'color: rgba(255, 255, 255, 0.5); text-align: center; padding: 20px;';
+                emptyMsg.textContent = 'Keine Timer gespeichert';
+                timersList.appendChild(emptyMsg);
+                return;
+            }
+            
+            timers.forEach(timer => {
+                // ✅ KORREKTUR: weekdays statt days verwenden
+                const days = timer.weekdays && timer.weekdays.length > 0 ? timer.weekdays.join(', ') : 'Täglich';
+                const actionText = timer.action === 'on' ? 'LEDs einschalten' : 
+                                 timer.action === 'off' ? 'LEDs ausschalten' : 
+                                 'LEDs umschalten';
+                
+                const timerElement = document.createElement('div');
+                timerElement.className = 'timer-item';
+                // Sichere DOM-Erstellung ohne innerHTML
+                const timerDetails = document.createElement('div');
+                timerDetails.className = 'timer-details';
+                
+                const timerTime = document.createElement('div');
+                timerTime.className = 'timer-time';
+                timerTime.textContent = `${days} - ${timer.startTime} bis ${timer.endTime}`;
+                
+                const timerSettings = document.createElement('div');
+                timerSettings.className = 'timer-settings';
+                
+                const actionSpan = document.createElement('span');
+                actionSpan.textContent = `${timer.action === 'on' ? '🔌' : '⏻'} ${actionText}`;
+                
+                const timerActions = document.createElement('div');
+                timerActions.className = 'timer-actions';
+                
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'timer-btn delete';
+                deleteButton.textContent = '🗑️';
+                deleteButton.onclick = () => deleteTimer(timer.id);
+                
+                // DOM-Struktur zusammenbauen
+                timerSettings.appendChild(actionSpan);
+                timerDetails.appendChild(timerTime);
+                timerDetails.appendChild(timerSettings);
+                timerActions.appendChild(deleteButton);
+                timerElement.appendChild(timerDetails);
+                timerElement.appendChild(timerActions);
+                
+                timersList.appendChild(timerElement);
+            });
+        }
+        
+        let timerCheckInterval = null;
+        
+        function startTimerCheck() {
+            // Clear existing interval to prevent duplicates
+            if (timerCheckInterval) {
+                clearInterval(timerCheckInterval);
+            }
+            
+            // Überprüfe Timer jede Minute
+            timerCheckInterval = setInterval(() => {
+                try {
+                    checkTimers();
+                } catch (error) {
+                    console.error('Fehler bei Timer-Überprüfung:', error);
+                }
+            }, 60000);
+            
+            // Sofortige Überprüfung
+            try {
+                checkTimers();
+            } catch (error) {
+                console.error('Fehler bei initialer Timer-Überprüfung:', error);
+            }
+        }
+        
+        function stopTimerCheck() {
+            if (timerCheckInterval) {
+                clearInterval(timerCheckInterval);
+                timerCheckInterval = null;
+            }
+        }
+        
+        function checkTimers() {
+            try {
+                const now = new Date();
+                const currentTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+                
+                // Correct weekday mapping (Sunday = 0)
+                const weekdays = ['so', 'mo', 'di', 'mi', 'do', 'fr', 'sa'];
+                const currentDay = weekdays[now.getDay()];
+                
+                const timers = getTimers();
+                
+                timers.forEach(timer => {
+                    try {
+                        // Default enabled to true if not set
+                        if (timer.enabled === false) return;
+                        
+                        // Validate timer data
+                        if (!timer.startTime || !timer.endTime) {
+                            console.warn('Timer mit ungültigen Zeiten gefunden:', timer);
+                            return;
+                        }
+                        
+                        // Check if today is an active day - FIX: weekdays statt days!
+                        const isActiveDay = !timer.weekdays || timer.weekdays.length === 0 || 
+                                          timer.weekdays.some(day => day.toLowerCase() === currentDay);
+                        
+                        if (isActiveDay) {
+                            // Use time range check instead of exact match for better reliability
+                            const [currentHour, currentMin] = currentTime.split(':').map(Number);
+                            const currentMinutes = currentHour * 60 + currentMin;
+                            
+                            const [startHour, startMin] = timer.startTime.split(':').map(Number);
+                            const startMinutes = startHour * 60 + startMin;
+                            
+                            const [endHour, endMin] = timer.endTime.split(':').map(Number);
+                            const endMinutes = endHour * 60 + endMin;
+                            
+                            // Check for start time (within 1 minute window)
+                            if (Math.abs(currentMinutes - startMinutes) <= 1) {
+                                executeLEDAction(timer.action || 'on', 'Timer gestartet');
+                            }
+                            // Check for end time (within 1 minute window)
+                            else if (Math.abs(currentMinutes - endMinutes) <= 1) {
+                                executeLEDAction(timer.action === 'on' ? 'off' : 'on', 'Timer beendet');
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Fehler bei Timer-Verarbeitung:', error, timer);
+                    }
+                });
+            } catch (error) {
+                console.error('Fehler bei Timer-Überprüfung:', error);
+            }
+        }
+        
+        // ✅ ECHTE HARDWARE LED-TIMER-AKTIONEN - NUTZT GLOBALEN BLE CONTROLLER!
+        async function executeLEDAction(action, reason) {
+            try {
+                // ✅ VERWENDE DEN GLOBALEN BLE CONTROLLER AUS app.js!
+                let controller = null;
+                
+                // In iframe? Dann parent.bleController verwenden
+                if (window.parent && window.parent !== window) {
+                    controller = window.parent.bleController;
+                    console.log('⏰ Timer nutzt Parent bleController');
+                } else if (window.bleController) {
+                    controller = window.bleController;
+                    console.log('⏰ Timer nutzt lokalen bleController');
+                }
+                
+                if (!controller) {
+                    console.error('❌ KRITISCH: Kein bleController verfügbar!');
+                    showNotification('❌ FEHLER: Bluetooth-Controller nicht gefunden!', 'error');
+                    return false;
+                }
+                
+                if (!controller.isConnected) {
+                    console.warn('⚠️ Bluetooth nicht verbunden');
+                    showNotification('⚠️ Bitte erst Bluetooth in Einstellungen verbinden!', 'warning');
+                    return false;
+                }
+                
+                // ✅ ECHTE HARDWARE-BEFEHLE SENDEN!
+                switch(action) {
+                    case 'on':
+                        // LED einschalten (weiß)
+                        await controller.setPower(true);
+                        await controller.setColorRGB(255, 255, 255);
+                        console.log('✅ Timer: LED eingeschaltet (weiß)');
+                        showNotification(`✅ LED eingeschaltet - ${reason}`, 'success');
+                        break;
+                        
+                    case 'off':
+                        // LED ausschalten
+                        await controller.setPower(false);
+                        console.log('✅ Timer: LED ausgeschaltet');
+                        showNotification(`✅ LED ausgeschaltet - ${reason}`, 'success');
+                        break;
+                        
+                    case 'toggle':
+                        // Toggle - aktuellen Status umschalten
+                        const currentStatus = controller.getConnectionStatus();
+                        await controller.setPower(!currentStatus.powerState);
+                        console.log(`✅ Timer: LED umgeschaltet`);
+                        showNotification(`✅ LED umgeschaltet - ${reason}`, 'success');
+                        break;
+                        
+                    case 'color':
+                        // Spezielle Farbe für Timer (z.B. sanftes Orange für Aufwachen)
+                        await controller.setPower(true);
+                        await controller.setColorRGB(255, 150, 50);
+                        console.log('✅ Timer: Aufwach-Farbe gesetzt');
+                        showNotification(`✅ Aufwach-Licht aktiviert - ${reason}`, 'success');
+                        break;
+                        
+                    default:
+                        // Standard: einschalten in warmweiß
+                        await controller.setPower(true);
+                        await controller.setColorRGB(255, 220, 180);
+                        console.log('✅ Timer: Standard-Farbe gesetzt');
+                        showNotification(`✅ LED aktiviert - ${reason}`, 'success');
+                }
+                
+                return true;
+                
+            } catch (error) {
+                console.error('❌ Timer Hardware-Fehler:', error);
+                showNotification(`❌ Timer-Fehler: ${error.message}`, 'error');
+                return false;
+            }
+        }
+        
+        function showNotification(message, type = 'info') {
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            // Sichere DOM-Erstellung ohne innerHTML
+            const icon = document.createElement('i');
+            const iconClass = type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle';
+            icon.className = `fas fa-${iconClass}`;
+            
+            const messageSpan = document.createElement('span');
+            messageSpan.textContent = message;
+            
+            notification.appendChild(icon);
+            notification.appendChild(messageSpan);
+            
+            // Add notification styles if not present
+            if (!document.querySelector('style[data-notification]')) {
+                const style = document.createElement('style');
+                style.setAttribute('data-notification', 'true');
+                style.textContent = `
+                    .notification {
+                        position: fixed;
+                        top: 20px;
+                        right: 20px;
+                        background: var(--light-blue);
+                        color: var(--light-text);
+                        padding: 15px 20px;
+                        border-radius: 10px;
+                        border-left: 4px solid var(--accent-blue);
+                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                        z-index: 1000;
+                        opacity: 0;
+                        transform: translateX(100%);
+                        transition: all 0.3s ease;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        max-width: 300px;
+                    }
+                    .notification.show {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                    .notification.success {
+                        border-left-color: var(--success);
+                    }
+                    .notification.error {
+                        border-left-color: var(--warning);
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.classList.add('show'), 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+    </script>
+
+    <!-- Service Worker für zuverlässige Timer im Hintergrund -->
+    <script>
+        // Service Worker registrieren
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('timer-service-worker.js')
+                .then(reg => {
+                    console.log('✅ Service Worker registriert:', reg.scope);
+                })
+                .catch(err => {
+                    console.error('❌ Service Worker Fehler:', err);
+                });
+        }
+
+        // Notification-Berechtigung anfordern
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission().then(permission => {
+                console.log('📢 Notification-Berechtigung:', permission);
+            });
+        }
+    </script>
+
+    <!-- BLE Controller einbinden -->
+    <script src="js/ble-controller-pro.js"></script>
+    <script>
+        // BLE-Integration für Timer-Steuerung
+        let bleController = null;
+        let connectedDevices = [];
+        let timerBLEActive = false;
+
+        // BLE-Controller initialisieren
+        async function initBLE() {
+            try {
+                if (typeof BLEController !== 'undefined') {
+                    bleController = new BLEController();
+                    await bleController.init();
+                    // BLE-Controller initialisiert
+                    
+                    // Automatisch mit gespeicherten Geräten verbinden
+                    const savedDevices = JSON.parse(localStorage.getItem('led-devices') || '[]');
+                    for (const device of savedDevices) {
+                        if (device.autoConnect) {
+                            await connectToDevice(device);
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('❌ BLE-Initialisierung fehlgeschlagen:', error);
+            }
+        }
+
+        // Mit Gerät verbinden
+        async function connectToDevice(device) {
+            try {
+                const connected = await bleController.connect(device.mac, device.protocol);
+                if (connected) {
+                    connectedDevices.push(device);
+                    // Erfolgreich verbunden
+                    updateDeviceStatus();
+                }
+            } catch (error) {
+                console.error(`❌ Verbindung zu ${device.name} fehlgeschlagen:`, error);
+            }
+        }
+
+        // Timer-Aktion an BLE-Geräte senden (mit ELK-BLEDOM Support)
+        async function sendTimerActionToBLE(action, data = {}) {
+            if (!bleController) {
+                console.log('⚠️ BLE-Controller nicht verfügbar');
+                return;
+            }
+
+            const connectedDevices = bleController.getConnectedDevices();
+            if (connectedDevices.length === 0) {
+                console.log('⚠️ Keine BLE-Geräte verbunden');
+                return;
+            }
+
+            for (const device of connectedDevices) {
+                try {
+                    // ELK-BLEDOM spezielle Behandlung
+                    if (device.protocol === 'elk_bledom') {
+                        // ELK-BLEDOM Protokoll erkannt
+                    }
+
+                    switch (action) {
+                        case 'start':
+                            await bleController.sendColor(device.mac, 0, 255, 0); // Grün für Start
+                            break;
+                        case 'stop':
+                            await bleController.sendColor(device.mac, 255, 0, 0); // Rot für Stop
+                            break;
+                        case 'finished':
+                            await bleController.sendEffect(device.mac, 'flash', { speed: 100 });
+                            break;
+                    }
+                    // Timer-Aktion erfolgreich gesendet
+                } catch (error) {
+                    console.error(`❌ Timer-Aktion an ${device.name} fehlgeschlagen:`, error);
+                }
+            }
+        }
+
+        // Gerätestatus aktualisieren
+        function updateDeviceStatus() {
+            const statusElement = document.getElementById('ble-status');
+            if (statusElement) {
+                statusElement.textContent = `${connectedDevices.length} Gerät(e) verbunden`;
+                statusElement.className = connectedDevices.length > 0 ? 'connected' : 'disconnected';
+            }
+        }
+
+        // Timer starten mit BLE-Integration
+        function startTimerWithBLE(minutes) {
+            // Lokalen Timer starten
+            startTimer(minutes);
+            
+            // Timer-Start an BLE-Geräte senden
+            sendTimerActionToBLE('start', { 
+                duration: minutes * 60,
+                startTime: Date.now()
+            });
+            
+            timerBLEActive = true;
+            // Timer mit BLE gestartet
+        }
+
+        // Timer stoppen mit BLE-Integration
+        function stopTimerWithBLE() {
+            // Lokalen Timer stoppen
+            if (typeof stopTimer === 'function') {
+                stopTimer();
+            }
+            
+            // Timer-Stopp an BLE-Geräte senden
+            sendTimerActionToBLE('stop');
+            
+            timerBLEActive = false;
+            // Timer mit BLE gestoppt
+        }
+
+        // Timer abgelaufen - LEDs ausschalten
+        async function onTimerFinished() {
+            if (timerBLEActive && bleController && connectedDevices.length > 0) {
+                for (const device of connectedDevices) {
+                    try {
+                        // LEDs ausschalten
+                        await bleController.sendColor(device.mac, 0, 0, 0, device.protocol);
+                        // LEDs ausgeschaltet
+                    } catch (error) {
+                        console.error(`❌ LED-Ausschaltung auf ${device.name} fehlgeschlagen:`, error);
+                    }
+                }
+            }
+            
+            timerBLEActive = false;
+            showNotification('⏰ Timer abgelaufen - LEDs ausgeschaltet', 'success');
+        }
+
+        // BLE beim Laden initialisieren
+        document.addEventListener('DOMContentLoaded', initBLE);
+
+        // ✅ TIMER-VERWALTUNGS-FUNKTIONEN
+        
+        function saveTimer(timer) {
+            let savedTimers = JSON.parse(localStorage.getItem('ledTimers') || '[]');
+            savedTimers.push(timer);
+            localStorage.setItem('ledTimers', JSON.stringify(savedTimers));
+            renderTimerList();
+        }
+        
+        function deleteTimer(timerId) {
+            let savedTimers = JSON.parse(localStorage.getItem('ledTimers') || '[]');
+            savedTimers = savedTimers.filter(timer => timer.id !== timerId);
+            localStorage.setItem('ledTimers', JSON.stringify(savedTimers));
+            renderTimerList();
+            showNotification('Timer gelöscht!', 'info');
+        }
+        
+        function renderTimerList() {
+            const timersList = document.getElementById('saved-timers');
+            const savedTimers = JSON.parse(localStorage.getItem('ledTimers') || '[]');
+            
+            if (savedTimers.length === 0) {
+                timersList.innerHTML = '<p>Keine Timer gespeichert</p>';
+                return;
+            }
+            
+            timersList.innerHTML = '';
+            
+            savedTimers.forEach(timer => {
+                const timerElement = document.createElement('div');
+                timerElement.className = 'timer-item';
+                timerElement.style.cssText = `
+                    background: rgba(255,255,255,0.05);
+                    border-radius: 10px;
+                    padding: 15px;
+                    margin-bottom: 10px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                `;
+                
+                const days = timer.weekdays && timer.weekdays.length > 0 ? timer.weekdays.join(', ') : 'Täglich';
+                const actionText = timer.action === 'on' ? 'LEDs einschalten' : 
+                                 timer.action === 'off' ? 'LEDs ausschalten' : 
+                                 'LEDs umschalten';
+                
+                timerElement.innerHTML = `
+                    <div>
+                        <div style="font-weight: bold; color: #4ecdc4;">${timer.startTime} - ${timer.endTime}</div>
+                        <div style="font-size: 0.9em; color: #888;">${days} • ${actionText}</div>
+                    </div>
+                    <button onclick="deleteTimer('${timer.id}')" 
+                            style="background: #ff6b6b; color: white; border: none; border-radius: 5px; padding: 5px 10px; cursor: pointer;">
+                        ✕
+                    </button>
+                `;
+                
+                timersList.appendChild(timerElement);
+            });
+        }
+        
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 8px;
+                color: white;
+                font-weight: bold;
+                z-index: 1000;
+                background: ${type === 'success' ? '#4ecdc4' : type === 'error' ? '#ff6b6b' : '#feca57'};
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+        
+        // Timer-Liste beim Laden anzeigen
+        document.addEventListener('DOMContentLoaded', renderTimerList);
+    </script>
+
+<!-- main.js entfernt - Datei existiert nicht -->
+</body>
+</html>
+ 
