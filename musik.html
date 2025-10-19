@@ -5329,29 +5329,23 @@ document.addEventListener('DOMContentLoaded', function() {
             const content = this.getAttribute('data-content');
             console.log(`🎵 Tab geklickt: ${content}`);
         
-            // ✅ AKTIVE TAB WECHSELN
+            // AKTIVE TAB WECHSELN
             document.querySelectorAll('.taskbar-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
             
-            // ✅ ALLE PANELS VERSTECKEN
-            document.querySelectorAll('.content-panel').forEach(panel => {
-                panel.style.display = 'none';
-                panel.classList.remove('active');
-            });
+            // ALLE PANELS VERSTECKEN (wie in funktionierender Version)
+            document.querySelectorAll('.content-panel').forEach(panel => panel.classList.remove('active'));
             
-            // ✅ GEWÄHLTES PANEL ANZEIGEN
+            // GEWÄHLTES PANEL ANZEIGEN (einfache Methode)
             const targetPanel = document.getElementById(content);
             if (targetPanel) {
-                targetPanel.style.display = 'block';
-                targetPanel.style.visibility = 'visible';
-                targetPanel.style.opacity = '1';
                 targetPanel.classList.add('active');
-                console.log(`✅ Panel '${content}' angezeigt`);
+                console.log(` Panel '${content}' angezeigt`);
             
-                // ✅ SPEZIAL-AKTIONEN FÜR JEDES PANEL
+                // SPEZIAL-AKTIONEN FÜR JEDES PANEL
                 switch(content) {
                     case 'equalizer':
-                        console.log('🎚️ Equalizer Panel aktiviert');
+                        console.log(' Equalizer Panel aktiviert');
                         if (typeof initializeEqualizer === 'function') {
                             initializeEqualizer();
                         }
