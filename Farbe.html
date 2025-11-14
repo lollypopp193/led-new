@@ -1217,26 +1217,40 @@
             }
         }
 
-        // ✅ ECHTE HARDWARE LED-STEUERUNG - VERWENDET GLOBALE FUNKTIONEN
+        // ✅ ECHTE HARDWARE LED-STEUERUNG - VERWENDET UNIVERSAL FEEDBACK SYSTEM
         async function sendColorToBLE(r, g, b) {
             try {
-                // ✅ VERWENDE DIE GLOBALE sendColorToLED FUNKTION AUS app.js!
-                if (window.parent && window.parent.sendColorToLED) {
-                    const success = await window.parent.sendColorToLED(r, g, b);
+                let success = false;
+                
+                // ✅ PRIORITÄT 1: Universal Feedback System
+                if (window.parent?.universalBLEFeedback) {
+                    success = await window.parent.universalBLEFeedback.sendColorToHardware(r, g, b);
                     if (success) {
-                        console.log(`🎨 ✅ ECHTE Hardware-Farbe gesendet: RGB(${r}, ${g}, ${b})`);
+                        console.log(`🎨 ✅ Universal System: Hardware-Farbe gesendet: RGB(${r}, ${g}, ${b})`);
+                        
+                        // Visuelles Feedback für Farbe
+                        const colorPreview = document.getElementById('colorPreview');
+                        if (colorPreview) {
+                            colorPreview.style.animation = 'pulse 0.5s ease';
+                            setTimeout(() => { colorPreview.style.animation = ''; }, 500);
+                        }
+                        return true;
+                    }
+                } 
+                
+                // ✅ PRIORITÄT 2: Globale sendColorToLED Funktion
+                else if (window.parent?.sendColorToLED) {
+                    success = await window.parent.sendColorToLED(r, g, b);
+                    if (success) {
+                        console.log(`🎨 ✅ Global: Hardware-Farbe gesendet: RGB(${r}, ${g}, ${b})`);
                         showNotification(`LED-Farbe gesetzt: RGB(${r}, ${g}, ${b})`, 'success');
                         return true;
-                    } else {
-                        console.warn('⚠️ Bluetooth nicht verbunden');
-                        showNotification('Bitte erst Bluetooth in Einstellungen verbinden!', 'warning');
-                        return false;
                     }
                 }
                 
-                // Fallback: Direkter Zugriff auf bleController
-                if (window.bleController && window.bleController.isConnected) {
-                    const success = await window.bleController.setColorRGB(r, g, b);
+                // ✅ PRIORITÄT 3: Direkter BLE Controller
+                else if (window.bleController?.isConnected) {
+                    success = await window.bleController.setColorRGB(r, g, b);
                     if (success) {
                         console.log(`🎨 ✅ Direkt: Hardware-Farbe gesendet: RGB(${r}, ${g}, ${b})`);
                         showNotification(`LED-Farbe gesetzt: RGB(${r}, ${g}, ${b})`, 'success');
@@ -1244,10 +1258,23 @@
                     }
                 }
                 
+                // ✅ PRIORITÄT 4: Universal Funktion
+                else if (window.sendUniversalColor) {
+                    success = await window.sendUniversalColor(r, g, b);
+                    if (success) {
+                        console.log(`🎨 ✅ Universal: Hardware-Farbe gesendet: RGB(${r}, ${g}, ${b})`);
+                        return true;
+                    }
+                }
+                
                 // Keine Verbindung verfügbar
-                console.error('❌ KRITISCH: Keine Bluetooth-Verbindung!');
-                showNotification('FEHLER: Bluetooth nicht verbunden! Bitte in Einstellungen verbinden.', 'error');
-                return false;
+                if (!success) {
+                    console.warn('⚠️ Bluetooth nicht verbunden');
+                    showNotification('Bitte erst Bluetooth in Einstellungen verbinden!', 'warning');
+                    return false;
+                }
+                
+                return success;
                 
             } catch (error) {
                 console.error('❌ Hardware-Fehler:', error);
@@ -1571,7 +1598,8 @@
         const blueValue = document.getElementById('blueValue');
         const rgbPreview = document.getElementById('rgbPreview');
 
-        function updateRgbPreview() {
+        // ✅ ECHTE HARDWARE-KOMMUNIKATION MIT FEEDBACK
+        async function updateRgbPreview() {
             const r = redSlider.value;
             const g = greenSlider.value;
             const b = blueSlider.value;
@@ -1584,13 +1612,49 @@
             
             // currentColor aktualisieren
             currentColor = { r: parseInt(r), g: parseInt(g), b: parseInt(b) };
-            applyColor(parseInt(r), parseInt(g), parseInt(b));
-            console.log('currentColor von RGB aktualisiert:', currentColor);
+            
+            // ✅ SENDE AN HARDWARE MIT UNIVERSAL FEEDBACK
+            try {
+                let success = false;
+                
+                // Verwende Universal Feedback System wenn verfügbar
+                if (window.parent?.universalBLEFeedback) {
+                    success = await window.parent.universalBLEFeedback.sendColorToHardware(
+                        parseInt(r), parseInt(g), parseInt(b)
+                    );
+                } else if (window.universalBLEFeedback) {
+                    success = await window.universalBLEFeedback.sendColorToHardware(
+                        parseInt(r), parseInt(g), parseInt(b)
+                    );
+                } else {
+                    // Fallback auf alte Methode
+                    await applyColor(parseInt(r), parseInt(g), parseInt(b));
+                }
+                
+                if (success) {
+                    // Visuelles Feedback - Glow-Effekt
+                    rgbPreview.style.boxShadow = `0 0 20px rgb(${r}, ${g}, ${b})`;
+                    setTimeout(() => {
+                        rgbPreview.style.boxShadow = '';
+                    }, 300);
+                    
+                    console.log('✅ RGB Farbe gesendet:', currentColor);
+                }
+            } catch (error) {
+                console.error('❌ RGB Update Fehler:', error);
+            }
         }
 
-        redSlider.addEventListener('input', updateRgbPreview);
-        greenSlider.addEventListener('input', updateRgbPreview);
-        blueSlider.addEventListener('input', updateRgbPreview);
+        // Throttled Update für bessere Performance
+        let rgbUpdateTimeout;
+        function throttledRgbUpdate() {
+            clearTimeout(rgbUpdateTimeout);
+            rgbUpdateTimeout = setTimeout(updateRgbPreview, 30);
+        }
+
+        redSlider.addEventListener('input', throttledRgbUpdate);
+        greenSlider.addEventListener('input', throttledRgbUpdate);
+        blueSlider.addEventListener('input', throttledRgbUpdate);
 
         // RGB-Slider mit Farbe aktualisieren
         function updateRgbSlidersFromColor(color) {

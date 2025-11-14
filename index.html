@@ -473,12 +473,14 @@
 
   <!-- ✅ KRITISCH: BLE-CONTROLLER MUSS ZUERST GELADEN WERDEN! -->
   <script src="js/ble-controller-pro.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/app.js?v=2.0"></script>
   <script src="js/device-manager.js"></script>
   <script src="js/event-manager.js"></script>
   <script src="js/led-abstraction-layer.js"></script>
   <script src="js/performance-optimizer.js"></script>
   <script src="js/scenes-manager.js"></script>
+  <!-- ✅ UNIVERSAL FEEDBACK SYSTEM - Echte Hardware-Kommunikation -->
+  <script src="js/universal-ble-feedback.js"></script>
   
   <!-- Zusätzliche inline Scripts für mobile Kompatibilität -->
   <script>
@@ -885,7 +887,7 @@
     NOTIFICATION_DURATION: 3000
   };
   
-  // Navigation-Funktion
+  // Navigation-Funktion - ruft loadApp() aus app.js auf
   function openApp(appName) {
     console.log('🚀 Öffne App:', appName);
     
@@ -901,32 +903,39 @@
       appscreen.style.display = 'flex';
     }
     
-    // Lade iFrame
-    const iframe = document.getElementById('app-iframe');
-    if (iframe) {
-      const appFiles = {
-        'farbe': 'Farbe.html',
-        'effekt': 'Effekt.html',
-        'musik': 'musik.html',
-        'timer': 'Timer.html',
-        'einstellungen': 'Einstellungen.html'
-      };
-      
-      const filename = appFiles[appName];
-      if (filename) {
-        iframe.src = filename;
-        console.log('✅ Lade:', filename);
+    // Verwende loadApp() aus app.js wenn verfügbar
+    if (window.loadApp && typeof window.loadApp === 'function') {
+      console.log('✅ Verwende loadApp() aus app.js');
+      window.loadApp(appName);
+    } else {
+      // Fallback: Direkte Implementierung
+      console.log('⚠️ loadApp() nicht verfügbar, verwende Fallback');
+      const iframe = document.getElementById('app-iframe');
+      if (iframe) {
+        const appFiles = {
+          'farbe': 'Farbe.html',
+          'effekt': 'Effekt.html',
+          'musik': 'musik.html',
+          'timer': 'Timer.html',
+          'einstellungen': 'Einstellungen.html'
+        };
+        
+        const filename = appFiles[appName];
+        if (filename) {
+          iframe.src = filename;
+          console.log('✅ Lade:', filename);
+          
+          // Markiere aktives Nav-Item
+          const navItems = document.querySelectorAll('.nav-item');
+          navItems.forEach(item => {
+            item.classList.remove('active');
+            if (item.dataset.app === appName) {
+              item.classList.add('active');
+            }
+          });
+        }
       }
     }
-    
-    // Markiere aktives Nav-Item
-    const navItems = document.querySelectorAll('.nav-item');
-    navItems.forEach(item => {
-      item.classList.remove('active');
-      if (item.dataset.app === appName) {
-        item.classList.add('active');
-      }
-    });
   }
   
   // Globale Notification-Funktion

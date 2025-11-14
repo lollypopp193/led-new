@@ -540,7 +540,8 @@
     </div>
 
     <!-- BLE Controller einbinden -->
-    <script src="js/ble-controller-pro.js"></script>
+    <!-- BLE Controller mit absolutem Pfad für iframe-Kompatibilität -->
+    <script src="/js/ble-controller-pro.js"></script>
     <script>
         let bleController = null;
         let isScanning = false;
@@ -2337,7 +2338,7 @@
     </script>
 
     <!-- Device Manager für erweiterte Geräteverwaltung -->
-    <script src="js/device-manager.js"></script>
+    <script src="/js/device-manager.js"></script>
 
 </body>
 </html>

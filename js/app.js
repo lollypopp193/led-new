@@ -988,33 +988,41 @@ function loadApp(app) {
     welcomeContent.style.display = 'none';
   }
   
-  // Alle Iframes verstecken
-  const iframes = document.querySelectorAll('.app-iframe');
-  iframes.forEach(iframe => iframe.style.display = 'none');
+  // App-Dateien Mapping
+  const appFiles = {
+    'farbe': 'Farbe.html',
+    'effekt': 'Effekt.html',
+    'musik': 'musik.html',
+    'timer': 'Timer.html',
+    'einstellungen': 'Einstellungen.html'
+  };
   
-  // Ziel-Iframe anzeigen
-  const targetIframe = document.getElementById(app + '-iframe');
+  // Verwende das EINZELNE iframe mit ID "app-iframe"
+  const iframe = document.getElementById('app-iframe');
   
-  if (targetIframe) {
-    targetIframe.style.display = 'block';
-    console.log('✓ Iframe angezeigt:', app);
+  if (iframe && appFiles[app]) {
+    iframe.style.display = 'block';
+    iframe.src = appFiles[app];
+    console.log('✓ Lade Modul:', appFiles[app]);
     
-    // BLE-Status an Iframe senden
-    setTimeout(() => {
-      try {
-        if (targetIframe.contentWindow) {
-          targetIframe.contentWindow.postMessage({
-            type: 'BLE_STATUS_UPDATE',
-            connected: AppState.ble.connected,
-            controller: window.ledController
-          }, '*');
+    // BLE-Status an Iframe senden nach dem Laden
+    iframe.onload = function() {
+      setTimeout(() => {
+        try {
+          if (iframe.contentWindow) {
+            iframe.contentWindow.postMessage({
+              type: 'BLE_STATUS_UPDATE',
+              connected: AppState.ble.connected,
+              controller: window.ledController
+            }, '*');
+          }
+        } catch (error) {
+          // Cross-Origin - normal
         }
-      } catch (error) {
-        // Cross-Origin - normal
-      }
-    }, 100);
+      }, 100);
+    };
   } else {
-    console.error('❌ Iframe nicht gefunden für App:', app);
+    console.error('❌ Iframe oder App-Datei nicht gefunden für:', app);
     showGlobalNotification(`Modul ${app} konnte nicht geladen werden`, 'error');
   }
 }

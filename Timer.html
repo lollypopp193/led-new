@@ -1055,7 +1055,8 @@
     </script>
 
     <!-- BLE Controller einbinden -->
-    <script src="js/ble-controller-pro.js"></script>
+    <!-- BLE Controller mit absolutem Pfad für iframe-Kompatibilität -->
+    <script src="/js/ble-controller-pro.js"></script>
     <script>
         // BLE-Integration für Timer-Steuerung
         let bleController = null;
