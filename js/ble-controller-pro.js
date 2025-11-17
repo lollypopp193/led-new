@@ -609,12 +609,13 @@ class BLEController {
     /**
      * Test-Sequenz
      */
-    async runTestSequenz() {
+    async runTestSequence() {
         if (!this.isConnected) {
             console.warn('⚠️ Nicht verbunden - Test abgebrochen');
             return false;
         }
 
+        console.log('🧪 Starte Test-Sequenz...');
         console.log('🧪 Starte Test-Sequenz...');
 
         try {

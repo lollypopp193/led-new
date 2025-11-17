@@ -2951,11 +2951,46 @@
             // Auto-Reconnect beim Start
             setTimeout(autoReconnect, 1000);
 
+            // ✅ =================================================================
+            // DEBUG: TESTE OB ALLE ELEMENTE EXISTIEREN
+            // ✅ =================================================================
+            console.log('🔍 ===== EINSTELLUNGEN DEBUG-CHECK START =====');
+            const elementsToCheck = [
+                'scanButton', 'autoConnectSwitch', 'wledSwitch', 'hierarchicalGroupsSwitch',
+                'pixelControlSwitch', 'notificationsSwitch', 'darkModeSwitch', 'hwAccelSwitch',
+                'brightnessSlider', 'fpsSlider', 'packetSizeSlider', 'micSensitivitySlider',
+                'latencySlider', 'whiteBalanceSlider', 'gammaSlider', 'maxCurrentSlider', 'autoOffSlider',
+                'languageSelect'
+            ];
+
+            let missingElements = [];
+            elementsToCheck.forEach(id => {
+                const el = document.getElementById(id);
+                if (!el) {
+                    missingElements.push(id);
+                    console.error(`❌ Element NICHT gefunden: ${id}`);
+                } else {
+                    console.log(`✅ Element gefunden: ${id}`);
+                }
+            });
+
+            if (missingElements.length === 0) {
+                console.log('✅ ===== ALLE ELEMENTE VORHANDEN! =====');
+            } else {
+                console.error(`❌ ===== ${missingElements.length} ELEMENTE FEHLEN: ${missingElements.join(', ')} =====`);
+            }
+            // ✅ =================================================================
+
             // Scan-Button Event
-            document.getElementById('scanButton').addEventListener('click', scanForDevices);
+            document.getElementById('scanButton').addEventListener('click', function() {
+                console.log('🔘 SCAN-BUTTON GEKLICKT!');
+                scanForDevices();
+            });
 
             // ✅ ALLE SWITCH-EVENTS HINZUFÜGEN (NUR EINMAL!)
             document.getElementById('autoConnectSwitch').addEventListener('click', function() {
+                console.log('🔘 AUTO-CONNECT SWITCH GEKLICKT!');
+
                 autoConnect = !autoConnect;
                 this.classList.toggle('active');
                 saveSettings();
@@ -2963,16 +2998,26 @@
             });
 
             // ✅ WLED-SWITCH EVENT
-            document.getElementById('wledSwitch').addEventListener('click', toggleWLED);
+            document.getElementById('wledSwitch').addEventListener('click', function() {
+                console.log('🔘 WLED SWITCH GEKLICKT!');
+                toggleWLED();
+            });
 
             // ✅ HIERARCHICAL GROUPS SWITCH
-            document.getElementById('hierarchicalGroupsSwitch').addEventListener('click', toggleHierarchicalGroups);
+            document.getElementById('hierarchicalGroupsSwitch').addEventListener('click', function() {
+                console.log('🔘 HIERARCHICAL GROUPS SWITCH GEKLICKT!');
+                toggleHierarchicalGroups();
+            });
 
             // ✅ PIXEL-CONTROL SWITCH
-            document.getElementById('pixelControlSwitch').addEventListener('click', togglePixelControl);
+            document.getElementById('pixelControlSwitch').addEventListener('click', function() {
+                console.log('🔘 PIXEL CONTROL SWITCH GEKLICKT!');
+                togglePixelControl();
+            });
 
             // ✅ NOTIFICATIONS SWITCH
             document.getElementById('notificationsSwitch').addEventListener('click', function() {
+                console.log('🔘 NOTIFICATIONS SWITCH GEKLICKT!');
                 notifications = !notifications;
                 this.classList.toggle('active');
                 saveSettings();
@@ -2980,10 +3025,14 @@
             });
 
             // ✅ DARK MODE SWITCH
-            document.getElementById('darkModeSwitch').addEventListener('click', toggleDarkMode);
+            document.getElementById('darkModeSwitch').addEventListener('click', function() {
+                console.log('🔘 DARK MODE SWITCH GEKLICKT!');
+                toggleDarkMode();
+            });
 
             // ✅ HARDWARE ACCELERATION SWITCH
             document.getElementById('hwAccelSwitch').addEventListener('click', function() {
+                console.log('🔘 HW ACCEL SWITCH GEKLICKT!');
                 hwAccel = !hwAccel;
                 this.classList.toggle('active');
                 saveSettings();
