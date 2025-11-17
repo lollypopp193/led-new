@@ -1322,28 +1322,55 @@
         // ✅ ERWEITERTE EINSTELLUNGS-FUNKTIONEN
 
         function toggleWLED() {
-            const wledEnabled = !localStorage.getItem('wledEnabled') || localStorage.getItem('wledEnabled') === 'false';
-            localStorage.setItem('wledEnabled', wledEnabled);
+            // ✅ TOGGLE MIT KORREKTER LOGIK
+            const currentState = localStorage.getItem('wledEnabled') === 'true';
+            const wledEnabled = !currentState;
+
+            localStorage.setItem('wledEnabled', String(wledEnabled));
             document.getElementById('wledSwitch').classList.toggle('active', wledEnabled);
 
             // ✅ WLED-SCANNER-SEKTION EIN/AUSBLENDEN
             const scanSection = document.getElementById('wledScanSection');
             const devicesSection = document.getElementById('wledDevicesSection');
 
-            if (wledEnabled) {
-                scanSection.style.display = 'flex';
-                devicesSection.style.display = 'flex';
-            } else {
-                scanSection.style.display = 'none';
-                devicesSection.style.display = 'none';
+            if (scanSection) {
+                scanSection.style.display = wledEnabled ? 'flex' : 'none';
+            }
+            if (devicesSection) {
+                devicesSection.style.display = wledEnabled ? 'flex' : 'none';
             }
 
-            if (window.parent && window.parent.ledController) {
-                window.parent.ledController.setWLEDEnabled(wledEnabled);
+            // ✅ KOMMUNIZIERE MIT PARENT UND BLE-CONTROLLER
+            if (window.parent && window.parent !== window) {
+                if (window.parent.ledController) {
+                    window.parent.ledController.setWLEDEnabled(wledEnabled);
+                }
+                if (window.parent.bleController) {
+                    window.parent.bleController.wledEnabled = wledEnabled;
+                }
+
+                // ✅ SENDE AUCH MESSAGE EVENT
+                window.parent.postMessage({
+                    type: 'wledChanged',
+                    enabled: wledEnabled
+                }, window.location.origin);
+            }
+
+            // ✅ LOKALER CONTROLLER
+            if (window.ledController) {
+                window.ledController.setWLEDEnabled(wledEnabled);
+            }
+            if (window.bleController) {
+                window.bleController.wledEnabled = wledEnabled;
             }
 
             showNotification(`WLED-Integration ${wledEnabled ? 'aktiviert' : 'deaktiviert'}`, 'success');
-            console.log('🌐 WLED-Integration:', wledEnabled);
+            console.log('🌐 WLED-Integration:', wledEnabled, '✅ Gespeichert & kommuniziert!');
+
+            // ✅ AUTO-SCAN WENN AKTIVIERT
+            if (wledEnabled) {
+                setTimeout(() => scanWLEDDevices(), 500);
+            }
         }
 
         // ✅ WLED-GERÄTE SCANNEN
@@ -1411,21 +1438,49 @@
         }
 
         function toggleHierarchicalGroups() {
-            const hierarchicalEnabled = !localStorage.getItem('hierarchicalGroups') || localStorage.getItem('hierarchicalGroups') === 'false';
-            localStorage.setItem('hierarchicalGroups', hierarchicalEnabled);
+            // ✅ TOGGLE MIT KORREKTER LOGIK
+            const currentState = localStorage.getItem('hierarchicalGroups') === 'true';
+            const hierarchicalEnabled = !currentState;
+
+            localStorage.setItem('hierarchicalGroups', String(hierarchicalEnabled));
             document.getElementById('hierarchicalGroupsSwitch').classList.toggle('active', hierarchicalEnabled);
 
+            // ✅ KOMMUNIZIERE MIT PARENT
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({
+                    type: 'hierarchicalGroupsChanged',
+                    enabled: hierarchicalEnabled
+                }, window.location.origin);
+            }
+
+            // ✅ SETZE GLOBALE VARIABLE
+            window.hierarchicalGroupsEnabled = hierarchicalEnabled;
+
             showNotification('Hierarchische Gruppen ' + (hierarchicalEnabled ? 'aktiviert' : 'deaktiviert'), 'success');
-            console.log('👥 Hierarchische Gruppen:', hierarchicalEnabled);
+            console.log('👥 Hierarchische Gruppen:', hierarchicalEnabled, '✅ Gespeichert & kommuniziert!');
         }
 
         function togglePixelControl() {
-            const pixelEnabled = !localStorage.getItem('pixelControl') || localStorage.getItem('pixelControl') === 'false';
-            localStorage.setItem('pixelControl', pixelEnabled);
+            // ✅ TOGGLE MIT KORREKTER LOGIK
+            const currentState = localStorage.getItem('pixelControl') === 'true';
+            const pixelEnabled = !currentState;
+
+            localStorage.setItem('pixelControl', String(pixelEnabled));
             document.getElementById('pixelControlSwitch').classList.toggle('active', pixelEnabled);
 
-            showNotification('Pixel-Level-Kontrolle ' + (pixelEnabled ? 'aktiviert' : 'deaktiviert'), pixelEnabled ? 'success' : 'warning');
-            console.log('🎯 Pixel-Level-Kontrolle:', pixelEnabled);
+            // ✅ KOMMUNIZIERE MIT PARENT
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({
+                    type: 'pixelControlChanged',
+                    enabled: pixelEnabled
+                }, window.location.origin);
+            }
+
+            // ✅ SETZE GLOBALE VARIABLE
+            window.pixelControlEnabled = pixelEnabled;
+
+            showNotification('Pixel-Level-Kontrolle ' + (pixelEnabled ? 'aktiviert' : 'deaktiviert'), pixelEnabled ? 'success' : 'info');
+            console.log('🎯 Pixel-Level-Kontrolle:', pixelEnabled, '✅ Gespeichert & kommuniziert!');
         }
 
         function changeLanguage(lang) {
@@ -2531,7 +2586,7 @@
             // Scan-Button Event
             document.getElementById('scanButton').addEventListener('click', scanForDevices);
 
-            // ✅ ALLE SWITCH-EVENTS HINZUFÜGEN
+            // ✅ ALLE SWITCH-EVENTS HINZUFÜGEN (NUR EINMAL!)
             document.getElementById('autoConnectSwitch').addEventListener('click', function() {
                 autoConnect = !autoConnect;
                 this.classList.toggle('active');
@@ -2540,48 +2595,15 @@
             });
 
             // ✅ WLED-SWITCH EVENT
-            document.getElementById('wledSwitch').addEventListener('click', function() {
-                this.classList.toggle('active');
-                const isActive = this.classList.contains('active');
+            document.getElementById('wledSwitch').addEventListener('click', toggleWLED);
 
-                // Zeige/Verstecke WLED-Optionen
-                document.getElementById('wledScanSection').style.display = isActive ? 'block' : 'none';
-                document.getElementById('wledDevicesSection').style.display = isActive ? 'block' : 'none';
-
-                if (isActive) {
-                    showNotification('WLED-Integration aktiviert', 'success');
-                    // Auto-Scan beim Aktivieren
-                    setTimeout(() => scanForWLEDDevices(), 500);
-                } else {
-                    showNotification('WLED-Integration deaktiviert', 'info');
-                    // Trenne WLED-Verbindung
-                    if (window.wledDevice) {
-                        window.wledDevice.connected = false;
-                        window.wledDevice = null;
-                    }
-                }
-
-                localStorage.setItem('wledEnabled', isActive);
-            });
+            // ✅ HIERARCHICAL GROUPS SWITCH
+            document.getElementById('hierarchicalGroupsSwitch').addEventListener('click', toggleHierarchicalGroups);
 
             // ✅ PIXEL-CONTROL SWITCH
-            document.getElementById('pixelControlSwitch').addEventListener('click', function() {
-                this.classList.toggle('active');
-                const isActive = this.classList.contains('active');
-                window.pixelControlEnabled = isActive;
+            document.getElementById('pixelControlSwitch').addEventListener('click', togglePixelControl);
 
-                showNotification(`Pixel-Control ${isActive ? 'aktiviert' : 'deaktiviert'}`, 'success');
-                localStorage.setItem('pixelControlEnabled', isActive);
-
-                // Sende Info an andere Module
-                if (window.parent && window.parent !== window) {
-                    window.parent.postMessage({
-                        type: 'pixelControlChanged',
-                        enabled: isActive
-                    }, window.location.origin);
-                }
-            });
-
+            // ✅ NOTIFICATIONS SWITCH
             document.getElementById('notificationsSwitch').addEventListener('click', function() {
                 notifications = !notifications;
                 this.classList.toggle('active');
@@ -2589,14 +2611,10 @@
                 showNotification(`Benachrichtigungen ${notifications ? 'aktiviert' : 'deaktiviert'}`, 'success');
             });
 
+            // ✅ DARK MODE SWITCH
             document.getElementById('darkModeSwitch').addEventListener('click', toggleDarkMode);
 
-            document.getElementById('wledSwitch').addEventListener('click', toggleWLED);
-
-            document.getElementById('hierarchicalGroupsSwitch').addEventListener('click', toggleHierarchicalGroups);
-
-            document.getElementById('pixelControlSwitch').addEventListener('click', togglePixelControl);
-
+            // ✅ HARDWARE ACCELERATION SWITCH
             document.getElementById('hwAccelSwitch').addEventListener('click', function() {
                 hwAccel = !hwAccel;
                 this.classList.toggle('active');
@@ -2610,29 +2628,21 @@
                 wledScanBtn.addEventListener('click', scanWLEDDevices);
             }
 
-            // ✅ SLIDER EVENTS
+            // ✅ SLIDER EVENTS - MIT ECHTEN FUNKTIONEN!
             document.getElementById('brightnessSlider').addEventListener('input', function() {
-                brightness = this.value;
-                document.getElementById('brightnessValue').textContent = brightness + '%';
-                saveSettings();
+                updateBrightness(this.value); // ✅ RUFT ECHTE FUNKTION AUF!
             });
 
             document.getElementById('fpsSlider').addEventListener('input', function() {
-                fps = this.value;
-                document.getElementById('fpsValue').textContent = fps + ' FPS';
-                saveSettings();
+                updateFPS(this.value); // ✅ ECHTE FUNKTION!
             });
 
             document.getElementById('packetSizeSlider').addEventListener('input', function() {
-                packetSize = this.value;
-                document.getElementById('packetSizeValue').textContent = packetSize + ' Bytes';
-                saveSettings();
+                updatePacketSize(this.value); // ✅ ECHTE FUNKTION!
             });
 
             document.getElementById('micSensitivitySlider').addEventListener('input', function() {
-                micSensitivity = this.value;
-                document.getElementById('micSensitivityValue').textContent = micSensitivity + '%';
-                saveSettings();
+                updateMicSensitivity(this.value); // ✅ ECHTE FUNKTION!
             });
 
             // ✅ LANGUAGE SELECT EVENT

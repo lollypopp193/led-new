@@ -102,7 +102,7 @@ window.addEventListener('DOMContentLoaded', () => {
                         connected: status.connected,
                         device: status.device
                     }, window.location.origin);
-                } catch (e) {}
+                } catch (e) { }
             });
 
             console.log('📡 BLE Status:', status.connected ? '✅ Verbunden' : '❌ Getrennt');
@@ -712,6 +712,32 @@ function startBLEStatusMonitoring() {
 }
 
 // ===================================================================
+// DARK MODE HELPER FUNKTION
+// ===================================================================
+
+function applyDarkMode(isDark) {
+    const root = document.documentElement;
+    if (isDark) {
+        root.style.setProperty('--bg-color', '#0a0a0a');
+        root.style.setProperty('--card-bg', '#1a1a1a');
+        root.style.setProperty('--text-color', '#ffffff');
+        root.style.setProperty('--border-color', 'rgba(255, 255, 255, 0.1)');
+    } else {
+        root.style.setProperty('--bg-color', '#f5f5f5');
+        root.style.setProperty('--card-bg', '#ffffff');
+        root.style.setProperty('--text-color', '#333333');
+        root.style.setProperty('--border-color', 'rgba(0, 0, 0, 0.1)');
+    }
+    document.body.classList.toggle('dark-mode', isDark);
+}
+
+// ✅ LADE DARK MODE BEIM START
+window.addEventListener('DOMContentLoaded', () => {
+    const isDark = localStorage.getItem('darkMode') === 'true';
+    applyDarkMode(isDark);
+});
+
+// ===================================================================
 // GLOBALE LED-FUNKTIONEN
 // ===================================================================
 
@@ -721,7 +747,7 @@ function startBLEStatusMonitoring() {
  * @param {number} g - Grün (0-255)
  * @param {number} b - Blau (0-255)
  */
-window.sendColorToAllDevices = async function(r, g, b) {
+window.sendColorToAllDevices = async function (r, g, b) {
     try {
         if (!window.ledController || !window.ledController.isConnected) {
             console.log('⚠️ Keine BLE-Geräte verbunden');
@@ -750,7 +776,7 @@ window.sendColorToAllDevices = async function(r, g, b) {
  * Sendet Effekt an alle verbundenen Geräte
  * @param {number} effectId - Effekt-ID
  */
-window.sendEffectToAllDevices = async function(effectId) {
+window.sendEffectToAllDevices = async function (effectId) {
     try {
         if (!window.ledController || !window.ledController.isConnected) {
             console.log('⚠️ Keine BLE-Geräte verbunden');
@@ -787,7 +813,7 @@ window.globalCurrentColor = {
  * Setzt die globale aktuelle Farbe
  * @param {Object} color - RGB-Farbobjekt {r, g, b}
  */
-window.setGlobalCurrentColor = function(color) {
+window.setGlobalCurrentColor = function (color) {
     if (color && typeof color.r === 'number' && typeof color.g === 'number' && typeof color.b === 'number') {
         window.globalCurrentColor = {
             r: color.r,
@@ -802,7 +828,7 @@ window.setGlobalCurrentColor = function(color) {
  * Holt die globale aktuelle Farbe
  * @returns {Object} RGB-Farbobjekt {r, g, b}
  */
-window.getGlobalCurrentColor = function() {
+window.getGlobalCurrentColor = function () {
     return window.globalCurrentColor;
 };
 
@@ -810,7 +836,7 @@ window.getGlobalCurrentColor = function() {
  * Setzt Helligkeit für alle verbundenen Geräte
  * @param {number} brightness - Helligkeit (0-100)
  */
-window.setBrightnessForAllDevices = async function(brightness) {
+window.setBrightnessForAllDevices = async function (brightness) {
     try {
         if (!window.ledController || !window.ledController.isConnected) {
             console.log('⚠️ Keine BLE-Geräte verbunden');
@@ -829,7 +855,7 @@ window.setBrightnessForAllDevices = async function(brightness) {
  * Schaltet LED ein/aus
  * @param {boolean} state - true = ein, false = aus
  */
-window.setPowerForAllDevices = async function(state) {
+window.setPowerForAllDevices = async function (state) {
     try {
         if (!window.ledController || !window.ledController.isConnected) {
             console.log('⚠️ Keine BLE-Geräte verbunden');
@@ -846,7 +872,7 @@ window.setPowerForAllDevices = async function(state) {
 /**
  * LED-Test-Funktion
  */
-window.testLED = async function() {
+window.testLED = async function () {
     try {
         if (window.ledController && window.ledController.runTestSequence) {
             return await window.ledController.runTestSequence();
@@ -862,7 +888,7 @@ window.testLED = async function() {
 /**
  * Gibt BLE-Controller-Status zurück
  */
-window.getBLEStatus = function() {
+window.getBLEStatus = function () {
     try {
         if (window.ledController && window.ledController.getConnectionStatus) {
             return window.ledController.getConnectionStatus();
@@ -877,12 +903,12 @@ window.getBLEStatus = function() {
 };
 
 // Weitere globale BLE-Funktionen
-window.getBLEController = function() {
+window.getBLEController = function () {
     return window.ledController;
 };
 
 // ✅ UNIVERSELLE LED-STEUERUNG (BLE + WLED)
-window.sendUniversalColor = async function(r, g, b) {
+window.sendUniversalColor = async function (r, g, b) {
     let success = false;
 
     // Versuche BLE
@@ -933,7 +959,7 @@ window.sendUniversalColor = async function(r, g, b) {
 };
 
 // ✅ UNIVERSELLER EFFEKT-SENDER
-window.sendUniversalEffect = async function(effectName, speed = 5) {
+window.sendUniversalEffect = async function (effectName, speed = 5) {
     let success = false;
 
     // BLE-Effekt
@@ -988,7 +1014,7 @@ window.sendUniversalEffect = async function(effectName, speed = 5) {
     return success;
 };
 
-window.connectBLEDevice = async function(device) {
+window.connectBLEDevice = async function (device) {
     return await connectToDevice(device);
 };
 
@@ -1047,7 +1073,7 @@ function loadApp(app) {
         console.log('✓ Lade Modul:', appFiles[app]);
 
         // BLE-Status an Iframe senden nach dem Laden
-        iframe.onload = function() {
+        iframe.onload = function () {
             setTimeout(() => {
                 try {
                     if (iframe.contentWindow) {
@@ -1080,13 +1106,13 @@ function initNavigation() {
 
     // Navigation-Items
     navItems.forEach(item => {
-        item.addEventListener('click', function() {
+        item.addEventListener('click', function () {
             const app = this.getAttribute('data-app');
             loadApp(app);
         });
 
         // Keyboard-Support
-        item.addEventListener('keydown', function(e) {
+        item.addEventListener('keydown', function (e) {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 const app = this.getAttribute('data-app');
@@ -1097,13 +1123,13 @@ function initNavigation() {
 
     // Feature-Cards
     featureCards.forEach(card => {
-        card.addEventListener('click', function() {
+        card.addEventListener('click', function () {
             const app = this.getAttribute('data-app');
             if (app) loadApp(app);
         });
 
         // Keyboard-Support
-        card.addEventListener('keydown', function(e) {
+        card.addEventListener('keydown', function (e) {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 const app = this.getAttribute('data-app');
@@ -1115,7 +1141,7 @@ function initNavigation() {
     // Iframe-Load-Events
     const iframes = document.querySelectorAll('.app-iframe');
     iframes.forEach(iframe => {
-        iframe.addEventListener('load', function() {
+        iframe.addEventListener('load', function () {
             console.log(`✓ ${iframe.id} geladen`);
         });
     });
@@ -1142,12 +1168,57 @@ function loadLastApp() {
 // MESSAGE-HANDLER FÜR IFRAME-KOMMUNIKATION
 // ===================================================================
 
-window.addEventListener('message', function(event) {
+window.addEventListener('message', function (event) {
     // Sicherheitscheck für Origin
     const allowedOrigins = [window.location.origin, 'file://', 'null'];
     if (!allowedOrigins.includes(event.origin) && event.origin !== 'null') {
         console.warn('⚠️ Nachricht von nicht-autorisierter Origin abgelehnt:', event.origin);
         return;
+    }
+
+    // ✅ VERARBEITE EINSTELLUNGS-ÄNDERUNGEN
+    if (event.data.type === 'wledChanged') {
+        console.log('🌐 WLED-Integration geändert:', event.data.enabled);
+        if (window.bleController) {
+            window.bleController.wledEnabled = event.data.enabled;
+        }
+        if (window.ledController) {
+            window.ledController.setWLEDEnabled(event.data.enabled);
+        }
+        localStorage.setItem('wledEnabled', String(event.data.enabled));
+    }
+
+    if (event.data.type === 'hierarchicalGroupsChanged') {
+        console.log('👥 Hierarchische Gruppen geändert:', event.data.enabled);
+        window.hierarchicalGroupsEnabled = event.data.enabled;
+        localStorage.setItem('hierarchicalGroups', String(event.data.enabled));
+    }
+
+    if (event.data.type === 'pixelControlChanged') {
+        console.log('🎯 Pixel-Control geändert:', event.data.enabled);
+        window.pixelControlEnabled = event.data.enabled;
+        localStorage.setItem('pixelControl', String(event.data.enabled));
+    }
+
+    if (event.data.type === 'languageChanged') {
+        console.log('🌐 Sprache geändert:', event.data.language);
+        localStorage.setItem('selectedLanguage', event.data.language);
+        // Informiere alle iframes über Sprachänderung
+        const iframes = document.querySelectorAll('iframe');
+        iframes.forEach(iframe => {
+            try {
+                iframe.contentWindow.postMessage(event.data, window.location.origin);
+            } catch (error) {
+                // Ignore
+            }
+        });
+    }
+
+    if (event.data.type === 'darkModeChanged') {
+        console.log('🌓 Dark Mode geändert:', event.data.darkMode);
+        localStorage.setItem('darkMode', String(event.data.darkMode));
+        // Wende Dark Mode auf Haupt-App an
+        applyDarkMode(event.data.darkMode);
     }
 
     switch (event.data.type) {
