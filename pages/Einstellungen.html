@@ -986,16 +986,22 @@
             brightness = parseInt(value);
             document.getElementById('brightnessValue').textContent = brightness + '%';
 
-            // ✅ ECHTE LED-HELLIGKEIT SETZEN
-            if (window.parent && window.parent.ledController && window.parent.ledController.isConnected) {
-                try {
-                    window.parent.ledController.setBrightness(brightness);
-                    console.log(`🔆 Helligkeit auf ${brightness}% gesetzt`);
-                } catch (error) {
-                    console.error('Fehler beim Setzen der Helligkeit:', error);
-                }
+            // ✅ ECHTE HARDWARE-KOMMUNIKATION: Sende an BLE-Controller
+            let controller = null;
+            if (window.parent && window.parent !== window && window.parent.bleController) {
+                controller = window.parent.bleController;
+            } else if (window.bleController) {
+                controller = window.bleController;
             }
 
+            if (controller && controller.isConnected) {
+                try {
+                    controller.setBrightness(brightness);
+                    console.log('✅ Helligkeit gesendet:', brightness + '%');
+                } catch (error) {
+                    console.error('❌ Fehler beim Senden der Helligkeit:', error);
+                }
+            }
             // ✅ AUCH IN GLOBALEN STORAGE FÜR SYNCHRONISATION
             localStorage.setItem('ledBrightness', brightness);
 
@@ -1616,12 +1622,48 @@
         function updateFPS(value) {
             fps = parseInt(value);
             document.getElementById('fpsValue').textContent = fps + ' FPS';
+
+            // ✅ ECHTE HARDWARE-KOMMUNIKATION: Sende an BLE-Controller
+            let controller = null;
+            if (window.parent && window.parent !== window && window.parent.bleController) {
+                controller = window.parent.bleController;
+            } else if (window.bleController) {
+                controller = window.bleController;
+            }
+
+            if (controller && controller.isConnected) {
+                try {
+                    controller.setFPS(fps);
+                    console.log('✅ FPS gesendet:', fps);
+                } catch (error) {
+                    console.error('❌ Fehler beim Senden der FPS:', error);
+                }
+            }
+
             saveSettings();
         }
 
         function updatePacketSize(value) {
             packetSize = parseInt(value);
             document.getElementById('packetValue').textContent = packetSize + ' B';
+
+            // ✅ ECHTE HARDWARE-KOMMUNIKATION: Sende an BLE-Controller
+            let controller = null;
+            if (window.parent && window.parent !== window && window.parent.bleController) {
+                controller = window.parent.bleController;
+            } else if (window.bleController) {
+                controller = window.bleController;
+            }
+
+            if (controller && controller.isConnected) {
+                try {
+                    controller.setPacketSize(packetSize);
+                    console.log('✅ Paketgröße gesendet:', packetSize + 'B');
+                } catch (error) {
+                    console.error('❌ Fehler beim Senden der Paketgröße:', error);
+                }
+            }
+
             saveSettings();
         }
 
@@ -1635,6 +1677,24 @@
         function updateMicSensitivity(value) {
             micSensitivity = parseInt(value);
             document.getElementById('micValue').textContent = micSensitivity + '%';
+
+            // ✅ ECHTE HARDWARE-KOMMUNIKATION: Sende an BLE-Controller
+            let controller = null;
+            if (window.parent && window.parent !== window && window.parent.bleController) {
+                controller = window.parent.bleController;
+            } else if (window.bleController) {
+                controller = window.bleController;
+            }
+
+            if (controller && controller.isConnected) {
+                try {
+                    controller.setMicSensitivity(micSensitivity);
+                    console.log('✅ Mikrofon-Empfindlichkeit gesendet:', micSensitivity + '%');
+                } catch (error) {
+                    console.error('❌ Fehler beim Senden der Mikrofon-Empfindlichkeit:', error);
+                }
+            }
+
             saveSettings();
         }
 
