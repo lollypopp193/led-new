@@ -34,7 +34,7 @@
         }
 
         /* Canvas für Glitzer-Partikel-Hintergrund */
-        #backgroundCanvas {
+        #background-canvas {
             position: fixed;
             top: 0;
             left: 0;
@@ -364,7 +364,7 @@
 
 <body>
 
-    <canvas id="backgroundCanvas"></canvas>
+    <canvas id="background-canvas"></canvas>
 
     <!-- Startscreen -->
     <div id="startscreen">
@@ -395,40 +395,40 @@
                         </div>
 
                         <div class="feature-grid">
-                            <button class="feature-card" data-app="farbe" aria-label="Farb-Tool öffnen">
-                                <div class="feature-icon">🎨</div>
-                                <div class="feature-title">Farb-Tool</div>
-                                <div class="feature-desc">✅ Live RGB-Vorschau repariert<br>✅ Farbe bleibt nach "Anwenden"<br>✅ Farbrad & RGB synchronisiert</div>
+                            <button type="button" class="feature-card" data-app="farbe" aria-label="Farb-Tool öffnen">
+                                <span class="feature-icon">🎨</span>
+                                <span class="feature-title">Farb-Tool</span>
+                                <span class="feature-desc">✅ Live RGB-Vorschau repariert<br>✅ Farbe bleibt nach "Anwenden"<br>✅ Farbrad &amp; RGB synchronisiert</span>
                             </button>
 
-                            <button class="feature-card" data-app="effekte" aria-label="LED-Effekte öffnen">
-                                <div class="feature-icon">✨</div>
-                                <div class="feature-title">LED-Effekte</div>
-                                <div class="feature-desc">✅ Alle Effekte mit CSS-Animationen<br>✅ Welle, Feuer, Matrix, Plasma etc.<br>✅ Vollständige Vorschau-Galerie</div>
+                            <button type="button" class="feature-card" data-app="effekte" aria-label="LED-Effekte öffnen">
+                                <span class="feature-icon">✨</span>
+                                <span class="feature-title">LED-Effekte</span>
+                                <span class="feature-desc">✅ Alle Effekte mit CSS-Animationen<br>✅ Welle, Feuer, Matrix, Plasma etc.<br>✅ Vollständige Vorschau-Galerie</span>
                             </button>
 
-                            <button class="feature-card" data-app="musik" aria-label="Musik-Player öffnen">
-                                <div class="feature-icon">🎵</div>
-                                <div class="feature-title">Musik-Player</div>
-                                <div class="feature-desc">✅ Persistente Wiedergabe<br>✅ Automatische Metadaten-Sortierung<br>✅ Musik läuft beim Kategorie-Wechsel</div>
+                            <button type="button" class="feature-card" data-app="musik" aria-label="Musik-Player öffnen">
+                                <span class="feature-icon">🎵</span>
+                                <span class="feature-title">Musik-Player</span>
+                                <span class="feature-desc">✅ Persistente Wiedergabe<br>✅ Automatische Metadaten-Sortierung<br>✅ Musik läuft beim Kategorie-Wechsel</span>
                             </button>
 
-                            <button class="feature-card" data-app="timer" aria-label="Timer öffnen">
-                                <div class="feature-icon">⏰</div>
-                                <div class="feature-title">Timer</div>
-                                <div class="feature-desc">✅ Saubere Timer-Verwaltung<br>✅ Wochentage-Auswahl<br>✅ Redundante Aktionen entfernt</div>
+                            <button type="button" class="feature-card" data-app="timer" aria-label="Timer öffnen">
+                                <span class="feature-icon">⏰</span>
+                                <span class="feature-title">Timer</span>
+                                <span class="feature-desc">✅ Saubere Timer-Verwaltung<br>✅ Wochentage-Auswahl<br>✅ Redundante Aktionen entfernt</span>
                             </button>
 
-                            <button class="feature-card" data-app="einstellungen" aria-label="Einstellungen öffnen">
-                                <div class="feature-icon">⚙️</div>
-                                <div class="feature-title">Einstellungen</div>
-                                <div class="feature-desc">✅ Saubere BLE-Konfiguration<br>✅ Technische Details ausgeblendet<br>✅ Benutzerfreundliche UI</div>
+                            <button type="button" class="feature-card" data-app="einstellungen" aria-label="Einstellungen öffnen">
+                                <span class="feature-icon">⚙️</span>
+                                <span class="feature-title">Einstellungen</span>
+                                <span class="feature-desc">✅ Saubere BLE-Konfiguration<br>✅ Technische Details ausgeblendet<br>✅ Benutzerfreundliche UI</span>
                             </button>
                         </div>
 
-                        <div style="margin-top: 40px; padding: 20px; background: rgba(0, 255, 255, 0.1); border-radius: 15px; border: 1px solid rgba(0, 255, 255, 0.3);">
-                            <h3 style="color: #0ff; margin-bottom: 15px;"><i class="fas fa-check-circle"></i> Alle Features optimiert & vollständig funktionsfähig:</h3>
-                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; text-align: left;">
+                        <div class="features-info-box">
+                            <h3><i class="fas fa-check-circle"></i> Alle Features optimiert &amp; vollständig funktionsfähig:</h3>
+                            <div class="features-grid-info">
                                 <div>🎨 <strong>Farb-Tool:</strong> Live RGB-Vorschau, Farbe bleibt nach "Anwenden"</div>
                                 <div>✨ <strong>LED-Effekte:</strong> Alle Effekte mit CSS-Animationen (Welle, Feuer, Matrix)</div>
                                 <div>🎵 <strong>Musik-Player:</strong> Persistente Wiedergabe, automatische Metadaten-Sortierung</div>
@@ -441,53 +441,38 @@
                     </div>
 
                     <!-- Single App IFrame -->
-                    <iframe class="app-iframe" id="app-iframe" title="LED Control App" style="border: none; width: 100%; height: 100%;"></iframe>
+                    <iframe class="app-iframe app-iframe-full" id="app-iframe" title="LED Control App"></iframe>
                 </div>
             </div>
         </div>
 
         <!-- Sprachsteuerung Button -->
-        <button id="voiceControlBtn" style="
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      border: none;
-      color: white;
-      font-size: 20px;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-      z-index: 1000;
-      transition: all 0.3s;
-    " aria-label="Sprachsteuerung">
+        <button type="button" id="voice-control-btn" aria-label="Sprachsteuerung">
             <i class="fas fa-microphone"></i>
         </button>
 
         <!-- Navigation unten -->
         <div class="nav-bar">
 
-            <button class="nav-item" data-app="farbe" aria-label="Farbauswahl öffnen">
+            <button type="button" class="nav-item" data-app="farbe" aria-label="Farbauswahl öffnen">
                 <i class="fas fa-palette" aria-hidden="true"></i>
-                <div class="nav-item-text">Farbe</div>
+                <span class="nav-item-text">Farbe</span>
             </button>
-            <button class="nav-item" data-app="effekt" aria-label="LED-Effekte öffnen">
+            <button type="button" class="nav-item" data-app="effekt" aria-label="LED-Effekte öffnen">
                 <i class="fas fa-magic" aria-hidden="true"></i>
-                <div class="nav-item-text">Effekte</div>
+                <span class="nav-item-text">Effekte</span>
             </button>
-            <button class="nav-item" data-app="musik" aria-label="Musik-Player öffnen">
+            <button type="button" class="nav-item" data-app="musik" aria-label="Musik-Player öffnen">
                 <i class="fas fa-music" aria-hidden="true"></i>
-                <div class="nav-item-text">Musik</div>
+                <span class="nav-item-text">Musik</span>
             </button>
-            <button class="nav-item" data-app="timer" aria-label="Timer öffnen">
+            <button type="button" class="nav-item" data-app="timer" aria-label="Timer öffnen">
                 <i class="fas fa-clock" aria-hidden="true"></i>
-                <div class="nav-item-text">Timer</div>
+                <span class="nav-item-text">Timer</span>
             </button>
-            <button class="nav-item" data-app="einstellungen" aria-label="Einstellungen öffnen">
+            <button type="button" class="nav-item" data-app="einstellungen" aria-label="Einstellungen öffnen">
                 <i class="fas fa-cog" aria-hidden="true"></i>
-                <div class="nav-item-text">Einstellungen</div>
+                <span class="nav-item-text">Einstellungen</span>
             </button>
         </div>
     </div>

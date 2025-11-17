@@ -357,8 +357,8 @@ window.showGlobalNotification = showGlobalNotification;
  * Initialisiert das Partikel-System
  */
 function initParticles() {
-    const canvas = document.getElementById('backgroundCanvas');
-    const ctx = canvas ? .getContext('2d');
+    const canvas = document.getElementById('background-canvas');
+    const ctx = canvas ? canvas.getContext('2d') : null;
 
     if (!canvas || !ctx) {
         console.warn('Partikel-Canvas nicht gefunden oder Context nicht verfügbar');
@@ -652,7 +652,7 @@ if (window.ledController && window.ledController.device) {
  * Aktualisiert den globalen BLE-Status in der UI
  */
 function updateGlobalBLEStatus() {
-    const connectedCount = AppState.ble.connected && window.ledController ? .isConnected ? 1 : 0;
+    const connectedCount = AppState.ble.connected && window.ledController && window.ledController.isConnected ? 1 : 0;
 
     // Status-Element aktualisieren
     const statusElement = document.getElementById('ble-status');
