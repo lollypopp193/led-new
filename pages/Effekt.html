@@ -2592,6 +2592,41 @@
         if (activeEffect) {
             sendEffectToBLE(activeEffect, globalSpeed);
         }
+
+        // ✅ =================================================================
+        // DEBUG: TESTE OB ALLE EFFEKT-ELEMENTE EXISTIEREN
+        // ✅ =================================================================
+        console.log('🔍 ===== EFFEKT DEBUG-CHECK START =====');
+        const effektElementsToCheck = [
+            'globalSpeed', 'speedValue', 'resetBtn', 'notification',
+            'effectsGrid' // Container für alle Effekte
+        ];
+
+        let missingEffektElements = [];
+        effektElementsToCheck.forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) {
+                missingEffektElements.push(id);
+                console.error(`❌ Effekt-Element NICHT gefunden: ${id}`);
+            } else {
+                console.log(`✅ Effekt-Element gefunden: ${id}`);
+            }
+        });
+
+        if (missingEffektElements.length === 0) {
+            console.log('✅ ===== ALLE EFFEKT-ELEMENTE VORHANDEN! =====');
+        } else {
+            console.error(`❌ ===== ${missingEffektElements.length} EFFEKT-ELEMENTE FEHLEN: ${missingEffektElements.join(', ')} =====`);
+        }
+
+        // Zähle Effekte
+        const effectCards = document.querySelectorAll('.effect-card');
+        console.log(`✨ ${effectCards.length} Effekt-Karten gefunden`);
+        console.log(`⚡ Aktiver Effekt: ${activeEffect || 'keiner'}`);
+        console.log(`🎚️ Geschwindigkeit: ${globalSpeed}`);
+        // ✅ =================================================================
+
+        console.log('✨ Effekt.html Initialisierung abgeschlossen!');
     </script>
 </body>
 

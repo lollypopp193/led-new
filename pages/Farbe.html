@@ -2384,6 +2384,40 @@
                 }
             };
 
+            // ✅ =================================================================
+            // DEBUG: TESTE OB ALLE FARB-ELEMENTE EXISTIEREN
+            // ✅ =================================================================
+            console.log('🔍 ===== FARBE DEBUG-CHECK START =====');
+            const farbeElementsToCheck = [
+                'colorWheel', 'colorPointer', 'rgbBtn', 'rgbPopup', 'closeRgbPopup',
+                'redSlider', 'greenSlider', 'blueSlider', 'rgbPreview',
+                'brightnessSlider', 'brightnessValue', 'temperatureSlider', 'temperatureValue',
+                'saveColorBtn', 'clearAllColorsBtn', 'powerToggle', 'colorPreview',
+                'settingsBtn', 'sidePanel', 'closePanelBtn'
+            ];
+
+            let missingFarbeElements = [];
+            farbeElementsToCheck.forEach(id => {
+                const el = document.getElementById(id);
+                if (!el) {
+                    missingFarbeElements.push(id);
+                    console.error(`❌ Farbe-Element NICHT gefunden: ${id}`);
+                } else {
+                    console.log(`✅ Farbe-Element gefunden: ${id}`);
+                }
+            });
+
+            if (missingFarbeElements.length === 0) {
+                console.log('✅ ===== ALLE FARBE-ELEMENTE VORHANDEN! =====');
+            } else {
+                console.error(`❌ ===== ${missingFarbeElements.length} FARBE-ELEMENTE FEHLEN: ${missingFarbeElements.join(', ')} =====`);
+            }
+
+            // Zähle wie viele Preset-Farben es gibt
+            const presetColors = document.querySelectorAll('.preset-color');
+            console.log(`🎨 ${presetColors.length} Preset-Farben gefunden`);
+            // ✅ =================================================================
+
             console.log('🎨 Farbe.html Initialisierung abgeschlossen!');
         });
     </script>

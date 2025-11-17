@@ -8700,19 +8700,19 @@
                 scanBtn.addEventListener('click', openScanModal);
                 console.log('✅ Bibliotheks-Scan Button Event-Listener hinzugefügt');
             }
-            
+
             // Initialisiere globale musicLibrary falls noch nicht vorhanden
             if (!window.musicLibrary) {
-                window.musicLibrary = { 
-                    songs: [], 
-                    artists: {}, 
-                    albums: {}, 
+                window.musicLibrary = {
+                    songs: [],
+                    artists: {},
+                    albums: {},
                     genres: {},
                     folders: {}
                 };
                 console.log('✅ Globale musicLibrary initialisiert');
             }
-            
+
             // Lade gespeicherte Bibliothek
             const storedLibrary = loadMusicLibraryFromStorage();
             if (storedLibrary && storedLibrary.songs) {
@@ -8720,7 +8720,7 @@
                 window.musicLibrary.songs = storedLibrary.songs;
                 organizeMusicLibrary();
                 console.log('ℹ️ Gespeicherte Musikbibliothek geladen:', storedLibrary.songs.length, 'Songs');
-                
+
                 // UI aktualisieren falls libraryManager vorhanden
                 if (window.libraryManager) {
                     window.libraryManager.refreshAllSections();
@@ -8729,7 +8729,7 @@
         });
 
         // ===== INTEGRATION MIT BESTEHENDEM SYSTEM =====
-        
+
         // Exportiere Funktionen für externe Verwendung
         window.musicScanner = {
             openScanModal: openScanModal,
@@ -8738,7 +8738,6 @@
             isScanningLibrary: () => isScanningLibrary,
             getScannedFiles: () => scannedFiles
         };
-
     </script>
 
     <!-- 🔧 DEBUG-CODE - NUR ZUM TESTEN -->
@@ -8758,6 +8757,37 @@
             document.querySelectorAll('.taskbar-btn').forEach((btn, index) => {
                 console.log(`Button ${index + 1}:`, btn.getAttribute('data-content'));
             });
+
+            // ✅ =================================================================
+            // DEBUG: TESTE OB ALLE MUSIK-ELEMENTE EXISTIEREN
+            // ✅ =================================================================
+            console.log('🔍 ===== MUSIK DEBUG-CHECK START =====');
+            const musikElementsToCheck = [
+                'songList', 'searchInput', 'addFilesBtn', 'playPauseBtn',
+                'prevBtn', 'nextBtn', 'shuffleBtn', 'repeatBtn',
+                'progressBar', 'currentTime', 'duration',
+                'currentSongTitle', 'currentArtist', 'albumCover'
+            ];
+
+            let missingMusikElements = [];
+            musikElementsToCheck.forEach(id => {
+                const el = document.getElementById(id);
+                if (!el) {
+                    missingMusikElements.push(id);
+                    console.error(`❌ Musik-Element NICHT gefunden: ${id}`);
+                } else {
+                    console.log(`✅ Musik-Element gefunden: ${id}`);
+                }
+            });
+
+            if (missingMusikElements.length === 0) {
+                console.log('✅ ===== ALLE MUSIK-ELEMENTE VORHANDEN! =====');
+            } else {
+                console.error(`❌ ===== ${missingMusikElements.length} MUSIK-ELEMENTE FEHLEN: ${missingMusikElements.join(', ')} =====`);
+            }
+
+            console.log(`🎵 Musik-Seite vollständig geladen!`);
+            // ✅ =================================================================
         });
     </script>
 

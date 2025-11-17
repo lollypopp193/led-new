@@ -1290,6 +1290,42 @@
 
         // Timer-Liste beim Laden anzeigen
         document.addEventListener('DOMContentLoaded', renderTimerList);
+
+        // ✅ =================================================================
+        // DEBUG: TESTE OB ALLE TIMER-ELEMENTE EXISTIEREN
+        // ✅ =================================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🔍 ===== TIMER DEBUG-CHECK START =====');
+            const timerElementsToCheck = [
+                'quickTimersContainer', 'customTimerContainer', 'activeTimersContainer',
+                'timerDisplay', 'customMinutesInput', 'startCustomTimerBtn'
+            ];
+
+            let missingTimerElements = [];
+            timerElementsToCheck.forEach(id => {
+                const el = document.getElementById(id);
+                if (!el) {
+                    missingTimerElements.push(id);
+                    console.error(`❌ Timer-Element NICHT gefunden: ${id}`);
+                } else {
+                    console.log(`✅ Timer-Element gefunden: ${id}`);
+                }
+            });
+
+            if (missingTimerElements.length === 0) {
+                console.log('✅ ===== ALLE TIMER-ELEMENTE VORHANDEN! =====');
+            } else {
+                console.error(`❌ ===== ${missingTimerElements.length} TIMER-ELEMENTE FEHLEN: ${missingTimerElements.join(', ')} =====`);
+            }
+
+            // Zähle Quick-Timer Buttons
+            const quickTimerBtns = document.querySelectorAll('.timer-btn');
+            console.log(`⏱️ ${quickTimerBtns.length} Quick-Timer Buttons gefunden`);
+            console.log(`⏰ Aktive Timer: ${timers.length}`);
+
+            console.log('⏰ Timer.html vollständig geladen!');
+        });
+        // ✅ =================================================================
     </script>
 
     <!-- main.js entfernt - Datei existiert nicht -->
