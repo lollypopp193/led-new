@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Backup & Synchronisation - LED Einstellungen</title>
+    <title>Backup &amp; Synchronisation - LED Einstellungen</title>
     <!-- Fallback für offline Nutzung -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" onerror="this.href='../css/fontawesome-fallback.css'">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" onerror="this.href='../css/fonts-fallback.css'">
@@ -222,7 +222,7 @@
     <div class="app-container">
         <header class="app-header">
             <h1 class="app-title">
-                <i class="fas fa-cloud" aria-hidden="true"></i> Backup & Synchronisation
+                <i class="fas fa-cloud" aria-hidden="true"></i> Backup &amp; Synchronisation
             </h1>
             <p class="app-subtitle">Sichern und synchronisieren Sie Ihre LED-Einstellungen</p>
         </header>
@@ -250,10 +250,10 @@
                     </div>
                 </div>
                 <div class="backup-actions">
-                    <button class="btn btn-secondary" onclick="toggleAutoBackup()" id="autoBackupBtn">
+                    <button type="button" class="btn btn-secondary" onclick="toggleAutoBackup()" id="autoBackupBtn">
                         <i class="fas fa-play" aria-hidden="true"></i> Aktivieren
                     </button>
-                    <button class="btn btn-outline" onclick="configureAutoBackup()">
+                    <button type="button" class="btn btn-outline" onclick="configureAutoBackup()">
                         <i class="fas fa-cog" aria-hidden="true"></i> Konfigurieren
                     </button>
                 </div>
@@ -271,10 +271,10 @@
                     </div>
                 </div>
                 <div class="backup-actions">
-                    <button class="btn btn-secondary" onclick="createBackup()">
+                    <button type="button" class="btn btn-secondary" onclick="createBackup()">
                         <i class="fas fa-save" aria-hidden="true"></i> Backup erstellen
                     </button>
-                    <button class="btn btn-outline" onclick="exportSettings()">
+                    <button type="button" class="btn btn-outline" onclick="exportSettings()">
                         <i class="fas fa-file-export" aria-hidden="true"></i> Exportieren
                     </button>
                 </div>
@@ -292,10 +292,10 @@
                     </div>
                 </div>
                 <div class="backup-actions">
-                    <button class="btn btn-secondary" onclick="syncToCloud()">
+                    <button type="button" class="btn btn-secondary" onclick="syncToCloud()">
                         <i class="fas fa-sync" aria-hidden="true"></i> Synchronisieren
                     </button>
-                    <button class="btn btn-outline" onclick="configureCloud()">
+                    <button type="button" class="btn btn-outline" onclick="configureCloud()">
                         <i class="fas fa-cog" aria-hidden="true"></i> Einrichten
                     </button>
                 </div>
@@ -317,10 +317,10 @@
                     </div>
                     <div class="backup-size">2.4 MB</div>
                     <div class="backup-actions">
-                        <button class="btn btn-small" onclick="restoreBackup('full-today')">
+                        <button type="button" class="btn btn-small" onclick="restoreBackup('full-today')">
                             <i class="fas fa-undo" aria-hidden="true"></i> Wiederherstellen
                         </button>
-                        <button class="btn btn-small btn-outline" onclick="downloadBackup('full-today')">
+                        <button type="button" class="btn btn-small btn-outline" onclick="downloadBackup('full-today')" aria-label="Backup herunterladen">
                             <i class="fas fa-download" aria-hidden="true"></i>
                         </button>
                     </div>
@@ -333,10 +333,10 @@
                     </div>
                     <div class="backup-size">0.8 MB</div>
                     <div class="backup-actions">
-                        <button class="btn btn-small" onclick="restoreBackup('scenes-yesterday')">
+                        <button type="button" class="btn btn-small" onclick="restoreBackup('scenes-yesterday')">
                             <i class="fas fa-undo" aria-hidden="true"></i> Wiederherstellen
                         </button>
-                        <button class="btn btn-small btn-outline" onclick="downloadBackup('scenes-yesterday')">
+                        <button type="button" class="btn btn-small btn-outline" onclick="downloadBackup('scenes-yesterday')" aria-label="Backup herunterladen">
                             <i class="fas fa-download" aria-hidden="true"></i>
                         </button>
                     </div>
@@ -349,10 +349,10 @@
                     </div>
                     <div class="backup-size">0.3 MB</div>
                     <div class="backup-actions">
-                        <button class="btn btn-small" onclick="restoreBackup('devices-3days')">
+                        <button type="button" class="btn btn-small" onclick="restoreBackup('devices-3days')">
                             <i class="fas fa-undo" aria-hidden="true"></i> Wiederherstellen
                         </button>
-                        <button class="btn btn-small btn-outline" onclick="downloadBackup('devices-3days')">
+                        <button type="button" class="btn btn-small btn-outline" onclick="downloadBackup('devices-3days')" aria-label="Backup herunterladen">
                             <i class="fas fa-download" aria-hidden="true"></i>
                         </button>
                     </div>

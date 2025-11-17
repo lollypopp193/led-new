@@ -877,3 +877,52 @@ body {
 .nav-item-text {
     display: block;
 }
+
+/* ===================================================================
+   EINSTELLUNGEN.HTML SPECIFIC STYLES
+   =================================================================== */
+
+.wled-scan-btn {
+    padding: 10px 20px;
+    background: linear-gradient(45deg, #4ecdc4, #44a08d);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.wled-scan-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(78, 205, 196, 0.4);
+}
+
+.wled-devices-list {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 15px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.wled-no-devices {
+    color: #888;
+    text-align: center;
+    padding: 20px;
+}
+
+.language-select {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 16px;
+    min-height: 44px;
+    cursor: pointer;
+}
+
+.language-select:focus {
+    outline: none;
+    border-color: var(--accent-cyan);
+}
