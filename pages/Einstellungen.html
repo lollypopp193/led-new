@@ -2536,7 +2536,7 @@
                 autoConnect = !autoConnect;
                 this.classList.toggle('active');
                 saveSettings();
-                showNotification(`Auto-Verbindung ${autoConnect ??'aktiviert' : 'deaktiviert'}`, 'success');
+                showNotification(`Auto-Verbindung ${autoConnect ? 'aktiviert' : 'deaktiviert'}`, 'success');
             });
 
             // ✅ WLED-SWITCH EVENT
@@ -2545,8 +2545,8 @@
                 const isActive = this.classList.contains('active');
 
                 // Zeige/Verstecke WLED-Optionen
-                document.getElementById('wledScanSection').style.display = isActive ? ? 'block' : 'none';
-                document.getElementById('wledDevicesSection').style.display = isActive ? ? 'block' : 'none';
+                document.getElementById('wledScanSection').style.display = isActive ? 'block' : 'none';
+                document.getElementById('wledDevicesSection').style.display = isActive ? 'block' : 'none';
 
                 if (isActive) {
                     showNotification('WLED-Integration aktiviert', 'success');
@@ -2570,7 +2570,7 @@
                 const isActive = this.classList.contains('active');
                 window.pixelControlEnabled = isActive;
 
-                showNotification(`Pixel-Control ${isActive ??'aktiviert' : 'deaktiviert'}`, 'success');
+                showNotification(`Pixel-Control ${isActive ? 'aktiviert' : 'deaktiviert'}`, 'success');
                 localStorage.setItem('pixelControlEnabled', isActive);
 
                 // Sende Info an andere Module
@@ -2586,7 +2586,7 @@
                 notifications = !notifications;
                 this.classList.toggle('active');
                 saveSettings();
-                showNotification(`Benachrichtigungen ${notifications ??'aktiviert' : 'deaktiviert'}`, 'success');
+                showNotification(`Benachrichtigungen ${notifications ? 'aktiviert' : 'deaktiviert'}`, 'success');
             });
 
             document.getElementById('darkModeSwitch').addEventListener('click', toggleDarkMode);
@@ -2601,7 +2601,7 @@
                 hwAccel = !hwAccel;
                 this.classList.toggle('active');
                 saveSettings();
-                showNotification(`Hardware-Beschleunigung ${hwAccel ??'aktiviert' : 'deaktiviert'}`, 'success');
+                showNotification(`Hardware-Beschleunigung ${hwAccel ? 'aktiviert' : 'deaktiviert'}`, 'success');
             });
 
             // ✅ WLED SCAN BUTTON
