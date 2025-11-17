@@ -1704,14 +1704,128 @@
             saveSettings();
         }
 
-        function changeFreqRange(range) {
-            freqRange = range;
-            saveSettings();
-        }
-
+        // ✅ LATENCY SLIDER - ECHTE HARDWARE-KOMMUNIKATION
         function updateLatency(value) {
             latency = parseInt(value);
             document.getElementById('latencyValue').textContent = latency + ' ms';
+
+            let controller = null;
+            if (window.parent && window.parent !== window && window.parent.bleController) {
+                controller = window.parent.bleController;
+            } else if (window.bleController) {
+                controller = window.bleController;
+            }
+
+            if (controller && controller.isConnected) {
+                try {
+                    controller.setLatency(latency);
+                    console.log('✅ Latenz gesendet:', latency + 'ms');
+                } catch (error) {
+                    console.error('❌ Fehler beim Senden der Latenz:', error);
+                }
+            }
+
+            saveSettings();
+        }
+
+        // ✅ WHITE BALANCE SLIDER - ECHTE HARDWARE-KOMMUNIKATION
+        function updateWhiteBalance(value) {
+            whiteBalance = parseInt(value);
+            document.getElementById('whiteBalanceValue').textContent = whiteBalance + 'K';
+
+            let controller = null;
+            if (window.parent && window.parent !== window && window.parent.bleController) {
+                controller = window.parent.bleController;
+            } else if (window.bleController) {
+                controller = window.bleController;
+            }
+
+            if (controller && controller.isConnected) {
+                try {
+                    controller.setWhiteBalance(whiteBalance);
+                    console.log('✅ Weißabgleich gesendet:', whiteBalance + 'K');
+                } catch (error) {
+                    console.error('❌ Fehler beim Senden des Weißabgleichs:', error);
+                }
+            }
+
+            saveSettings();
+        }
+
+        // ✅ GAMMA SLIDER - ECHTE HARDWARE-KOMMUNIKATION
+        function updateGamma(value) {
+            gamma = parseFloat(value);
+            document.getElementById('gammaValue').textContent = gamma.toFixed(1);
+
+            let controller = null;
+            if (window.parent && window.parent !== window && window.parent.bleController) {
+                controller = window.parent.bleController;
+            } else if (window.bleController) {
+                controller = window.bleController;
+            }
+
+            if (controller && controller.isConnected) {
+                try {
+                    controller.setGamma(gamma);
+                    console.log('✅ Gamma-Korrektur gesendet:', gamma);
+                } catch (error) {
+                    console.error('❌ Fehler beim Senden der Gamma-Korrektur:', error);
+                }
+            }
+
+            saveSettings();
+        }
+
+        // ✅ MAX CURRENT SLIDER - ECHTE HARDWARE-KOMMUNIKATION
+        function updateMaxCurrent(value) {
+            maxCurrent = parseInt(value);
+            document.getElementById('maxCurrentValue').textContent = maxCurrent + ' mA';
+
+            let controller = null;
+            if (window.parent && window.parent !== window && window.parent.bleController) {
+                controller = window.parent.bleController;
+            } else if (window.bleController) {
+                controller = window.bleController;
+            }
+
+            if (controller && controller.isConnected) {
+                try {
+                    controller.setMaxCurrent(maxCurrent);
+                    console.log('✅ Max. Strom gesendet:', maxCurrent + 'mA');
+                } catch (error) {
+                    console.error('❌ Fehler beim Senden des max. Stroms:', error);
+                }
+            }
+
+            saveSettings();
+        }
+
+        // ✅ AUTO-OFF SLIDER - ECHTE HARDWARE-KOMMUNIKATION
+        function updateAutoOff(value) {
+            autoOff = parseInt(value);
+            document.getElementById('autoOffValue').textContent = autoOff > 0 ? autoOff + ' Min' : 'Aus';
+
+            let controller = null;
+            if (window.parent && window.parent !== window && window.parent.bleController) {
+                controller = window.parent.bleController;
+            } else if (window.bleController) {
+                controller = window.bleController;
+            }
+
+            if (controller && controller.isConnected) {
+                try {
+                    controller.setAutoOff(autoOff);
+                    console.log('✅ Auto-Aus gesendet:', autoOff > 0 ? autoOff + ' Min' : 'Deaktiviert');
+                } catch (error) {
+                    console.error('❌ Fehler beim Senden von Auto-Aus:', error);
+                }
+            }
+
+            saveSettings();
+        }
+
+        function changeFreqRange(range) {
+            freqRange = range;
             saveSettings();
         }
 
@@ -1753,18 +1867,6 @@
 
         function updateUDPPort(value) {
             udpPort = parseInt(value);
-            saveSettings();
-        }
-
-        function updateWhiteBalance(value) {
-            whiteBalance = parseInt(value);
-            document.getElementById('whiteBalanceValue').textContent = whiteBalance + 'K';
-            saveSettings();
-        }
-
-        function updateGamma(value) {
-            gamma = parseFloat(value);
-            document.getElementById('gammaValue').textContent = gamma.toFixed(1);
             saveSettings();
         }
 
@@ -2704,6 +2806,27 @@
 
             document.getElementById('micSensitivitySlider').addEventListener('input', function() {
                 updateMicSensitivity(this.value); // ✅ ECHTE FUNKTION!
+            });
+
+            // ✅ ALLE WEITEREN SLIDER MIT HARDWARE-KOMMUNIKATION!
+            document.getElementById('latencySlider').addEventListener('input', function() {
+                updateLatency(this.value);
+            });
+
+            document.getElementById('whiteBalanceSlider').addEventListener('input', function() {
+                updateWhiteBalance(this.value);
+            });
+
+            document.getElementById('gammaSlider').addEventListener('input', function() {
+                updateGamma(this.value);
+            });
+
+            document.getElementById('maxCurrentSlider').addEventListener('input', function() {
+                updateMaxCurrent(this.value);
+            });
+
+            document.getElementById('autoOffSlider').addEventListener('input', function() {
+                updateAutoOff(this.value);
             });
 
             // ✅ LANGUAGE SELECT EVENT
