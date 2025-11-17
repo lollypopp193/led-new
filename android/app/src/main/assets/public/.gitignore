@@ -28,14 +28,3 @@ coverage/
 # Temporary
 *.tmp
 .fake
-
-# Capacitor
-android/build/
-android/app/build/
-android/.gradle/
-android/local.properties
-.capacitor-ignore
-capacitor.config.ts
-
-# SonarLint
-.sonarlint/

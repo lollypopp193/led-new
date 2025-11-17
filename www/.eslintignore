@@ -1,0 +1,9 @@
+# Dependencies
+node_modules/
+
+# Service Worker
+sw.js
+timer-service-worker.js
+
+# Ignore HTML files for inline script errors
+*.html
