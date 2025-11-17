@@ -7102,6 +7102,31 @@
                     if (targetPanel) {
                         targetPanel.classList.add('active');
                         console.log(`✅ Panel '${content}' angezeigt`);
+
+                        // SPEZIAL-AKTIONEN FÜR JEDES PANEL
+                        switch (content) {
+                            case 'equalizer':
+                                console.log('🎚 Equalizer Panel aktiviert');
+                                break;
+                            case 'visualizer':
+                                console.log('🌈 Visualizer Panel aktiviert');
+                                break;
+                            case 'led':
+                                console.log('💡 LED-Musik Panel aktiviert');
+                                break;
+                            case 'party':
+                                console.log('🎉 Party-Modus Panel aktiviert');
+                                break;
+                            case 'library':
+                                console.log('📚 Bibliothek Panel aktiviert');
+                                break;
+                            case 'settings':
+                                console.log('⚙️ Einstellungen Panel aktiviert');
+                                break;
+                            case 'player':
+                                console.log('▶️ Player Panel aktiviert');
+                                break;
+                        }
                     } else {
                         console.error(`❌ Panel '${content}' nicht gefunden!`);
                     }
