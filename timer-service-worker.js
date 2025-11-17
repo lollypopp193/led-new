@@ -5,17 +5,17 @@
  * Version: 1.0
  * Datum: 2025-10-08
  * ===================================================================
- * 
+ *
  * Funktionen:
  * - Zuverlässige Timer im Hintergrund
  * - Web Notifications bei Timer-Ablauf
  * - Offline-Funktionalität
  * - Background Sync
  * - Push Notifications (optional)
- * 
+ *
  * Installation:
  * - In pages/Timer.html: navigator.serviceWorker.register('../timer-service-worker.js')
- * 
+ *
  * ===================================================================
  */
 
@@ -66,10 +66,23 @@ self.addEventListener('activate', (event) => {
 // ===================================================================
 
 self.addEventListener('message', (event) => {
+    // ✅ SICHERHEITSVALIDIERUNG
+    if (!event.data || typeof event.data !== 'object') {
+        console.warn('🚫 Ungültige Message-Daten erhalten');
+        return;
+    }
+
     const {
         type,
         data
     } = event.data;
+
+    // ✅ Validiere Message-Type
+    const validTypes = ['ADD_TIMER', 'REMOVE_TIMER', 'GET_TIMERS', 'CLEAR_ALL_TIMERS'];
+    if (!validTypes.includes(type)) {
+        console.warn('🚫 Unbekannter oder ungültiger Message-Type:', type);
+        return;
+    }
 
     console.log('📨 Message empfangen:', type);
 
