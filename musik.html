@@ -99,12 +99,12 @@
             border-radius: 0;
             padding: 0;
             margin: 0;
-            display: none;
+            display: none !important;
             min-height: calc(100vh - 60px);
         }
 
         .content-panel.active {
-            display: block;
+            display: block !important;
         }
 
         .panel-header {
@@ -7481,14 +7481,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     transform: translateX(100%);
                     opacity: 0;
                 }
-            }
-            
-            /* PANELS SICHTBAR MACHEN */
-            .content-panel {
-                display: none;
-            }
-            .content-panel.active {
-                display: block !important;
             }
         `;
         document.head.appendChild(style);
