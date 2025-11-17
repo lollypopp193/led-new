@@ -5383,69 +5383,10 @@
                                                 console.log('✅ Audio-Element verbunden');
                                             }
 
-                                            // ✅ TASKBAR-BUTTON EVENT-LISTENER
-                                            const taskbarButtons = document.querySelectorAll('.taskbar-btn');
-                                            console.log(`✅ ${taskbarButtons.length} Taskbar-Buttons gefunden`);
-
-                                            taskbarButtons.forEach(btn => {
-                                                btn.addEventListener('click', function() {
-                                                    const content = this.getAttribute('data-content');
-                                                    console.log(`🎵 Tab geklickt: ${content}`);
-
-                                                    // AKTIVE TAB WECHSELN
-                                                    document.querySelectorAll('.taskbar-btn').forEach(b => b.classList.remove('active'));
-                                                    this.classList.add('active');
-
-                                                    // ALLE PANELS VERSTECKEN (wie in funktionierender Version)
-                                                    document.querySelectorAll('.content-panel').forEach(panel => panel.classList.remove('active'));
-
-                                                    // GEWÄHLTES PANEL ANZEIGEN (einfache Methode)
-                                                    const targetPanel = document.getElementById(content);
-                                                    if (targetPanel) {
-                                                        targetPanel.classList.add('active');
-                                                        console.log(` Panel '${content}' angezeigt`);
-
-                                                        // SPEZIAL-AKTIONEN FÜR JEDES PANEL
-                                                        switch (content) {
-                                                            case 'equalizer':
-                                                                console.log(' Equalizer Panel aktiviert');
-                                                                if (typeof initializeEqualizer === 'function') {
-                                                                    initializeEqualizer();
-                                                                }
-                                                                break;
-                                                            case 'visualizer':
-                                                                console.log('🌈 Visualizer Panel aktiviert');
-                                                                if (typeof initializeVisualizer === 'function') {
-                                                                    initializeVisualizer();
-                                                                }
-                                                                break;
-                                                            case 'led':
-                                                                console.log('💡 LED-Musik Panel aktiviert');
-                                                                break;
-                                                            case 'party':
-                                                                console.log('🎉 Party-Modus Panel aktiviert');
-                                                                break;
-                                                            case 'library':
-                                                                console.log('📚 Bibliothek Panel aktiviert');
-                                                                break;
-                                                            case 'settings':
-                                                                console.log('⚙️ Einstellungen Panel aktiviert');
-                                                                break;
-                                                            case 'player':
-                                                                console.log(' Player Panel aktiviert');
-                                                                break;
-                                                        }
-                                                    } else {
-                                                        console.error(` Panel '${content}' nicht gefunden!`);
-                                                    }
-                                                });
-                                            }); // ← Schließt forEach
-                                            // Initial Player-Tab aktivieren
-                                            const playerTab = document.querySelector('.taskbar-btn[data-content="player"]');
-                                            if (playerTab) {
-                                                playerTab.click();
-                                                console.log('✅ Player-Tab initial aktiviert');
-                                            }
+                                            // ❌ TASKBAR-BUTTON EVENT-LISTENER ENTFERNT
+                                            // Diese doppelte Registrierung wurde entfernt, da sie mit dem separaten Script-Block kollidierte
+                                            // Taskbar-Navigation wird jetzt ausschließlich durch das separate Script am Ende der Datei behandelt
+                                            console.log('🎵 Audio-System initialisiert - Taskbar-Navigation wird separat geladen');
 
                                             // Player initialisieren (direkt hier statt über separate Funktion)
                                             // Initialize visualizer on page load
@@ -7132,12 +7073,8 @@
                                             });
                                     }
 
-                                    // Funktion aufrufen wenn DOM geladen ist oder sofort wenn bereits geladen
-                                    if (document.readyState === 'loading') {
-                                        document.addEventListener('DOMContentLoaded', initMusicPanelNavigation);
-                                    } else {
-                                        initMusicPanelNavigation();
-                                    }
+                                    // ❌ ENTFERNT - Funktion war nicht im globalen Scope verfügbar
+                                    // Taskbar-Navigation wird jetzt durch separates Script unten initialisiert
     </script>
 
     <!-- ✅ TASKBAR NAVIGATION FIX - Direkter Event-Listener -->
