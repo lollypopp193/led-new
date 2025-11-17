@@ -252,11 +252,7 @@ async function executeTimerAction(timer) {
  */
 async function showNotification(timer) {
     // Notification-Permission prüfen
-    const permission = await self.registration.permissions ? .query ? .({
-        name: 'notifications'
-    });
-
-    if (permission && permission.state !== 'granted') {
+    if (Notification.permission !== 'granted') {
         console.warn('⚠️ Keine Notification-Berechtigung');
         return;
     }

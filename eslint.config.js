@@ -22,6 +22,7 @@ export default [{
             caches: "readonly",
             clients: "readonly",
             registration: "readonly",
+            Notification: "readonly",
             // DOM globals
             HTMLElement: "readonly",
             Event: "readonly",
