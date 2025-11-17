@@ -39,13 +39,13 @@
         }
 
         .taskbar::-webkit-scrollbar {
-            display: none;
+            height: 6px;
         }
 
         .taskbar-btn {
             background: transparent;
             border: none;
-            color: #888888;
+            color: #bbbbbb;
             padding: 8px 16px;
             border-radius: 8px;
             cursor: pointer;
@@ -80,10 +80,6 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-        }
-
-        .taskbar::-webkit-scrollbar {
-            height: 6px;
         }
 
         .taskbar::-webkit-scrollbar-track {
@@ -252,7 +248,7 @@
         .library-nav-btn {
             background: transparent;
             border: 1px solid #2a2a2a;
-            color: #888;
+            color: #bbbbbb;
             padding: 8px 16px;
             border-radius: 20px;
             cursor: pointer;
@@ -394,7 +390,7 @@
         }
 
         .item-count {
-            color: #888;
+            color: #bbbbbb;
             font-size: 0.9em;
         }
 
@@ -942,8 +938,7 @@
 
 
         .shuffle-btn.active,
-        .repeat-btn.active,
-        .favorite-btn.active {
+        .repeat-btn.active {
             background: #4ecdc4;
             color: #16213e;
             transform: scale(1.1);
@@ -952,47 +947,6 @@
         .favorite-btn.active {
             color: #ff6b6b;
             background: rgba(255, 107, 107, 0.2);
-        }
-
-
-        .library-nav {
-            display: flex;
-            gap: 8px;
-            padding: 16px 24px;
-            overflow-x: auto;
-            border-bottom: 1px solid #1a1a1a;
-            background: #0f0f0f;
-        }
-
-        .library-nav-btn {
-            background: transparent;
-            border: 1px solid #2a2a2a;
-            color: #888888;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            white-space: nowrap;
-            font-size: 0.85em;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .library-nav-btn:hover {
-            background: #1a1a1a;
-            color: #ffffff;
-            border-color: #3a3a3a;
-        }
-
-        .library-nav-btn.active {
-            background: #ff6b35;
-            border-color: #ff6b35;
-            color: #ffffff;
-        }
-
-        .library-nav-btn i {
-            font-size: 0.9em;
         }
 
         .library-section {
@@ -1033,7 +987,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #666666;
+            color: #aaaaaa;
             font-size: 1.8em;
         }
 
@@ -1048,7 +1002,7 @@
         }
 
         .album-card .album-artist {
-            color: #888888;
+            color: #bbbbbb;
             font-size: 0.8em;
             white-space: nowrap;
             overflow: hidden;
@@ -1091,7 +1045,7 @@
             justify-content: center;
             margin-right: 12px;
             font-size: 1.1em;
-            color: #666666;
+            color: #aaaaaa;
         }
 
         .song-details {
@@ -1110,7 +1064,7 @@
         }
 
         .song-artist {
-            color: #888888;
+            color: #bbbbbb;
             font-size: 0.85rem;
             white-space: nowrap;
             overflow: hidden;
@@ -1292,7 +1246,7 @@
 
         .song-artist {
             font-size: 0.95rem;
-            color: #888888;
+            color: #bbbbbb;
             font-weight: 400;
         }
 
@@ -1709,13 +1663,13 @@
 <body>
     <!-- Taskbar -->
     <div class="taskbar">
-        <button class="taskbar-btn active" data-content="player"><i class="fas fa-play"></i> Player</button>
-        <button class="taskbar-btn" data-content="equalizer"><i class="fas fa-sliders-h"></i> Equalizer</button>
-        <button class="taskbar-btn" data-content="visualizer"><i class="fas fa-wave-square"></i> Visualisierung</button>
-        <button class="taskbar-btn" data-content="led"><i class="fas fa-music"></i> LED-Musik</button>
-        <button class="taskbar-btn" data-content="party"><i class="fas fa-glass-cheers"></i> Party-Modus</button>
-        <button class="taskbar-btn" data-content="library"><i class="fas fa-book"></i> Bibliothek</button>
-        <button class="taskbar-btn" data-content="settings"><i class="fas fa-cog"></i> Einstellungen</button>
+        <button type="button" class="taskbar-btn active" data-content="player"><i class="fas fa-play"></i> Player</button>
+        <button type="button" class="taskbar-btn" data-content="equalizer"><i class="fas fa-sliders-h"></i> Equalizer</button>
+        <button type="button" class="taskbar-btn" data-content="visualizer"><i class="fas fa-wave-square"></i> Visualisierung</button>
+        <button type="button" class="taskbar-btn" data-content="led"><i class="fas fa-music"></i> LED-Musik</button>
+        <button type="button" class="taskbar-btn" data-content="party"><i class="fas fa-glass-cheers"></i> Party-Modus</button>
+        <button type="button" class="taskbar-btn" data-content="library"><i class="fas fa-book"></i> Bibliothek</button>
+        <button type="button" class="taskbar-btn" data-content="settings"><i class="fas fa-cog"></i> Einstellungen</button>
     </div>
 
     <!-- Content Area -->
@@ -1773,8 +1727,8 @@
                 <div class="track-info-details" style="flex: 1; text-align: left;">
                     <div class="track-title" id="trackTitle" style="font-size: 1.6rem; font-weight: bold; color: #4ecdc4; margin-bottom: 8px; line-height: 1.2;">Kein Titel ausgewählt</div>
                     <div class="track-artist" id="trackArtist" style="font-size: 1.1rem; color: #a0a0a0; margin-bottom: 6px;">Unbekannter Künstler</div>
-                    <div class="track-album" id="trackAlbum" style="font-size: 0.95rem; color: #707070; font-style: italic;">Unbekanntes Album</div>
-                    <div class="track-year" id="trackYear" style="font-size: 0.85rem; color: #606060; margin-top: 4px;"></div>
+                    <div class="track-album" id="trackAlbum" style="font-size: 0.95rem; color: #aaaaaa; font-style: italic;">Unbekanntes Album</div>
+                    <div class="track-year" id="trackYear" style="font-size: 0.85rem; color: #999999; margin-top: 4px;"></div>
                 </div>
             </div>
 
