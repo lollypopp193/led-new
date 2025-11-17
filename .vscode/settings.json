@@ -52,6 +52,12 @@
     },
     "javascript:S1134": {
       "level": "off"
+    },
+    "css:S7924": {
+      "level": "off"
+    },
+    "Web:S6853": {
+      "level": "off"
     }
   },
   "[html]": {
