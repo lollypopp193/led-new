@@ -14,7 +14,7 @@
  * - Push Notifications (optional)
  * 
  * Installation:
- * - In Timer.html: navigator.serviceWorker.register('timer-service-worker.js')
+ * - In pages/Timer.html: navigator.serviceWorker.register('../timer-service-worker.js')
  * 
  * ===================================================================
  */
@@ -35,10 +35,10 @@ console.log('🔧 Timer Service Worker geladen - Version', SW_VERSION);
 // ===================================================================
 
 self.addEventListener('install', (event) => {
-  console.log('⚙️ Service Worker installiert');
-  
-  // Sofort aktivieren
-  event.waitUntil(self.skipWaiting());
+    console.log('⚙️ Service Worker installiert');
+
+    // Sofort aktivieren
+    event.waitUntil(self.skipWaiting());
 });
 
 // ===================================================================
@@ -46,19 +46,19 @@ self.addEventListener('install', (event) => {
 // ===================================================================
 
 self.addEventListener('activate', (event) => {
-  console.log('✅ Service Worker aktiviert');
-  
-  event.waitUntil(
-    // Alte Caches löschen
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames
-          .filter((name) => name !== CACHE_NAME)
-          .map((name) => caches.delete(name))
-      );
-    })
-    .then(() => self.clients.claim())
-  );
+    console.log('✅ Service Worker aktiviert');
+
+    event.waitUntil(
+        // Alte Caches löschen
+        caches.keys().then((cacheNames) => {
+            return Promise.all(
+                cacheNames
+                .filter((name) => name !== CACHE_NAME)
+                .map((name) => caches.delete(name))
+            );
+        })
+        .then(() => self.clients.claim())
+    );
 });
 
 // ===================================================================
@@ -66,33 +66,36 @@ self.addEventListener('activate', (event) => {
 // ===================================================================
 
 self.addEventListener('message', (event) => {
-  const { type, data } = event.data;
-  
-  console.log('📨 Message empfangen:', type);
-  
-  switch (type) {
-    case 'ADD_TIMER':
-      addTimer(data);
-      break;
-      
-    case 'REMOVE_TIMER':
-      removeTimer(data.timerId);
-      break;
-      
-    case 'GET_TIMERS':
-      event.ports[0].postMessage({
-        type: 'TIMERS_LIST',
-        timers: Array.from(activeTimers.values())
-      });
-      break;
-      
-    case 'CLEAR_ALL_TIMERS':
-      clearAllTimers();
-      break;
-      
-    default:
-      console.warn('Unbekannter Message-Type:', type);
-  }
+    const {
+        type,
+        data
+    } = event.data;
+
+    console.log('📨 Message empfangen:', type);
+
+    switch (type) {
+        case 'ADD_TIMER':
+            addTimer(data);
+            break;
+
+        case 'REMOVE_TIMER':
+            removeTimer(data.timerId);
+            break;
+
+        case 'GET_TIMERS':
+            event.ports[0].postMessage({
+                type: 'TIMERS_LIST',
+                timers: Array.from(activeTimers.values())
+            });
+            break;
+
+        case 'CLEAR_ALL_TIMERS':
+            clearAllTimers();
+            break;
+
+        default:
+            console.warn('Unbekannter Message-Type:', type);
+    }
 });
 
 // ===================================================================
@@ -103,141 +106,141 @@ self.addEventListener('message', (event) => {
  * Fügt Timer hinzu
  */
 function addTimer(timerData) {
-  const {
-    id,
-    name,
-    triggerTime,
-    action,
-    actionData,
-    repeat,
-    repeatInterval
-  } = timerData;
+    const {
+        id,
+        name,
+        triggerTime,
+        action,
+        actionData,
+        repeat,
+        repeatInterval
+    } = timerData;
 
-  console.log('⏰ Timer hinzugefügt:', name, 'Trigger:', new Date(triggerTime));
+    console.log('⏰ Timer hinzugefügt:', name, 'Trigger:', new Date(triggerTime));
 
-  // Timer erstellen
-  const timer = {
-    id: id || generateTimerId(),
-    name: name || 'Timer',
-    triggerTime: triggerTime,
-    action: action || 'notification',
-    actionData: actionData || {},
-    repeat: repeat || false,
-    repeatInterval: repeatInterval || null,
-    createdAt: Date.now(),
-    status: 'active'
-  };
+    // Timer erstellen
+    const timer = {
+        id: id || generateTimerId(),
+        name: name || 'Timer',
+        triggerTime: triggerTime,
+        action: action || 'notification',
+        actionData: actionData || {},
+        repeat: repeat || false,
+        repeatInterval: repeatInterval || null,
+        createdAt: Date.now(),
+        status: 'active'
+    };
 
-  activeTimers.set(timer.id, timer);
+    activeTimers.set(timer.id, timer);
 
-  // Timer-Check starten
-  scheduleTimerCheck(timer);
+    // Timer-Check starten
+    scheduleTimerCheck(timer);
 
-  return timer;
+    return timer;
 }
 
 /**
  * Entfernt Timer
  */
 function removeTimer(timerId) {
-  if (activeTimers.has(timerId)) {
-    const timer = activeTimers.get(timerId);
-    console.log('🗑️ Timer entfernt:', timer.name);
-    
-    activeTimers.delete(timerId);
-    return true;
-  }
-  return false;
+    if (activeTimers.has(timerId)) {
+        const timer = activeTimers.get(timerId);
+        console.log('🗑️ Timer entfernt:', timer.name);
+
+        activeTimers.delete(timerId);
+        return true;
+    }
+    return false;
 }
 
 /**
  * Löscht alle Timer
  */
 function clearAllTimers() {
-  console.log('🗑️ Alle Timer gelöscht');
-  activeTimers.clear();
+    console.log('🗑️ Alle Timer gelöscht');
+    activeTimers.clear();
 }
 
 /**
  * Plant Timer-Check
  */
 function scheduleTimerCheck(timer) {
-  const now = Date.now();
-  const timeUntilTrigger = timer.triggerTime - now;
+    const now = Date.now();
+    const timeUntilTrigger = timer.triggerTime - now;
 
-  if (timeUntilTrigger <= 0) {
-    // Sofort auslösen
-    triggerTimer(timer);
-  } else {
-    // Warten bis Trigger-Zeit
-    setTimeout(() => {
-      triggerTimer(timer);
-    }, Math.min(timeUntilTrigger, 2147483647)); // Max setTimeout-Wert
-  }
+    if (timeUntilTrigger <= 0) {
+        // Sofort auslösen
+        triggerTimer(timer);
+    } else {
+        // Warten bis Trigger-Zeit
+        setTimeout(() => {
+            triggerTimer(timer);
+        }, Math.min(timeUntilTrigger, 2147483647)); // Max setTimeout-Wert
+    }
 }
 
 /**
  * Löst Timer aus
  */
 async function triggerTimer(timer) {
-  console.log('🔔 Timer ausgelöst:', timer.name);
+    console.log('🔔 Timer ausgelöst:', timer.name);
 
-  try {
-    // Aktion ausführen
-    await executeTimerAction(timer);
+    try {
+        // Aktion ausführen
+        await executeTimerAction(timer);
 
-    // Repeat-Logic
-    if (timer.repeat && timer.repeatInterval) {
-      // Nächster Trigger-Zeitpunkt
-      timer.triggerTime = Date.now() + timer.repeatInterval;
-      console.log('🔁 Timer wiederholt:', timer.name, 'Nächster Trigger:', new Date(timer.triggerTime));
-      
-      // Neu schedulen
-      scheduleTimerCheck(timer);
-    } else {
-      // Timer beendet
-      timer.status = 'completed';
-      removeTimer(timer.id);
+        // Repeat-Logic
+        if (timer.repeat && timer.repeatInterval) {
+            // Nächster Trigger-Zeitpunkt
+            timer.triggerTime = Date.now() + timer.repeatInterval;
+            console.log('🔁 Timer wiederholt:', timer.name, 'Nächster Trigger:', new Date(timer.triggerTime));
+
+            // Neu schedulen
+            scheduleTimerCheck(timer);
+        } else {
+            // Timer beendet
+            timer.status = 'completed';
+            removeTimer(timer.id);
+        }
+
+    } catch (error) {
+        console.error('❌ Timer-Ausführung fehlgeschlagen:', error);
+        timer.status = 'failed';
     }
-
-  } catch (error) {
-    console.error('❌ Timer-Ausführung fehlgeschlagen:', error);
-    timer.status = 'failed';
-  }
 }
 
 /**
  * Führt Timer-Aktion aus
  */
 async function executeTimerAction(timer) {
-  switch (timer.action) {
-    case 'notification':
-      await showNotification(timer);
-      break;
-      
-    case 'led-on':
-      await sendLEDCommand('on', timer.actionData);
-      break;
-      
-    case 'led-off':
-      await sendLEDCommand('off', timer.actionData);
-      break;
-      
-    case 'led-color':
-      await sendLEDCommand('color', timer.actionData);
-      break;
-      
-    case 'led-effect':
-      await sendLEDCommand('effect', timer.actionData);
-      break;
-      
-    case 'led-scene':
-      await sendLEDCommand('scene', timer.actionData);
-      break;
-      
-    default:
-      console.warn('Unbekannte Timer-Aktion:', timer.action);
-  }
+    switch (timer.action) {
+        case 'notification':
+            await showNotification(timer);
+            break;
+
+        case 'led-on':
+            await sendLEDCommand('on', timer.actionData);
+            break;
+
+        case 'led-off':
+            await sendLEDCommand('off', timer.actionData);
+            break;
+
+        case 'led-color':
+            await sendLEDCommand('color', timer.actionData);
+            break;
+
+        case 'led-effect':
+            await sendLEDCommand('effect', timer.actionData);
+            break;
+
+        case 'led-scene':
+            await sendLEDCommand('scene', timer.actionData);
+            break;
+
+        default:
+            console.warn('Unbekannte Timer-Aktion:', timer.action);
+    }
 }
 
 // ===================================================================
@@ -248,88 +251,94 @@ async function executeTimerAction(timer) {
  * Zeigt Notification
  */
 async function showNotification(timer) {
-  // Notification-Permission prüfen
-  const permission = await self.registration.permissions?.query?.({ name: 'notifications' });
-  
-  if (permission && permission.state !== 'granted') {
-    console.warn('⚠️ Keine Notification-Berechtigung');
-    return;
-  }
+    // Notification-Permission prüfen
+    const permission = await self.registration.permissions ? .query ? .({
+        name: 'notifications'
+    });
 
-  const title = timer.name || 'Timer abgelaufen';
-  const options = {
-    body: timer.actionData.message || 'Dein Timer ist abgelaufen',
-    icon: '/icon-192.png',
-    badge: '/badge-72.png',
-    tag: `timer-${timer.id}`,
-    requireInteraction: true,
-    actions: [
-      {
-        action: 'dismiss',
-        title: 'OK'
-      },
-      {
-        action: 'snooze',
-        title: 'Erneut erinnern (5 Min)'
-      }
-    ],
-    data: {
-      timerId: timer.id,
-      timerName: timer.name
+    if (permission && permission.state !== 'granted') {
+        console.warn('⚠️ Keine Notification-Berechtigung');
+        return;
     }
-  };
 
-  try {
-    await self.registration.showNotification(title, options);
-    console.log('📬 Notification angezeigt:', title);
-    
-    // Vibration (falls unterstützt)
-    if ('vibrate' in navigator) {
-      navigator.vibrate([200, 100, 200]);
+    const title = timer.name || 'Timer abgelaufen';
+    const options = {
+        body: timer.actionData.message || 'Dein Timer ist abgelaufen',
+        icon: '/icon-192.png',
+        badge: '/badge-72.png',
+        tag: `timer-${timer.id}`,
+        requireInteraction: true,
+        actions: [{
+                action: 'dismiss',
+                title: 'OK'
+            },
+            {
+                action: 'snooze',
+                title: 'Erneut erinnern (5 Min)'
+            }
+        ],
+        data: {
+            timerId: timer.id,
+            timerName: timer.name
+        }
+    };
+
+    try {
+        await self.registration.showNotification(title, options);
+        console.log('📬 Notification angezeigt:', title);
+
+        // Vibration (falls unterstützt)
+        if ('vibrate' in navigator) {
+            navigator.vibrate([200, 100, 200]);
+        }
+
+    } catch (error) {
+        console.error('❌ Notification-Fehler:', error);
     }
-    
-  } catch (error) {
-    console.error('❌ Notification-Fehler:', error);
-  }
 }
 
 /**
  * Notification-Click Handler
  */
 self.addEventListener('notificationclick', (event) => {
-  console.log('🖱️ Notification geklickt:', event.action);
-  
-  event.notification.close();
+    console.log('🖱️ Notification geklickt:', event.action);
 
-  const { timerId } = event.notification.data;
+    event.notification.close();
 
-  if (event.action === 'snooze') {
-    // Timer um 5 Minuten verschieben
-    const timer = activeTimers.get(timerId);
-    if (timer) {
-      timer.triggerTime = Date.now() + (5 * 60 * 1000);
-      scheduleTimerCheck(timer);
-      console.log('⏰ Timer snoozed:', timer.name);
+    const {
+        timerId
+    } = event.notification.data;
+
+    if (event.action === 'snooze') {
+        // Timer um 5 Minuten verschieben
+        const timer = activeTimers.get(timerId);
+        if (timer) {
+            timer.triggerTime = Date.now() + (5 * 60 * 1000);
+            scheduleTimerCheck(timer);
+            console.log('⏰ Timer snoozed:', timer.name);
+        }
+    } else {
+        // App öffnen
+        event.waitUntil(
+            clients.matchAll({
+                type: 'window',
+                includeUncontrolled: true
+            })
+            .then((clientList) => {
+                // Fokus auf existierenden Tab
+                for (const client of clientList) {
+                    if (client.url.includes('pages/Timer.html') && 'focus' in client) {
+                        return client.focus();
+                    }
+                }
+
+                // Neuen Tab öffnen
+                if (clients.openWindow) {
+                    return clients.openWindow('/pages/Timer.html');
+                }
+            })
+        );
     }
-  } else {
-    // App öffnen
-    event.waitUntil(
-      clients.matchAll({ type: 'window', includeUncontrolled: true })
-        .then((clientList) => {
-          // Fokus auf existierenden Tab
-          for (const client of clientList) {
-            if (client.url.includes('Timer.html') && 'focus' in client) {
-              return client.focus();
-            }
-          }
-          
-          // Neuen Tab öffnen
-          if (clients.openWindow) {
-            return clients.openWindow('/Timer.html');
-          }
-        })
-    );
-  }
 });
 
 // ===================================================================
@@ -340,32 +349,34 @@ self.addEventListener('notificationclick', (event) => {
  * Sendet LED-Befehl an Client
  */
 async function sendLEDCommand(command, data = {}) {
-  console.log('💡 LED-Befehl:', command, data);
+    console.log('💡 LED-Befehl:', command, data);
 
-  try {
-    // Alle Clients benachrichtigen
-    const clients = await self.clients.matchAll({ includeUncontrolled: true });
-    
-    if (clients.length === 0) {
-      console.warn('⚠️ Keine aktiven Clients - LED-Befehl kann nicht ausgeführt werden');
-      return;
+    try {
+        // Alle Clients benachrichtigen
+        const clients = await self.clients.matchAll({
+            includeUncontrolled: true
+        });
+
+        if (clients.length === 0) {
+            console.warn('⚠️ Keine aktiven Clients - LED-Befehl kann nicht ausgeführt werden');
+            return;
+        }
+
+        // Nachricht an alle Clients senden
+        clients.forEach(client => {
+            client.postMessage({
+                type: 'EXECUTE_LED_COMMAND',
+                command: command,
+                data: data
+            });
+        });
+
+        console.log(`✅ LED-Befehl an ${clients.length} Client(s) gesendet`);
+
+    } catch (error) {
+        console.error('❌ LED-Befehl fehlgeschlagen:', error);
+        throw error;
     }
-
-    // Nachricht an alle Clients senden
-    clients.forEach(client => {
-      client.postMessage({
-        type: 'EXECUTE_LED_COMMAND',
-        command: command,
-        data: data
-      });
-    });
-
-    console.log(`✅ LED-Befehl an ${clients.length} Client(s) gesendet`);
-
-  } catch (error) {
-    console.error('❌ LED-Befehl fehlgeschlagen:', error);
-    throw error;
-  }
 }
 
 // ===================================================================
@@ -373,29 +384,29 @@ async function sendLEDCommand(command, data = {}) {
 // ===================================================================
 
 self.addEventListener('sync', (event) => {
-  console.log('🔄 Background Sync:', event.tag);
+    console.log('🔄 Background Sync:', event.tag);
 
-  if (event.tag === 'sync-timers') {
-    event.waitUntil(syncTimers());
-  }
+    if (event.tag === 'sync-timers') {
+        event.waitUntil(syncTimers());
+    }
 });
 
 /**
  * Synchronisiert Timer
  */
 async function syncTimers() {
-  console.log('🔄 Synchronisiere Timer...');
-  
-  try {
-    // Hier könnte man Timer mit einem Server synchronisieren
-    // Für diese App nicht notwendig, da alles lokal ist
-    
-    console.log('✅ Timer synchronisiert');
-    
-  } catch (error) {
-    console.error('❌ Sync fehlgeschlagen:', error);
-    throw error;
-  }
+    console.log('🔄 Synchronisiere Timer...');
+
+    try {
+        // Hier könnte man Timer mit einem Server synchronisieren
+        // Für diese App nicht notwendig, da alles lokal ist
+
+        console.log('✅ Timer synchronisiert');
+
+    } catch (error) {
+        console.error('❌ Sync fehlgeschlagen:', error);
+        throw error;
+    }
 }
 
 // ===================================================================
@@ -403,28 +414,28 @@ async function syncTimers() {
 // ===================================================================
 
 self.addEventListener('push', (event) => {
-  console.log('📥 Push empfangen');
+    console.log('📥 Push empfangen');
 
-  if (!event.data) {
-    console.warn('⚠️ Push ohne Daten');
-    return;
-  }
+    if (!event.data) {
+        console.warn('⚠️ Push ohne Daten');
+        return;
+    }
 
-  try {
-    const data = event.data.json();
-    
-    event.waitUntil(
-      self.registration.showNotification(data.title, {
-        body: data.body,
-        icon: data.icon || '/icon-192.png',
-        badge: '/badge-72.png',
-        data: data.data || {}
-      })
-    );
-    
-  } catch (error) {
-    console.error('❌ Push-Handler Fehler:', error);
-  }
+    try {
+        const data = event.data.json();
+
+        event.waitUntil(
+            self.registration.showNotification(data.title, {
+                body: data.body,
+                icon: data.icon || '/icon-192.png',
+                badge: '/badge-72.png',
+                data: data.data || {}
+            })
+        );
+
+    } catch (error) {
+        console.error('❌ Push-Handler Fehler:', error);
+    }
 });
 
 // ===================================================================
@@ -432,41 +443,41 @@ self.addEventListener('push', (event) => {
 // ===================================================================
 
 self.addEventListener('fetch', (event) => {
-  // Nur für GET-Requests
-  if (event.request.method !== 'GET') return;
+    // Nur für GET-Requests
+    if (event.request.method !== 'GET') return;
 
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Cache-Hit
-        if (response) {
-          return response;
-        }
-
-        // Netzwerk-Request
-        return fetch(event.request)
-          .then((response) => {
-            // Nicht cachen wenn keine gültige Antwort
-            if (!response || response.status !== 200 || response.type === 'error') {
-              return response;
+    event.respondWith(
+        caches.match(event.request)
+        .then((response) => {
+            // Cache-Hit
+            if (response) {
+                return response;
             }
 
-            // Response cachen
-            const responseToCache = response.clone();
-            
-            caches.open(CACHE_NAME)
-              .then((cache) => {
-                cache.put(event.request, responseToCache);
-              });
+            // Netzwerk-Request
+            return fetch(event.request)
+                .then((response) => {
+                    // Nicht cachen wenn keine gültige Antwort
+                    if (!response || response.status !== 200 || response.type === 'error') {
+                        return response;
+                    }
 
-            return response;
-          });
-      })
-      .catch(() => {
-        // Fallback für offline
-        return caches.match('/offline.html');
-      })
-  );
+                    // Response cachen
+                    const responseToCache = response.clone();
+
+                    caches.open(CACHE_NAME)
+                        .then((cache) => {
+                            cache.put(event.request, responseToCache);
+                        });
+
+                    return response;
+                });
+        })
+        .catch(() => {
+            // Fallback für offline
+            return caches.match('/offline.html');
+        })
+    );
 });
 
 // ===================================================================
@@ -477,27 +488,27 @@ self.addEventListener('fetch', (event) => {
  * Generiert Timer-ID
  */
 function generateTimerId() {
-  return 'timer_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    return 'timer_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
 }
 
 /**
  * Formatiert Datum
  */
 function formatDate(timestamp) {
-  return new Date(timestamp).toLocaleString('de-DE', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
+    return new Date(timestamp).toLocaleString('de-DE', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
 }
 
 /**
  * Prüft ob Timer abgelaufen
  */
 function isTimerExpired(timer) {
-  return Date.now() >= timer.triggerTime;
+    return Date.now() >= timer.triggerTime;
 }
 
 // ===================================================================
@@ -508,15 +519,15 @@ function isTimerExpired(timer) {
  * Prüft alle Timer regelmäßig
  */
 function startPeriodicTimerCheck() {
-  setInterval(() => {
-    const now = Date.now();
-    
-    activeTimers.forEach((timer) => {
-      if (timer.status === 'active' && now >= timer.triggerTime) {
-        triggerTimer(timer);
-      }
-    });
-  }, 60000); // Alle 60 Sekunden prüfen
+    setInterval(() => {
+        const now = Date.now();
+
+        activeTimers.forEach((timer) => {
+            if (timer.status === 'active' && now >= timer.triggerTime) {
+                triggerTimer(timer);
+            }
+        });
+    }, 60000); // Alle 60 Sekunden prüfen
 }
 
 // Periodischen Check starten
