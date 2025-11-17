@@ -4,11 +4,11 @@
  * Version: 2.0
  * Datum: 2025-10-08
  * ===================================================================
- * 
+ *
  * Diese Datei enthält die gesamte Anwendungslogik, die aus index.html
  * ausgelagert wurde, um eine saubere Trennung von HTML und JavaScript
  * zu erreichen.
- * 
+ *
  * Funktionen:
  * - Partikel-Animation (Hintergrund)
  * - Navigation zwischen Modulen
@@ -17,11 +17,11 @@
  * - Iframe-Kommunikation
  * - Auto-Connect zu gespeicherten Geräten
  * - Fehlerbehandlung und Benachrichtigungen
- * 
+ *
  * Abhängigkeiten:
  * - ble-controller-pro.js (muss vorher geladen sein)
  * - index.html (DOM-Elemente)
- * 
+ *
  * ===================================================================
  */
 
@@ -101,7 +101,7 @@ window.addEventListener('DOMContentLoaded', () => {
                         type: 'BLE_STATUS',
                         connected: status.connected,
                         device: status.device
-                    }, '*');
+                    }, window.location.origin);
                 } catch (e) {}
             });
 
@@ -1085,7 +1085,7 @@ function loadApp(app) {
                             type: 'BLE_STATUS_UPDATE',
                             connected: AppState.ble.connected,
                             controller: window.ledController
-                        }, '*');
+                        }, window.location.origin);
                     }
                 } catch (error) {
                     // Cross-Origin - normal
@@ -1174,7 +1174,11 @@ function loadLastApp() {
 
 window.addEventListener('message', function(event) {
     // Sicherheitscheck für Origin
-    // In Produktion: origin prüfen!
+    const allowedOrigins = [window.location.origin, 'file://', 'null'];
+    if (!allowedOrigins.includes(event.origin) && event.origin !== 'null') {
+        console.warn('⚠️ Nachricht von nicht-autorisierter Origin abgelehnt:', event.origin);
+        return;
+    }
 
     switch (event.data.type) {
         case 'REQUEST_BLE_STATUS':

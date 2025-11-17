@@ -367,7 +367,7 @@
                 <i class="fas fa-upload card-icon" aria-hidden="true"></i>
             </div>
 
-            <div class="file-drop-zone" id="dropZone" onclick="selectFile()">
+            <div class="file-drop-zone" id="dropZone" onclick="selectFile()" onkeydown="if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectFile(); }" tabindex="0" role="button" aria-label="Backup-Datei auswählen">
                 <i class="fas fa-cloud-upload-alt drop-icon" aria-hidden="true"></i>
                 <h3>Backup-Datei hier ablegen</h3>
                 <p>oder klicken zum Auswählen</p>
