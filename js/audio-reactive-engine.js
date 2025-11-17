@@ -1,4 +1,92 @@
 // ===== AUDIO-REACTIVE ENGINE =====
+
+// Beat Detection Class
+class BeatDetector {
+    constructor() {
+        this.previousLevels = [];
+        this.beatThreshold = 1.3;
+        this.beatHoldFrames = 20;
+        this.beatDecay = 0.98;
+        this.beatCutOff = 0;
+        this.beatTime = 0;
+        this.framesSinceLastBeat = 0;
+        this.beatDetected = false;
+        this.beatCallbacks = [];
+        this.beatHistory = [];
+        this.maxHistoryLength = 100;
+    }
+
+    analyze(dataArray) {
+        if (!dataArray || dataArray.length === 0) return false;
+
+        // Calculate average level
+        let sum = 0;
+        for (let i = 0; i < dataArray.length; i++) {
+            sum += dataArray[i];
+        }
+        const average = sum / dataArray.length;
+
+        // Store in history
+        this.previousLevels.push(average);
+        if (this.previousLevels.length > 60) {
+            this.previousLevels.shift();
+        }
+
+        // Calculate average of history
+        const historicalAverage = this.previousLevels.reduce((a, b) => a + b, 0) / this.previousLevels.length;
+
+        // Detect beat
+        this.framesSinceLastBeat++;
+        if (average > historicalAverage * this.beatThreshold && this.framesSinceLastBeat > this.beatHoldFrames) {
+            this.beatDetected = true;
+            this.framesSinceLastBeat = 0;
+            this.beatTime = Date.now();
+
+            // Store beat in history
+            this.beatHistory.push(this.beatTime);
+            if (this.beatHistory.length > this.maxHistoryLength) {
+                this.beatHistory.shift();
+            }
+
+            // Trigger callbacks
+            this.beatCallbacks.forEach(callback => callback());
+
+            return true;
+        }
+
+        this.beatDetected = false;
+        return false;
+    }
+
+    onBeat(callback) {
+        this.beatCallbacks.push(callback);
+    }
+
+    getBPM() {
+        if (this.beatHistory.length < 2) return 0;
+
+        const recentBeats = this.beatHistory.slice(-10);
+        if (recentBeats.length < 2) return 0;
+
+        let totalInterval = 0;
+        for (let i = 1; i < recentBeats.length; i++) {
+            totalInterval += recentBeats[i] - recentBeats[i - 1];
+        }
+
+        const avgInterval = totalInterval / (recentBeats.length - 1);
+        const bpm = Math.round(60000 / avgInterval);
+
+        return bpm > 0 && bpm < 300 ? bpm : 0;
+    }
+
+    reset() {
+        this.previousLevels = [];
+        this.framesSinceLastBeat = 0;
+        this.beatDetected = false;
+        this.beatHistory = [];
+    }
+}
+
 class AudioReactiveEngine {
     constructor() {
         this.audioContext = null;
@@ -9,21 +97,30 @@ class AudioReactiveEngine {
         this.animationFrame = null;
         this.beatDetector = new BeatDetector();
         this.cleanupFunctions = [];
-        
+
         this.musicPlayerConnected = false;
         this.audioSource = null; // 'microphone', 'system', 'music-player'
-        
+
         this.fftSize = 2048;
-        this.bassRange = { start: 0, end: 15 };
-        this.midRange = { start: 15, end: 150 };
-        this.trebleRange = { start: 150, end: 512 };
-        
+        this.bassRange = {
+            start: 0,
+            end: 15
+        };
+        this.midRange = {
+            start: 15,
+            end: 150
+        };
+        this.trebleRange = {
+            start: 150,
+            end: 512
+        };
+
         // Integration mit globalen Band-Settings
         this.useBandSettings = true;
-        
+
         this.init();
     }
-    
+
     async init() {
         this.createFrequencyBars();
         this.syncWithBandSettings(); // Synchronisiere mit bestehenden Band-Einstellungen
@@ -31,15 +128,15 @@ class AudioReactiveEngine {
         this.setupMusicPlayerIntegration();
         // Audio-Reactive Engine initialisiert
     }
-    
+
     // ✅ AUDIO-ANALYSE MIT MIKROFON ODER MUSIK-PLAYER
     async startAudioCapture(audioElement = null) {
         try {
             // Clean up any existing audio context
             await this.stopAudioCapture();
-            
-            this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            
+
+            this.audioContext = new(window.AudioContext || window.webkitAudioContext)();
+
             // ✅ MIKROFON ODER AUDIO-ELEMENT ANALYSE
             if (audioElement && audioElement.tagName === 'AUDIO') {
                 console.log('🎵 Verbinde mit Audio-Element für Musik-Analyse');
@@ -49,7 +146,9 @@ class AudioReactiveEngine {
                 // ✅ MIKROFON ALS FALLBACK VERWENDEN
                 console.log('🎤 Verwende Mikrofon für Audio-Analyse');
                 try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    const stream = await navigator.mediaDevices.getUserMedia({
+                        audio: true
+                    });
                     this.microphone = stream;
                     this.audioSource = this.audioContext.createMediaStreamSource(stream);
                     this.audioSourceType = 'microphone';
@@ -58,20 +157,20 @@ class AudioReactiveEngine {
                     throw new Error('Weder Audio-Element noch Mikrofon verfügbar');
                 }
             }
-            
+
             // ✅ ANALYSER SETUP FÜR AUDIO-ELEMENT
             this.analyser = this.audioContext.createAnalyser();
             this.analyser.fftSize = 256;
             this.analyser.smoothingTimeConstant = 0.8;
-            
+
             // ✅ AUDIO-ELEMENT MIT ANALYSER VERBINDEN (NICHT MIKROFON)
             this.audioSource.connect(this.analyser);
             this.audioSource.connect(this.audioContext.destination); // Für Wiedergabe
             this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
-            
+
             this.isRunning = true;
             this.processAudio();
-            
+
             // Audio-Capture gestartet
             return true;
         } catch (error) {
@@ -80,15 +179,15 @@ class AudioReactiveEngine {
             return false;
         }
     }
-    
+
     async stopAudioCapture() {
         this.isRunning = false;
-        
+
         if (this.animationFrame) {
             cancelAnimationFrame(this.animationFrame);
             this.animationFrame = null;
         }
-        
+
         // Execute all cleanup functions
         this.cleanupFunctions.forEach(cleanup => {
             try {
@@ -98,7 +197,7 @@ class AudioReactiveEngine {
             }
         });
         this.cleanupFunctions = [];
-        
+
         if (this.audioContext && this.audioContext.state !== 'closed') {
             try {
                 await this.audioContext.close();
@@ -106,36 +205,36 @@ class AudioReactiveEngine {
                 console.warn('Error closing audio context:', error);
             }
         }
-        
+
         this.audioContext = null;
         this.analyser = null;
         this.microphone = null;
         this.dataArray = null;
-        
+
         // Audio-Capture gestoppt
     }
-    
+
     processAudio() {
         if (!this.isRunning) return;
-        
+
         if (!this.dataArray) {
             this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
         }
         this.frequencyData = this.dataArray;
         this.analyser.getByteFrequencyData(this.frequencyData);
-        
+
         const bassLevel = this.getFrequencyRangeLevel(this.bassRange);
         const midLevel = this.getFrequencyRangeLevel(this.midRange);
         const trebleLevel = this.getFrequencyRangeLevel(this.trebleRange);
         const beatDetected = this.beatDetector.detectBeat(bassLevel);
-        
+
         this.updateFrequencyBars();
         this.updateStatusDisplay(bassLevel, midLevel, trebleLevel, beatDetected);
         this.updateLEDStrips(bassLevel, midLevel, trebleLevel, beatDetected);
-        
+
         requestAnimationFrame(() => this.startAnalysisLoop());
     }
-    
+
     getFrequencyRangeLevel(range) {
         let sum = 0;
         for (let i = range.start; i < range.end; i++) {
@@ -143,18 +242,18 @@ class AudioReactiveEngine {
         }
         return (sum / (range.end - range.start)) / 255;
     }
-    
+
     updateFrequencyBars() {
         const bars = document.querySelectorAll('.freq-bar');
         const step = Math.floor(this.frequencyData.length / bars.length);
-        
+
         bars.forEach((bar, index) => {
             const value = this.frequencyData[index * step];
             const height = (value / 255) * 100;
             bar.style.height = height + '%';
         });
     }
-    
+
     updateStatusDisplay(bass, mid, treble, beatDetected) {
         if (document.getElementById('bassLevel')) {
             document.getElementById('bassLevel').textContent = Math.round(bass * 100) + '%';
@@ -162,7 +261,7 @@ class AudioReactiveEngine {
             document.getElementById('trebleLevel').textContent = Math.round(treble * 100) + '%';
             document.getElementById('bpmValue').textContent = this.beatDetector.getBPM();
             document.getElementById('latencyValue').textContent = this.beatDetector.getLatency() + 'ms';
-            
+
             const beatIndicator = document.getElementById('beatIndicator');
             if (beatDetected && beatIndicator) {
                 beatIndicator.classList.add('pulse');
@@ -170,13 +269,13 @@ class AudioReactiveEngine {
             }
         }
     }
-    
+
     updateLEDStrips(bass, mid, treble, beatDetected) {
         this.ledStrips.forEach((strip, index) => {
             if (!strip.enabled) return;
-            
+
             let intensity = 0;
-            
+
             // Berechne Intensität basierend auf Reaktions-Modus
             switch (strip.reactTo) {
                 case 'rhythm':
@@ -194,17 +293,25 @@ class AudioReactiveEngine {
                 default:
                     // Frequenzband-basierte Intensität
                     switch (strip.frequencyBand) {
-                        case 'bass': intensity = bass; break;
-                        case 'mid': intensity = mid; break;
+                        case 'bass':
+                            intensity = bass;
+                            break;
+                        case 'mid':
+                            intensity = mid;
+                            break;
                         case 'treble':
-                        case 'high': intensity = treble; break;
-                        case 'all': intensity = (bass + mid + treble) / 3; break;
+                        case 'high':
+                            intensity = treble;
+                            break;
+                        case 'all':
+                            intensity = (bass + mid + treble) / 3;
+                            break;
                     }
             }
-            
+
             // Wende Empfindlichkeit und Helligkeit an
             intensity = intensity * (strip.sensitivity / 100) * (strip.brightness / 100);
-            
+
             // Aktualisiere globale Band-Settings wenn synchronisiert
             if (this.useBandSettings && index < bandSettings.length) {
                 // ✅ ECHTE HARDWARE-STEUERUNG FÜR AUDIO-REAKTIVE LEDs
@@ -216,14 +323,16 @@ class AudioReactiveEngine {
                     speed: strip.speed,
                     beatDetected: beatDetected
                 };
-                
+
                 // ✅ SENDE ECHTE HARDWARE-BEFEHLE
-                if (window.parent?.ledDevice && window.parent.ledDevice.isConnected) {
+                if (window.parent && window.parent.ledDevice && window.parent.ledDevice.isConnected) {
                     try {
                         // Konvertiere Musikdaten zu RGB basierend auf Intensität
                         const colorValue = Math.round(255 * (intensity / 100));
-                        let r = 0, g = 0, b = 0;
-                        
+                        let r = 0,
+                            g = 0,
+                            b = 0;
+
                         // Farbe basierend auf Frequenzband
                         switch (strip.frequencyBand) {
                             case 'bass':
@@ -239,35 +348,35 @@ class AudioReactiveEngine {
                             default:
                                 r = g = b = colorValue; // Weiß für All
                         }
-                        
+
                         // Beat-Flash Effekt
                         if (beatDetected) {
                             r = g = b = 255; // Volle Helligkeit bei Beat
                         }
-                        
+
                         const command = new Uint8Array([
-                            0x7E,  // Start byte
-                            0x00,  // Mode
-                            0x05,  // Command (set color)
-                            r, g, b,  // RGB-Werte
-                            0x00,  // White
-                            0xEF   // End byte
+                            0x7E, // Start byte
+                            0x00, // Mode
+                            0x05, // Command (set color)
+                            r, g, b, // RGB-Werte
+                            0x00, // White
+                            0xEF // End byte
                         ]);
-                        
+
                         window.parent.ledDevice.characteristic.writeValue(command);
                     } catch (error) {
                         // Silent fail für Performance
                     }
                 }
             }
-            
+
             // Debug-Ausgabe (reduziert)
             if (Math.random() < 0.005) {
                 // LED Status Update
             }
         });
     }
-    
+
     createFrequencyBars() {
         const container = document.getElementById('frequencyDisplay');
         if (container) {
@@ -280,7 +389,7 @@ class AudioReactiveEngine {
             }
         }
     }
-    
+
     syncWithBandSettings() {
         // Synchronisiere mit den globalen Band-Einstellungen statt eigene zu erstellen
         this.ledStrips = [];
@@ -303,7 +412,7 @@ class AudioReactiveEngine {
         this.renderAllStripControls();
         // LED-Bänder synchronisiert
     }
-    
+
     addLEDStrip(name, connected = false) {
         const strip = {
             id: 'strip_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
@@ -315,18 +424,18 @@ class AudioReactiveEngine {
             sensitivity: 75,
             color: ['#ff4757', '#ffa502', '#2ed573', '#1e90ff', '#5f27cd', '#ff6b6b'][this.ledStrips.length % 6]
         };
-        
+
         this.ledStrips.push(strip);
         this.renderLEDStripControl(strip);
         this.updateConnectedStripsCount();
     }
-    
+
     renderAllStripControls() {
         const container = document.getElementById('stripsGrid');
         if (!container) return;
-        
+
         container.innerHTML = ''; // Clear existing controls
-        
+
         this.ledStrips.forEach(strip => {
             const stripDiv = document.createElement('div');
             stripDiv.className = 'strip-control';
@@ -377,7 +486,7 @@ class AudioReactiveEngine {
             container.appendChild(stripDiv);
         });
     }
-    
+
     getEffectDisplayName(effect) {
         const names = {
             'solid': 'Einfarbig',
@@ -391,7 +500,7 @@ class AudioReactiveEngine {
         };
         return names[effect] || effect;
     }
-    
+
     getReactToDisplayName(reactTo) {
         const names = {
             'rhythm': 'Rhythmus',
@@ -401,7 +510,7 @@ class AudioReactiveEngine {
         };
         return names[reactTo] || reactTo;
     }
-    
+
     getFrequencyDisplayName(freq) {
         const names = {
             'bass': 'Bass',
@@ -412,17 +521,17 @@ class AudioReactiveEngine {
         };
         return names[freq] || freq;
     }
-    
+
     toggleStrip(stripId, enabled) {
         const strip = this.ledStrips.find(s => s.id === stripId);
         if (strip) strip.enabled = enabled;
     }
-    
+
     setStripFrequency(stripId, frequency) {
         const strip = this.ledStrips.find(s => s.id === stripId);
         if (strip) strip.frequencyBand = frequency;
     }
-    
+
     setStripSensitivity(stripId, sensitivity) {
         const strip = this.ledStrips.find(s => s.id === stripId);
         if (strip) {
@@ -432,37 +541,37 @@ class AudioReactiveEngine {
             if (valueSpan) valueSpan.textContent = sensitivity + '%';
         }
     }
-    
+
     updateConnectedStripsCount() {
         const connectedCount = this.ledStrips.filter(s => s.connected).length;
         const element = document.getElementById('connectedStrips');
         if (element) element.textContent = connectedCount;
     }
-    
+
     setupEventListeners() {
         const startBtn = document.getElementById('startAudioCapture');
         const stopBtn = document.getElementById('stopAudioCapture');
         const scanBtn = document.getElementById('scanLEDStrips');
-        
+
         if (startBtn) startBtn.addEventListener('click', () => this.startAudioCapture());
         if (stopBtn) stopBtn.addEventListener('click', () => this.stopAudioCapture());
         if (scanBtn) scanBtn.addEventListener('click', () => this.scanAndConnectDevices());
-        
+
         // Lausche auf Band-Settings-Änderungen
         window.addEventListener('bandSettingsChanged', () => {
             this.syncWithBandSettings();
         });
     }
-    
+
     setupMusicPlayerIntegration() {
         // Lausche auf Nachrichten vom Musik-Player (musik.html)
         window.addEventListener('message', (event) => {
-    // ✅ ORIGIN-VALIDIERUNG FÜR SICHERHEIT
-    const allowedOrigins = ['http://localhost', 'https://localhost', window.location.origin];
-    if (!allowedOrigins.some(origin => event.origin.startsWith(origin))) {
-      console.warn('🚫 Unerlaubte postMessage Origin:', event.origin);
-      return;
-    }
+            // ✅ ORIGIN-VALIDIERUNG FÜR SICHERHEIT
+            const allowedOrigins = ['http://localhost', 'https://localhost', window.location.origin];
+            if (!allowedOrigins.some(origin => event.origin.startsWith(origin))) {
+                console.warn('🚫 Unerlaubte postMessage Origin:', event.origin);
+                return;
+            }
             if (event.data.type === 'musicPlayerAudioData') {
                 this.processMusicPlayerData(event.data.audioData);
             } else if (event.data.type === 'musicPlayerConnected') {
@@ -475,24 +584,28 @@ class AudioReactiveEngine {
                 }
             }
         });
-        
+
         // Versuche Verbindung zum Musik-Player herzustellen
         if (window.parent && window.parent !== window) {
-            window.parent.postMessage({ type: 'ledMusicControlReady' }, '*');
+            window.parent.postMessage({
+                type: 'ledMusicControlReady'
+            }, '*');
         }
     }
-    
+
     async connectToMusicPlayer() {
         return new Promise((resolve) => {
             if (!this.musicPlayerConnected) {
                 // Sende Anfrage an Musik-Player
                 if (window.parent && window.parent !== window) {
-                    window.parent.postMessage({ type: 'requestMusicPlayerConnection' }, '*');
+                    window.parent.postMessage({
+                        type: 'requestMusicPlayerConnection'
+                    }, '*');
                 }
-                
+
                 // Warte auf Antwort
                 const timeout = setTimeout(() => resolve(false), 2000);
-                
+
                 const handler = (event) => {
                     if (event.data.type === 'musicPlayerConnected') {
                         clearTimeout(timeout);
@@ -501,36 +614,42 @@ class AudioReactiveEngine {
                         resolve(true);
                     }
                 };
-                
+
                 window.addEventListener('message', handler);
             } else {
                 resolve(true);
             }
         });
     }
-    
+
     processMusicPlayerData(audioData) {
         if (!this.isRunning || this.audioSource !== 'music-player') return;
-        
+
         // Verwende Audio-Daten vom Musik-Player
-        const { frequencyData, bass, mid, treble, beatDetected } = audioData;
-        
+        const {
+            frequencyData,
+            bass,
+            mid,
+            treble,
+            beatDetected
+        } = audioData;
+
         if (frequencyData) {
             this.frequencyData = new Uint8Array(frequencyData);
             this.updateFrequencyBars();
         }
-        
+
         this.updateStatusDisplay(bass, mid, treble, beatDetected);
         this.updateLEDStrips(bass, mid, treble, beatDetected);
     }
-    
+
     async scanAndConnectDevices() {
         // Echtes BLE-Scanning wenn verfügbar
         if (typeof bleController !== 'undefined' && bleController) {
             try {
                 await bleController.scanForDevices();
                 const devices = bleController.getAvailableDevices();
-                
+
                 for (const device of devices) {
                     const strip = this.ledStrips.find(s => !s.connected);
                     if (strip) {
@@ -538,7 +657,7 @@ class AudioReactiveEngine {
                         strip.deviceInfo = device;
                     }
                 }
-                
+
                 this.renderAllStripControls();
                 this.updateConnectedStripsCount();
                 this.showNotification(`${devices.length} Geräte gefunden`, 'success');
@@ -550,7 +669,7 @@ class AudioReactiveEngine {
             this.simulateDeviceConnection();
         }
     }
-    
+
     simulateDeviceConnection() {
         this.ledStrips.forEach((strip, index) => {
             setTimeout(() => {
@@ -565,46 +684,8 @@ class AudioReactiveEngine {
         });
         this.showNotification('LED-Bänder werden verbunden...', 'info');
     }
-    
+
     showNotification(message, type = 'info') {
         showNotification(message, type); // Use existing notification function
     }
-}
-
-// ===== BEAT DETECTOR =====
-class BeatDetector {
-    constructor() {
-        this.beatHistory = [];
-        this.energyHistory = [];
-        this.bpm = 0;
-        this.threshold = 1.3;
-    }
-    
-    detectBeat(bassLevel) {
-        const now = performance.now();
-        this.energyHistory.push(bassLevel);
-        if (this.energyHistory.length > 43) this.energyHistory.shift();
-        
-        const avgEnergy = this.energyHistory.reduce((a, b) => a + b, 0) / this.energyHistory.length;
-        const beatDetected = bassLevel > avgEnergy * this.threshold && (now - (this.beatHistory[this.beatHistory.length - 1] || 0)) > 300;
-        
-        if (beatDetected) {
-            this.beatHistory.push(now);
-            this.beatHistory = this.beatHistory.filter(time => now - time < 10000);
-            
-            if (this.beatHistory.length > 1) {
-                const intervals = [];
-                for (let i = 1; i < this.beatHistory.length; i++) {
-                    intervals.push(this.beatHistory[i] - this.beatHistory[i-1]);
-                }
-                const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
-                this.bpm = Math.round(60000 / avgInterval);
-            }
-        }
-        
-        return beatDetected;
-    }
-    
-    getBPM() { return this.bpm; }
-    getLatency() { return Math.round(performance.now() % 20); }
 }

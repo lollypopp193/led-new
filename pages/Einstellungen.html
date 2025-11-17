@@ -1134,24 +1134,51 @@
 
         function updateAllUI() {
             // Switches
-            document.getElementById('autoConnectSwitch') ? ? .classList.toggle('active', autoConnect);
-            document.getElementById('notificationsSwitch') ? ? .classList.toggle('active', notifications);
-            document.getElementById('darkModeSwitch') ? ? .classList.toggle('active', darkMode);
-            document.getElementById('energySaveSwitch') ? ? .classList.toggle('active', energySave);
-            document.getElementById('hwAccelSwitch') ? ? .classList.toggle('active', hwAccel);
-            document.getElementById('beatDetectSwitch') ? ? .classList.toggle('active', beatDetect);
-            document.getElementById('multiBandSwitch') ? ? .classList.toggle('active', multiBand);
-            document.getElementById('cloudSyncSwitch') ? ? .classList.toggle('active', cloudSync);
-            document.getElementById('broadcastSwitch') ? ? .classList.toggle('active', broadcast);
-            document.getElementById('wifiLEDSwitch') ? ? .classList.toggle('active', wifiLED);
-            document.getElementById('mdnsSwitch') ? ? .classList.toggle('active', mdns);
-            document.getElementById('debugSwitch') ? ? .classList.toggle('active', debug);
-            document.getElementById('bleLogSwitch') ? ? .classList.toggle('active', bleLog);
+            const autoConnectEl = document.getElementById('autoConnectSwitch');
+            if (autoConnectEl) autoConnectEl.classList.toggle('active', autoConnect);
+
+            const notificationsEl = document.getElementById('notificationsSwitch');
+            if (notificationsEl) notificationsEl.classList.toggle('active', notifications);
+
+            const darkModeEl = document.getElementById('darkModeSwitch');
+            if (darkModeEl) darkModeEl.classList.toggle('active', darkMode);
+
+            const energySaveEl = document.getElementById('energySaveSwitch');
+            if (energySaveEl) energySaveEl.classList.toggle('active', energySave);
+
+            const hwAccelEl = document.getElementById('hwAccelSwitch');
+            if (hwAccelEl) hwAccelEl.classList.toggle('active', hwAccel);
+
+            const beatDetectEl = document.getElementById('beatDetectSwitch');
+            if (beatDetectEl) beatDetectEl.classList.toggle('active', beatDetect);
+
+            const multiBandEl = document.getElementById('multiBandSwitch');
+            if (multiBandEl) multiBandEl.classList.toggle('active', multiBand);
+
+            const cloudSyncEl = document.getElementById('cloudSyncSwitch');
+            if (cloudSyncEl) cloudSyncEl.classList.toggle('active', cloudSync);
+
+            const broadcastEl = document.getElementById('broadcastSwitch');
+            if (broadcastEl) broadcastEl.classList.toggle('active', broadcast);
+
+            const wifiLEDEl = document.getElementById('wifiLEDSwitch');
+            if (wifiLEDEl) wifiLEDEl.classList.toggle('active', wifiLED);
+
+            const mdnsEl = document.getElementById('mdnsSwitch');
+            if (mdnsEl) mdnsEl.classList.toggle('active', mdns);
+
+            const debugEl = document.getElementById('debugSwitch');
+            if (debugEl) debugEl.classList.toggle('active', debug);
+
+            const bleLogEl = document.getElementById('bleLogSwitch');
+            if (bleLogEl) bleLogEl.classList.toggle('active', bleLog);
 
             // Sliders
-            if (document.getElementById('brightnessSlider')) {
-                document.getElementById('brightnessSlider').value = brightness;
-                document.getElementById('brightnessValue').textContent = brightness + '%';
+            const brightnessSlider = document.getElementById('brightnessSlider');
+            if (brightnessSlider) {
+                brightnessSlider.value = brightness;
+                const brightnessValue = document.getElementById('brightnessValue');
+                if (brightnessValue) brightnessValue.textContent = brightness + '%';
             }
             if (document.getElementById('fpsSlider')) {
                 document.getElementById('fpsSlider').value = fps;
