@@ -1396,7 +1396,8 @@
                             const deviceElement = document.createElement('div');
                             deviceElement.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 12px; margin-bottom: 8px; background: rgba(78, 205, 196, 0.1); border-radius: 8px; border: 1px solid rgba(78, 205, 196, 0.3);';
 
-                            deviceElement.innerHTML = '<div><div style="font-weight: bold; color: #4ecdc4;">' + device.name + '</div><div style="font-size: 0.9em; color: #888;">' + device.ip + ' • Version ' + device.version + '</div></div><button onclick="connectWLEDDevice(\'' + device.ip + '\', \'' + device.name + '\')" style="padding: 6px 12px; background: #4ecdc4; color: white; border: none; border-radius: 6px; cursor: pointer;">Verbinden</button>';
+                            // ✅ XSS-SICHER: Nutze escapeHtml() für alle Device-Daten
+                            deviceElement.innerHTML = '<div><div style="font-weight: bold; color: #4ecdc4;">' + escapeHtml(device.name) + '</div><div style="font-size: 0.9em; color: #888;">' + escapeHtml(device.ip) + ' • Version ' + escapeHtml(device.version) + '</div></div><button onclick="connectWLEDDevice(\'' + escapeHtml(device.ip) + '\', \'' + escapeHtml(device.name) + '\')" style="padding: 6px 12px; background: #4ecdc4; color: white; border: none; border-radius: 6px; cursor: pointer;">Verbinden</button>';
 
                             devicesList.appendChild(deviceElement);
                         });
