@@ -973,12 +973,48 @@
         function toggleAutoConnect() {
             autoConnect = !autoConnect;
             document.getElementById('autoConnectSwitch').classList.toggle('active', autoConnect);
+
+            // ✅ ECHTE HARDWARE-KOMMUNIKATION
+            let controller = null;
+            if (window.parent && window.parent !== window && window.parent.bleController) {
+                controller = window.parent.bleController;
+            } else if (window.bleController) {
+                controller = window.bleController;
+            }
+
+            if (controller && controller.isConnected) {
+                try {
+                    controller.setAutoConnect(autoConnect);
+                    console.log('✅ Auto-Connect gesendet:', autoConnect);
+                } catch (error) {
+                    console.error('❌ Fehler beim Senden von Auto-Connect:', error);
+                }
+            }
+
             saveSettings();
         }
 
         function toggleNotifications() {
             notifications = !notifications;
             document.getElementById('notificationsSwitch').classList.toggle('active', notifications);
+
+            // ✅ ECHTE HARDWARE-KOMMUNIKATION
+            let controller = null;
+            if (window.parent && window.parent !== window && window.parent.bleController) {
+                controller = window.parent.bleController;
+            } else if (window.bleController) {
+                controller = window.bleController;
+            }
+
+            if (controller && controller.isConnected) {
+                try {
+                    controller.setNotifications(notifications);
+                    console.log('✅ Benachrichtigungen gesendet:', notifications);
+                } catch (error) {
+                    console.error('❌ Fehler beim Senden der Benachrichtigungen:', error);
+                }
+            }
+
             saveSettings();
         }
 
@@ -1613,9 +1649,24 @@
         function toggleEnergySave() {
             energySave = !energySave;
             document.getElementById('energySaveSwitch').classList.toggle('active');
-            if (energySave) {
-                // Energiesparmodus aktiviert
+
+            // ✅ ECHTE HARDWARE-KOMMUNIKATION
+            let controller = null;
+            if (window.parent && window.parent !== window && window.parent.bleController) {
+                controller = window.parent.bleController;
+            } else if (window.bleController) {
+                controller = window.bleController;
             }
+
+            if (controller && controller.isConnected) {
+                try {
+                    controller.setEnergySave(energySave);
+                    console.log('✅ Energiesparmodus gesendet:', energySave);
+                } catch (error) {
+                    console.error('❌ Fehler beim Senden des Energiesparmodus:', error);
+                }
+            }
+
             saveSettings();
         }
 
@@ -1670,7 +1721,24 @@
         function toggleHWAccel() {
             hwAccel = !hwAccel;
             document.getElementById('hwAccelSwitch').classList.toggle('active');
-            // Hardware-Beschleunigung geändert
+
+            // ✅ ECHTE HARDWARE-KOMMUNIKATION
+            let controller = null;
+            if (window.parent && window.parent !== window && window.parent.bleController) {
+                controller = window.parent.bleController;
+            } else if (window.bleController) {
+                controller = window.bleController;
+            }
+
+            if (controller && controller.isConnected) {
+                try {
+                    controller.setHardwareAcceleration(hwAccel);
+                    console.log('✅ Hardware-Beschleunigung gesendet:', hwAccel);
+                } catch (error) {
+                    console.error('❌ Fehler beim Senden der Hardware-Beschleunigung:', error);
+                }
+            }
+
             saveSettings();
         }
 
@@ -1701,6 +1769,24 @@
         function toggleBeatDetect() {
             beatDetect = !beatDetect;
             document.getElementById('beatDetectSwitch').classList.toggle('active');
+
+            // ✅ ECHTE HARDWARE-KOMMUNIKATION
+            let controller = null;
+            if (window.parent && window.parent !== window && window.parent.bleController) {
+                controller = window.parent.bleController;
+            } else if (window.bleController) {
+                controller = window.bleController;
+            }
+
+            if (controller && controller.isConnected) {
+                try {
+                    controller.setBeatDetection(beatDetect);
+                    console.log('✅ Beat-Erkennung gesendet:', beatDetect);
+                } catch (error) {
+                    console.error('❌ Fehler beim Senden der Beat-Erkennung:', error);
+                }
+            }
+
             saveSettings();
         }
 
@@ -1832,36 +1918,120 @@
         function toggleMultiBand() {
             multiBand = !multiBand;
             document.getElementById('multiBandSwitch').classList.toggle('active');
+
+            // ✅ ECHTE HARDWARE-KOMMUNIKATION
+            let controller = null;
+            if (window.parent && window.parent !== window && window.parent.bleController) {
+                controller = window.parent.bleController;
+            } else if (window.bleController) {
+                controller = window.bleController;
+            }
+
+            if (controller && controller.isConnected) {
+                try {
+                    controller.setMultiBand(multiBand);
+                    console.log('✅ Multi-Band gesendet:', multiBand);
+                } catch (error) {
+                    console.error('❌ Fehler beim Senden von Multi-Band:', error);
+                }
+            }
+
             saveSettings();
         }
 
         function toggleCloudSync() {
             cloudSync = !cloudSync;
             document.getElementById('cloudSyncSwitch').classList.toggle('active');
-            if (cloudSync) {
-                // Cloud-Synchronisation aktiviert
+
+            // ✅ ECHTE HARDWARE-KOMMUNIKATION
+            let controller = null;
+            if (window.parent && window.parent !== window && window.parent.bleController) {
+                controller = window.parent.bleController;
+            } else if (window.bleController) {
+                controller = window.bleController;
             }
+
+            if (controller && controller.isConnected) {
+                try {
+                    controller.setCloudSync(cloudSync);
+                    console.log('✅ Cloud-Sync gesendet:', cloudSync);
+                } catch (error) {
+                    console.error('❌ Fehler beim Senden von Cloud-Sync:', error);
+                }
+            }
+
             saveSettings();
         }
 
         function toggleBroadcast() {
             broadcast = !broadcast;
             document.getElementById('broadcastSwitch').classList.toggle('active');
+
+            // ✅ ECHTE HARDWARE-KOMMUNIKATION
+            let controller = null;
+            if (window.parent && window.parent !== window && window.parent.bleController) {
+                controller = window.parent.bleController;
+            } else if (window.bleController) {
+                controller = window.bleController;
+            }
+
+            if (controller && controller.isConnected) {
+                try {
+                    controller.setBroadcast(broadcast);
+                    console.log('✅ Broadcast gesendet:', broadcast);
+                } catch (error) {
+                    console.error('❌ Fehler beim Senden von Broadcast:', error);
+                }
+            }
+
             saveSettings();
         }
 
         function toggleWiFiLED() {
             wifiLED = !wifiLED;
             document.getElementById('wifiLEDSwitch').classList.toggle('active');
-            if (wifiLED) {
-                // WiFi-LED-Suche aktiviert
+
+            // ✅ ECHTE HARDWARE-KOMMUNIKATION
+            let controller = null;
+            if (window.parent && window.parent !== window && window.parent.bleController) {
+                controller = window.parent.bleController;
+            } else if (window.bleController) {
+                controller = window.bleController;
             }
+
+            if (controller && controller.isConnected) {
+                try {
+                    controller.setWiFiLED(wifiLED);
+                    console.log('✅ WiFi-LED gesendet:', wifiLED);
+                } catch (error) {
+                    console.error('❌ Fehler beim Senden von WiFi-LED:', error);
+                }
+            }
+
             saveSettings();
         }
 
         function toggleMDNS() {
             mdns = !mdns;
             document.getElementById('mdnsSwitch').classList.toggle('active');
+
+            // ✅ ECHTE HARDWARE-KOMMUNIKATION
+            let controller = null;
+            if (window.parent && window.parent !== window && window.parent.bleController) {
+                controller = window.parent.bleController;
+            } else if (window.bleController) {
+                controller = window.bleController;
+            }
+
+            if (controller && controller.isConnected) {
+                try {
+                    controller.setMDNS(mdns);
+                    console.log('✅ mDNS gesendet:', mdns);
+                } catch (error) {
+                    console.error('❌ Fehler beim Senden von mDNS:', error);
+                }
+            }
+
             saveSettings();
         }
 
@@ -2098,16 +2268,51 @@
         function toggleDebug() {
             debug = !debug;
             document.getElementById('debugSwitch').classList.toggle('active');
-            // Debug-Modus geändert
+
+            // ✅ ECHTE HARDWARE-KOMMUNIKATION
+            let controller = null;
+            if (window.parent && window.parent !== window && window.parent.bleController) {
+                controller = window.parent.bleController;
+            } else if (window.bleController) {
+                controller = window.bleController;
+            }
+
+            if (controller && controller.isConnected) {
+                try {
+                    controller.setDebugMode(debug);
+                    console.log('✅ Debug-Modus gesendet:', debug);
+                } catch (error) {
+                    console.error('❌ Fehler beim Senden des Debug-Modus:', error);
+                }
+            }
+
             saveSettings();
         }
 
         function toggleBLELog() {
             bleLog = !bleLog;
             document.getElementById('bleLogSwitch').classList.toggle('active');
-            if (bleController) {
-                bleController.setDebugMode(bleLog);
+
+            // ✅ ECHTE HARDWARE-KOMMUNIKATION
+            let controller = null;
+            if (window.parent && window.parent !== window && window.parent.bleController) {
+                controller = window.parent.bleController;
+            } else if (window.bleController) {
+                controller = window.bleController;
             }
+
+            if (controller) {
+                controller.enableLogging = bleLog;
+                if (controller.isConnected) {
+                    try {
+                        controller.setBLELogging(bleLog);
+                        console.log('✅ BLE-Logging gesendet:', bleLog);
+                    } catch (error) {
+                        console.error('❌ Fehler beim Senden des BLE-Loggings:', error);
+                    }
+                }
+            }
+
             saveSettings();
         }
 
