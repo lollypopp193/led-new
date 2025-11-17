@@ -1367,32 +1367,14 @@
 
                         devices.forEach(device => {
                             const deviceElement = document.createElement('div');
-                            deviceElement.style.cssText = `
-                                display: flex; 
-                                justify-content: space-between; 
-                                align-items: center; 
-                                padding: 12px; 
-                                margin-bottom: 8px; 
-                                background: rgba(78, 205, 196, 0.1); 
-                                border-radius: 8px; 
-                                border: 1px solid rgba(78, 205, 196, 0.3);
-                            `;
+                            deviceElement.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 12px; margin-bottom: 8px; background: rgba(78, 205, 196, 0.1); border-radius: 8px; border: 1px solid rgba(78, 205, 196, 0.3);';
 
-                            deviceElement.innerHTML = `
-                                <div>
-                                    <div style="font-weight: bold; color: #4ecdc4;">${device.name}</div>
-                                    <div style="font-size: 0.9em; color: #888;">${device.ip} • Version ${device.version}</div>
-                                </div>
-                                <button onclick="connectWLEDDevice('${device.ip}', '${device.name}')" 
-                                        style="padding: 6px 12px; background: #4ecdc4; color: white; border: none; border-radius: 6px; cursor: pointer;">
-                                    Verbinden
-                                </button>
-                            `;
+                            deviceElement.innerHTML = '<div><div style="font-weight: bold; color: #4ecdc4;">' + device.name + '</div><div style="font-size: 0.9em; color: #888;">' + device.ip + ' • Version ' + device.version + '</div></div><button onclick="connectWLEDDevice(\'' + device.ip + '\', \'' + device.name + '\')" style="padding: 6px 12px; background: #4ecdc4; color: white; border: none; border-radius: 6px; cursor: pointer;">Verbinden</button>';
 
                             devicesList.appendChild(deviceElement);
                         });
 
-                        showNotification(`${devices.length} WLED-Geräte gefunden!`, 'success');
+                        showNotification(devices.length + ' WLED-Geräte gefunden!', 'success');
                     } else {
                         devicesList.innerHTML = '<div style="color: #888; text-align: center; padding: 20px;">Keine WLED-Geräte gefunden</div>';
                         showNotification('Keine WLED-Geräte im Netzwerk gefunden', 'warning');
@@ -1414,17 +1396,17 @@
         // ✅ WLED-GERÄT VERBINDEN
         async function connectWLEDDevice(ip, name) {
             try {
-                showNotification(`Verbinde mit ${name}...`, 'info');
+                showNotification('Verbinde mit ' + name + '...', 'info');
 
                 // Hier würde die Verbindung zu WLED-Gerät hergestellt
                 // Für jetzt nur Simulation
                 await new Promise(resolve => setTimeout(resolve, 1000));
 
-                showNotification(`Mit ${name} (${ip}) verbunden!`, 'success');
-                console.log(`🌐 WLED-Gerät verbunden: ${name} @ ${ip}`);
+                showNotification('Mit ' + name + ' (' + ip + ') verbunden!', 'success');
+                console.log('🌐 WLED-Gerät verbunden: ' + name + ' @ ' + ip);
             } catch (error) {
                 console.error('❌ WLED-Verbindung Fehler:', error);
-                showNotification(`Verbindung zu ${name} fehlgeschlagen`, 'error');
+                showNotification('Verbindung zu ' + name + ' fehlgeschlagen', 'error');
             }
         }
 
@@ -1433,7 +1415,7 @@
             localStorage.setItem('hierarchicalGroups', hierarchicalEnabled);
             document.getElementById('hierarchicalGroupsSwitch').classList.toggle('active', hierarchicalEnabled);
 
-            showNotification(`Hierarchische Gruppen ${hierarchicalEnabled ??'aktiviert' : 'deaktiviert'}`, 'success');
+            showNotification('Hierarchische Gruppen ' + (hierarchicalEnabled ? 'aktiviert' : 'deaktiviert'), 'success');
             console.log('👥 Hierarchische Gruppen:', hierarchicalEnabled);
         }
 
@@ -1442,7 +1424,7 @@
             localStorage.setItem('pixelControl', pixelEnabled);
             document.getElementById('pixelControlSwitch').classList.toggle('active', pixelEnabled);
 
-            showNotification(`Pixel-Level-Kontrolle ${pixelEnabled ??'aktiviert' : 'deaktiviert'}`, pixelEnabled ? ? 'success' : 'warning');
+            showNotification('Pixel-Level-Kontrolle ' + (pixelEnabled ? 'aktiviert' : 'deaktiviert'), pixelEnabled ? 'success' : 'warning');
             console.log('🎯 Pixel-Level-Kontrolle:', pixelEnabled);
         }
 
@@ -1770,7 +1752,7 @@
 
         function updateAutoOff(value) {
             autoOff = parseInt(value);
-            document.getElementById('autoOffValue').textContent = autoOff > 0 ? ? autoOff + ' Min' : 'Aus';
+            document.getElementById('autoOffValue').textContent = autoOff > 0 ? autoOff + ' Min' : 'Aus';
             saveSettings();
         }
 
