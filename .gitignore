@@ -1,3 +1,30 @@
-node_modules
+# Dependencies
+node_modules/
+package-lock.json
 
+# IDE
+.vscode/
+.idea/
+
+# Build
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+
+# Environment
+.env
+.env.local
+
+# Temporary
+*.tmp
 .fake
