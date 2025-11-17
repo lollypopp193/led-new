@@ -307,11 +307,12 @@
     "appscreen",
     "verwende",
     "aktives",
-    "ausblenden",
-    "mehr",
-    "kein",
-    "sofort",
-    "bleibt"
+    "spezielle",
+    "erkannt",
+    "gesendet",
+    "starten",
+    "gestartet",
+    "abgelaufen"
   ],
   "ignorePaths": [
     "node_modules/**",

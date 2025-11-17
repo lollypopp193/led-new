@@ -1740,13 +1740,13 @@
             <div class="album-cover-section" style="display: flex; align-items: center; justify-content: center; padding: 20px 0; background: rgba(255, 255, 255, 0.03); border-radius: 15px; margin: 15px 0;">
                 <div class="album-cover-container" style="position: relative; margin-right: 20px;">
                     <div class="album-cover" id="albumCover" style="
-                        width: 120px; 
-                        height: 120px; 
-                        border-radius: 12px; 
-                        background: linear-gradient(135deg, #667eea, #764ba2); 
-                        display: flex; 
-                        align-items: center; 
-                        justify-content: center; 
+                        width: 120px;
+                        height: 120px;
+                        border-radius: 12px;
+                        background: linear-gradient(135deg, #667eea, #764ba2);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
                         box-shadow: 0 8px 25px rgba(0,0,0,0.3), 0 0 20px rgba(102, 126, 234, 0.2);
                         overflow: hidden;
                         transition: all 0.3s ease;
@@ -1755,15 +1755,15 @@
                         <img id="albumCoverImage" src="data:," style="width: 100%; height: 100%; object-fit: cover; display: none;" alt="Album Cover">
                     </div>
                     <div class="album-cover-glow" style="
-                        position: absolute; 
-                        top: -10px; 
-                        left: -10px; 
-                        right: -10px; 
-                        bottom: -10px; 
-                        border-radius: 20px; 
-                        background: inherit; 
-                        filter: blur(15px); 
-                        opacity: 0.3; 
+                        position: absolute;
+                        top: -10px;
+                        left: -10px;
+                        right: -10px;
+                        bottom: -10px;
+                        border-radius: 20px;
+                        background: inherit;
+                        filter: blur(15px);
+                        opacity: 0.3;
                         z-index: -1;
                         transition: all 0.3s ease;
                     "></div>
@@ -7138,6 +7138,46 @@
                                     } else {
                                         initMusicPanelNavigation();
                                     }
+    </script>
+
+    <!-- ✅ TASKBAR NAVIGATION FIX - Direkter Event-Listener -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🔧 Initialisiere Taskbar-Navigation (Fix)...');
+
+            const taskbarButtons = document.querySelectorAll('.taskbar-btn');
+            console.log(`✅ ${taskbarButtons.length} Taskbar-Buttons gefunden`);
+
+            taskbarButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const content = this.getAttribute('data-content');
+                    console.log(`🎵 Tab geklickt: ${content}`);
+
+                    // AKTIVE TAB WECHSELN
+                    document.querySelectorAll('.taskbar-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // ALLE PANELS VERSTECKEN
+                    document.querySelectorAll('.content-panel').forEach(panel => panel.classList.remove('active'));
+
+                    // GEWÄHLTES PANEL ANZEIGEN
+                    const targetPanel = document.getElementById(content);
+                    if (targetPanel) {
+                        targetPanel.classList.add('active');
+                        console.log(`✅ Panel '${content}' angezeigt`);
+                    } else {
+                        console.error(`❌ Panel '${content}' nicht gefunden!`);
+                    }
+                });
+            });
+
+            // Initial Player-Tab aktivieren
+            const playerTab = document.querySelector('.taskbar-btn[data-content="player"]');
+            if (playerTab) {
+                playerTab.click();
+                console.log('✅ Player-Tab initial aktiviert');
+            }
+        });
     </script>
 
     <!-- Settings Panel -->
