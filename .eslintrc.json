@@ -17,6 +17,10 @@
     "bleController": "readonly",
     "audioPlayer": "readonly",
     "playlist": "readonly",
-    "currentTrackIndex": "readonly"
+    "currentTrackIndex": "readonly",
+    "BLEController": "readonly",
+    "updateBLEStatus": "readonly",
+    "requestAnimationFrame": "readonly",
+    "cancelAnimationFrame": "readonly"
   }
 }
