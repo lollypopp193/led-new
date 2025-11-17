@@ -2200,15 +2200,19 @@
                 // ✅ SENDE GESCHWINDIGKEIT AN HARDWARE!
                 const controller = getLEDController();
                 if (controller && controller.isConnected) {
-                    // Geschwindigkeit als Helligkeit interpretieren (manche Controller)
-                    const brightness = Math.round((globalSpeed / 10) * 100); // Speed 1-10 zu Brightness 10-100%
-                    const success = await controller.setBrightness(brightness);
-
-                    if (success) {
-                        console.log(`✅ Geschwindigkeit ${globalSpeed} an Hardware gesendet (als Helligkeit ${brightness}%)`);
+                    try {
+                        // ✅ ECHTE GESCHWINDIGKEITS-FUNKTION VERWENDEN!
+                        await controller.setEffectSpeed(globalSpeed);
+                        console.log(`✅ Effekt-Geschwindigkeit ${globalSpeed} an Hardware gesendet`);
                         showNotification(`Geschwindigkeit ${globalSpeed} gesetzt`, 'success');
-                    } else {
-                        console.warn('⚠️ Fehler beim Senden der Geschwindigkeit');
+
+                        // Falls aktiver Effekt: Effekt mit neuer Geschwindigkeit neu senden
+                        if (activeEffect) {
+                            await sendEffectToBLE(activeEffect, globalSpeed);
+                        }
+                    } catch (error) {
+                        console.error('❌ Fehler beim Senden der Geschwindigkeit:', error);
+                        showNotification('Fehler beim Setzen der Geschwindigkeit', 'error');
                     }
                 } else {
                     console.warn('⚠️ Keine BLE-Verbindung für Geschwindigkeit');
