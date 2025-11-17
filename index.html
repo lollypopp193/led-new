@@ -218,6 +218,11 @@
       transition: all 0.3s ease;
       border: 1px solid rgba(0, 255, 255, 0.3);
       cursor: pointer;
+      /* ✅ Button-Reset für echte <button> Elemente */
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+      width: 100%;
     }
 
     .feature-card:hover {
@@ -267,6 +272,12 @@
       padding: 10px 5px;
       border-radius: 12px;
       margin: 0 2px;
+      /* ✅ Button-Reset für echte <button> Elemente */
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -374,35 +385,35 @@
             </div>
             
             <div class="feature-grid">
-              <div class="feature-card" data-app="farbe" role="button" tabindex="0" aria-label="Farb-Tool öffnen">
+              <button class="feature-card" data-app="farbe" aria-label="Farb-Tool öffnen">
                 <div class="feature-icon">🎨</div>
                 <div class="feature-title">Farb-Tool</div>
                 <div class="feature-desc">✅ Live RGB-Vorschau repariert<br>✅ Farbe bleibt nach "Anwenden"<br>✅ Farbrad & RGB synchronisiert</div>
-              </div>
+              </button>
               
-              <div class="feature-card" data-app="effekte" role="button" tabindex="0" aria-label="LED-Effekte öffnen">
+              <button class="feature-card" data-app="effekte" aria-label="LED-Effekte öffnen">
                 <div class="feature-icon">✨</div>
                 <div class="feature-title">LED-Effekte</div>
                 <div class="feature-desc">✅ Alle Effekte mit CSS-Animationen<br>✅ Welle, Feuer, Matrix, Plasma etc.<br>✅ Vollständige Vorschau-Galerie</div>
-              </div>
+              </button>
               
-              <div class="feature-card" data-app="musik" role="button" tabindex="0" aria-label="Musik-Player öffnen">
+              <button class="feature-card" data-app="musik" aria-label="Musik-Player öffnen">
                 <div class="feature-icon">🎵</div>
                 <div class="feature-title">Musik-Player</div>
                 <div class="feature-desc">✅ Persistente Wiedergabe<br>✅ Automatische Metadaten-Sortierung<br>✅ Musik läuft beim Kategorie-Wechsel</div>
-              </div>
+              </button>
               
-              <div class="feature-card" data-app="timer" role="button" tabindex="0" aria-label="Timer öffnen">
+              <button class="feature-card" data-app="timer" aria-label="Timer öffnen">
                 <div class="feature-icon">⏰</div>
                 <div class="feature-title">Timer</div>
                 <div class="feature-desc">✅ Saubere Timer-Verwaltung<br>✅ Wochentage-Auswahl<br>✅ Redundante Aktionen entfernt</div>
-              </div>
+              </button>
               
-              <div class="feature-card" data-app="einstellungen" role="button" tabindex="0" aria-label="Einstellungen öffnen">
+              <button class="feature-card" data-app="einstellungen" aria-label="Einstellungen öffnen">
                 <div class="feature-icon">⚙️</div>
                 <div class="feature-title">Einstellungen</div>
                 <div class="feature-desc">✅ Saubere BLE-Konfiguration<br>✅ Technische Details ausgeblendet<br>✅ Benutzerfreundliche UI</div>
-              </div>
+              </button>
             </div>
 
             <div style="margin-top: 40px; padding: 20px; background: rgba(0, 255, 255, 0.1); border-radius: 15px; border: 1px solid rgba(0, 255, 255, 0.3);">
@@ -420,7 +431,7 @@
           </div>
 
           <!-- Single App IFrame -->
-          <iframe class="app-iframe" id="app-iframe" style="border: none; width: 100%; height: 100%;"></iframe>
+          <iframe class="app-iframe" id="app-iframe" title="LED Control App" style="border: none; width: 100%; height: 100%;"></iframe>
         </div>
       </div>
     </div>
@@ -448,26 +459,26 @@
     <!-- Navigation unten -->
     <div class="nav-bar">
 
-      <div class="nav-item" data-app="farbe" role="button" tabindex="0" aria-label="Farbauswahl öffnen">
+      <button class="nav-item" data-app="farbe" aria-label="Farbauswahl öffnen">
         <i class="fas fa-palette" aria-hidden="true"></i>
         <div class="nav-item-text">Farbe</div>
-      </div>
-      <div class="nav-item" data-app="effekt" role="button" tabindex="0" aria-label="LED-Effekte öffnen">
+      </button>
+      <button class="nav-item" data-app="effekt" aria-label="LED-Effekte öffnen">
         <i class="fas fa-magic" aria-hidden="true"></i>
         <div class="nav-item-text">Effekte</div>
-      </div>
-      <div class="nav-item" data-app="musik" role="button" tabindex="0" aria-label="Musik-Player öffnen">
+      </button>
+      <button class="nav-item" data-app="musik" aria-label="Musik-Player öffnen">
         <i class="fas fa-music" aria-hidden="true"></i>
         <div class="nav-item-text">Musik</div>
-      </div>
-      <div class="nav-item" data-app="timer" role="button" tabindex="0" aria-label="Timer öffnen">
+      </button>
+      <button class="nav-item" data-app="timer" aria-label="Timer öffnen">
         <i class="fas fa-clock" aria-hidden="true"></i>
         <div class="nav-item-text">Timer</div>
-      </div>
-      <div class="nav-item" data-app="einstellungen" role="button" tabindex="0" aria-label="Einstellungen öffnen">
+      </button>
+      <button class="nav-item" data-app="einstellungen" aria-label="Einstellungen öffnen">
         <i class="fas fa-cog" aria-hidden="true"></i>
         <div class="nav-item-text">Einstellungen</div>
-      </div>
+      </button>
     </div>
   </div>
 
@@ -479,8 +490,6 @@
   <script src="js/led-abstraction-layer.js"></script>
   <script src="js/performance-optimizer.js"></script>
   <script src="js/scenes-manager.js"></script>
-  <!-- ✅ UNIVERSAL FEEDBACK SYSTEM - Echte Hardware-Kommunikation -->
-  <script src="js/universal-ble-feedback.js"></script>
   
   <!-- Zusätzliche inline Scripts für mobile Kompatibilität -->
   <script>

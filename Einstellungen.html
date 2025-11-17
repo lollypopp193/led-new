@@ -543,6 +543,13 @@
     <!-- BLE Controller mit absolutem Pfad für iframe-Kompatibilität -->
     <script src="/js/ble-controller-pro.js"></script>
     <script>
+        // ✅ HTML Escape Funktion zur XSS-Prävention
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
         let bleController = null;
         let isScanning = false;
         // Einstellungsvariablen
@@ -1040,7 +1047,7 @@
                             iframe.contentWindow.postMessage({
                                 type: 'darkModeChanged',
                                 darkMode: false
-                            }, '*');
+                            }, window.location.origin);
                         } catch (e) {
                             console.log('Iframe-Kommunikation nicht möglich:', e.message);
                         }
@@ -1052,7 +1059,7 @@
                     window.parent.postMessage({
                         type: 'darkModeChanged',
                         darkMode: darkMode
-                    }, '*');
+                    }, window.location.origin);
                 }
                 
                 // Speichere Präferenz für alle Module
@@ -1800,6 +1807,7 @@
                     document.head.appendChild(style);
                 }
                 
+                // ✅ XSS-sicher: Notification wird sicher hinzugefügt
                 document.body.appendChild(notification);
                 
                 // Auto-remove nach 3 Sekunden
@@ -1882,7 +1890,7 @@
                     errorMessage = error.message;
                 }
                 
-                deviceList.innerHTML = `<div class="error">❌ ${errorMessage}</div>`;
+                deviceList.innerHTML = `<div class="error">❌ ${escapeHtml(errorMessage)}</div>`;
                 updateConnectionStatus(`❌ ${errorMessage}`);
                 showNotification(errorMessage, 'error');
             } finally {

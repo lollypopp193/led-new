@@ -989,11 +989,11 @@
             <h1 style="font-size: 2.8rem; margin: 0; background: linear-gradient(135deg, #00dbde, #fc00ff); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; display: inline-block; text-shadow: 0 0 20px rgba(0, 219, 222, 0.3); position: relative; letter-spacing: 0.1em;">FarbWorld</h1>
             
             <div class="toggle-container">
-                <label class="toggle-switch">
+                <label class="toggle-switch" for="powerToggle">
                     <input type="checkbox" id="powerToggle">
                     <span class="toggle-slider"></span>
                 </label>
-                <span class="toggle-label">LED Ein/Aus</span>
+                <label for="powerToggle" class="toggle-label">LED Ein/Aus</label>
             </div>
         </header>
 
@@ -1078,17 +1078,17 @@
             </div>
             <div class="rgb-controls">
                 <div class="rgb-slider-group">
-                    <label style="color: #ff4444; font-weight: bold;">Rot (R)</label>
+                    <label for="redSlider" style="color: #ff4444; font-weight: bold;">Rot (R)</label>
                     <input type="range" id="redSlider" min="0" max="255" value="255">
                     <span id="redValue">255</span>
                 </div>
                 <div class="rgb-slider-group">
-                    <label style="color: #44ff44; font-weight: bold;">Grün (G)</label>
+                    <label for="greenSlider" style="color: #44ff44; font-weight: bold;">Grün (G)</label>
                     <input type="range" id="greenSlider" min="0" max="255" value="0">
                     <span id="greenValue">0</span>
                 </div>
                 <div class="rgb-slider-group">
-                    <label style="color: #4444ff; font-weight: bold;">Blau (B)</label>
+                    <label for="blueSlider" style="color: #4444ff; font-weight: bold;">Blau (B)</label>
                     <input type="range" id="blueSlider" min="0" max="255" value="0">
                     <span id="blueValue">0</span>
                 </div>
@@ -1177,6 +1177,13 @@
     </div>
 
     <script>
+        // ✅ HTML Escape Funktion zur XSS-Prävention
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
         // Globale Variablen
         let currentMode = 'rainbow';
         let currentColor = { r: 255, g: 0, b: 0 };
@@ -1217,40 +1224,26 @@
             }
         }
 
-        // ✅ ECHTE HARDWARE LED-STEUERUNG - VERWENDET UNIVERSAL FEEDBACK SYSTEM
+        // ✅ ECHTE HARDWARE LED-STEUERUNG - VERWENDET GLOBALE FUNKTIONEN
         async function sendColorToBLE(r, g, b) {
             try {
-                let success = false;
-                
-                // ✅ PRIORITÄT 1: Universal Feedback System
-                if (window.parent?.universalBLEFeedback) {
-                    success = await window.parent.universalBLEFeedback.sendColorToHardware(r, g, b);
+                // ✅ VERWENDE DIE GLOBALE sendColorToLED FUNKTION AUS app.js!
+                if (window.parent && window.parent.sendColorToLED) {
+                    const success = await window.parent.sendColorToLED(r, g, b);
                     if (success) {
-                        console.log(`🎨 ✅ Universal System: Hardware-Farbe gesendet: RGB(${r}, ${g}, ${b})`);
-                        
-                        // Visuelles Feedback für Farbe
-                        const colorPreview = document.getElementById('colorPreview');
-                        if (colorPreview) {
-                            colorPreview.style.animation = 'pulse 0.5s ease';
-                            setTimeout(() => { colorPreview.style.animation = ''; }, 500);
-                        }
-                        return true;
-                    }
-                } 
-                
-                // ✅ PRIORITÄT 2: Globale sendColorToLED Funktion
-                else if (window.parent?.sendColorToLED) {
-                    success = await window.parent.sendColorToLED(r, g, b);
-                    if (success) {
-                        console.log(`🎨 ✅ Global: Hardware-Farbe gesendet: RGB(${r}, ${g}, ${b})`);
+                        console.log(`🎨 ✅ ECHTE Hardware-Farbe gesendet: RGB(${r}, ${g}, ${b})`);
                         showNotification(`LED-Farbe gesetzt: RGB(${r}, ${g}, ${b})`, 'success');
                         return true;
+                    } else {
+                        console.warn('⚠️ Bluetooth nicht verbunden');
+                        showNotification('Bitte erst Bluetooth in Einstellungen verbinden!', 'warning');
+                        return false;
                     }
                 }
                 
-                // ✅ PRIORITÄT 3: Direkter BLE Controller
-                else if (window.bleController?.isConnected) {
-                    success = await window.bleController.setColorRGB(r, g, b);
+                // Fallback: Direkter Zugriff auf bleController
+                if (window.bleController && window.bleController.isConnected) {
+                    const success = await window.bleController.setColorRGB(r, g, b);
                     if (success) {
                         console.log(`🎨 ✅ Direkt: Hardware-Farbe gesendet: RGB(${r}, ${g}, ${b})`);
                         showNotification(`LED-Farbe gesetzt: RGB(${r}, ${g}, ${b})`, 'success');
@@ -1258,23 +1251,10 @@
                     }
                 }
                 
-                // ✅ PRIORITÄT 4: Universal Funktion
-                else if (window.sendUniversalColor) {
-                    success = await window.sendUniversalColor(r, g, b);
-                    if (success) {
-                        console.log(`🎨 ✅ Universal: Hardware-Farbe gesendet: RGB(${r}, ${g}, ${b})`);
-                        return true;
-                    }
-                }
-                
                 // Keine Verbindung verfügbar
-                if (!success) {
-                    console.warn('⚠️ Bluetooth nicht verbunden');
-                    showNotification('Bitte erst Bluetooth in Einstellungen verbinden!', 'warning');
-                    return false;
-                }
-                
-                return success;
+                console.error('❌ KRITISCH: Keine Bluetooth-Verbindung!');
+                showNotification('FEHLER: Bluetooth nicht verbunden! Bitte in Einstellungen verbinden.', 'error');
+                return false;
                 
             } catch (error) {
                 console.error('❌ Hardware-Fehler:', error);
@@ -1598,8 +1578,7 @@
         const blueValue = document.getElementById('blueValue');
         const rgbPreview = document.getElementById('rgbPreview');
 
-        // ✅ ECHTE HARDWARE-KOMMUNIKATION MIT FEEDBACK
-        async function updateRgbPreview() {
+        function updateRgbPreview() {
             const r = redSlider.value;
             const g = greenSlider.value;
             const b = blueSlider.value;
@@ -1612,49 +1591,13 @@
             
             // currentColor aktualisieren
             currentColor = { r: parseInt(r), g: parseInt(g), b: parseInt(b) };
-            
-            // ✅ SENDE AN HARDWARE MIT UNIVERSAL FEEDBACK
-            try {
-                let success = false;
-                
-                // Verwende Universal Feedback System wenn verfügbar
-                if (window.parent?.universalBLEFeedback) {
-                    success = await window.parent.universalBLEFeedback.sendColorToHardware(
-                        parseInt(r), parseInt(g), parseInt(b)
-                    );
-                } else if (window.universalBLEFeedback) {
-                    success = await window.universalBLEFeedback.sendColorToHardware(
-                        parseInt(r), parseInt(g), parseInt(b)
-                    );
-                } else {
-                    // Fallback auf alte Methode
-                    await applyColor(parseInt(r), parseInt(g), parseInt(b));
-                }
-                
-                if (success) {
-                    // Visuelles Feedback - Glow-Effekt
-                    rgbPreview.style.boxShadow = `0 0 20px rgb(${r}, ${g}, ${b})`;
-                    setTimeout(() => {
-                        rgbPreview.style.boxShadow = '';
-                    }, 300);
-                    
-                    console.log('✅ RGB Farbe gesendet:', currentColor);
-                }
-            } catch (error) {
-                console.error('❌ RGB Update Fehler:', error);
-            }
+            applyColor(parseInt(r), parseInt(g), parseInt(b));
+            console.log('currentColor von RGB aktualisiert:', currentColor);
         }
 
-        // Throttled Update für bessere Performance
-        let rgbUpdateTimeout;
-        function throttledRgbUpdate() {
-            clearTimeout(rgbUpdateTimeout);
-            rgbUpdateTimeout = setTimeout(updateRgbPreview, 30);
-        }
-
-        redSlider.addEventListener('input', throttledRgbUpdate);
-        greenSlider.addEventListener('input', throttledRgbUpdate);
-        blueSlider.addEventListener('input', throttledRgbUpdate);
+        redSlider.addEventListener('input', updateRgbPreview);
+        greenSlider.addEventListener('input', updateRgbPreview);
+        blueSlider.addEventListener('input', updateRgbPreview);
 
         // RGB-Slider mit Farbe aktualisieren
         function updateRgbSlidersFromColor(color) {
@@ -1783,6 +1726,7 @@
                 notification.style.background = 'rgba(150, 0, 0, 0.8)';
             }
             
+            // ✅ XSS-sicher: textContent wird automatisch escaped
             document.body.appendChild(notification);
             
             setTimeout(() => {
