@@ -4,15 +4,15 @@
  * Bluetooth Low Energy Controller für LED-Steuerung
  * Version: 1.0
  * ===================================================================
- * 
+ *
  * Unterstützte Protokolle:
  * - ELK-BLEDOM
  * - Generic BLE LED
  * - Weitere können hinzugefügt werden
- * 
+ *
  * Benötigt: Web Bluetooth API (Chrome, Edge, Opera)
  * Nicht unterstützt: Safari, iOS
- * 
+ *
  * ===================================================================
  */
 
@@ -28,6 +28,25 @@ class BLEController {
     this.protocol = null;
     this.deviceName = null;
     this.deviceId = null;
+
+    // ✅ COMMAND QUEUE für zuverlässige Befehlsausführung
+    this.commandQueue = [];
+    this.isProcessingQueue = false;
+
+    // ✅ FEHLER-STATISTIK & LOGGING
+    this.stats = {
+      commandsSent: 0,
+      commandsFailed: 0,
+      reconnectAttempts: 0,
+      lastError: null,
+      lastSuccessTime: null,
+      connectionStartTime: null
+    };
+
+    // ✅ HEALTH-CHECK TIMER
+    this.healthCheckInterval = null;
+    this.healthCheckEnabled = true;
+    this.healthCheckIntervalMs = 10000; // Alle 10 Sekunden
 
     // BLE Service und Characteristic UUIDs
     this.SERVICES = {
@@ -100,10 +119,15 @@ class BLEController {
 
       const options = {
         // acceptAllDevices: true,  // Alle Geräte anzeigen
-        filters: [
-          { namePrefix: 'ELK-BLEDOM' },
-          { namePrefix: 'BLE-LED' },
-          { namePrefix: 'LED' }
+        filters: [{
+          namePrefix: 'ELK-BLEDOM'
+        },
+        {
+          namePrefix: 'BLE-LED'
+        },
+        {
+          namePrefix: 'LED'
+        }
         ],
         optionalServices: [
           this.SERVICES.ELK_BLEDOM,
@@ -112,7 +136,7 @@ class BLEController {
       };
 
       this.device = await navigator.bluetooth.requestDevice(options);
-      
+
       console.log('✅ Gerät gefunden:', this.device.name);
       return this.device;
     } catch (error) {
@@ -168,12 +192,18 @@ class BLEController {
         this.handleDisconnect();
       });
 
+      // ✅ STARTE HEALTH-CHECK
+      this.startHealthCheck();
+
+      // ✅ STATISTIK AKTUALISIEREN
+      this.stats.connectionStartTime = Date.now();
+
       console.log(`✅ Erfolgreich verbunden mit ${this.deviceName} (${protocol})`);
       return true;
     } catch (error) {
       console.error('❌ Verbindung fehlgeschlagen:', error);
       this.isConnected = false;
-      
+
       // Benutzerfreundliche Fehlermeldung
       let errorMessage = 'Verbindung fehlgeschlagen. ';
       if (error.name === 'NotFoundError') {
@@ -185,11 +215,11 @@ class BLEController {
       } else {
         errorMessage += 'Bitte sicherstellen, dass das LED-Band eingeschaltet und in Reichweite ist.';
       }
-      
+
       if (window.showGlobalNotification) {
         window.showGlobalNotification(errorMessage, 'error');
       }
-      
+
       throw error;
     }
   }
@@ -221,26 +251,30 @@ class BLEController {
 
         // Befehl als Uint8Array
         const data = new Uint8Array(command);
-        
+
         // ✅ BEFEHL MIT TIMEOUT SENDEN
         await Promise.race([
           this.characteristic.writeValue(data),
           new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 5000))
         ]);
-        
+
         this.lastCommandTime = Date.now();
 
-        console.log(`📤 Befehl erfolgreich gesendet (Versuch ${attempt}):`, 
-                   Array.from(data).map(b => '0x' + b.toString(16).padStart(2, '0')).join(' '));
-        
+        console.log(`📤 Befehl erfolgreich gesendet (Versuch ${attempt}):`,
+          Array.from(data).map(b => '0x' + b.toString(16).padStart(2, '0')).join(' '));
+
+        // ✅ STATISTIK AKTUALISIEREN
+        this.stats.commandsSent++;
+        this.stats.lastSuccessTime = Date.now();
+
         // ✅ BESTÄTIGUNG WARTEN (kurz)
         await new Promise(resolve => setTimeout(resolve, 50));
-        
+
         return true;
-        
+
       } catch (error) {
         console.error(`❌ Befehl senden fehlgeschlagen (Versuch ${attempt}/${retries}):`, error);
-        
+
         if (attempt === retries) {
           // Letzter Versuch fehlgeschlagen
           if (window.showGlobalNotification) {
@@ -253,7 +287,7 @@ class BLEController {
         }
       }
     }
-    
+
     return false;
   }
 
@@ -314,7 +348,7 @@ class BLEController {
   async setBrightness(level) {
     // Validate (0-100)
     level = Math.max(0, Math.min(100, parseInt(level) || 0));
-    
+
     // Convert to 0-255
     const brightnessValue = Math.round((level / 100) * 255);
 
@@ -349,9 +383,9 @@ class BLEController {
    * Schaltet LED ein/aus
    */
   async setPower(state) {
-    const command = state
-      ? this.COMMANDS[this.protocol].POWER_ON
-      : this.COMMANDS[this.protocol].POWER_OFF;
+    const command = state ?
+      this.COMMANDS[this.protocol].POWER_ON :
+      this.COMMANDS[this.protocol].POWER_OFF;
 
     const result = await this.sendCommand(command);
 
@@ -554,7 +588,7 @@ class BLEController {
     if (window.updateGlobalBLEStatus) {
       window.updateGlobalBLEStatus();
     }
-    
+
     // Auto-Reconnect starten
     if (window.handleBLEDisconnect && typeof window.handleBLEDisconnect === 'function') {
       window.handleBLEDisconnect();
@@ -572,7 +606,7 @@ class BLEController {
 
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       console.log(`🔄 Wiederverbindungsversuch ${attempt}/${maxAttempts}`);
-      
+
       if (window.showGlobalNotification) {
         window.showGlobalNotification(`Wiederverbindung... (${attempt}/${maxAttempts})`, 'info');
       }
@@ -582,7 +616,7 @@ class BLEController {
       try {
         if (this.device && this.device.gatt) {
           await this.connect(null, this.protocol);
-          
+
           if (window.showGlobalNotification) {
             window.showGlobalNotification('Wiederverbindung erfolgreich!', 'success');
           }
@@ -601,25 +635,25 @@ class BLEController {
   }
 
   // ✅ WLED-FUNKTIONEN (WiFi-LEDs)
-  
+
   /**
    * Scannt nach WLED-Geräten im lokalen Netzwerk
    */
   async scanWLEDDevices() {
     if (!this.wledEnabled) return [];
-    
+
     console.log('🔍 Scanne nach WLED-Geräten...');
     const devices = [];
-    
+
     // Typische WLED-IPs scannen (192.168.1.x)
     const baseIP = '192.168.1.';
     const promises = [];
-    
+
     for (let i = 1; i <= 254; i++) {
       const ip = baseIP + i;
       promises.push(this.checkWLEDDevice(ip));
     }
-    
+
     try {
       const results = await Promise.allSettled(promises);
       results.forEach((result, index) => {
@@ -635,7 +669,7 @@ class BLEController {
     } catch (error) {
       console.error('❌ WLED-Scan Fehler:', error);
     }
-    
+
     this.wledDevices = devices;
     console.log(`✅ ${devices.length} WLED-Geräte gefunden`);
     return devices;
@@ -648,24 +682,27 @@ class BLEController {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), timeout);
-      
+
       const response = await fetch(`http://${ip}/json/info`, {
         signal: controller.signal,
         method: 'GET'
       });
-      
+
       clearTimeout(timeoutId);
-      
+
       if (response.ok) {
         const data = await response.json();
         if (data.name && data.ver) {
-          return { name: data.name, version: data.ver };
+          return {
+            name: data.name,
+            version: data.ver
+          };
         }
       }
     } catch (error) {
       // Timeout oder Netzwerk-Fehler - normal beim Scannen
     }
-    
+
     return null;
   }
 
@@ -676,16 +713,20 @@ class BLEController {
     try {
       const response = await fetch(`http://${ip}/json/state`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({
           on: true,
           bri: 255,
           seg: [{
-            col: [[r, g, b]]
+            col: [
+              [r, g, b]
+            ]
           }]
         })
       });
-      
+
       return response.ok;
     } catch (error) {
       console.error(`❌ WLED-Farbe senden fehlgeschlagen (${ip}):`, error);
@@ -724,7 +765,7 @@ console.log('✅ BLE-Controller global verfügbar als window.ledController UND w
 // ===================================================================
 
 // Automatisch mit gespeicherten Geräten verbinden
-window.addEventListener('load', async function() {
+window.addEventListener('load', async function () {
   try {
     const savedDevices = localStorage.getItem('led-devices');
     if (savedDevices) {
