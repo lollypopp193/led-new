@@ -543,10 +543,10 @@
         <section>
             <h2>🎬 Aktion</h2>
             <div class="action-modes" style="display: flex; gap: 10px; justify-content: center;">
-                <button class="action-mode active" data-action="on" style="padding: 12px 20px; background: rgba(46, 213, 115, 0.2); border: 2px solid #2ed573; border-radius: 10px; color: white; cursor: pointer;">
+                <button type="button" class="action-mode active" data-action="on" style="padding: 12px 20px; background: rgba(46, 213, 115, 0.2); border: 2px solid #2ed573; border-radius: 10px; color: white; cursor: pointer;">
                     🟢 LEDs einschalten
                 </button>
-                <button class="action-mode" data-action="off" style="padding: 12px 20px; background: rgba(255, 107, 107, 0.2); border: 2px solid #ff6b6b; border-radius: 10px; color: white; cursor: pointer;">
+                <button type="button" class="action-mode" data-action="off" style="padding: 12px 20px; background: rgba(255, 107, 107, 0.2); border: 2px solid #ff6b6b; border-radius: 10px; color: white; cursor: pointer;">
                     🔴 LEDs ausschalten
                 </button>
             </div>
@@ -555,19 +555,19 @@
         <section>
             <h2><i>📅</i> Wochentage</h2>
             <div class="weekdays">
-                <button class="weekday-btn" data-day="mo">Mo</button>
-                <button class="weekday-btn" data-day="di">Di</button>
-                <button class="weekday-btn" data-day="mi">Mi</button>
-                <button class="weekday-btn" data-day="do">Do</button>
-                <button class="weekday-btn" data-day="fr">Fr</button>
-                <button class="weekday-btn active" data-day="sa">Sa</button>
-                <button class="weekday-btn active" data-day="so">So</button>
+                <button type="button" class="weekday-btn" data-day="mo">Mo</button>
+                <button type="button" class="weekday-btn" data-day="di">Di</button>
+                <button type="button" class="weekday-btn" data-day="mi">Mi</button>
+                <button type="button" class="weekday-btn" data-day="do">Do</button>
+                <button type="button" class="weekday-btn" data-day="fr">Fr</button>
+                <button type="button" class="weekday-btn active" data-day="sa">Sa</button>
+                <button type="button" class="weekday-btn active" data-day="so">So</button>
             </div>
         </section>
         
 
         
-        <button class="save-btn" id="save-btn">Timer speichern</button>
+        <button type="button" class="save-btn" id="save-btn">Timer speichern</button>
         
         <section>
             <h2>📋 Gespeicherte Timer</h2>
@@ -1246,7 +1246,7 @@
                         <div style="font-weight: bold; color: #4ecdc4;">${timer.startTime} - ${timer.endTime}</div>
                         <div style="font-size: 0.9em; color: #888;">${days} • ${actionText}</div>
                     </div>
-                    <button onclick="deleteTimer('${timer.id}')" 
+                    <button type="button" onclick="deleteTimer('${timer.id}')" 
                             style="background: #ff6b6b; color: white; border: none; border-radius: 5px; padding: 5px 10px; cursor: pointer;">
                         ✕
                     </button>

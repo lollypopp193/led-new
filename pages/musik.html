@@ -1698,13 +1698,13 @@
 <body>
     <!-- Taskbar -->
     <div class="taskbar">
-        <button class="taskbar-btn active" data-content="player"><i class="fas fa-play"></i> Player</button>
-        <button class="taskbar-btn" data-content="equalizer"><i class="fas fa-sliders-h"></i> Equalizer</button>
-        <button class="taskbar-btn" data-content="visualizer"><i class="fas fa-wave-square"></i> Visualisierung</button>
-        <button class="taskbar-btn" data-content="led"><i class="fas fa-music"></i> LED-Musik</button>
-        <button class="taskbar-btn" data-content="party"><i class="fas fa-glass-cheers"></i> Party-Modus</button>
-        <button class="taskbar-btn" data-content="library"><i class="fas fa-book"></i> Bibliothek</button>
-        <button class="taskbar-btn" data-content="settings"><i class="fas fa-cog"></i> Einstellungen</button>
+        <button type="button" class="taskbar-btn active" data-content="player"><i class="fas fa-play"></i> Player</button>
+        <button type="button" class="taskbar-btn" data-content="equalizer"><i class="fas fa-sliders-h"></i> Equalizer</button>
+        <button type="button" class="taskbar-btn" data-content="visualizer"><i class="fas fa-wave-square"></i> Visualisierung</button>
+        <button type="button" class="taskbar-btn" data-content="led"><i class="fas fa-music"></i> LED-Musik</button>
+        <button type="button" class="taskbar-btn" data-content="party"><i class="fas fa-glass-cheers"></i> Party-Modus</button>
+        <button type="button" class="taskbar-btn" data-content="library"><i class="fas fa-book"></i> Bibliothek</button>
+        <button type="button" class="taskbar-btn" data-content="settings"><i class="fas fa-cog"></i> Einstellungen</button>
     </div>
 
     <!-- Content Area -->
@@ -1779,29 +1779,29 @@
             <!-- Player Controls -->
             <div class="player-controls">
                 <!-- Left Side: Repeat Button -->
-                <button class="btn repeat-btn" id="repeatBtn" title="Wiederholen: Aus">
+                <button type="button" class="btn repeat-btn" id="repeatBtn" title="Wiederholen: Aus">
                     <i class="fas fa-redo" id="repeatIcon"></i>
                 </button>
                 
                 <!-- Center: Previous, Play/Pause, Next -->
                 <div class="main-controls">
-                    <button class="btn" id="prevBtn">
+                    <button type="button" class="btn" id="prevBtn">
                         <i class="fas fa-step-backward"></i>
                     </button>
-                    <button class="btn play-btn" id="playBtn">
+                    <button type="button" class="btn play-btn" id="playBtn">
                         <i class="fas fa-play" id="playIcon"></i>
                     </button>
-                    <button class="btn" id="nextBtn">
+                    <button type="button" class="btn" id="nextBtn">
                         <i class="fas fa-step-forward"></i>
                     </button>
                 </div>
                 
                 <!-- Right Side: Shuffle and Favorite -->
                 <div class="right-controls">
-                    <button class="btn shuffle-btn" id="shuffleBtn" title="Zufallswiedergabe: Aus">
+                    <button type="button" class="btn shuffle-btn" id="shuffleBtn" title="Zufallswiedergabe: Aus">
                         <i class="fas fa-random" id="shuffleIcon"></i>
                     </button>
-                    <button class="btn favorite-btn" id="favoriteBtn" title="Zu Favoriten hinzufügen">
+                    <button type="button" class="btn favorite-btn" id="favoriteBtn" title="Zu Favoriten hinzufügen">
                         <i class="fas fa-star" id="favoriteIcon"></i>
                     </button>
                 </div>
@@ -1817,10 +1817,10 @@
                         <i class="fas fa-file-alt"></i> Liedtext
                     </h4>
                     <div class="lyrics-controls">
-                        <button id="lyricsSyncBtn" class="btn" style="background: rgba(78, 205, 196, 0.2); color: #4ecdc4; border: 1px solid #4ecdc4; padding: 5px 10px; border-radius: 5px; font-size: 0.8em;">
+                        <button type="button" id="lyricsSyncBtn" class="btn" style="background: rgba(78, 205, 196, 0.2); color: #4ecdc4; border: 1px solid #4ecdc4; padding: 5px 10px; border-radius: 5px; font-size: 0.8em;">
                             <i class="fas fa-sync" id="lyricsSyncIcon"></i> Sync
                         </button>
-                        <button id="lyricsSizeBtn" class="btn" style="background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 5px 10px; border-radius: 5px; font-size: 0.8em; margin-left: 5px;">
+                        <button type="button" id="lyricsSizeBtn" class="btn" style="background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 5px 10px; border-radius: 5px; font-size: 0.8em; margin-left: 5px;">
                             <i class="fas fa-text-height"></i>
                         </button>
                     </div>
@@ -1883,12 +1883,12 @@
             </div>
             
             <div class="presets">
-                <button class="preset-btn active">Flat</button>
-                <button class="preset-btn">Pop</button>
-                <button class="preset-btn">Rock</button>
-                <button class="preset-btn">Bass Boost</button>
-                <button class="preset-btn">Klassik</button>
-                <button class="preset-btn">Jazz</button>
+                <button type="button" class="preset-btn active">Flat</button>
+                <button type="button" class="preset-btn">Pop</button>
+                <button type="button" class="preset-btn">Rock</button>
+                <button type="button" class="preset-btn">Bass Boost</button>
+                <button type="button" class="preset-btn">Klassik</button>
+                <button type="button" class="preset-btn">Jazz</button>
             </div>
             
             <div class="equalizer">
@@ -1915,8 +1915,8 @@
             </div>
             
             <div style="margin-top: 20px; display: flex; gap: 15px;">
-                <button class="preset-btn">Speichern</button>
-                <button class="preset-btn">Zurücksetzen</button>
+                <button type="button" class="preset-btn">Speichern</button>
+                <button type="button" class="preset-btn">Zurücksetzen</button>
             </div>
             
             <!-- Bassboost Section -->
@@ -2065,16 +2065,16 @@
 
                 <!-- Band Tabs -->
                 <div id="ledBandTabs" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 15px;">
-                    <button class="led-band-tab active" data-band="audio-reactive" style="padding: 12px 20px; background: rgba(78, 205, 196, 0.2); border: 1px solid #4ecdc4; color: white; border-radius: 8px; cursor: pointer;">
+                    <button type="button" class="led-band-tab active" data-band="audio-reactive" style="padding: 12px 20px; background: rgba(78, 205, 196, 0.2); border: 1px solid #4ecdc4; color: white; border-radius: 8px; cursor: pointer;">
                         <i class="fas fa-waveform-lines"></i> Audio-Reactive Engine
                     </button>
-                    <button class="led-band-tab" data-band="0" style="padding: 12px 20px; background: rgba(58, 134, 255, 0.2); border: 1px solid #3A86FF; color: white; border-radius: 8px; cursor: pointer;">
+                    <button type="button" class="led-band-tab" data-band="0" style="padding: 12px 20px; background: rgba(58, 134, 255, 0.2); border: 1px solid #3A86FF; color: white; border-radius: 8px; cursor: pointer;">
                         <span style="display: inline-block; width: 12px; height: 12px; background: #3A86FF; border-radius: 50%; margin-right: 8px;"></span> LED-Band 1
                     </button>
-                    <button class="led-band-tab" data-band="1" style="padding: 12px 20px; background: rgba(255, 0, 110, 0.2); border: 1px solid #FF006E; color: white; border-radius: 8px; cursor: pointer;">
+                    <button type="button" class="led-band-tab" data-band="1" style="padding: 12px 20px; background: rgba(255, 0, 110, 0.2); border: 1px solid #FF006E; color: white; border-radius: 8px; cursor: pointer;">
                         <span style="display: inline-block; width: 12px; height: 12px; background: #FF006E; border-radius: 50%; margin-right: 8px;"></span> LED-Band 2
                     </button>
-                    <button class="led-band-tab" data-band="2" style="padding: 12px 20px; background: rgba(255, 190, 11, 0.2); border: 1px solid #FFBE0B; color: white; border-radius: 8px; cursor: pointer;">
+                    <button type="button" class="led-band-tab" data-band="2" style="padding: 12px 20px; background: rgba(255, 190, 11, 0.2); border: 1px solid #FFBE0B; color: white; border-radius: 8px; cursor: pointer;">
                         <span style="display: inline-block; width: 12px; height: 12px; background: #FFBE0B; border-radius: 50%; margin-right: 8px;"></span> LED-Band 3
                     </button>
                     <!-- Weitere Bänder 4-10 werden per JS hinzugefügt -->
@@ -2087,13 +2087,13 @@
                     <div style="background: rgba(255, 255, 255, 0.05); border-radius: 15px; padding: 25px; margin-bottom: 20px;">
                         <h3 style="color: #4ecdc4; margin-bottom: 15px;"><i class="fas fa-music"></i> Musik-Analyse (KEIN Mikrofon)</h3>
                         <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                            <button id="startAudioCapture" style="padding: 12px 25px; background: linear-gradient(45deg, #4ecdc4, #44a08d); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                            <button type="button" id="startAudioCapture" style="padding: 12px 25px; background: linear-gradient(45deg, #4ecdc4, #44a08d); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">
                                 <i class="fas fa-music"></i> Musik-Analyse starten
                             </button>
-                            <button id="stopAudioCapture" style="padding: 12px 25px; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 8px; cursor: pointer; display: none;">
+                            <button type="button" id="stopAudioCapture" style="padding: 12px 25px; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 8px; cursor: pointer; display: none;">
                                 <i class="fas fa-stop"></i> Audio-Erfassung stoppen
                             </button>
-                            <button id="scanLEDStrips" style="padding: 12px 25px; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 8px; cursor: pointer;">
+                            <button type="button" id="scanLEDStrips" style="padding: 12px 25px; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 8px; cursor: pointer;">
                                 <i class="fas fa-bluetooth"></i> LED-Bänder scannen
                             </button>
                         </div>
@@ -2255,16 +2255,16 @@
 
                         <!-- Preset Actions -->
                         <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                            <button onclick="saveLEDBandPreset(0)" style="flex: 1; min-width: 150px; padding: 12px 25px; background: linear-gradient(45deg, #4ecdc4, #44a08d); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                            <button type="button" onclick="saveLEDBandPreset(0)" style="flex: 1; min-width: 150px; padding: 12px 25px; background: linear-gradient(45deg, #4ecdc4, #44a08d); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">
                                 <i class="fas fa-save"></i> Preset speichern
                             </button>
-                            <button onclick="loadLEDBandPreset(0)" style="flex: 1; min-width: 150px; padding: 12px 25px; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 8px; cursor: pointer;">
+                            <button type="button" onclick="loadLEDBandPreset(0)" style="flex: 1; min-width: 150px; padding: 12px 25px; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 8px; cursor: pointer;">
                                 <i class="fas fa-folder-open"></i> Preset laden
                             </button>
-                            <button onclick="resetLEDBandToDefault(0)" style="flex: 1; min-width: 150px; padding: 12px 25px; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 8px; cursor: pointer;">
+                            <button type="button" onclick="resetLEDBandToDefault(0)" style="flex: 1; min-width: 150px; padding: 12px 25px; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 8px; cursor: pointer;">
                                 <i class="fas fa-undo"></i> Zurücksetzen
                             </button>
-                            <button onclick="copyLEDBandToOthers(0)" style="flex: 1; min-width: 150px; padding: 12px 25px; background: linear-gradient(45deg, #4ecdc4, #44a08d); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                            <button type="button" onclick="copyLEDBandToOthers(0)" style="flex: 1; min-width: 150px; padding: 12px 25px; background: linear-gradient(45deg, #4ecdc4, #44a08d); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">
                                 <i class="fas fa-copy"></i> Auf andere kopieren
                             </button>
                         </div>
@@ -2288,7 +2288,7 @@
                      <!-- Party Activation -->
                      <div style="text-align: center; padding: 20px; background: rgba(78, 205, 196, 0.1); border-radius: 15px;">
                          <h3 style="color: #4ecdc4; margin-bottom: 15px;">🎉 Party-Modus</h3>
-                         <button class="preset-btn" onclick="togglePartyMode()" id="partyToggle">
+                         <button type="button" class="preset-btn" onclick="togglePartyMode()" id="partyToggle">
                              <i class="fas fa-play"></i> Party starten
                          </button>
                      </div>
@@ -2390,7 +2390,7 @@
                              </div>
                              
                              <div>
-                                <button onclick="resetTempoAndPitch()" style="background: #6c757d; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer;">↺ Zurücksetzen</button>
+                                <button type="button" onclick="resetTempoAndPitch()" style="background: #6c757d; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer;">↺ Zurücksetzen</button>
                             </div>
                         </div>
                     </div>
@@ -2499,13 +2499,13 @@
                 <i class="fas fa-music"></i>
                 <h2 class="panel-title">Bibliothek</h2>
                 <div class="library-header-controls">
-                    <button id="librarySearchBtn" class="header-btn" title="Suchen">
+                    <button type="button" id="librarySearchBtn" class="header-btn" title="Suchen">
                         <i class="fas fa-search"></i>
                     </button>
-                    <button id="libraryViewToggle" class="header-btn" title="Ansicht wechseln">
+                    <button type="button" id="libraryViewToggle" class="header-btn" title="Ansicht wechseln">
                         <i class="fas fa-th-large"></i>
                     </button>
-                    <button id="librarySortBtn" class="header-btn" title="Sortieren">
+                    <button type="button" id="librarySortBtn" class="header-btn" title="Sortieren">
                         <i class="fas fa-sort"></i>
                     </button>
                 </div>
@@ -2513,39 +2513,39 @@
             
             <!-- Library Navigation -->
             <div class="library-nav">
-                <button class="library-nav-btn active" data-section="artists">
+                <button type="button" class="library-nav-btn active" data-section="artists">
                     <i class="fas fa-microphone-alt"></i>
                     <span>Interpreten</span>
                 </button>
-                <button class="library-nav-btn" data-section="albums">
+                <button type="button" class="library-nav-btn" data-section="albums">
                     <i class="fas fa-compact-disc"></i>
                     <span>Alben</span>
                 </button>
-                <button class="library-nav-btn" data-section="songs">
+                <button type="button" class="library-nav-btn" data-section="songs">
                     <i class="fas fa-music"></i>
                     <span>Titel</span>
                 </button>
-                <button class="library-nav-btn" data-section="folders">
+                <button type="button" class="library-nav-btn" data-section="folders">
                     <i class="fas fa-folder"></i>
                     <span>Ordner</span>
                 </button>
-                <button class="library-nav-btn" data-section="genres">
+                <button type="button" class="library-nav-btn" data-section="genres">
                     <i class="fas fa-guitar"></i>
                     <span>Genres</span>
                 </button>
-                <button class="library-nav-btn" data-section="recent">
+                <button type="button" class="library-nav-btn" data-section="recent">
                     <i class="fas fa-clock"></i>
                     <span>Kürzlich</span>
                 </button>
-                <button class="library-nav-btn" data-section="favorites">
+                <button type="button" class="library-nav-btn" data-section="favorites">
                     <i class="fas fa-star"></i>
                     <span>Favoriten</span>
                 </button>
-                <button class="library-nav-btn" data-section="most-played">
+                <button type="button" class="library-nav-btn" data-section="most-played">
                     <i class="fas fa-fire"></i>
                     <span>Meist gespielt</span>
                 </button>
-                <button class="library-nav-btn" data-section="playlists">
+                <button type="button" class="library-nav-btn" data-section="playlists">
                     <i class="fas fa-list-ul"></i>
                     <span>Playlists</span>
                 </button>
@@ -2556,7 +2556,7 @@
                 <div class="search-input-container">
                     <i class="fas fa-search search-icon"></i>
                     <input type="text" id="librarySearchInput" placeholder="Durchsuche deine Bibliothek..." autocomplete="off">
-                    <button id="searchClearBtn" class="search-clear-btn" style="display: none;">
+                    <button type="button" id="searchClearBtn" class="search-clear-btn" style="display: none;">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
@@ -2565,23 +2565,23 @@
             <!-- Sort Options -->
             <div class="library-sort" id="librarySortOptions" style="display: none;">
                 <div class="sort-options">
-                    <button class="sort-btn active" data-sort="name">
+                    <button type="button" class="sort-btn active" data-sort="name">
                         <i class="fas fa-sort-alpha-down"></i>
                         <span>Name</span>
                     </button>
-                    <button class="sort-btn" data-sort="artist">
+                    <button type="button" class="sort-btn" data-sort="artist">
                         <i class="fas fa-user"></i>
                         <span>Interpret</span>
                     </button>
-                    <button class="sort-btn" data-sort="album">
+                    <button type="button" class="sort-btn" data-sort="album">
                         <i class="fas fa-compact-disc"></i>
                         <span>Album</span>
                     </button>
-                    <button class="sort-btn" data-sort="date">
+                    <button type="button" class="sort-btn" data-sort="date">
                         <i class="fas fa-calendar"></i>
                         <span>Datum</span>
                     </button>
-                    <button class="sort-btn" data-sort="duration">
+                    <button type="button" class="sort-btn" data-sort="duration">
                         <i class="fas fa-clock"></i>
                         <span>Dauer</span>
                     </button>
@@ -2715,7 +2715,7 @@
                     <div class="section-header-info">
                         <h3>Playlists</h3>
                         <span class="item-count" id="playlistsCount">0 Playlists</span>
-                        <button onclick="createNewPlaylist()" ontouchend="createNewPlaylist()" class="header-btn" style="background: rgba(78, 205, 196, 0.2); color: #4ecdc4; border: 1px solid #4ecdc4; padding: 12px 20px; border-radius: 8px; cursor: pointer; margin-left: auto; min-height: 44px; font-size: 16px;">
+                        <button type="button" onclick="createNewPlaylist()" ontouchend="createNewPlaylist()" class="header-btn" style="background: rgba(78, 205, 196, 0.2); color: #4ecdc4; border: 1px solid #4ecdc4; padding: 12px 20px; border-radius: 8px; cursor: pointer; margin-left: auto; min-height: 44px; font-size: 16px;">
                             <i class="fas fa-plus"></i> Neue Playlist
                         </button>
                     </div>
@@ -2769,7 +2769,7 @@
     </div>
     
     <!-- Floating Action Button -->
-    <button class="fab" id="addMusicFab" title="Musik hinzufügen">
+    <button type="button" class="fab" id="addMusicFab" title="Musik hinzufügen">
         <i class="fas fa-plus"></i>
     </button>
 
@@ -4234,7 +4234,7 @@
                             <h4 style="color: white; margin: 0 0 5px 0;">${playlist.name}</h4>
                             <p style="color: #888; margin: 0; font-size: 0.9em;">${playlist.songs.length} Songs</p>
                         </div>
-                        <button onclick="deletePlaylist(${playlist.id}); event.stopPropagation();" style="background: rgba(255,0,0,0.2); color: #ff4757; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer;">
+                        <button type="button" onclick="deletePlaylist(${playlist.id}); event.stopPropagation();" style="background: rgba(255,0,0,0.2); color: #ff4757; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer;">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -6993,7 +6993,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div style="margin-bottom: 10px;"><strong>Künstler:</strong> ${artists.length}</div>
                             <div style="margin-bottom: 10px;"><strong>Alben:</strong> ${albums.length}</div>
                         </div>
-                        <button onclick="this.parentElement.parentElement.remove()" style="width: 100%; padding: 10px; background: #4ecdc4; color: white; border: none; border-radius: 5px; cursor: pointer;">Schließen</button>
+                        <button type="button" onclick="this.parentElement.parentElement.remove()" style="width: 100%; padding: 10px; background: #4ecdc4; color: white; border: none; border-radius: 5px; cursor: pointer;">Schließen</button>
                     </div>
                 </div>
             `;
@@ -7080,19 +7080,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     <div class="section-content">
                         <div class="button-grid">
-                            <button onclick="backupSettings()" class="action-btn success">
+                            <button type="button" onclick="backupSettings()" class="action-btn success">
                                 <i class="fas fa-download"></i> Backup erstellen
                             </button>
                             
-                            <button onclick="restoreSettings()" class="action-btn info">
+                            <button type="button" onclick="restoreSettings()" class="action-btn info">
                                 <i class="fas fa-upload"></i> Backup laden
                             </button>
                             
-                            <button onclick="exportPlaylist()" class="action-btn warning">
+                            <button type="button" onclick="exportPlaylist()" class="action-btn warning">
                                 <i class="fas fa-file-export"></i> Playlist exportieren
                             </button>
                             
-                            <button onclick="importPlaylist()" class="action-btn">
+                            <button type="button" onclick="importPlaylist()" class="action-btn">
                                 <i class="fas fa-file-import"></i> Playlist importieren
                             </button>
                         </div>
@@ -7212,7 +7212,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     • Hörgewohnheiten
                                 </div>
                                 
-                                <button onclick="showStats()" style="background: rgba(78, 205, 196, 0.2); color: #4ecdc4; border: 1px solid #4ecdc4; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 0.9em;">
+                                <button type="button" onclick="showStats()" style="background: rgba(78, 205, 196, 0.2); color: #4ecdc4; border: 1px solid #4ecdc4; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 0.9em;">
                                     📊 Statistiken anzeigen
                                 </button>
                             </div>
@@ -7396,11 +7396,11 @@ document.addEventListener('DOMContentLoaded', function() {
                             </label>
                             
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                                <button onclick="clearCache()" style="background: #dc3545; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-size: 0.9em;">
+                                <button type="button" onclick="clearCache()" style="background: #dc3545; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-size: 0.9em;">
                                     <i class="fas fa-trash"></i> Cache leeren
                                 </button>
                                 
-                                <button onclick="resetToDefaults()" style="background: #6c757d; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-size: 0.9em;">
+                                <button type="button" onclick="resetToDefaults()" style="background: #6c757d; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-size: 0.9em;">
                                     <i class="fas fa-undo"></i> Zurücksetzen
                                 </button>
                             </div>

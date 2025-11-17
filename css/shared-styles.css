@@ -926,3 +926,23 @@ body {
     outline: none;
     border-color: var(--accent-cyan);
 }
+
+/* ===================================================================
+   FARBE.HTML SPECIFIC STYLES
+   =================================================================== */
+
+.clear-all-colors-btn {
+    background: #ff4757;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.clear-all-colors-btn:hover {
+    background: #ff3742;
+    transform: translateY(-1px);
+}
