@@ -1,0 +1,27 @@
+{
+    "name": "led-new",
+    "version": "1.0.0",
+    "description": "LED Control Web Application",
+    "main": "sw.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "hint": "hint .",
+        "hint:html": "hint *.html",
+        "hint:js": "hint *.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/lollypopp193/led-new.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/lollypopp193/led-new/issues"
+    },
+    "homepage": "https://github.com/lollypopp193/led-new#readme",
+    "devDependencies": {
+        "@hint/configuration-web-recommended": "^8.2.24",
+        "hint": "^7.1.13"
+    }
+}
