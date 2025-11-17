@@ -1210,7 +1210,7 @@
             }
             if (document.getElementById('autoOffSlider')) {
                 document.getElementById('autoOffSlider').value = autoOff;
-                document.getElementById('autoOffValue').textContent = autoOff > 0 ? ? autoOff + ' Min' : 'Aus';
+                document.getElementById('autoOffValue').textContent = autoOff > 0 ? autoOff + ' Min' : 'Aus';
             }
 
             // Selects
@@ -1342,7 +1342,7 @@
                 window.parent.ledController.setWLEDEnabled(wledEnabled);
             }
 
-            showNotification(`WLED-Integration ${wledEnabled ??'aktiviert' : 'deaktiviert'}`, 'success');
+            showNotification(`WLED-Integration ${wledEnabled ? 'aktiviert' : 'deaktiviert'}`, 'success');
             console.log('🌐 WLED-Integration:', wledEnabled);
         }
 
