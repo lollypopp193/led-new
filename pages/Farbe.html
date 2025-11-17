@@ -992,14 +992,14 @@
                 </button>
             </div>
 
-            <h1 style="font-size: 2.8rem; margin: 0; background: linear-gradient(135deg, #00dbde, #fc00ff); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; display: inline-block; text-shadow: 0 0 20px rgba(0, 219, 222, 0.3); position: relative; letter-spacing: 0.1em;">FarbWorld</h1>
+            <h1 class="farbe-title">FarbWorld</h1>
 
             <div class="toggle-container">
-                <label class="toggle-switch" for="powerToggle">
+                <label class="toggle-switch">
                     <input type="checkbox" id="powerToggle">
                     <span class="toggle-slider"></span>
+                    <span class="toggle-label">LED Ein/Aus</span>
                 </label>
-                <label for="powerToggle" class="toggle-label">LED Ein/Aus</label>
             </div>
         </header>
 
@@ -1026,14 +1026,14 @@
                 <div class="preset-category">
                     <div class="category-title">Basic-Farben</div>
                     <div class="preset-colors">
-                        <div class="preset-color" style="background-color: #ff0000;" title="Rot"></div>
-                        <div class="preset-color" style="background-color: #00ff00;" title="Grün"></div>
-                        <div class="preset-color" style="background-color: #0000ff;" title="Blau"></div>
-                        <div class="preset-color" style="background-color: #ffff00;" title="Gelb"></div>
-                        <div class="preset-color" style="background-color: #ff00ff;" title="Magenta"></div>
-                        <div class="preset-color" style="background-color: #00ffff;" title="Cyan"></div>
-                        <div class="preset-color" style="background-color: #ffffff;" title="Weiß"></div>
-                        <div class="preset-color" style="background-color: #000000;" title="Schwarz"></div>
+                        <div class="preset-color preset-color-red" title="Rot"></div>
+                        <div class="preset-color preset-color-green" title="Grün"></div>
+                        <div class="preset-color preset-color-blue" title="Blau"></div>
+                        <div class="preset-color preset-color-yellow" title="Gelb"></div>
+                        <div class="preset-color preset-color-magenta" title="Magenta"></div>
+                        <div class="preset-color preset-color-cyan" title="Cyan"></div>
+                        <div class="preset-color preset-color-white" title="Weiß"></div>
+                        <div class="preset-color preset-color-black" title="Schwarz"></div>
                     </div>
                 </div>
             </div>
@@ -1044,22 +1044,13 @@
                     Farbe speichern
                 </button>
                 <div class="saved-colors-container">
-                    <div class="saved-colors-header" style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; margin-bottom: 10px;">
-                        <h4 style="color: #fff; margin: 0; font-size: 16px;">Gespeicherte Farben</h4>
+                    <div class="saved-colors-header">
+                        <h4 class="saved-colors-title">Gespeicherte Farben</h4>
                         <button type="button" id="clearAllColorsBtn" class="clear-all-colors-btn">
                             <i class="fas fa-trash"></i> Alle löschen
                         </button>
                     </div>
-                    <div class="saved-colors" id="savedColors" style="
-                        min-height: 80px;
-                        background: rgba(255,255,255,0.05);
-                        border: 2px solid rgba(255,255,255,0.2);
-                        border-radius: 15px;
-                        padding: 15px;
-                        text-align: center;
-                        backdrop-filter: blur(10px);
-                        box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);
-                    ">
+                    <div class="saved-colors" id="savedColors">
                         <!-- Gespeicherte Farben werden hier angezeigt -->
                     </div>
                 </div>
@@ -1071,21 +1062,21 @@
     <div class="rgb-popup" id="rgbPopup">
         <div class="rgb-popup-content">
             <div class="rgb-popup-header">
-                <h3 class="rgb-title" style="color: var(--color-primary); font-size: 1.5em; text-align: center; width: 100%; margin: 0;">RGB Farbauswahl</h3>
+                <h3 class="rgb-title">RGB Farbauswahl</h3>
             </div>
             <div class="rgb-controls">
                 <div class="rgb-slider-group">
-                    <label for="redSlider" style="color: #ff4444; font-weight: bold;">Rot (R)</label>
+                    <label for="redSlider">Rot (R)</label>
                     <input type="range" id="redSlider" min="0" max="255" value="255">
                     <span id="redValue">255</span>
                 </div>
                 <div class="rgb-slider-group">
-                    <label for="greenSlider" style="color: #44ff44; font-weight: bold;">Grün (G)</label>
+                    <label for="greenSlider">Grün (G)</label>
                     <input type="range" id="greenSlider" min="0" max="255" value="0">
                     <span id="greenValue">0</span>
                 </div>
                 <div class="rgb-slider-group">
-                    <label for="blueSlider" style="color: #4444ff; font-weight: bold;">Blau (B)</label>
+                    <label for="blueSlider">Blau (B)</label>
                     <input type="range" id="blueSlider" min="0" max="255" value="0">
                     <span id="blueValue">0</span>
                 </div>

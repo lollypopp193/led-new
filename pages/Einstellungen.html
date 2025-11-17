@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Einstellungen</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2??family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -902,7 +902,7 @@
                 deviceInfo.className = 'device-info';
 
                 const deviceStatus = document.createElement('div');
-                deviceStatus.className = `device-status ${device.connected ? 'connected' : 'disconnected'}`;
+                deviceStatus.className = `device-status ${device.connected ??'connected' : 'disconnected'}`;
 
                 const deviceDetails = document.createElement('div');
                 deviceDetails.className = 'device-details';
@@ -919,8 +919,8 @@
                 deviceActions.className = 'device-actions';
 
                 const connectBtn = document.createElement('button');
-                connectBtn.className = `device-btn ${device.connected ? 'btn-disconnect' : 'btn-connect'}`;
-                connectBtn.textContent = device.connected ? 'Trennen' : 'Verbinden';
+                connectBtn.className = `device-btn ${device.connected ??'btn-disconnect' : 'btn-connect'}`;
+                connectBtn.textContent = device.connected ??'Trennen' : 'Verbinden';
                 connectBtn.onclick = () => toggleConnection(device.mac);
 
                 const forgetBtn = document.createElement('button');
@@ -1096,33 +1096,33 @@
                 const saved = localStorage.getItem('led-settings');
                 if (saved) {
                     const settings = JSON.parse(saved);
-                    autoConnect = settings.autoConnect ? ? true;
-                    brightness = settings.brightness ? ? 80;
-                    notifications = settings.notifications ? ? true;
-                    darkMode = settings.darkMode ? ? true;
-                    language = settings.language ? ? 'de';
-                    energySave = settings.energySave ? ? false;
-                    fps = settings.fps ? ? 30;
-                    packetSize = settings.packetSize ? ? 100;
-                    hwAccel = settings.hwAccel ? ? true;
-                    micSensitivity = settings.micSensitivity ? ? 50;
-                    beatDetect = settings.beatDetect ? ? true;
-                    freqRange = settings.freqRange ? ? 'full';
-                    latency = settings.latency ? ? 50;
-                    multiBand = settings.multiBand ? ? false;
-                    cloudSync = settings.cloudSync ? ? false;
-                    broadcast = settings.broadcast ? ? false;
-                    wifiLED = settings.wifiLED ? ? false;
-                    mdns = settings.mdns ? ? false;
-                    udpPort = settings.udpPort ? ? 5577;
-                    whiteBalance = settings.whiteBalance ? ? 4000;
-                    gamma = settings.gamma ? ? 2.2;
-                    maxCurrent = settings.maxCurrent ? ? 3000;
-                    voltage = settings.voltage ? ? 12;
-                    autoOff = settings.autoOff ? ? 0;
-                    debug = settings.debug ? ? false;
-                    bleLog = settings.bleLog ? ? false;
-                    protocol = settings.protocol ? ? 'v2';
+                    autoConnect = settings.autoConnect ??true;
+                    brightness = settings.brightness ??80;
+                    notifications = settings.notifications ??true;
+                    darkMode = settings.darkMode ??true;
+                    language = settings.language ??'de';
+                    energySave = settings.energySave ??false;
+                    fps = settings.fps ??30;
+                    packetSize = settings.packetSize ??100;
+                    hwAccel = settings.hwAccel ??true;
+                    micSensitivity = settings.micSensitivity ??50;
+                    beatDetect = settings.beatDetect ??true;
+                    freqRange = settings.freqRange ??'full';
+                    latency = settings.latency ??50;
+                    multiBand = settings.multiBand ??false;
+                    cloudSync = settings.cloudSync ??false;
+                    broadcast = settings.broadcast ??false;
+                    wifiLED = settings.wifiLED ??false;
+                    mdns = settings.mdns ??false;
+                    udpPort = settings.udpPort ??5577;
+                    whiteBalance = settings.whiteBalance ??4000;
+                    gamma = settings.gamma ??2.2;
+                    maxCurrent = settings.maxCurrent ??3000;
+                    voltage = settings.voltage ??12;
+                    autoOff = settings.autoOff ??0;
+                    debug = settings.debug ??false;
+                    bleLog = settings.bleLog ??false;
+                    protocol = settings.protocol ??'v2';
 
                     // UI aktualisieren
                     updateAllUI();
@@ -1134,19 +1134,19 @@
 
         function updateAllUI() {
             // Switches
-            document.getElementById('autoConnectSwitch') ? .classList.toggle('active', autoConnect);
-            document.getElementById('notificationsSwitch') ? .classList.toggle('active', notifications);
-            document.getElementById('darkModeSwitch') ? .classList.toggle('active', darkMode);
-            document.getElementById('energySaveSwitch') ? .classList.toggle('active', energySave);
-            document.getElementById('hwAccelSwitch') ? .classList.toggle('active', hwAccel);
-            document.getElementById('beatDetectSwitch') ? .classList.toggle('active', beatDetect);
-            document.getElementById('multiBandSwitch') ? .classList.toggle('active', multiBand);
-            document.getElementById('cloudSyncSwitch') ? .classList.toggle('active', cloudSync);
-            document.getElementById('broadcastSwitch') ? .classList.toggle('active', broadcast);
-            document.getElementById('wifiLEDSwitch') ? .classList.toggle('active', wifiLED);
-            document.getElementById('mdnsSwitch') ? .classList.toggle('active', mdns);
-            document.getElementById('debugSwitch') ? .classList.toggle('active', debug);
-            document.getElementById('bleLogSwitch') ? .classList.toggle('active', bleLog);
+            document.getElementById('autoConnectSwitch') ??.classList.toggle('active', autoConnect);
+            document.getElementById('notificationsSwitch') ??.classList.toggle('active', notifications);
+            document.getElementById('darkModeSwitch') ??.classList.toggle('active', darkMode);
+            document.getElementById('energySaveSwitch') ??.classList.toggle('active', energySave);
+            document.getElementById('hwAccelSwitch') ??.classList.toggle('active', hwAccel);
+            document.getElementById('beatDetectSwitch') ??.classList.toggle('active', beatDetect);
+            document.getElementById('multiBandSwitch') ??.classList.toggle('active', multiBand);
+            document.getElementById('cloudSyncSwitch') ??.classList.toggle('active', cloudSync);
+            document.getElementById('broadcastSwitch') ??.classList.toggle('active', broadcast);
+            document.getElementById('wifiLEDSwitch') ??.classList.toggle('active', wifiLED);
+            document.getElementById('mdnsSwitch') ??.classList.toggle('active', mdns);
+            document.getElementById('debugSwitch') ??.classList.toggle('active', debug);
+            document.getElementById('bleLogSwitch') ??.classList.toggle('active', bleLog);
 
             // Sliders
             if (document.getElementById('brightnessSlider')) {
@@ -1183,7 +1183,7 @@
             }
             if (document.getElementById('autoOffSlider')) {
                 document.getElementById('autoOffSlider').value = autoOff;
-                document.getElementById('autoOffValue').textContent = autoOff > 0 ? autoOff + ' Min' : 'Aus';
+                document.getElementById('autoOffValue').textContent = autoOff > 0 ??autoOff + ' Min' : 'Aus';
             }
 
             // Selects
@@ -1282,7 +1282,7 @@
                 // Speichere Präferenz für alle Module
                 localStorage.setItem('darkMode', darkMode.toString());
 
-                showNotification(`${darkMode ? 'Dark' : 'Light'} Mode aktiviert`, 'success');
+                showNotification(`${darkMode ??'Dark' : 'Light'} Mode aktiviert`, 'success');
 
             } catch (error) {
                 console.error('Fehler beim Umschalten des Dark Mode:', error);
@@ -1315,7 +1315,7 @@
                 window.parent.ledController.setWLEDEnabled(wledEnabled);
             }
 
-            showNotification(`WLED-Integration ${wledEnabled ? 'aktiviert' : 'deaktiviert'}`, 'success');
+            showNotification(`WLED-Integration ${wledEnabled ??'aktiviert' : 'deaktiviert'}`, 'success');
             console.log('🌐 WLED-Integration:', wledEnabled);
         }
 
@@ -1406,7 +1406,7 @@
             localStorage.setItem('hierarchicalGroups', hierarchicalEnabled);
             document.getElementById('hierarchicalGroupsSwitch').classList.toggle('active', hierarchicalEnabled);
 
-            showNotification(`Hierarchische Gruppen ${hierarchicalEnabled ? 'aktiviert' : 'deaktiviert'}`, 'success');
+            showNotification(`Hierarchische Gruppen ${hierarchicalEnabled ??'aktiviert' : 'deaktiviert'}`, 'success');
             console.log('👥 Hierarchische Gruppen:', hierarchicalEnabled);
         }
 
@@ -1415,7 +1415,7 @@
             localStorage.setItem('pixelControl', pixelEnabled);
             document.getElementById('pixelControlSwitch').classList.toggle('active', pixelEnabled);
 
-            showNotification(`Pixel-Level-Kontrolle ${pixelEnabled ? 'aktiviert' : 'deaktiviert'}`, pixelEnabled ? 'success' : 'warning');
+            showNotification(`Pixel-Level-Kontrolle ${pixelEnabled ??'aktiviert' : 'deaktiviert'}`, pixelEnabled ??'success' : 'warning');
             console.log('🎯 Pixel-Level-Kontrolle:', pixelEnabled);
         }
 
@@ -1743,7 +1743,7 @@
 
         function updateAutoOff(value) {
             autoOff = parseInt(value);
-            document.getElementById('autoOffValue').textContent = autoOff > 0 ? autoOff + ' Min' : 'Aus';
+            document.getElementById('autoOffValue').textContent = autoOff > 0 ??autoOff + ' Min' : 'Aus';
             saveSettings();
         }
 
@@ -1861,7 +1861,7 @@
         }
 
         function resetSettings() {
-            if (confirm('⚠️ Wirklich alle Einstellungen zurücksetzen?')) {
+            if (confirm('⚠️ Wirklich alle Einstellungen zurücksetzen??')) {
                 localStorage.removeItem('led-settings');
                 localStorage.removeItem('led-devices');
                 location.reload();
@@ -2185,12 +2185,12 @@
                 // ✅ VERWENDE DEN GLOBALEN BLE CONTROLLER AUS app.js!
                 let controller = null;
 
-                // In iframe? Dann parent.bleController
+                // In iframe??Dann parent.bleController
                 if (window.parent && window.parent !== window && window.parent.bleController) {
                     controller = window.parent.bleController;
                     console.log('🔗 Verwende Parent bleController für Verbindung');
                 }
-                // Direkt? Dann window.bleController
+                // Direkt??Dann window.bleController
                 else if (window.bleController) {
                     controller = window.bleController;
                     console.log('🔗 Verwende lokalen bleController für Verbindung');
@@ -2311,7 +2311,7 @@
                         <div>
                             <div style="font-weight: bold; color: #4ecdc4;">${device.name}</div>
                             <div style="font-size: 0.9em; color: #888;">${device.ip}</div>
-                            ${device.leds ? `<div style="font-size: 0.9em; color: #888;">LEDs: ${device.leds}</div>` : ''}
+                            ${device.leds ??`<div style="font-size: 0.9em; color: #888;">LEDs: ${device.leds}</div>` : ''}
                         </div>
                         <button onclick="connectToWLED('${device.ip}')" style="padding: 8px 16px; background: #4ecdc4; color: white; border: none; border-radius: 5px; cursor: pointer;">
                             Verbinden
@@ -2404,7 +2404,7 @@
 
         // ✅ PIXEL-LEVEL KONTROLLE
         async function setPixel(pixelIndex, r, g, b) {
-            if (window.ledDevice ? .isConnected) {
+            if (window.ledDevice ??.isConnected) {
                 // BLE Pixel-Control
                 const cmd = new Uint8Array([
                     0x7E, 0x01, // Pixel-Mode
@@ -2414,7 +2414,7 @@
                 ]);
                 await window.ledDevice.characteristic.writeValue(cmd);
 
-            } else if (window.wledDevice ? .connected) {
+            } else if (window.wledDevice ??.connected) {
                 // WLED Pixel-Control über Segment
                 await fetch(`http://${window.wledDevice.ip}/json/state`, {
                     method: 'POST',
@@ -2527,7 +2527,7 @@
                 autoConnect = !autoConnect;
                 this.classList.toggle('active');
                 saveSettings();
-                showNotification(`Auto-Verbindung ${autoConnect ? 'aktiviert' : 'deaktiviert'}`, 'success');
+                showNotification(`Auto-Verbindung ${autoConnect ??'aktiviert' : 'deaktiviert'}`, 'success');
             });
 
             // ✅ WLED-SWITCH EVENT
@@ -2536,8 +2536,8 @@
                 const isActive = this.classList.contains('active');
 
                 // Zeige/Verstecke WLED-Optionen
-                document.getElementById('wledScanSection').style.display = isActive ? 'block' : 'none';
-                document.getElementById('wledDevicesSection').style.display = isActive ? 'block' : 'none';
+                document.getElementById('wledScanSection').style.display = isActive ??'block' : 'none';
+                document.getElementById('wledDevicesSection').style.display = isActive ??'block' : 'none';
 
                 if (isActive) {
                     showNotification('WLED-Integration aktiviert', 'success');
@@ -2561,7 +2561,7 @@
                 const isActive = this.classList.contains('active');
                 window.pixelControlEnabled = isActive;
 
-                showNotification(`Pixel-Control ${isActive ? 'aktiviert' : 'deaktiviert'}`, 'success');
+                showNotification(`Pixel-Control ${isActive ??'aktiviert' : 'deaktiviert'}`, 'success');
                 localStorage.setItem('pixelControlEnabled', isActive);
 
                 // Sende Info an andere Module
@@ -2577,7 +2577,7 @@
                 notifications = !notifications;
                 this.classList.toggle('active');
                 saveSettings();
-                showNotification(`Benachrichtigungen ${notifications ? 'aktiviert' : 'deaktiviert'}`, 'success');
+                showNotification(`Benachrichtigungen ${notifications ??'aktiviert' : 'deaktiviert'}`, 'success');
             });
 
             document.getElementById('darkModeSwitch').addEventListener('click', toggleDarkMode);
@@ -2592,7 +2592,7 @@
                 hwAccel = !hwAccel;
                 this.classList.toggle('active');
                 saveSettings();
-                showNotification(`Hardware-Beschleunigung ${hwAccel ? 'aktiviert' : 'deaktiviert'}`, 'success');
+                showNotification(`Hardware-Beschleunigung ${hwAccel ??'aktiviert' : 'deaktiviert'}`, 'success');
             });
 
             // ✅ WLED SCAN BUTTON
