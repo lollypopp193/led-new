@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build outputs
+dist/
+build/
+*.min.js
+*.min.css
+
+# Version control
+.git/
+
+# IDE
+.vscode/
+.idea/
+
+# Coverage
+coverage/
+*.lcov
+
+# Logs
+*.log
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Libraries
+/js/libs/
+/css/libs/
+
+# External libraries from CDN
+**/jsmediatags.min.js

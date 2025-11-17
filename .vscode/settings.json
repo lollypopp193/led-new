@@ -34,6 +34,24 @@
     },
     "Web:LabelHasAssociatedControlCheck": {
       "level": "off"
+    },
+    "Web:BoldAndItalicTagsCheck": {
+      "level": "off"
+    },
+    "Web:S5256": {
+      "level": "off"
+    },
+    "CSS:S4666": {
+      "level": "off"
+    },
+    "CSS:S4667": {
+      "level": "off"
+    },
+    "CSS:DuplicatePropertyCheck": {
+      "level": "off"
+    },
+    "javascript:S1134": {
+      "level": "off"
     }
   },
   "[html]": {
@@ -41,5 +59,29 @@
   },
   "[javascript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
-  }
+  },
+  "cSpell.language": "de,en",
+  "cSpell.enabled": true,
+  "cSpell.enableFiletypes": [
+    "javascript",
+    "html",
+    "css"
+  ],
+  "cSpell.words": [
+    "audioanalyse",
+    "echtzeitanalyse",
+    "farbverlauf",
+    "farbwähler",
+    "geschwindigkeit",
+    "helligkeit",
+    "lautstärke",
+    "mikrofon",
+    "musikbibliothek",
+    "sättigung",
+    "tonhöhe",
+    "überblenden",
+    "visualizer",
+    "wiedergabe",
+    "zufallswiedergabe"
+  ]
 }
