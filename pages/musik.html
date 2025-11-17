@@ -1752,7 +1752,7 @@
                         transition: all 0.3s ease;
                     ">
                         <i class="fas fa-music" style="font-size: 2.5rem; color: rgba(255,255,255,0.7); transition: all 0.3s ease;" id="albumCoverIcon"></i>
-                        <img id="albumCoverImage" style="width: 100%; height: 100%; object-fit: cover; display: none;" alt="Album Cover">
+                        <img id="albumCoverImage" src="data:," style="width: 100%; height: 100%; object-fit: cover; display: none;" alt="Album Cover">
                     </div>
                     <div class="album-cover-glow" style="
                         position: absolute; 
@@ -2000,7 +2000,7 @@
             <!-- ✅ VISUALIZER CANVAS FÜR ECHTE VISUALISIERUNG -->
             <div style="margin-top: 20px; background: #000; border-radius: 15px; padding: 20px; position: relative; overflow: hidden;">
                 <canvas id="visualizerCanvas" style="width: 100%; height: 300px; display: block;"></canvas>
-                <div id="visualizerBars" style="display: flex; justify-content: space-around; align-items: flex-end; height: 200px; margin-top: 10px;"></div>
+                <div id="visualizerBarsExtra" style="display: flex; justify-content: space-around; align-items: flex-end; height: 200px; margin-top: 10px;"></div>
             </div>
 
             <!-- ✅ VISUALIZER EINSTELLUNGEN -->
@@ -2422,7 +2422,7 @@
 
                                 <div style="margin-bottom: 15px;">
                                     <label style="display: block; margin-bottom: 8px;">📊 Crossfade-Typ:</label>
-                                    <select id="crossfadeType" style="width: 100%; padding: 8px; border-radius: 5px; background: #333; color: white; border: 1px solid #555;">
+                                    <select id="crossfadeTypeAdvanced" style="width: 100%; padding: 8px; border-radius: 5px; background: #333; color: white; border: 1px solid #555;">
                                         <option value="linear">Linear</option>
                                         <option value="logarithmic" selected>Logarithmisch</option>
                                         <option value="exponential">Exponentiell</option>
@@ -8099,25 +8099,28 @@
             }
         </script>
 
-        <!-- 🔧 DEBUG-CODE - NUR ZUM TESTEN -->
-        <script>
-            // TEST-CODE - NUR ZUM DEBUGGEN
-            window.addEventListener('load', function() {
-                console.log('=== MUSIK.HTML DEBUG ===');
-                console.log('Taskbar Buttons:', document.querySelectorAll('.taskbar-btn').length);
-                console.log('Content Panels:', document.querySelectorAll('.content-panel').length);
+    </div>
+    <!-- END Settings Panel -->
 
-                // Liste alle Panel-IDs
-                document.querySelectorAll('.content-panel').forEach(panel => {
-                    console.log('Panel gefunden:', panel.id);
-                });
+    <!-- 🔧 DEBUG-CODE - NUR ZUM TESTEN -->
+    <script>
+        // TEST-CODE - NUR ZUM DEBUGGEN
+        window.addEventListener('load', function() {
+            console.log('=== MUSIK.HTML DEBUG ===');
+            console.log('Taskbar Buttons:', document.querySelectorAll('.taskbar-btn').length);
+            console.log('Content Panels:', document.querySelectorAll('.content-panel').length);
 
-                // Teste Event-Listener
-                document.querySelectorAll('.taskbar-btn').forEach((btn, index) => {
-                    console.log(`Button ${index + 1}:`, btn.getAttribute('data-content'));
-                });
+            // Liste alle Panel-IDs
+            document.querySelectorAll('.content-panel').forEach(panel => {
+                console.log('Panel gefunden:', panel.id);
             });
-        </script>
+
+            // Teste Event-Listener
+            document.querySelectorAll('.taskbar-btn').forEach((btn, index) => {
+                console.log(`Button ${index + 1}:`, btn.getAttribute('data-content'));
+            });
+        });
+    </script>
 
 </body>
 
