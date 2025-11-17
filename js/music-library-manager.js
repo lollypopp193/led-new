@@ -5,7 +5,7 @@
  * Version: 1.0
  * Datum: 2025-10-08
  * ===================================================================
- * 
+ *
  * Funktionen:
  * - File System Access API (Android Chrome)
  * - IndexedDB für persistente Musikbibliothek
@@ -14,12 +14,12 @@
  * - Virtual Scrolling für Performance
  * - BroadcastChannel für Kommunikation
  * - Offline-First Architektur
- * 
+ *
  * Browser-Support:
  * ✅ Chrome for Android (v86+)
  * ✅ Edge (v86+)
  * ❌ Safari/iOS (nicht unterstützt)
- * 
+ *
  * ===================================================================
  */
 
@@ -36,19 +36,22 @@ const MUSIC_CONFIG = {
   STORE_NAME: 'tracks',
   METADATA_STORE: 'metadata',
   PLAYLISTS_STORE: 'playlists',
-  
+
   // File System Access
   ALLOWED_EXTENSIONS: ['.mp3', '.m4a', '.ogg', '.wav', '.flac', '.aac', '.opus', '.wma'],
   MAX_FILE_SIZE: 500 * 1024 * 1024, // 500 MB
-  
+
   // ✅ ALBUM-COVER UNTERSTÜTZUNG
   COVER_FORMATS: ['image/jpeg', 'image/png', 'image/webp'],
   MAX_COVER_SIZE: 2 * 1024 * 1024, // 2 MB
-  COVER_DIMENSIONS: { width: 300, height: 300 },
-  
+  COVER_DIMENSIONS: {
+    width: 300,
+    height: 300
+  },
+
   // Virtual Scrolling
   ITEMS_PER_PAGE: 50,
-  
+
   // ✅ HARDWARE LED-SYNC EINSTELLUNGEN
   LED_SYNC: {
     ENABLED: true,
@@ -58,11 +61,11 @@ const MUSIC_CONFIG = {
     EFFECTS_ON_CHANGE: true
   },
   SCROLL_BUFFER: 10,
-  
+
   // Performance
   BATCH_SIZE: 100,
   SCAN_DELAY: 50,
-  
+
   // Storage Keys
   STORAGE_KEYS: {
     FOLDER_HANDLE: 'music-folder-handle',
@@ -105,31 +108,43 @@ class MusicDatabase {
 
         // Tracks Store
         if (!db.objectStoreNames.contains(MUSIC_CONFIG.STORE_NAME)) {
-          const trackStore = db.createObjectStore(MUSIC_CONFIG.STORE_NAME, { 
-            keyPath: 'id', 
-            autoIncrement: true 
+          const trackStore = db.createObjectStore(MUSIC_CONFIG.STORE_NAME, {
+            keyPath: 'id',
+            autoIncrement: true
           });
-          trackStore.createIndex('title', 'title', { unique: false });
-          trackStore.createIndex('artist', 'artist', { unique: false });
-          trackStore.createIndex('album', 'album', { unique: false });
-          trackStore.createIndex('filePath', 'filePath', { unique: true });
-          trackStore.createIndex('dateAdded', 'dateAdded', { unique: false });
+          trackStore.createIndex('title', 'title', {
+            unique: false
+          });
+          trackStore.createIndex('artist', 'artist', {
+            unique: false
+          });
+          trackStore.createIndex('album', 'album', {
+            unique: false
+          });
+          trackStore.createIndex('filePath', 'filePath', {
+            unique: true
+          });
+          trackStore.createIndex('dateAdded', 'dateAdded', {
+            unique: false
+          });
         }
 
         // Metadata Store
         if (!db.objectStoreNames.contains(MUSIC_CONFIG.METADATA_STORE)) {
-          const metaStore = db.createObjectStore(MUSIC_CONFIG.METADATA_STORE, { 
-            keyPath: 'key' 
+          const metaStore = db.createObjectStore(MUSIC_CONFIG.METADATA_STORE, {
+            keyPath: 'key'
           });
         }
 
         // Playlists Store
         if (!db.objectStoreNames.contains(MUSIC_CONFIG.PLAYLISTS_STORE)) {
-          const playlistStore = db.createObjectStore(MUSIC_CONFIG.PLAYLISTS_STORE, { 
-            keyPath: 'id', 
-            autoIncrement: true 
+          const playlistStore = db.createObjectStore(MUSIC_CONFIG.PLAYLISTS_STORE, {
+            keyPath: 'id',
+            autoIncrement: true
           });
-          playlistStore.createIndex('name', 'name', { unique: false });
+          playlistStore.createIndex('name', 'name', {
+            unique: false
+          });
         }
 
         console.log(' IndexedDB Schema erstellt');
@@ -142,24 +157,24 @@ class MusicDatabase {
    */
   async checkDuplicate(track) {
     if (!this.isReady) return false;
-    
+
     const allTracks = await this.getAllTracks();
-    
+
     // Prüfe auf exakte Übereinstimmung (Title + Artist + Album)
-    const exactMatch = allTracks.find(t => 
-      t.title === track.title && 
-      t.artist === track.artist && 
+    const exactMatch = allTracks.find(t =>
+      t.title === track.title &&
+      t.artist === track.artist &&
       t.album === track.album
     );
-    
+
     if (exactMatch) return exactMatch;
-    
+
     // Prüfe auf ähnliche Übereinstimmung (Title + Artist)
-    const similarMatch = allTracks.find(t => 
-      t.title === track.title && 
+    const similarMatch = allTracks.find(t =>
+      t.title === track.title &&
       t.artist === track.artist
     );
-    
+
     return similarMatch || false;
   }
 
@@ -170,20 +185,26 @@ class MusicDatabase {
     if (!this.isReady) {
       throw new Error('Database not ready');
     }
-    
+
     // ✅ Prüfe auf Duplikat
     const duplicate = await this.checkDuplicate(track);
     if (duplicate) {
       console.warn(`⚠️ Duplikat gefunden: ${track.title} - ${track.artist}`);
-      return { isDuplicate: true, existingTrack: duplicate };
+      return {
+        isDuplicate: true,
+        existingTrack: duplicate
+      };
     }
 
     const transaction = this.db.transaction([MUSIC_CONFIG.STORE_NAME], 'readwrite');
     const store = transaction.objectStore(MUSIC_CONFIG.STORE_NAME);
-    
+
     return new Promise((resolve, reject) => {
       const request = store.add(track);
-      request.onsuccess = () => resolve({ isDuplicate: false, id: request.result });
+      request.onsuccess = () => resolve({
+        isDuplicate: false,
+        id: request.result
+      });
       request.onerror = () => reject(request.error);
     });
   }
@@ -199,7 +220,7 @@ class MusicDatabase {
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction([MUSIC_CONFIG.STORE_NAME], 'readwrite');
       const store = transaction.objectStore(MUSIC_CONFIG.STORE_NAME);
-      
+
       let added = 0;
       let errors = 0;
 
@@ -211,7 +232,10 @@ class MusicDatabase {
 
       transaction.oncomplete = () => {
         console.log(`✅ ${added} Tracks hinzugefügt, ${errors} Fehler`);
-        resolve({ added, errors });
+        resolve({
+          added,
+          errors
+        });
       };
 
       transaction.onerror = () => reject(transaction.error);
@@ -283,8 +307,8 @@ class MusicDatabase {
 
     return allTracks.filter(track => {
       return (track.title && track.title.toLowerCase().includes(searchTerm)) ||
-             (track.artist && track.artist.toLowerCase().includes(searchTerm)) ||
-             (track.album && track.album.toLowerCase().includes(searchTerm));
+        (track.artist && track.artist.toLowerCase().includes(searchTerm)) ||
+        (track.album && track.album.toLowerCase().includes(searchTerm));
     });
   }
 
@@ -356,7 +380,10 @@ class MusicDatabase {
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction([MUSIC_CONFIG.METADATA_STORE], 'readwrite');
       const store = transaction.objectStore(MUSIC_CONFIG.METADATA_STORE);
-      const request = store.put({ key, value });
+      const request = store.put({
+        key,
+        value
+      });
 
       request.onsuccess = () => resolve();
       request.onerror = () => reject(request.error);
@@ -376,7 +403,7 @@ class MusicDatabase {
       const store = transaction.objectStore(MUSIC_CONFIG.METADATA_STORE);
       const request = store.get(key);
 
-      request.onsuccess = () => resolve(request.result?.value);
+      request.onsuccess = () => resolve(request.result ? .value);
       request.onerror = () => reject(request.error);
     });
   }
@@ -421,7 +448,7 @@ class FileSystemManager {
       await this.saveDirectoryHandle();
 
       console.log('✅ Ordner-Zugriff gewährt:', this.directoryHandle.name);
-      
+
       return this.directoryHandle;
     } catch (error) {
       if (error.name === 'AbortError') {
@@ -440,27 +467,31 @@ class FileSystemManager {
     try {
       const db = new MusicDatabase();
       await db.init();
-      
+
       const handle = await db.getMetadata(MUSIC_CONFIG.STORAGE_KEYS.FOLDER_HANDLE);
-      
+
       if (handle) {
         this.directoryHandle = handle;
-        
+
         // Berechtigung prüfen
-        const permission = await this.directoryHandle.queryPermission({ mode: 'read' });
-        
+        const permission = await this.directoryHandle.queryPermission({
+          mode: 'read'
+        });
+
         if (permission === 'granted') {
           this.hasPermission = true;
           console.log('✅ Gespeicherter Ordner-Zugriff wiederhergestellt');
           return true;
         } else if (permission === 'prompt') {
           // Berechtigung erneut anfordern
-          const newPermission = await this.directoryHandle.requestPermission({ mode: 'read' });
+          const newPermission = await this.directoryHandle.requestPermission({
+            mode: 'read'
+          });
           this.hasPermission = (newPermission === 'granted');
           return this.hasPermission;
         }
       }
-      
+
       return false;
     } catch (error) {
       console.warn('Gespeicherter Ordner-Zugriff konnte nicht geladen werden:', error);
@@ -501,12 +532,15 @@ class FileSystemManager {
       await this.scanDirectoryRecursive(this.directoryHandle, files, (count) => {
         scannedCount = count;
         if (progressCallback) {
-          progressCallback({ scanned: count, phase: 'scanning' });
+          progressCallback({
+            scanned: count,
+            phase: 'scanning'
+          });
         }
       });
 
       console.log(`✅ Scan abgeschlossen: ${files.length} Audiodateien gefunden`);
-      
+
       return files;
     } catch (error) {
       console.error('❌ Scan fehlgeschlagen:', error);
@@ -521,7 +555,7 @@ class FileSystemManager {
     try {
       for await (const entry of dirHandle.values()) {
         scannedCount++;
-        
+
         if (progressCallback && scannedCount % 10 === 0) {
           progressCallback(scannedCount);
         }
@@ -555,7 +589,7 @@ class FileSystemManager {
   async readFile(fileHandle) {
     try {
       const file = await fileHandle.getFile();
-      
+
       // Größen-Check
       if (file.size > MUSIC_CONFIG.MAX_FILE_SIZE) {
         throw new Error(`Datei zu groß: ${(file.size / 1024 / 1024).toFixed(2)} MB`);
@@ -583,7 +617,7 @@ class MetadataExtractor {
       if (window.jsmediatags) {
         return await this.extractID3Tags(file);
       }
-      
+
       // Fallback: Parse Dateinamen
       return this.parseFileName(file.name);
     } catch (error) {
@@ -623,13 +657,16 @@ class MetadataExtractor {
    */
   convertPictureToDataURL(picture) {
     try {
-      const { data, format } = picture;
+      const {
+        data,
+        format
+      } = picture;
       let base64String = '';
-      
+
       for (let i = 0; i < data.length; i++) {
         base64String += String.fromCharCode(data[i]);
       }
-      
+
       return `data:${format};base64,${window.btoa(base64String)}`;
     } catch (error) {
       console.error('Cover-Konvertierung fehlgeschlagen:', error);
@@ -670,9 +707,9 @@ class MetadataExtractor {
     // Versuche Pattern zu matchen: "Artist - Title" oder "Artist - Album - Title"
     const patterns = [
       /^(.+?)\s*-\s*(.+?)\s*-\s*(.+)$/, // Artist - Album - Title
-      /^(.+?)\s*-\s*(.+)$/,              // Artist - Title
-      /^(\d+)\s*-\s*(.+)$/,              // Track Number - Title
-      /^(\d+)\.\s*(.+)$/                 // Track Number. Title
+      /^(.+?)\s*-\s*(.+)$/, // Artist - Title
+      /^(\d+)\s*-\s*(.+)$/, // Track Number - Title
+      /^(\d+)\.\s*(.+)$/ // Track Number. Title
     ];
 
     for (const pattern of patterns) {
@@ -773,7 +810,11 @@ class MusicLibraryManager {
 
       // Schritt 1: Ordner-Zugriff anfordern
       if (progressCallback) {
-        progressCallback({ phase: 'requesting', progress: 0, message: 'Fordere Ordner-Zugriff an...' });
+        progressCallback({
+          phase: 'requesting',
+          progress: 0,
+          message: 'Fordere Ordner-Zugriff an...'
+        });
       }
 
       if (!this.fsManager.directoryHandle) {
@@ -782,7 +823,11 @@ class MusicLibraryManager {
 
       // Schritt 2: Ordner scannen
       if (progressCallback) {
-        progressCallback({ phase: 'scanning', progress: 10, message: 'Scanne Musikordner...' });
+        progressCallback({
+          phase: 'scanning',
+          progress: 10,
+          message: 'Scanne Musikordner...'
+        });
       }
 
       const files = await this.fsManager.scanDirectory((scanProgress) => {
@@ -799,7 +844,11 @@ class MusicLibraryManager {
 
       // Schritt 3: Metadaten extrahieren
       if (progressCallback) {
-        progressCallback({ phase: 'metadata', progress: 40, message: 'Extrahiere Metadaten...' });
+        progressCallback({
+          phase: 'metadata',
+          progress: 40,
+          message: 'Extrahiere Metadaten...'
+        });
       }
 
       const tracks = [];
@@ -864,7 +913,11 @@ class MusicLibraryManager {
 
       // Schritt 4: Abschluss
       if (progressCallback) {
-        progressCallback({ phase: 'complete', progress: 100, message: 'Import abgeschlossen!' });
+        progressCallback({
+          phase: 'complete',
+          progress: 100,
+          message: 'Import abgeschlossen!'
+        });
       }
 
       // Letzten Scan-Zeitstempel speichern
@@ -916,7 +969,7 @@ class MusicLibraryManager {
    */
   async getStatistics() {
     const tracks = await this.db.getAllTracks();
-    
+
     const artists = new Set();
     const albums = new Set();
     let totalDuration = 0;
@@ -957,33 +1010,33 @@ class MusicLibraryManager {
   delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
-  
+
   /**
    * ✅ HARDWARE LED-SYNC BEI TRACK-WECHSEL
    */
   async syncLEDsWithTrack(track) {
     if (!MUSIC_CONFIG.LED_SYNC.ENABLED) return;
-    
+
     // Genre-basierte Farben
     const genreColors = {
-      'rock': [255, 0, 0],      // Rot
-      'pop': [255, 0, 255],      // Magenta
+      'rock': [255, 0, 0], // Rot
+      'pop': [255, 0, 255], // Magenta
       'electronic': [0, 255, 255], // Cyan
-      'jazz': [255, 165, 0],     // Orange
+      'jazz': [255, 165, 0], // Orange
       'classical': [255, 255, 0], // Gelb
-      'hip-hop': [128, 0, 255],  // Lila
-      'default': [0, 255, 0]     // Grün
+      'hip-hop': [128, 0, 255], // Lila
+      'default': [0, 255, 0] // Grün
     };
-    
+
     const genre = (track.genre || '').toLowerCase();
     const color = genreColors[genre] || genreColors['default'];
-    
+
     // ✅ SENDE FARBE AN HARDWARE
     if (window.sendUniversalColor) {
       await window.sendUniversalColor(color[0], color[1], color[2]);
       console.log(`🎨 LED-Sync: ${track.title} → RGB(${color.join(', ')})`);
     }
-    
+
     // ✅ EFFEKT BEI TRACK-WECHSEL
     if (MUSIC_CONFIG.LED_SYNC.EFFECTS_ON_CHANGE) {
       if (window.sendUniversalEffect) {
@@ -993,14 +1046,14 @@ class MusicLibraryManager {
       }
     }
   }
-  
+
   /**
    * ✅ SPIELE TRACK MIT LED-SYNC
    */
   async playTrackWithLEDSync(track) {
     // LED-Sync beim Start
     await this.syncLEDsWithTrack(track);
-    
+
     // Sende Track-Info an Audio-Player
     if (window.parent && window.parent !== window) {
       window.parent.postMessage({
@@ -1009,78 +1062,78 @@ class MusicLibraryManager {
         ledSync: true
       }, '*');
     }
-    
+
     // Beat-Detection aktivieren
     if (MUSIC_CONFIG.LED_SYNC.BEAT_DETECTION) {
       this.startBeatDetection(track);
     }
-    
+
     return true;
   }
-  
+
   /**
    * ✅ BEAT-DETECTION FÜR LED-SYNC
    */
   async startBeatDetection(track) {
     if (!window.AudioContext) return;
-    
+
     try {
       const audioContext = new AudioContext();
       const response = await fetch(track.url);
       const arrayBuffer = await response.arrayBuffer();
       const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-      
+
       // Analysiere Audio für Beat-Detection
       const analyser = audioContext.createAnalyser();
       analyser.fftSize = 256;
-      
+
       const bufferLength = analyser.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
-      
+
       // Beat-Detection Loop
       const detectBeats = () => {
         if (!MUSIC_CONFIG.LED_SYNC.ENABLED) return;
-        
+
         analyser.getByteFrequencyData(dataArray);
-        
+
         // Bass-Frequenzen für Beat-Detection
         const bass = dataArray.slice(0, 10).reduce((a, b) => a + b, 0) / 10;
-        
+
         if (bass > 200) { // Beat erkannt
           // ✅ SENDE BEAT-FLASH AN HARDWARE
           if (window.ledDevice && window.ledDevice.isConnected) {
             const flashCmd = new Uint8Array([0x7E, 0x00, 0x07, 0x01, 0xFF, 0xFF, 0xFF, 0xEF]);
-            window.ledDevice.characteristic.writeValue(flashCmd).catch(() => {});
+            window.ledDevice.characteristic.writeValue(flashCmd).catch(() => { });
           }
         }
-        
+
         requestAnimationFrame(detectBeats);
       };
-      
+
       detectBeats();
-      
+
     } catch (error) {
       console.error('Beat-Detection Fehler:', error);
     }
   }
-  
+
   /**
    * ✅ PLAYLIST MIT LED-SHOW
    */
   async startPlaylistWithLEDShow(playlist) {
     console.log('🎵 Starte Playlist mit LED-Show:', playlist.name);
-    
+
     // Aktiviere Party-Mode für Playlists
     if (window.sendUniversalEffect) {
       await window.sendUniversalEffect('party', 8);
     }
-    
+
     // Rotiere durch Farben basierend auf Tracks
     for (const track of playlist.tracks) {
       await this.syncLEDsWithTrack(track);
       await this.delay(100);
     }
-    
+
     return true;
   }
 }
@@ -1091,9 +1144,19 @@ class MusicLibraryManager {
 
 // Music Library Manager global verfügbar machen
 window.MusicLibraryManager = MusicLibraryManager;
-window.musicLibrary = new MusicLibraryManager();
 
-console.log('✅ Music Library Manager global verfügbar als window.musicLibrary');
+// Initialisiere nur wenn noch nicht vorhanden (Kompatibilität mit musik.html Scanner)
+if (!window.musicLibrary) {
+  window.musicLibrary = new MusicLibraryManager();
+  console.log('✅ Music Library Manager global verfügbar als window.musicLibrary');
+} else {
+  console.log('ℹ️ window.musicLibrary bereits vorhanden, behalte existierende Instanz');
+}
+
+// Exportiere auch die Klassen für externe Verwendung
+window.MusicDatabase = MusicDatabase;
+window.FileSystemManager = FileSystemManager;
+window.MetadataExtractor = MetadataExtractor;
 
 // ===================================================================
 // EXPORT

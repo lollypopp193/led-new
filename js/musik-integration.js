@@ -5,7 +5,7 @@
  * Version: 1.0
  * Datum: 2025-10-08
  * ===================================================================
- * 
+ *
  * Funktionen:
  * - UI-Integration des Music Library Managers
  * - Playlist-Verwaltung
@@ -13,11 +13,11 @@
  * - LED-Musik-Synchronisation
  * - Virtual Scrolling für große Bibliotheken
  * - BroadcastChannel für Cross-Tab-Kommunikation
- * 
+ *
  * Abhängigkeiten:
  * - music-library-manager.js (muss vorher geladen sein)
  * - musik.html (DOM-Elemente)
- * 
+ *
  * ===================================================================
  */
 
@@ -31,20 +31,20 @@ const MUSIK_CONFIG = {
   // Audio
   DEFAULT_VOLUME: 0.7,
   CROSSFADE_DURATION: 2000,
-  
+
   // UI
   VIRTUAL_SCROLL_ITEMS: 50,
   SCROLL_BUFFER: 10,
   UPDATE_INTERVAL: 100,
-  
+
   // LED-Synchronisation
   LED_UPDATE_FPS: 30,
   AUDIO_SMOOTHING: 0.8,
   FFT_SIZE: 2048,
-  
+
   // BroadcastChannel
   CHANNEL_NAME: 'music-control',
-  
+
   // Storage
   STORAGE_KEYS: {
     PLAYLIST: 'current-playlist',
@@ -70,15 +70,15 @@ class MusicPlayer {
     this.repeatMode = 'off'; // 'off', 'one', 'all'
     this.shuffleMode = false;
     this.shuffleOrder = [];
-    
+
     // Audio Context für Visualisierung
     this.audioContext = null;
     this.analyser = null;
     this.audioSource = null;
-    
+
     // BroadcastChannel
     this.channel = null;
-    
+
     this.init();
   }
 
@@ -113,7 +113,7 @@ class MusicPlayer {
   initBroadcastChannel() {
     try {
       this.channel = new BroadcastChannel(MUSIK_CONFIG.CHANNEL_NAME);
-      
+
       window.addEventListener('message', (event) => {
         // ✅ ORIGIN-VALIDIERUNG FÜR SICHERHEIT
         const allowedOrigins = ['http://localhost', 'https://localhost', window.location.origin];
@@ -161,12 +161,12 @@ class MusicPlayer {
       if (track.fileHandle) {
         const file = await track.fileHandle.getFile();
         const url = URL.createObjectURL(file);
-        
+
         // Altes URL freigeben
         if (this.audio.src && this.audio.src.startsWith('blob:')) {
           URL.revokeObjectURL(this.audio.src);
         }
-        
+
         this.audio.src = url;
       } else if (track.url) {
         this.audio.src = track.url;
@@ -184,11 +184,11 @@ class MusicPlayer {
 
     } catch (error) {
       console.error('Fehler beim Laden des Tracks:', error);
-      
+
       if (window.showGlobalNotification) {
         window.showGlobalNotification('Track konnte nicht geladen werden', 'error');
       }
-      
+
       return false;
     }
   }
@@ -201,14 +201,17 @@ class MusicPlayer {
       await this.audio.play();
       this.isPlaying = true;
       this.isPaused = false;
-      
+
       // Broadcast
-      this.broadcast({ command: 'play', trackIndex: this.currentTrackIndex });
-      
+      this.broadcast({
+        command: 'play',
+        trackIndex: this.currentTrackIndex
+      });
+
       console.log('▶️ Wiedergabe gestartet');
     } catch (error) {
       console.error('Wiedergabe-Fehler:', error);
-      
+
       if (window.showGlobalNotification) {
         window.showGlobalNotification('Wiedergabe fehlgeschlagen', 'error');
       }
@@ -222,10 +225,12 @@ class MusicPlayer {
     this.audio.pause();
     this.isPlaying = false;
     this.isPaused = true;
-    
+
     // Broadcast
-    this.broadcast({ command: 'pause' });
-    
+    this.broadcast({
+      command: 'pause'
+    });
+
     console.log('⏸️ Wiedergabe pausiert');
   }
 
@@ -310,12 +315,15 @@ class MusicPlayer {
   setVolume(value) {
     this.volume = Math.max(0, Math.min(1, value));
     this.audio.volume = this.volume;
-    
+
     // Speichern
     localStorage.setItem(MUSIK_CONFIG.STORAGE_KEYS.VOLUME, this.volume);
-    
+
     // Broadcast
-    this.broadcast({ command: 'volume', value: this.volume });
+    this.broadcast({
+      command: 'volume',
+      value: this.volume
+    });
   }
 
   /**
@@ -334,15 +342,18 @@ class MusicPlayer {
     const modes = ['off', 'all', 'one'];
     const currentIndex = modes.indexOf(this.repeatMode);
     this.repeatMode = modes[(currentIndex + 1) % modes.length];
-    
+
     // Speichern
     localStorage.setItem(MUSIK_CONFIG.STORAGE_KEYS.REPEAT_MODE, this.repeatMode);
-    
+
     // Broadcast
-    this.broadcast({ command: 'repeat', mode: this.repeatMode });
-    
+    this.broadcast({
+      command: 'repeat',
+      mode: this.repeatMode
+    });
+
     console.log('🔁 Repeat-Modus:', this.repeatMode);
-    
+
     return this.repeatMode;
   }
 
@@ -351,19 +362,22 @@ class MusicPlayer {
    */
   toggleShuffle() {
     this.shuffleMode = !this.shuffleMode;
-    
+
     if (this.shuffleMode) {
       this.generateShuffleOrder();
     }
-    
+
     // Speichern
     localStorage.setItem(MUSIK_CONFIG.STORAGE_KEYS.SHUFFLE_MODE, this.shuffleMode);
-    
+
     // Broadcast
-    this.broadcast({ command: 'shuffle', enabled: this.shuffleMode });
-    
+    this.broadcast({
+      command: 'shuffle',
+      enabled: this.shuffleMode
+    });
+
     console.log('🔀 Shuffle-Modus:', this.shuffleMode);
-    
+
     return this.shuffleMode;
   }
 
@@ -371,20 +385,21 @@ class MusicPlayer {
    * Generiert Shuffle-Reihenfolge
    */
   generateShuffleOrder() {
-    this.shuffleOrder = Array.from({ length: this.playlist.length }, (_, i) => i);
-    
+    this.shuffleOrder = Array.from({
+      length: this.playlist.length
+    }, (_, i) => i);
+
     // Fisher-Yates Shuffle
     for (let i = this.shuffleOrder.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [this.shuffleOrder[i], this.shuffleOrder[j]] = [this.shuffleOrder[j], this.shuffleOrder[i]];
     }
-    
+
     // Aktuellen Track an erste Position setzen
     if (this.currentTrackIndex >= 0) {
       const currentPos = this.shuffleOrder.indexOf(this.currentTrackIndex);
       if (currentPos > 0) {
-        [this.shuffleOrder[0], this.shuffleOrder[currentPos]] = 
-        [this.shuffleOrder[currentPos], this.shuffleOrder[0]];
+        [this.shuffleOrder[0], this.shuffleOrder[currentPos]] = [this.shuffleOrder[currentPos], this.shuffleOrder[0]];
       }
     }
   }
@@ -394,14 +409,14 @@ class MusicPlayer {
    */
   setPlaylist(tracks) {
     this.playlist = tracks;
-    
+
     if (this.shuffleMode) {
       this.generateShuffleOrder();
     }
-    
+
     // Speichern
     this.savePlaylist();
-    
+
     console.log('📋 Playlist gesetzt:', tracks.length, 'Tracks');
   }
 
@@ -410,11 +425,11 @@ class MusicPlayer {
    */
   addToPlaylist(track) {
     this.playlist.push(track);
-    
+
     if (this.shuffleMode) {
       this.shuffleOrder.push(this.playlist.length - 1);
     }
-    
+
     this.savePlaylist();
   }
 
@@ -423,18 +438,18 @@ class MusicPlayer {
    */
   removeFromPlaylist(index) {
     if (index < 0 || index >= this.playlist.length) return;
-    
+
     this.playlist.splice(index, 1);
-    
+
     // Aktuellen Index anpassen
     if (this.currentTrackIndex >= index) {
       this.currentTrackIndex = Math.max(-1, this.currentTrackIndex - 1);
     }
-    
+
     if (this.shuffleMode) {
       this.generateShuffleOrder();
     }
-    
+
     this.savePlaylist();
   }
 
@@ -466,7 +481,9 @@ class MusicPlayer {
       // Playlist beendet
       this.isPlaying = false;
       this.isPaused = false;
-      this.broadcast({ command: 'stopped' });
+      this.broadcast({
+        command: 'stopped'
+      });
     }
   }
 
@@ -480,10 +497,10 @@ class MusicPlayer {
         duration: this.audio.duration,
         percentage: (this.audio.currentTime / this.audio.duration) * 100
       };
-      
+
       // UI aktualisieren
       this.updateProgress(progress);
-      
+
       // LED-Synchronisation (falls aktiviert)
       if (window.ledSyncEnabled) {
         this.syncLEDWithAudio();
@@ -511,11 +528,11 @@ class MusicPlayer {
    */
   handleError(event) {
     console.error('Audio-Fehler:', event);
-    
+
     if (window.showGlobalNotification) {
       window.showGlobalNotification('Wiedergabe-Fehler', 'error');
     }
-    
+
     // Versuche nächsten Track
     if (this.currentTrackIndex < this.playlist.length - 1) {
       setTimeout(() => this.playNext(), 1000);
@@ -599,30 +616,36 @@ class MusicPlayer {
       const b = Math.min(255, Math.floor(treble * 2));
 
       // ✅ SENDE AN ALLE VERFÜGBAREN HARDWARE-GERÄTE
-      
+
       // 1. BLE-Hardware
       if (window.ledDevice && window.ledDevice.isConnected) {
         const cmd = new Uint8Array([0x7E, 0x00, 0x05, r, g, b, 0x00, 0xEF]);
         await window.ledDevice.characteristic.writeValue(cmd);
       }
-      
+
       // 2. WLED über WiFi
       if (window.wledDevice && window.wledDevice.connected) {
         await fetch(`http://${window.wledDevice.ip}/json/state`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json'
+          },
           body: JSON.stringify({
             on: true,
-            seg: [{ col: [[r, g, b]] }]
+            seg: [{
+              col: [
+                [r, g, b]
+              ]
+            }]
           })
         });
       }
-      
+
       // 3. Universelle Funktion
       if (window.sendUniversalColor) {
         await window.sendUniversalColor(r, g, b);
       }
-      
+
       // 4. Legacy Controller
       if (window.ledController && window.ledController.isConnected) {
         await window.ledController.setColorRGB(r, g, b);
@@ -639,11 +662,11 @@ class MusicPlayer {
   getAverageFrequency(dataArray, start, end) {
     let sum = 0;
     const count = end - start;
-    
+
     for (let i = start; i < end; i++) {
       sum += dataArray[i];
     }
-    
+
     return sum / count;
   }
 
@@ -660,7 +683,7 @@ class MusicPlayer {
     if (titleElement) titleElement.textContent = track.title || 'Unbekannter Titel';
     if (artistElement) artistElement.textContent = track.artist || 'Unbekannter Künstler';
     if (albumElement) albumElement.textContent = track.album || 'Unbekanntes Album';
-    
+
     if (coverElement && track.cover) {
       coverElement.src = track.cover;
     } else if (coverElement) {
@@ -668,8 +691,8 @@ class MusicPlayer {
     }
 
     // Broadcast
-    this.broadcast({ 
-      command: 'nowPlaying', 
+    this.broadcast({
+      command: 'nowPlaying',
       track: {
         title: track.title,
         artist: track.artist,
@@ -721,7 +744,7 @@ class MusicPlayer {
    */
   formatTime(seconds) {
     if (!seconds || isNaN(seconds)) return '0:00';
-    
+
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins}:${secs.toString().padStart(2, '0')}`;
@@ -740,7 +763,7 @@ class MusicPlayer {
         album: track.album,
         filePath: track.filePath
       }));
-      
+
       localStorage.setItem(MUSIK_CONFIG.STORAGE_KEYS.PLAYLIST, JSON.stringify(playlistData));
     } catch (error) {
       console.error('Fehler beim Speichern der Playlist:', error);
@@ -757,7 +780,7 @@ class MusicPlayer {
         currentTime: this.audio.currentTime,
         isPlaying: this.isPlaying
       };
-      
+
       localStorage.setItem(MUSIK_CONFIG.STORAGE_KEYS.PLAYBACK_STATE, JSON.stringify(state));
     } catch (error) {
       console.error('Fehler beim Speichern des Playback-States:', error);
@@ -800,17 +823,17 @@ class MusicPlayer {
   destroy() {
     // Audio stoppen
     this.pause();
-    
+
     // Blob-URLs freigeben
     if (this.audio.src && this.audio.src.startsWith('blob:')) {
       URL.revokeObjectURL(this.audio.src);
     }
-    
+
     // Audio Context schließen
     if (this.audioContext) {
       this.audioContext.close();
     }
-    
+
     // BroadcastChannel schließen
     if (this.channel) {
       this.channel.close();
@@ -939,7 +962,7 @@ class MusicUIController {
   async loadLibrary() {
     try {
       const tracks = await window.musicLibrary.getAllTracks();
-      
+
       if (tracks.length > 0) {
         console.log(`📚 ${tracks.length} Tracks in Bibliothek`);
         this.displayTracks(tracks);
@@ -958,6 +981,14 @@ class MusicUIController {
    * Bibliothek-Import Handler
    */
   async handleLibraryImport() {
+    // Prüfe ob neuer Scanner in musik.html verfügbar ist
+    if (window.musicScanner && typeof window.musicScanner.openScanModal === 'function') {
+      console.log('🔄 Verwende neuen Musik-Scanner aus musik.html');
+      window.musicScanner.openScanModal();
+      return;
+    }
+
+    // Fallback auf altes System
     if (!window.musicLibrary) {
       if (window.showGlobalNotification) {
         window.showGlobalNotification('Music Library Manager nicht verfügbar', 'error');
@@ -984,7 +1015,7 @@ class MusicUIController {
 
     } catch (error) {
       console.error('Import fehlgeschlagen:', error);
-      
+
       if (window.showGlobalNotification) {
         window.showGlobalNotification('Import fehlgeschlagen', 'error');
       }
@@ -1051,14 +1082,14 @@ class MusicUIController {
     const BUFFER_SIZE = 20; // Anzahl der zusätzlich zu rendernden Items
 
     let scrollTimeout;
-    
+
     trackList.addEventListener('scroll', () => {
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
         const scrollTop = trackList.scrollTop;
         const visibleStart = Math.floor(scrollTop / ITEM_HEIGHT);
         const visibleEnd = Math.ceil((scrollTop + trackList.clientHeight) / ITEM_HEIGHT);
-        
+
         // Render nur sichtbare Items + Buffer
         this.renderVisibleTracks(
           Math.max(0, visibleStart - BUFFER_SIZE),
@@ -1075,16 +1106,16 @@ class MusicUIController {
    */
   renderVisibleTracks(start, end) {
     if (!this.currentPlaylist || this.currentPlaylist.length === 0) return;
-    
+
     const trackList = document.getElementById('track-list');
     if (!trackList) return;
 
     // Nur die sichtbaren Tracks rendern
     const visibleTracks = this.currentPlaylist.slice(start, end);
-    
+
     // Container-Höhe setzen für korrektes Scrolling
     trackList.style.height = `${this.currentPlaylist.length * 60}px`;
-    
+
     // Tracks rendern mit Offset
     trackList.innerHTML = '';
     visibleTracks.forEach((track, index) => {
@@ -1117,7 +1148,7 @@ class MusicUIController {
   showImportProgress() {
     // Progress-Container erstellen falls noch nicht vorhanden
     let progressContainer = document.getElementById('import-progress-container');
-    
+
     if (!progressContainer) {
       progressContainer = document.createElement('div');
       progressContainer.id = 'import-progress-container';
@@ -1135,7 +1166,7 @@ class MusicUIController {
         text-align: center;
         box-shadow: 0 10px 40px rgba(78, 205, 196, 0.3);
       `;
-      
+
       progressContainer.innerHTML = `
         <div style="color: #4ecdc4; font-size: 1.5rem; margin-bottom: 15px;">
           <i class="fas fa-music"></i> Musikbibliothek wird importiert
@@ -1146,10 +1177,10 @@ class MusicUIController {
         <div id="import-progress-text" style="color: #fff; font-size: 0.9rem;">Wird vorbereitet...</div>
         <div id="import-progress-stats" style="color: #aaa; font-size: 0.8rem; margin-top: 10px;">0 / 0 Tracks</div>
       `;
-      
+
       document.body.appendChild(progressContainer);
     }
-    
+
     progressContainer.style.display = 'block';
     console.log('📥 Import gestartet - Progress-UI angezeigt');
   }
@@ -1161,19 +1192,19 @@ class MusicUIController {
     const progressBar = document.getElementById('import-progress-bar');
     const progressText = document.getElementById('import-progress-text');
     const progressStats = document.getElementById('import-progress-stats');
-    
+
     if (progressBar) {
       progressBar.style.width = `${progress.progress || 0}%`;
     }
-    
+
     if (progressText) {
       progressText.textContent = progress.message || 'Wird verarbeitet...';
     }
-    
+
     if (progressStats && progress.current !== undefined && progress.total !== undefined) {
       progressStats.textContent = `${progress.current} / ${progress.total} Tracks`;
     }
-    
+
     console.log(`📥 ${progress.phase}: ${progress.progress}% - ${progress.message}`);
   }
 
@@ -1186,13 +1217,13 @@ class MusicUIController {
       // Fade-Out Animation
       progressContainer.style.opacity = '0';
       progressContainer.style.transition = 'opacity 0.3s ease';
-      
+
       setTimeout(() => {
         progressContainer.style.display = 'none';
         progressContainer.style.opacity = '1';
       }, 300);
     }
-    
+
     console.log('✅ Import abgeschlossen - UI versteckt');
   }
 
@@ -1226,7 +1257,7 @@ class MusicUIController {
     if (!btn) return;
 
     btn.dataset.mode = mode;
-    
+
     const icon = btn.querySelector('i');
     if (icon) {
       if (mode === 'one') {

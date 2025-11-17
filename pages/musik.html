@@ -8700,13 +8700,45 @@
                 scanBtn.addEventListener('click', openScanModal);
                 console.log('✅ Bibliotheks-Scan Button Event-Listener hinzugefügt');
             }
-
+            
+            // Initialisiere globale musicLibrary falls noch nicht vorhanden
+            if (!window.musicLibrary) {
+                window.musicLibrary = { 
+                    songs: [], 
+                    artists: {}, 
+                    albums: {}, 
+                    genres: {},
+                    folders: {}
+                };
+                console.log('✅ Globale musicLibrary initialisiert');
+            }
+            
             // Lade gespeicherte Bibliothek
             const storedLibrary = loadMusicLibraryFromStorage();
-            if (storedLibrary) {
-                console.log('ℹ️ Gespeicherte Musikbibliothek gefunden. Verwende "Scannen" um zu aktualisieren.');
+            if (storedLibrary && storedLibrary.songs) {
+                // Merge mit bestehender Bibliothek
+                window.musicLibrary.songs = storedLibrary.songs;
+                organizeMusicLibrary();
+                console.log('ℹ️ Gespeicherte Musikbibliothek geladen:', storedLibrary.songs.length, 'Songs');
+                
+                // UI aktualisieren falls libraryManager vorhanden
+                if (window.libraryManager) {
+                    window.libraryManager.refreshAllSections();
+                }
             }
         });
+
+        // ===== INTEGRATION MIT BESTEHENDEM SYSTEM =====
+        
+        // Exportiere Funktionen für externe Verwendung
+        window.musicScanner = {
+            openScanModal: openScanModal,
+            startLibraryScan: startLibraryScan,
+            cancelScan: cancelScan,
+            isScanningLibrary: () => isScanningLibrary,
+            getScannedFiles: () => scannedFiles
+        };
+
     </script>
 
     <!-- 🔧 DEBUG-CODE - NUR ZUM TESTEN -->
