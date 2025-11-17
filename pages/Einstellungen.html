@@ -1263,7 +1263,7 @@
                             iframe.contentWindow.postMessage({
                                 type: 'darkModeChanged',
                                 darkMode: true
-                            }, '*');
+                            }, window.location.origin);
                         } catch (e) {
                             console.log('Iframe-Kommunikation nicht möglich:', e.message);
                         }
@@ -2578,7 +2578,7 @@
                     window.parent.postMessage({
                         type: 'pixelControlChanged',
                         enabled: isActive
-                    }, '*');
+                    }, window.location.origin);
                 }
             });
 

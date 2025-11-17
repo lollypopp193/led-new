@@ -806,36 +806,6 @@ window.getGlobalCurrentColor = function() {
     return window.globalCurrentColor;
 };
 
-// ✅ GLOBALE CURRENTCOLOR FÜR ALLE MODULE VERFÜGBAR MACHEN
-window.globalCurrentColor = {
-    r: 255,
-    g: 0,
-    b: 0
-}; // Standard-Rot
-
-/**
- * Setzt die globale aktuelle Farbe
- * @param {Object} color - RGB-Farbobjekt {r, g, b}
- */
-window.setGlobalCurrentColor = function(color) {
-    if (color && typeof color.r === 'number' && typeof color.g === 'number' && typeof color.b === 'number') {
-        window.globalCurrentColor = {
-            r: color.r,
-            g: color.g,
-            b: color.b
-        };
-        console.log('🎨 Globale currentColor gesetzt:', window.globalCurrentColor);
-    }
-};
-
-/**
- * Holt die globale aktuelle Farbe
- * @returns {Object} RGB-Farbobjekt {r, g, b}
- */
-window.getGlobalCurrentColor = function() {
-    return window.globalCurrentColor;
-};
-
 /**
  * Setzt Helligkeit für alle verbundenen Geräte
  * @param {number} brightness - Helligkeit (0-100)

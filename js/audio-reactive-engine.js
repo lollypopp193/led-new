@@ -589,7 +589,7 @@ class AudioReactiveEngine {
         if (window.parent && window.parent !== window) {
             window.parent.postMessage({
                 type: 'ledMusicControlReady'
-            }, '*');
+            }, window.location.origin);
         }
     }
 
@@ -600,7 +600,7 @@ class AudioReactiveEngine {
                 if (window.parent && window.parent !== window) {
                     window.parent.postMessage({
                         type: 'requestMusicPlayerConnection'
-                    }, '*');
+                    }, window.location.origin);
                 }
 
                 // Warte auf Antwort
