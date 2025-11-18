@@ -2320,7 +2320,7 @@
                         <div>
                             <div style="font-weight: bold; color: #4ecdc4;">${device.name}</div>
                             <div style="font-size: 0.9em; color: #888;">${device.ip}</div>
-                            ${device.leds ??`<div style="font-size: 0.9em; color: #888;">LEDs: ${device.leds}</div>` : ''}
+                            ${device.leds ? `<div style="font-size: 0.9em; color: #888;">LEDs: ${device.leds}</div>` : ''}
                         </div>
                         <button onclick="connectToWLED('${device.ip}')" style="padding: 8px 16px; background: #4ecdc4; color: white; border: none; border-radius: 5px; cursor: pointer;">
                             Verbinden
@@ -2413,7 +2413,7 @@
 
         // ✅ PIXEL-LEVEL KONTROLLE
         async function setPixel(pixelIndex, r, g, b) {
-            if (window.ledDevice ? ? .isConnected) {
+            if (window.ledDevice ? .isConnected) {
                 // BLE Pixel-Control
                 const cmd = new Uint8Array([
                     0x7E, 0x01, // Pixel-Mode
@@ -2423,7 +2423,7 @@
                 ]);
                 await window.ledDevice.characteristic.writeValue(cmd);
 
-            } else if (window.wledDevice ? ? .connected) {
+            } else if (window.wledDevice ? .connected) {
                 // WLED Pixel-Control über Segment
                 await fetch(`http://${window.wledDevice.ip}/json/state`, {
                     method: 'POST',

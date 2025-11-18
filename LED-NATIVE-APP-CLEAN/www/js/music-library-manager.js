@@ -403,7 +403,7 @@ class MusicDatabase {
       const store = transaction.objectStore(MUSIC_CONFIG.METADATA_STORE);
       const request = store.get(key);
 
-      request.onsuccess = () => resolve(request.result ? .value);
+      request.onsuccess = () => resolve(request.result?.value);
       request.onerror = () => reject(request.error);
     });
   }
