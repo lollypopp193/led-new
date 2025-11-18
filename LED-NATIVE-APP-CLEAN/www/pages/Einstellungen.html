@@ -2589,13 +2589,7 @@
                 showNotification(`Benachrichtigungen ${notifications ? 'aktiviert' : 'deaktiviert'}`, 'success');
             });
 
-            document.getElementById('darkModeSwitch').addEventListener('click', toggleDarkMode);
-
-            document.getElementById('wledSwitch').addEventListener('click', toggleWLED);
-
-            document.getElementById('hierarchicalGroupsSwitch').addEventListener('click', toggleHierarchicalGroups);
-
-            document.getElementById('pixelControlSwitch').addEventListener('click', togglePixelControl);
+            // Doppelte Event Listener entfernt - werden bereits weiter oben registriert
 
             document.getElementById('hwAccelSwitch').addEventListener('click', function() {
                 hwAccel = !hwAccel;
