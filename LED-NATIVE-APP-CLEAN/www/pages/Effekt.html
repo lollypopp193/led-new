@@ -2270,6 +2270,16 @@
       `;
 
             document.head.appendChild(style);
+
+            // ✅ RE-TRIGGER ALLE ANIMATIONEN damit neue Geschwindigkeit sofort sichtbar wird
+            console.log(`🎬 Aktualisiere Animation-Speed auf ${speed} (Factor: ${speedFactor}s)`);
+            document.querySelectorAll('.effect-animation').forEach(el => {
+                // Entferne und füge Klasse wieder hinzu um Animation neu zu starten
+                el.style.animation = 'none';
+                setTimeout(() => {
+                    el.style.animation = '';
+                }, 10);
+            });
         }
 
         // Effekte rendern

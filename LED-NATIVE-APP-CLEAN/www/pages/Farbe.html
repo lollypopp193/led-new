@@ -1789,8 +1789,15 @@
         // Funktion zum Aktualisieren der Farbvorschau
         function updateColorPreview(r, g, b) {
             const colorPreview = document.getElementById('colorPreview');
+            console.log('🖼️ updateColorPreview aufgerufen:', {
+                r,
+                g,
+                b,
+                element: !!colorPreview
+            });
             if (colorPreview) {
                 colorPreview.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+                console.log('✅ Vorschau aktualisiert:', colorPreview.style.backgroundColor);
                 console.log(`🎨 Farbvorschau aktualisiert: RGB(${r}, ${g}, ${b})`);
             }
         }
