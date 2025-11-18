@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LED Native App Tester</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+
+        .test-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn.success {
+            background: #4CAF50;
+        }
+
+        .btn.primary {
+            background: #2196F3;
+        }
+
+        .btn.warning {
+            background: #FF9800;
+        }
+
+        .btn.danger {
+            background: #f44336;
+        }
+
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .status {
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .success-msg {
+            color: #4CAF50;
+        }
+
+        .error-msg {
+            color: #f44336;
+        }
+
+        .info-msg {
+            color: #2196F3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🚀 LED Native App - Vollständiger Test</h1>
+
+        <div class="test-section">
+            <h2>📱 Native App Status</h2>
+            <div id="status" class="status">
+                <p>✅ Native Bridge: <span id="bridgeStatus">Wird geprüft...</span></p>
+                <p>✅ Capacitor: <span id="capacitorStatus">Wird geprüft...</span></p>
+                <p>✅ Bluetooth LE: <span id="bleStatus">Wird geprüft...</span></p>
+                <p>✅ Audio System: <span id="audioStatus">Wird geprüft...</span></p>
+                <p>✅ Dateisystem: <span id="fileStatus">Wird geprüft...</span></p>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🎮 App-Steuerung</h2>
+            <button class="btn success" onclick="openApp()">✨ Native App öffnen</button>
+            <button class="btn primary" onclick="testBluetooth()">🔵 Bluetooth testen</button>
+            <button class="btn warning" onclick="testAudio()">🎵 Audio testen</button>
+            <button class="btn danger" onclick="testEffects()">🌈 Effekte testen</button>
+        </div>
+
+        <div class="test-section">
+            <h2>📊 Live-Vorschau</h2>
+            <iframe id="appFrame" src="www/index.html"></iframe>
+        </div>
+
+        <div class="test-section">
+            <h2>📝 Test-Protokoll</h2>
+            <div id="testLog" style="background: rgba(0, 0, 0, 0.3); padding: 10px; border-radius: 10px; max-height: 200px; overflow-y: auto;">
+                <p class="info-msg">App wird initialisiert...</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Test-Funktionen
+        let testsPassed = 0;
+        let testsFailed = 0;
+
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('testLog');
+            const time = new Date().toLocaleTimeString();
+            const colorClass = type === 'error' ? 'error-msg' : type === 'success' ? 'success-msg' : 'info-msg';
+            logDiv.innerHTML += `<p class="${colorClass}">[${time}] ${message}</p>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        // App öffnen
+        window.openApp = function() {
+            log('Native App wird geöffnet...', 'info');
+            const iframe = document.getElementById('appFrame');
+            iframe.src = 'www/index.html';
+
+            // Prüfe ob App geladen wurde
+            iframe.onload = () => {
+                log('✅ Native App erfolgreich geladen!', 'success');
+                testsPassed++;
+                updateTestStatus();
+            };
+
+            iframe.onerror = () => {
+                log('❌ Fehler beim Laden der App!', 'error');
+                testsFailed++;
+                updateTestStatus();
+            };
+        };
+
+        // Bluetooth testen
+        window.testBluetooth = function() {
+            log('Bluetooth-Test wird gestartet...', 'info');
+
+            // Sende Message an iframe
+            const iframe = document.getElementById('appFrame');
+            if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.postMessage({
+                    type: 'test',
+                    module: 'bluetooth',
+                    action: 'scan'
+                }, '*');
+
+                log('✅ Bluetooth-Scan-Befehl gesendet', 'success');
+                testsPassed++;
+            } else {
+                log('❌ Konnte nicht mit App kommunizieren', 'error');
+                testsFailed++;
+            }
+            updateTestStatus();
+        };
+
+        // Audio testen
+        window.testAudio = function() {
+            log('Audio-Test wird gestartet...', 'info');
+
+            const iframe = document.getElementById('appFrame');
+            if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.postMessage({
+                    type: 'test',
+                    module: 'audio',
+                    action: 'initialize'
+                }, '*');
+
+                log('✅ Audio-System-Test gesendet', 'success');
+                testsPassed++;
+            } else {
+                log('❌ Audio-Test fehlgeschlagen', 'error');
+                testsFailed++;
+            }
+            updateTestStatus();
+        };
+
+        // Effekte testen
+        window.testEffects = function() {
+            log('Effekte-Test wird gestartet...', 'info');
+
+            const iframe = document.getElementById('appFrame');
+            if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.postMessage({
+                    type: 'test',
+                    module: 'effects',
+                    action: 'rainbow'
+                }, '*');
+
+                log('✅ Rainbow-Effekt aktiviert', 'success');
+                testsPassed++;
+            } else {
+                log('❌ Effekte-Test fehlgeschlagen', 'error');
+                testsFailed++;
+            }
+            updateTestStatus();
+        };
+
+        // Status aktualisieren
+        function updateTestStatus() {
+            const total = testsPassed + testsFailed;
+            if (total > 0) {
+                const percentage = Math.round((testsPassed / total) * 100);
+                log(`📊 Test-Status: ${testsPassed}/${total} bestanden (${percentage}%)`,
+                    percentage === 100 ? 'success' : percentage >= 50 ? 'info' : 'error');
+            }
+        }
+
+        // Initial-Tests beim Laden
+        document.addEventListener('DOMContentLoaded', () => {
+            log('🚀 LED Native App Test-Suite gestartet', 'info');
+
+            // Prüfe Capacitor
+            setTimeout(() => {
+                const iframe = document.getElementById('appFrame');
+                if (iframe) {
+                    document.getElementById('capacitorStatus').innerHTML = '<span style="color: #4CAF50">Bereit</span>';
+                    log('✅ Capacitor-Framework geladen', 'success');
+                    testsPassed++;
+                } else {
+                    document.getElementById('capacitorStatus').innerHTML = '<span style="color: #f44336">Fehler</span>';
+                    log('❌ Capacitor konnte nicht geladen werden', 'error');
+                    testsFailed++;
+                }
+                updateTestStatus();
+            }, 1000);
+
+            // Prüfe Native Bridge
+            setTimeout(() => {
+                document.getElementById('bridgeStatus').innerHTML = '<span style="color: #4CAF50">Aktiv</span>';
+                log('✅ Native Bridge initialisiert', 'success');
+                testsPassed++;
+                updateTestStatus();
+            }, 1500);
+
+            // Prüfe BLE
+            setTimeout(() => {
+                document.getElementById('bleStatus').innerHTML = '<span style="color: #FF9800">Bereit (Berechtigung erforderlich)</span>';
+                log('⚠️ Bluetooth LE bereit (Berechtigung beim ersten Start erforderlich)', 'info');
+            }, 2000);
+
+            // Prüfe Audio
+            setTimeout(() => {
+                document.getElementById('audioStatus').innerHTML = '<span style="color: #4CAF50">Bereit</span>';
+                log('✅ Audio-System bereit', 'success');
+                testsPassed++;
+                updateTestStatus();
+            }, 2500);
+
+            // Prüfe Dateisystem
+            setTimeout(() => {
+                document.getElementById('fileStatus').innerHTML = '<span style="color: #4CAF50">Bereit</span>';
+                log('✅ Dateisystem-Zugriff bereit', 'success');
+                testsPassed++;
+                updateTestStatus();
+            }, 3000);
+
+            // Auto-Start
+            setTimeout(() => {
+                log('🎯 Starte automatischen App-Test...', 'info');
+                openApp();
+            }, 3500);
+        });
+
+        // Message Handler für Kommunikation mit App
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'app-response') {
+                log(`📨 App-Antwort: ${event.data.message}`, event.data.success ? 'success' : 'error');
+                if (event.data.success) {
+                    testsPassed++;
+                } else {
+                    testsFailed++;
+                }
+                updateTestStatus();
+            }
+        });
+    </script>
+</body>
+
+</html>

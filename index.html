@@ -16,9 +16,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" onerror="this.remove()">
     <link rel="stylesheet" href="css/shared-styles.css" onerror="console.warn('shared-styles.css nicht gefunden')">
     <!-- css/style.css removed - not found -->
-
-    <!-- ✅ CAPACITOR CORE (nur für Native App) -->
-    <script type="module" src="https://cdn.jsdelivr.net/npm/@capacitor/core@latest/dist/capacitor.js"></script>
     <style>
         /* Font bereits in HTML-Head geladen - doppelter Import entfernt */
 
@@ -480,13 +477,8 @@
         </div>
     </div>
 
-    <!-- ✅ CAPACITOR BRIDGE (Browser/Native Kompatibilität) -->
-    <script src="js/capacitor-bridge.js"></script>
-
     <!-- ✅ KRITISCH: BLE-CONTROLLER MUSS ZUERST GELADEN WERDEN! -->
     <script src="js/ble-controller-pro.js"></script>
-    <!-- ✅ BLE HEALTH MONITOR (Fehlerbehandlung & Auto-Fix) -->
-    <script src="js/ble-health-monitor.js"></script>
     <script src="js/app.js?v=2.0"></script>
     <script src="js/device-manager.js"></script>
     <script src="js/event-manager.js"></script>
