@@ -1704,10 +1704,21 @@
             };
         }
 
-        // Notification System
+        // Notification System - XSS-SICHER
         function showNotification(message, type = 'info') {
+            // ✅ INPUT VALIDIERUNG gegen XSS
+            if (typeof message !== 'string') {
+                message = String(message);
+            }
+            // Sichere type-Werte
+            const validTypes = ['info', 'success', 'error', 'warning'];
+            if (!validTypes.includes(type)) {
+                type = 'info';
+            }
+
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
+            // ✅ textContent ist XSS-sicher (kein innerHTML!)
             notification.textContent = message;
 
             notification.style.cssText = `
