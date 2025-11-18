@@ -102,7 +102,7 @@ window.addEventListener('DOMContentLoaded', () => {
                         connected: status.connected,
                         device: status.device
                     }, window.location.origin);
-                } catch (e) { }
+                } catch (e) {}
             });
 
             console.log('📡 BLE Status:', status.connected ? '✅ Verbunden' : '❌ Getrennt');
@@ -747,7 +747,7 @@ window.addEventListener('DOMContentLoaded', () => {
  * @param {number} g - Grün (0-255)
  * @param {number} b - Blau (0-255)
  */
-window.sendColorToAllDevices = async function (r, g, b) {
+window.sendColorToAllDevices = async function(r, g, b) {
     try {
         if (!window.ledController || !window.ledController.isConnected) {
             console.log('⚠️ Keine BLE-Geräte verbunden');
@@ -776,7 +776,7 @@ window.sendColorToAllDevices = async function (r, g, b) {
  * Sendet Effekt an alle verbundenen Geräte
  * @param {number} effectId - Effekt-ID
  */
-window.sendEffectToAllDevices = async function (effectId) {
+window.sendEffectToAllDevices = async function(effectId) {
     try {
         if (!window.ledController || !window.ledController.isConnected) {
             console.log('⚠️ Keine BLE-Geräte verbunden');
@@ -813,7 +813,7 @@ window.globalCurrentColor = {
  * Setzt die globale aktuelle Farbe
  * @param {Object} color - RGB-Farbobjekt {r, g, b}
  */
-window.setGlobalCurrentColor = function (color) {
+window.setGlobalCurrentColor = function(color) {
     if (color && typeof color.r === 'number' && typeof color.g === 'number' && typeof color.b === 'number') {
         window.globalCurrentColor = {
             r: color.r,
@@ -828,7 +828,7 @@ window.setGlobalCurrentColor = function (color) {
  * Holt die globale aktuelle Farbe
  * @returns {Object} RGB-Farbobjekt {r, g, b}
  */
-window.getGlobalCurrentColor = function () {
+window.getGlobalCurrentColor = function() {
     return window.globalCurrentColor;
 };
 
@@ -836,7 +836,7 @@ window.getGlobalCurrentColor = function () {
  * Setzt Helligkeit für alle verbundenen Geräte
  * @param {number} brightness - Helligkeit (0-100)
  */
-window.setBrightnessForAllDevices = async function (brightness) {
+window.setBrightnessForAllDevices = async function(brightness) {
     try {
         if (!window.ledController || !window.ledController.isConnected) {
             console.log('⚠️ Keine BLE-Geräte verbunden');
@@ -855,7 +855,7 @@ window.setBrightnessForAllDevices = async function (brightness) {
  * Schaltet LED ein/aus
  * @param {boolean} state - true = ein, false = aus
  */
-window.setPowerForAllDevices = async function (state) {
+window.setPowerForAllDevices = async function(state) {
     try {
         if (!window.ledController || !window.ledController.isConnected) {
             console.log('⚠️ Keine BLE-Geräte verbunden');
@@ -872,7 +872,7 @@ window.setPowerForAllDevices = async function (state) {
 /**
  * LED-Test-Funktion
  */
-window.testLED = async function () {
+window.testLED = async function() {
     try {
         if (window.ledController && window.ledController.runTestSequence) {
             return await window.ledController.runTestSequence();
@@ -888,7 +888,7 @@ window.testLED = async function () {
 /**
  * Gibt BLE-Controller-Status zurück
  */
-window.getBLEStatus = function () {
+window.getBLEStatus = function() {
     try {
         if (window.ledController && window.ledController.getConnectionStatus) {
             return window.ledController.getConnectionStatus();
@@ -903,12 +903,12 @@ window.getBLEStatus = function () {
 };
 
 // Weitere globale BLE-Funktionen
-window.getBLEController = function () {
+window.getBLEController = function() {
     return window.ledController;
 };
 
 // ✅ UNIVERSELLE LED-STEUERUNG (BLE + WLED)
-window.sendUniversalColor = async function (r, g, b) {
+window.sendUniversalColor = async function(r, g, b) {
     let success = false;
 
     // Versuche BLE
@@ -959,7 +959,7 @@ window.sendUniversalColor = async function (r, g, b) {
 };
 
 // ✅ UNIVERSELLER EFFEKT-SENDER
-window.sendUniversalEffect = async function (effectName, speed = 5) {
+window.sendUniversalEffect = async function(effectName, speed = 5) {
     let success = false;
 
     // BLE-Effekt
@@ -1014,7 +1014,7 @@ window.sendUniversalEffect = async function (effectName, speed = 5) {
     return success;
 };
 
-window.connectBLEDevice = async function (device) {
+window.connectBLEDevice = async function(device) {
     return await connectToDevice(device);
 };
 
@@ -1073,7 +1073,7 @@ function loadApp(app) {
         console.log('✓ Lade Modul:', appFiles[app]);
 
         // BLE-Status an Iframe senden nach dem Laden
-        iframe.onload = function () {
+        iframe.onload = function() {
             setTimeout(() => {
                 try {
                     if (iframe.contentWindow) {
@@ -1106,13 +1106,13 @@ function initNavigation() {
 
     // Navigation-Items
     navItems.forEach(item => {
-        item.addEventListener('click', function () {
+        item.addEventListener('click', function() {
             const app = this.getAttribute('data-app');
             loadApp(app);
         });
 
         // Keyboard-Support
-        item.addEventListener('keydown', function (e) {
+        item.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 const app = this.getAttribute('data-app');
@@ -1123,13 +1123,13 @@ function initNavigation() {
 
     // Feature-Cards
     featureCards.forEach(card => {
-        card.addEventListener('click', function () {
+        card.addEventListener('click', function() {
             const app = this.getAttribute('data-app');
             if (app) loadApp(app);
         });
 
         // Keyboard-Support
-        card.addEventListener('keydown', function (e) {
+        card.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 const app = this.getAttribute('data-app');
@@ -1141,7 +1141,7 @@ function initNavigation() {
     // Iframe-Load-Events
     const iframes = document.querySelectorAll('.app-iframe');
     iframes.forEach(iframe => {
-        iframe.addEventListener('load', function () {
+        iframe.addEventListener('load', function() {
             console.log(`✓ ${iframe.id} geladen`);
         });
     });
@@ -1152,7 +1152,7 @@ function initNavigation() {
 /**
  * Lädt letztes aktives App beim Start
  */
-function loadLastApp() {
+function _loadLastApp() {
     try {
         const lastApp = localStorage.getItem(APP_CONFIG.STORAGE_KEYS.LAST_APP);
         if (lastApp) {
@@ -1168,7 +1168,7 @@ function loadLastApp() {
 // MESSAGE-HANDLER FÜR IFRAME-KOMMUNIKATION
 // ===================================================================
 
-window.addEventListener('message', function (event) {
+window.addEventListener('message', function(event) {
     // Sicherheitscheck für Origin
     const allowedOrigins = [window.location.origin, 'file://', 'null'];
     if (!allowedOrigins.includes(event.origin) && event.origin !== 'null') {

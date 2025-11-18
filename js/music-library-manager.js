@@ -89,7 +89,7 @@ class MusicDatabase {
      */
     async init() {
         return new Promise((resolve, reject) => {
-            const request = indexedDB.open(MUSIC_CONFIG.DB_NAME, MUSIC_CONFIG.DB_VERSION);
+            const request = window.indexedDB.open(MUSIC_CONFIG.DB_NAME, MUSIC_CONFIG.DB_VERSION);
 
             request.onerror = () => {
                 console.error('IndexedDB Fehler:', request.error);
@@ -131,7 +131,7 @@ class MusicDatabase {
 
                 // Metadata Store
                 if (!db.objectStoreNames.contains(MUSIC_CONFIG.METADATA_STORE)) {
-                    const metaStore = db.createObjectStore(MUSIC_CONFIG.METADATA_STORE, {
+                    db.createObjectStore(MUSIC_CONFIG.METADATA_STORE, {
                         keyPath: 'key'
                     });
                 }
@@ -403,7 +403,7 @@ class MusicDatabase {
             const store = transaction.objectStore(MUSIC_CONFIG.METADATA_STORE);
             const request = store.get(key);
 
-            request.onsuccess = () => resolve(request.result ? .value);
+            request.onsuccess = () => resolve(request.result ? request.result.value : undefined);
             request.onerror = () => reject(request.error);
         });
     }
@@ -526,11 +526,11 @@ class FileSystemManager {
         console.log('🔍 Scanne Musikordner...');
 
         const files = [];
-        let scannedCount = 0;
+        let _scannedCount = 0;
 
         try {
             await this.scanDirectoryRecursive(this.directoryHandle, files, (count) => {
-                scannedCount = count;
+                _scannedCount = count;
                 if (progressCallback) {
                     progressCallback({
                         scanned: count,
@@ -630,7 +630,7 @@ class MetadataExtractor {
      * Extrahiert ID3-Tags
      */
     async extractID3Tags(file) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, _reject) => {
             window.jsmediatags.read(file, {
                 onSuccess: (tag) => {
                     const tags = tag.tags;
@@ -1081,7 +1081,7 @@ class MusicLibraryManager {
             const audioContext = new AudioContext();
             const response = await fetch(track.url);
             const arrayBuffer = await response.arrayBuffer();
-            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+            const _audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
 
             // Analysiere Audio für Beat-Detection
             const analyser = audioContext.createAnalyser();

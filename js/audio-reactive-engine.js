@@ -315,7 +315,7 @@ class AudioReactiveEngine {
             // Aktualisiere globale Band-Settings wenn synchronisiert
             if (this.useBandSettings && index < bandSettings.length) {
                 // ✅ ECHTE HARDWARE-STEUERUNG FÜR AUDIO-REAKTIVE LEDs
-                const musicData = {
+                const _musicData = {
                     bandIndex: index,
                     effect: strip.effect,
                     color: strip.color,
@@ -689,3 +689,11 @@ class AudioReactiveEngine {
         showNotification(message, type); // Use existing notification function
     }
 }
+
+// Export for use in other modules
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = AudioReactiveEngine;
+}
+
+// Make it available globally
+window.AudioReactiveEngine = AudioReactiveEngine;

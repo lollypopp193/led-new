@@ -109,7 +109,7 @@ class BLEController {
     /**
      * Scannt nach verfügbaren BLE-Geräten
      */
-    async scan(protocol = 'ELK_BLEDOM') {
+    async scan(_protocol = 'ELK_BLEDOM') {
         if (!this.isBluetoothAvailable()) {
             throw new Error('Web Bluetooth API nicht verfügbar');
         }
@@ -152,7 +152,7 @@ class BLEController {
     /**
      * Verbindet mit einem BLE-Gerät
      */
-    async connect(deviceId = null, protocol = 'ELK_BLEDOM') {
+    async connect(_deviceId = null, protocol = 'ELK_BLEDOM') {
         try {
             // Wenn kein Gerät vorhanden, scannen
             if (!this.device) {
@@ -435,7 +435,7 @@ class BLEController {
     /**
      * Setzt Audio-Sensitivität
      */
-    async setAudioSensitivity(deviceId, sensitivity, protocol) {
+    async setAudioSensitivity(_deviceId, sensitivity, _protocol) {
         // Implementierung hängt vom Protokoll ab
         console.log(`🎚️ Audio-Sensitivität: ${sensitivity}`);
         return true;
@@ -444,7 +444,7 @@ class BLEController {
     /**
      * Stoppt Audio-Modus
      */
-    async stopAudioMode(deviceId, protocol) {
+    async stopAudioMode(_deviceId, _protocol) {
         console.log('⏹️ Audio-Modus gestoppt');
         return true;
     }
