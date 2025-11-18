@@ -1847,8 +1847,9 @@
         initPresetColors();
 
         // ✅ SICHERES FARBE SPEICHERN SYSTEM MIT XSS-SCHUTZ
-        const saveColorBtn = document.getElementById('saveColorBtn');
-        const savedColorsDiv = document.getElementById('savedColors');
+        // WICHTIG: Elemente werden im DOMContentLoaded geholt, nicht hier!
+        let saveColorBtn = null;
+        let savedColorsDiv = null;
 
         // ✅ SICHERE LOCALSTORAGE-DATEN LADEN MIT VALIDIERUNG
         let savedColorsArray = [];
@@ -2291,6 +2292,14 @@
         // ✅ KONSOLIDIERTE INITIALISIERUNG - ALLE EVENT-LISTENER IN EINEM BLOCK
         document.addEventListener('DOMContentLoaded', () => {
             console.log('🎨 Farbe.html wird initialisiert...');
+
+            // ✅ WICHTIG: DOM-Elemente JETZT holen (nach DOM geladen)
+            saveColorBtn = document.getElementById('saveColorBtn');
+            savedColorsDiv = document.getElementById('savedColors');
+            console.log('📦 DOM-Elemente geholt:', {
+                saveColorBtn: !!saveColorBtn,
+                savedColorsDiv: !!savedColorsDiv
+            });
 
             // Basic-Farben initialisieren
             initPresetColors();
