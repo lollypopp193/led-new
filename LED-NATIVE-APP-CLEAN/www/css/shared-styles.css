@@ -980,6 +980,122 @@ body {
     background-color: #000000;
 }
 
+.preset-color {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    display: inline-block;
+    margin: 4px;
+}
+
+.preset-color:hover {
+    transform: scale(1.1);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+/* Warm Colors */
+.preset-color-warm-orange {
+    background-color: #ff6b35;
+}
+
+.preset-color-amber {
+    background-color: #f7931e;
+}
+
+.preset-color-gold {
+    background-color: #ffd700;
+}
+
+.preset-color-peach {
+    background-color: #ff8c42;
+}
+
+.preset-color-chocolate {
+    background-color: #d2691e;
+}
+
+.preset-color-sand {
+    background-color: #cd853f;
+}
+
+.preset-color-goldyellow {
+    background-color: #daa520;
+}
+
+.preset-color-darkgold {
+    background-color: #b8860b;
+}
+
+/* Cold Colors */
+.preset-color-royal-blue {
+    background-color: #4169e1;
+}
+
+.preset-color-deep-sky {
+    background-color: #00bfff;
+}
+
+.preset-color-sky-blue {
+    background-color: #87ceeb;
+}
+
+.preset-color-light-sea {
+    background-color: #20b2aa;
+}
+
+.preset-color-dark-cyan {
+    background-color: #008b8b;
+}
+
+.preset-color-steel-blue {
+    background-color: #4682b4;
+}
+
+.preset-color-cadet {
+    background-color: #5f9ea0;
+}
+
+.preset-color-slate {
+    background-color: #708090;
+}
+
+/* Pastel Colors */
+.preset-color-light-pink {
+    background-color: #ffb6c1;
+}
+
+.preset-color-pink {
+    background-color: #ffc0cb;
+}
+
+.preset-color-lavender {
+    background-color: #e6e6fa;
+}
+
+.preset-color-khaki {
+    background-color: #f0e68c;
+}
+
+.preset-color-pale-green {
+    background-color: #98fb98;
+}
+
+.preset-color-pale-turquoise {
+    background-color: #afeeee;
+}
+
+.preset-color-wheat {
+    background-color: #f5deb3;
+}
+
+.preset-color-plum {
+    background-color: #dda0dd;
+}
+
 .saved-colors-header {
     display: flex;
     justify-content: space-between;
