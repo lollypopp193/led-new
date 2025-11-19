@@ -54,7 +54,5 @@ window.addEventListener('error', event => {
     }
 });
 
-// Export für andere Module
-export {
-    isCapacitorAvailable
-};
+// Globale Funktion verfügbar machen (kein ES6 Export, da als normales Script geladen)
+window.isCapacitorAvailable = isCapacitorAvailable;
