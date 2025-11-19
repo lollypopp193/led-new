@@ -1,36 +1,40 @@
 // ✅ SERVICE WORKER FÜR PWA
 // Macht aus der Web-App eine installierbare Android-App
 
-const CACHE_NAME = 'lights-space-world-v3';
+const CACHE_NAME = 'lights-space-world-v4';
 const urlsToCache = [
     './',
-    './index.html',
-    './pages/Farbe.html',
-    './pages/Effekt.html',
-    './pages/Timer.html',
-    './pages/Einstellungen.html',
-    './pages/musik.html',
-    './css/shared-styles.css',
-    './js/app.js',
-    './js/ble-controller-pro.js',
-    './js/device-manager.js',
-    './js/event-manager.js',
-    './js/led-abstraction-layer.js',
-    './js/performance-optimizer.js',
-    './js/scenes-manager.js',
-    './js/audio-reactive-engine.js',
-    './js/musik-integration.js',
-    './js/music-library-manager.js'
+    './index.html?v=2.1',
+    './pages/Farbe.html?v=2.1',
+    './pages/Effekt.html?v=2.1',
+    './pages/Timer.html?v=2.1',
+    './pages/Einstellungen.html?v=2.1',
+    './pages/musik.html?v=2.1',
+    './css/shared-styles.css?v=2.1',
+    './js/app.js?v=2.1',
+    './js/ble-controller-pro.js?v=2.1',
+    './js/device-manager.js?v=2.1',
+    './js/event-manager.js?v=2.1',
+    './js/led-abstraction-layer.js?v=2.1',
+    './js/performance-optimizer.js?v=2.1',
+    './js/scenes-manager.js?v=2.1',
+    './js/audio-reactive-engine.js?v=2.1',
+    './js/musik-integration.js?v=2.1',
+    './js/music-library-manager.js?v=2.1'
 ];
 
 // Installation
 self.addEventListener('install', (event) => {
+    console.log(' Service Worker Installation - v4');
+    // Sofort aktivieren, alte Version überspringen
+    self.skipWaiting();
+
     event.waitUntil(
         caches.open(CACHE_NAME)
-        .then((cache) => {
-            console.log('📱 PWA Cache wird erstellt');
-            return cache.addAll(urlsToCache);
-        })
+            .then((cache) => {
+                console.log(' PWA Cache v4 wird erstellt');
+                return cache.addAll(urlsToCache);
+            })
     );
 });
 
@@ -38,13 +42,13 @@ self.addEventListener('install', (event) => {
 self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(event.request)
-        .then((response) => {
-            // Cache hit - return response
-            if (response) {
-                return response;
-            }
-            return fetch(event.request);
-        })
+            .then((response) => {
+                // Cache hit - return response
+                if (response) {
+                    return response;
+                }
+                return fetch(event.request);
+            })
     );
 });
 
