@@ -27,6 +27,16 @@
 
 'use strict';
 
+// ✅ SOFORTIGER DEBUG-LOG
+console.log('%c🚀 APP.JS WIRD GELADEN - TIMESTAMP: ' + new Date().toLocaleTimeString(), 'background: #0f0; color: #000; font-size: 20px; font-weight: bold; padding: 10px;');
+
+// ✅ Prüfe ob BLE Controller existiert
+if (typeof window.ledController !== 'undefined') {
+    console.log('%c✅ BLE CONTROLLER GEFUNDEN!', 'background: #0f0; color: #000; font-size: 16px; padding: 5px;');
+} else {
+    console.error('%c❌ BLE CONTROLLER FEHLT!', 'background: #f00; color: #fff; font-size: 16px; padding: 5px;');
+}
+
 // ===================================================================
 // GLOBALE TYP-DEKLARATIONEN (für IDE-Unterstützung)
 // ===================================================================
@@ -1225,9 +1235,12 @@ function startAppSequence() {
  * Initialisiert die gesamte App
  */
 async function initApp() {
-    console.log('🚀 Initialisiere Lights Space World App...');
+    console.log('%c🚀 ========================================', 'color: #0ff; font-size: 18px; font-weight: bold;');
+    console.log('%c🚀 INITAPP() WIRD AUFGERUFEN!', 'color: #0ff; font-size: 18px; font-weight: bold;');
+    console.log('%c🚀 ========================================', 'color: #0ff; font-size: 18px; font-weight: bold;');
 
     try {
+        console.log('📍 Schritt 1: BLE-Controller initialisieren...');
         // ✅ BLE-Controller-Initialisierung (KRITISCH - MUSS ZUERST!)
         console.log('🚀 Initialisiere globalen BLE Controller...');
         if (window.ledController) {
@@ -1310,8 +1323,11 @@ async function initApp() {
         }
 
         // Partikel-System starten
+        console.log('📍 Schritt 2: Partikel-System initialisieren...');
         initParticles();
+        console.log('📍 Schritt 3: Partikel-Animation starten...');
         startParticleAnimation();
+        console.log('✅ Partikel-System läuft!');
 
         // Navigation initialisieren
         initNavigation();
