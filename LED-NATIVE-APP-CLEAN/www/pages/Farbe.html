@@ -980,12 +980,96 @@
             text-align: center;
             color: var(--text-light);
         }
+
+        /* === FAVORITEN STYLES === */
+        .saved-colors-title {
+            font-size: 1.2rem;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #00dbde, #fc00ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .favorites-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .favorite-slot {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            color: rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .favorite-slot:hover {
+            transform: scale(1.1);
+            border-color: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .favorite-slot.filled {
+            border-style: solid;
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .delete-fav-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 20px;
+            height: 20px;
+            background: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.2s ease;
+        }
+
+        .favorite-slot.filled:hover .delete-fav-btn {
+            opacity: 1;
+            transform: scale(1);
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <header>
+            <div class="save-section">
+                <h4 class="saved-colors-title">FAVORITEN</h4>
+                <div class="favorites-grid" id="favoritesGrid">
+                    <!-- 5 Slots werden dynamisch per JavaScript generiert -->
+                </div>
+            </div>
             <div class="header-buttons">
                 <button type="button" class="rgb-btn" id="rgbBtn">
                     <i class="fas fa-palette"></i>
@@ -1039,208 +1123,6 @@
                 </div>
             </div>
 
-            <div class="save-section">
-                <h4 class="saved-colors-title">FAVORITEN</h4>
-                <div class="favorites-grid" id="favoritesGrid">
-                    <!-- 5 Slots werden dynamisch per JavaScript generiert -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <style>
-        /* NEUE FAVORITEN STYLES */
-        .saved-colors-title {
-            font-size: 1.2rem;
-            font-family: 'Orbitron', sans-serif;
-            color: #4ecdc4;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-            text-align: center;
-            text-shadow: 0 0 10px rgba(78, 205, 196, 0.3);
-        }
-
-        .favorites-grid {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .favorite-slot {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            border: 2px dashed rgba(255, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.05);
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .favorite-slot:hover {
-            border-color: rgba(255, 255, 255, 0.6);
-            background: rgba(255, 255, 255, 0.1);
-            transform: scale(1.05);
-        }
-
-        /* Leerer Slot Icon */
-        .favorite-slot.empty::before {
-            content: '+';
-            font-size: 24px;
-            color: rgba(255, 255, 255, 0.3);
-        }
-
-        /* Belegter Slot */
-        .favorite-slot.filled {
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .favorite-slot.filled::before {
-            content: '';
-        }
-
-        /* Löschen Button (X) */
-        .delete-fav-btn {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            width: 20px;
-            height: 20px;
-            background: #ff4757;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.2s, transform 0.2s;
-            border: 2px solid #1e1e1e;
-            z-index: 10;
-        }
-
-        .favorite-slot.filled:hover .delete-fav-btn {
-            opacity: 1;
-            transform: scale(1.1);
-        }
-
-        .delete-fav-btn:hover {
-            background: #ff6b81;
-        }
-    </style>
-
-    <!-- RGB Popup -->
-    <div class="rgb-popup" id="rgbPopup">
-        <div class="rgb-popup-content">
-            <div class="rgb-popup-header">
-                <h3 class="rgb-title">RGB Farbauswahl</h3>
-            </div>
-            <div class="rgb-controls">
-                <div class="rgb-slider-group">
-                    <label for="redSlider">Rot (R)</label>
-                    <input type="range" id="redSlider" min="0" max="255" value="255">
-                    <span id="redValue">255</span>
-                </div>
-                <div class="rgb-slider-group">
-                    <label for="greenSlider">Grün (G)</label>
-                    <input type="range" id="greenSlider" min="0" max="255" value="0">
-                    <span id="greenValue">0</span>
-                </div>
-                <div class="rgb-slider-group">
-                    <label for="blueSlider">Blau (B)</label>
-                    <input type="range" id="blueSlider" min="0" max="255" value="0">
-                    <span id="blueValue">0</span>
-                </div>
-            </div>
-            <div class="rgb-preview" id="rgbPreview"></div>
-        </div>
-    </div>
-
-    <!-- Nebeneinstellungen Panel -->
-    <div class="side-panel" id="sidePanel">
-        <div class="panel-header">
-            <h2>Erweiterte Einstellungen</h2>
-            <button type="button" class="close-panel-btn" id="closePanelBtn">&times;</button>
-        </div>
-        <div class="panel-content">
-            <!-- Farbtemperatur Sektion -->
-            <div class="panel-section">
-                <h3 class="panel-section-title">
-                    <i class="fas fa-thermometer-half"></i>
-                    Farbtemperatur
-                </h3>
-                <div class="temperature-slider-container">
-                    <input type="range" class="temperature-slider" id="temperatureSlider" min="2700" max="6500"
-                        value="4000">
-                    <div class="temperature-labels">
-                        <span class="temp-label warm">2700K</span>
-                        <span class="temp-label cool">6500K</span>
-                    </div>
-                    <div class="temperature-value" id="temperatureValue">4000K</div>
-                </div>
-            </div>
-
-            <!-- Warmtöne Sektion -->
-            <div class="panel-section">
-                <h3 class="panel-section-title">
-                    <i class="fas fa-fire"></i>
-                    Warmtöne
-                </h3>
-                <div class="preset-colors">
-                    <div class="preset-color preset-color-warm-orange" title="Warmes Orange"></div>
-                    <div class="preset-color preset-color-amber" title="Bernstein"></div>
-                    <div class="preset-color preset-color-gold" title="Gold"></div>
-                    <div class="preset-color preset-color-peach" title="Pfirsich"></div>
-                    <div class="preset-color preset-color-chocolate" title="Schokolade"></div>
-                    <div class="preset-color preset-color-sand" title="Sandbraun"></div>
-                    <div class="preset-color preset-color-goldyellow" title="Goldgelb"></div>
-                    <div class="preset-color preset-color-darkgold" title="Dunkelgold"></div>
-                </div>
-            </div>
-
-            <!-- Kalttöne Sektion -->
-            <div class="panel-section">
-                <h3 class="panel-section-title">
-                    <i class="fas fa-snowflake"></i>
-                    Kalttöne
-                </h3>
-                <div class="preset-colors">
-                    <div class="preset-color preset-color-royal-blue" title="Königsblau"></div>
-                    <div class="preset-color preset-color-deep-sky" title="Tiefes Himmelblau"></div>
-                    <div class="preset-color preset-color-sky-blue" title="Himmelblau"></div>
-                    <div class="preset-color preset-color-light-sea" title="Helles Seegrün"></div>
-                    <div class="preset-color preset-color-dark-cyan" title="Dunkelcyan"></div>
-                    <div class="preset-color preset-color-steel-blue" title="Stahlblau"></div>
-                    <div class="preset-color preset-color-cadet" title="Kadettenblau"></div>
-                    <div class="preset-color preset-color-slate" title="Schiefergrau"></div>
-                </div>
-            </div>
-
-            <!-- Pastelltöne Sektion -->
-            <div class="panel-section">
-                <h3 class="panel-section-title">
-                    <i class="fas fa-heart"></i>
-                    Pastelltöne
-                </h3>
-                <div class="preset-colors">
-                    <div class="preset-color preset-color-light-pink" title="Hellrosa"></div>
-                    <div class="preset-color preset-color-pink" title="Rosa"></div>
-                    <div class="preset-color preset-color-lavender" title="Lavendel"></div>
-                    <div class="preset-color preset-color-khaki" title="Khaki"></div>
-                    <div class="preset-color preset-color-pale-green" title="Blassgrün"></div>
-                    <div class="preset-color preset-color-pale-turquoise" title="Blassturkis"></div>
-                    <div class="preset-color preset-color-wheat" title="Weizen"></div>
-                    <div class="preset-color preset-color-plum" title="Pflaume"></div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -1944,11 +1826,10 @@
         // Preset-Farben initialisieren
         initPresetColors();
 
-        // ✅ NEUE FAVORITEN LOGIK (5 Feste Slots)
+        // === FAVORITEN-SYSTEM (5 SLOTS) ===
         const MAX_FAVORITES = 5;
         let favorites = Array(MAX_FAVORITES).fill(null);
 
-        // Favoriten laden
         function loadFavorites() {
             try {
                 const stored = localStorage.getItem('ledFavorites');
@@ -1965,81 +1846,63 @@
             updateFavoritesUI();
         }
 
-        // Favoriten speichern
         function saveFavoritesToStorage() {
-            try {
-                localStorage.setItem('ledFavorites', JSON.stringify(favorites));
-            } catch (e) {
-                console.error('Fehler beim Speichern der Favoriten:', e);
-            }
+            localStorage.setItem('ledFavorites', JSON.stringify(favorites));
         }
 
-        // UI aktualisieren
         function updateFavoritesUI() {
             const grid = document.getElementById('favoritesGrid');
             if (!grid) return;
+            grid.innerHTML = '';
 
-            grid.innerHTML = ''; // Leeren
-
-            favorites.forEach((color, index) => {
+            for (let i = 0; i < MAX_FAVORITES; i++) {
                 const slot = document.createElement('div');
-                slot.className = `favorite-slot ${color ? 'filled' : 'empty'}`;
-                slot.dataset.index = index;
+                slot.className = 'favorite-slot';
+                const color = favorites[i];
 
                 if (color) {
+                    slot.classList.add('filled');
                     slot.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
                     slot.title = `RGB(${color.r}, ${color.g}, ${color.b})`;
+                    slot.addEventListener('click', () => applyFavorite(i));
 
-                    // Löschen Button (X)
-                    const deleteBtn = document.createElement('div');
+                    const deleteBtn = document.createElement('button');
                     deleteBtn.className = 'delete-fav-btn';
-                    deleteBtn.innerHTML = '×';
-                    deleteBtn.onclick = (e) => {
+                    deleteBtn.innerHTML = '&times;';
+                    deleteBtn.title = 'Favorit löschen';
+                    deleteBtn.addEventListener('click', (e) => {
                         e.stopPropagation();
-                        deleteFavorite(index);
-                    };
+                        deleteFavorite(i);
+                    });
                     slot.appendChild(deleteBtn);
-
-                    // Klick zum Anwenden
-                    slot.onclick = () => applyFavorite(index);
                 } else {
-                    // Klick zum Speichern
-                    slot.onclick = () => saveFavorite(index);
-                    slot.title = 'Klicken zum Speichern der aktuellen Farbe';
+                    slot.innerHTML = '+';
+                    slot.title = 'Aktuelle Farbe speichern';
+                    slot.addEventListener('click', () => saveFavorite(i));
                 }
-
                 grid.appendChild(slot);
-            });
-        }
-
-        // Farbe speichern
-        function saveFavorite(index) {
-            if (!currentColor) return;
-
-            favorites[index] = {
-                r: currentColor.r,
-                g: currentColor.g,
-                b: currentColor.b
-            };
-
-            saveFavoritesToStorage();
-            updateFavoritesUI();
-            showNotification('Farbe als Favorit gespeichert!', 'success');
-        }
-
-        // Farbe anwenden
-        function applyFavorite(index) {
-            const color = favorites[index];
-            if (color) {
-                currentColor = { ...color };
-                applyColor(color.r, color.g, color.b);
-                updateRgbSlidersFromColor(color);
-                updateRgbPreview();
-                showNotification('Favoriten-Farbe angewendet', 'success');
             }
         }
 
-        // Farbe löschen
+        function saveFavorite(index) {
+            if (!currentColor) {
+                showNotification('Keine Farbe zum Speichern ausgewählt', 'warning');
+                return;
+            }
+            favorites[index] = { ...currentColor };
+            saveFavoritesToStorage();
+            updateFavoritesUI();
+            showNotification(`Favorit ${index + 1} gespeichert`, 'success');
+        }
+
+        function applyFavorite(index) {
+            const color = favorites[index];
+            if (color) {
+                applyColor(color);
+                showNotification(`Favorit ${index + 1} angewendet`, 'info');
+            }
+        }
+
         function deleteFavorite(index) {
             favorites[index] = null;
             saveFavoritesToStorage();
@@ -2051,11 +1914,11 @@
         document.addEventListener('DOMContentLoaded', () => {
             console.log('🎨 Farbe.html wird initialisiert...');
 
-            // ✅ FAVORITEN LADEN (5 Slots)
+            // ✅ FAVORITEN LADEN
             loadFavorites();
             console.log('✅ Favoriten-System initialisiert');
 
-            // ✅ PRESET-FARBEN INITIALISIEREN (KRITISCH!)
+            // Basic-Farben initialisieren
             initPresetColors();
 
             // BLE initialisieren
