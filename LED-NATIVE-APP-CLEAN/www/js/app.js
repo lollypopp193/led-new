@@ -1,4 +1,3 @@
-//@ts-nocheck
 /**
  * ===================================================================
  * APP.JS - Hauptlogik für Lights Space World App
@@ -100,91 +99,7 @@ function updateBLEStatus() { }
 // HAUPTLOGIK
 // ===================================================================
 
-// ✅ KRITISCHER FIX: BLE Controller beim Start initialisieren!
-window.addEventListener('DOMContentLoaded', () => {
-    console.log('🚀 Initialisiere globalen BLE Controller...');
-    // ✅ VERWENDE EXISTIERENDEN CONTROLLER aus ble-controller-pro.js!
-    if (window.ledController) {
-        window.bleController = window.ledController;
-        console.log('✅ Verwende existierenden BLE Controller');
-    } else if (typeof BLEController !== 'undefined') {
-        // Nur als Fallback neuen erstellen
-        window.bleController = new BLEController();
-        window.ledController = window.bleController;
-        console.log('✅ Neuer BLE Controller erstellt');
-    }
-
-    if (window.bleController) {
-        // Globale Funktionen für alle Module
-        window.connectBluetooth = async () => {
-            try {
-                await window.bleController.connect();
-                updateBLEStatus();
-                return true;
-            } catch (error) {
-                console.error('❌ Bluetooth-Verbindung fehlgeschlagen:', error);
-                return false;
-            }
-        };
-
-        window.sendColorToLED = async (r, g, b) => {
-            if (!window.bleController || !window.bleController.isConnected) {
-                console.warn('⚠️ Keine Bluetooth-Verbindung - Farbe kann nicht gesendet werden');
-                return false;
-            }
-            return await window.bleController.setColorRGB(r, g, b);
-        };
-
-        window.sendEffectToLED = async (effectId) => {
-            if (!window.bleController || !window.bleController.isConnected) {
-                console.warn('⚠️ Keine Bluetooth-Verbindung - Effekt kann nicht gesendet werden');
-                return false;
-            }
-            return await window.bleController.setEffect(effectId);
-        };
-
-        window.setBrightnessLED = async (brightness) => {
-            if (!window.bleController || !window.bleController.isConnected) {
-                console.warn('⚠️ Keine Bluetooth-Verbindung - Helligkeit kann nicht gesendet werden');
-                return false;
-            }
-            return await window.bleController.setBrightness(brightness);
-        };
-
-        window.toggleLEDPower = async (state) => {
-            if (!window.bleController || !window.bleController.isConnected) {
-                console.warn('⚠️ Keine Bluetooth-Verbindung - Power-Status kann nicht gesendet werden');
-                return false;
-            }
-            return await window.bleController.setPower(state);
-        };
-
-        window.updateBLEStatus = () => {
-            const status = window.bleController ? window.bleController.getConnectionStatus() : {
-                connected: false
-            };
-            AppState.ble.connected = status.connected;
-            AppState.ble.active = status.connected;
-
-            // Status an alle iFrames senden
-            const iframes = document.querySelectorAll('iframe');
-            iframes.forEach(iframe => {
-                try {
-                    iframe.contentWindow.postMessage({
-                        type: 'BLE_STATUS',
-                        connected: status.connected,
-                        device: status.device
-                    }, window.location.origin);
-                } catch (e) { }
-            });
-
-            console.log('📡 BLE Status:', status.connected ? '✅ Verbunden' : '❌ Getrennt');
-        };
-
-    } else {
-        console.error('❌ BLEController Klasse nicht gefunden! Stelle sicher dass ble-controller-pro.js geladen ist.');
-    }
-});
+// ✅ BLE-Initialisierung wird in initApp() durchgeführt (Race-Condition vermieden)
 
 // ✅ GLOBALE VARIABLEN FÜR ALLE MODULE
 window.currentColor = {
@@ -1313,6 +1228,87 @@ async function initApp() {
     console.log('🚀 Initialisiere Lights Space World App...');
 
     try {
+        // ✅ BLE-Controller-Initialisierung (KRITISCH - MUSS ZUERST!)
+        console.log('🚀 Initialisiere globalen BLE Controller...');
+        if (window.ledController) {
+            window.bleController = window.ledController;
+            console.log('✅ Verwende existierenden BLE Controller');
+        } else if (typeof BLEController !== 'undefined') {
+            window.bleController = new BLEController();
+            window.ledController = window.bleController;
+            console.log('✅ Neuer BLE Controller erstellt');
+        }
+
+        // ✅ Globale BLE-Funktionen definieren
+        if (window.bleController) {
+            window.connectBluetooth = async () => {
+                try {
+                    await window.bleController.connect();
+                    updateBLEStatus();
+                    return true;
+                } catch (error) {
+                    console.error('❌ Bluetooth-Verbindung fehlgeschlagen:', error);
+                    return false;
+                }
+            };
+
+            window.sendColorToLED = async (r, g, b) => {
+                if (!window.bleController || !window.bleController.isConnected) {
+                    console.warn('⚠️ Keine Bluetooth-Verbindung - Farbe kann nicht gesendet werden');
+                    return false;
+                }
+                return await window.bleController.setColorRGB(r, g, b);
+            };
+
+            window.sendEffectToLED = async (effectId) => {
+                if (!window.bleController || !window.bleController.isConnected) {
+                    console.warn('⚠️ Keine Bluetooth-Verbindung - Effekt kann nicht gesendet werden');
+                    return false;
+                }
+                return await window.bleController.setEffect(effectId);
+            };
+
+            window.setBrightnessLED = async (brightness) => {
+                if (!window.bleController || !window.bleController.isConnected) {
+                    console.warn('⚠️ Keine Bluetooth-Verbindung - Helligkeit kann nicht gesendet werden');
+                    return false;
+                }
+                return await window.bleController.setBrightness(brightness);
+            };
+
+            window.toggleLEDPower = async (state) => {
+                if (!window.bleController || !window.bleController.isConnected) {
+                    console.warn('⚠️ Keine Bluetooth-Verbindung - Power-Status kann nicht gesendet werden');
+                    return false;
+                }
+                return await window.bleController.setPower(state);
+            };
+
+            window.updateBLEStatus = () => {
+                const status = window.bleController ? window.bleController.getConnectionStatus() : {
+                    connected: false
+                };
+                AppState.ble.connected = status.connected;
+                AppState.ble.active = status.connected;
+
+                // Status an alle iFrames senden
+                const iframes = document.querySelectorAll('iframe');
+                iframes.forEach(iframe => {
+                    try {
+                        iframe.contentWindow.postMessage({
+                            type: 'BLE_STATUS',
+                            connected: status.connected,
+                            device: status.device
+                        }, window.location.origin);
+                    } catch (e) { }
+                });
+
+                console.log('📡 BLE Status:', status.connected ? '✅ Verbunden' : '❌ Getrennt');
+            };
+        } else {
+            console.error('❌ BLEController Klasse nicht gefunden! Stelle sicher dass ble-controller-pro.js geladen ist.');
+        }
+
         // Partikel-System starten
         initParticles();
         startParticleAnimation();

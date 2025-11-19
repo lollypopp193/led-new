@@ -2055,6 +2055,9 @@
             loadFavorites();
             console.log('✅ Favoriten-System initialisiert');
 
+            // ✅ PRESET-FARBEN INITIALISIEREN (KRITISCH!)
+            initPresetColors();
+
             // BLE initialisieren
             initBLE();
 
@@ -2109,16 +2112,6 @@
                 });
                 console.log('✅ Power-Toggle Event-Listener hinzugefügt');
             }
-
-            // ✅ LÖSCH-FUNKTION FÜR EINZELNE FARBEN
-            window.deleteSavedColor = function (index) {
-                if (confirm('Diese Farbe wirklich löschen?')) {
-                    savedColorsArray.splice(index, 1);
-                    localStorage.setItem('ledSavedColors', JSON.stringify(savedColorsArray));
-                    renderSavedColors();
-                    showNotification('Farbe gelöscht!', 'info');
-                }
-            };
 
             console.log('🎨 Farbe.html Initialisierung abgeschlossen!');
         });

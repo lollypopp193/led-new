@@ -1,50 +1,12 @@
 // Capacitor Adapter - Verbindet alle Module mit nativen Funktionen
 // Dieser Adapter stellt sicher, dass die App sowohl im Web als auch nativ funktioniert
 
-import {
-    Capacitor
-} from '@capacitor/core';
-
 // Prüfe ob Capacitor verfügbar ist
 const isCapacitorAvailable = () => {
-    return typeof Capacitor !== 'undefined' && Capacitor.isNativePlatform();
+    return typeof window.Capacitor !== 'undefined' && window.Capacitor.isNativePlatform();
 };
 
-// Initialisierung beim Laden
-document.addEventListener('DOMContentLoaded', async () => {
-    console.log('LED Control Native App wird initialisiert...');
-
-    // Lade Native Bridge wenn verfügbar
-    if (isCapacitorAvailable()) {
-        console.log('Native Plattform erkannt:', Capacitor.getPlatform());
-
-        // Native Bridge dynamisch laden
-        try {
-            const {
-                default: NativeBridge
-            } = await import('./native-bridge.js');
-            window.nativeBridge = new NativeBridge();
-            console.log('Native Bridge erfolgreich geladen');
-        } catch (error) {
-            console.error('Native Bridge konnte nicht geladen werden:', error);
-        }
-    } else {
-        console.log('Web-Modus aktiv - Native Funktionen deaktiviert');
-    }
-
-    // Service Worker für PWA
-    if ('serviceWorker' in navigator) {
-        try {
-            await navigator.serviceWorker.register('/sw.js');
-            console.log('Service Worker registriert');
-        } catch (error) {
-            console.log('Service Worker Registrierung fehlgeschlagen:', error);
-        }
-    }
-
-    // Initialisiere alle Module
-    initializeModules();
-});
+// Initialisierung wird von app.js übernommen (Race-Condition vermieden)
 
 // Module initialisieren
 function initializeModules() {
