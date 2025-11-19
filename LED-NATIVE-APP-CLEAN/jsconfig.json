@@ -1,0 +1,38 @@
+{
+    "compilerOptions": {
+        "target": "es2020",
+        "module": "esnext",
+        "checkJs": false,
+        "allowJs": true,
+        "noEmit": true,
+        "strict": false,
+        "noImplicitAny": false,
+        "noResolve": true,
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "moduleResolution": "node",
+        "lib": [
+            "dom",
+            "es2020",
+            "webworker"
+        ],
+        "baseUrl": "./www/js",
+        "paths": {
+            "*": [
+                "*"
+            ]
+        }
+    },
+    "include": [
+        "www/js/**/*.js",
+        "www/js/**/*.d.ts",
+        "www/*.js",
+        "www/sw.js",
+        "www/timer-service-worker.js",
+        "globals.d.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "platforms"
+    ]
+}

@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LED Color World - Color Selection Tool</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="../css/shared-styles.css">
     <style>
         :root {
@@ -1039,24 +1040,102 @@
             </div>
 
             <div class="save-section">
-                <button type="button" class="save-btn" id="saveColorBtn">
-                    <i class="fas fa-save"></i>
-                    Farbe speichern
-                </button>
-                <div class="saved-colors-container">
-                    <div class="saved-colors-header">
-                        <h4 class="saved-colors-title">Gespeicherte Farben</h4>
-                        <button type="button" id="clearAllColorsBtn" class="clear-all-colors-btn">
-                            <i class="fas fa-trash"></i> Alle löschen
-                        </button>
-                    </div>
-                    <div class="saved-colors" id="savedColors">
-                        <!-- Gespeicherte Farben werden hier angezeigt -->
-                    </div>
+                <h4 class="saved-colors-title">FAVORITEN</h4>
+                <div class="favorites-grid" id="favoritesGrid">
+                    <!-- 5 Slots werden dynamisch per JavaScript generiert -->
                 </div>
             </div>
         </div>
     </div>
+
+    <style>
+        /* NEUE FAVORITEN STYLES */
+        .saved-colors-title {
+            font-size: 1.2rem;
+            font-family: 'Orbitron', sans-serif;
+            color: #4ecdc4;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(78, 205, 196, 0.3);
+        }
+
+        .favorites-grid {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .favorite-slot {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .favorite-slot:hover {
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
+        }
+
+        /* Leerer Slot Icon */
+        .favorite-slot.empty::before {
+            content: '+';
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Belegter Slot */
+        .favorite-slot.filled {
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .favorite-slot.filled::before {
+            content: '';
+        }
+
+        /* Löschen Button (X) */
+        .delete-fav-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 20px;
+            height: 20px;
+            background: #ff4757;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s, transform 0.2s;
+            border: 2px solid #1e1e1e;
+            z-index: 10;
+        }
+
+        .favorite-slot.filled:hover .delete-fav-btn {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .delete-fav-btn:hover {
+            background: #ff6b81;
+        }
+    </style>
 
     <!-- RGB Popup -->
     <div class="rgb-popup" id="rgbPopup">
@@ -1099,7 +1178,8 @@
                     Farbtemperatur
                 </h3>
                 <div class="temperature-slider-container">
-                    <input type="range" class="temperature-slider" id="temperatureSlider" min="2700" max="6500" value="4000">
+                    <input type="range" class="temperature-slider" id="temperatureSlider" min="2700" max="6500"
+                        value="4000">
                     <div class="temperature-labels">
                         <span class="temp-label warm">2700K</span>
                         <span class="temp-label cool">6500K</span>
@@ -1284,7 +1364,7 @@
         const colorWheel = document.getElementById('colorWheel');
         const colorPointer = document.getElementById('colorPointer');
 
-        colorWheel.addEventListener('click', function(e) {
+        colorWheel.addEventListener('click', function (e) {
             const rect = this.getBoundingClientRect();
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
@@ -1302,7 +1382,7 @@
 
         let isDragging = false;
 
-        colorWheel.addEventListener('mousemove', function(e) {
+        colorWheel.addEventListener('mousemove', function (e) {
             if (isDragging) return; // Nicht bewegen wenn gerade gezogen wird
 
             const rect = this.getBoundingClientRect();
@@ -1324,21 +1404,21 @@
             }
         });
 
-        colorWheel.addEventListener('mousedown', function(e) {
+        colorWheel.addEventListener('mousedown', function (e) {
             isDragging = true;
             selectColorAtPosition(e);
         });
 
-        colorWheel.addEventListener('mouseup', function() {
+        colorWheel.addEventListener('mouseup', function () {
             isDragging = false;
         });
 
-        colorWheel.addEventListener('mouseleave', function() {
+        colorWheel.addEventListener('mouseleave', function () {
             isDragging = false;
         });
 
         // Touch-Events für mobile Geräte
-        colorWheel.addEventListener('touchstart', function(e) {
+        colorWheel.addEventListener('touchstart', function (e) {
             e.preventDefault();
             isDragging = true;
             const touch = e.touches[0];
@@ -1349,7 +1429,7 @@
             selectColorAtPosition(mockEvent);
         });
 
-        colorWheel.addEventListener('touchmove', function(e) {
+        colorWheel.addEventListener('touchmove', function (e) {
             e.preventDefault();
             if (isDragging) {
                 const touch = e.touches[0];
@@ -1361,7 +1441,7 @@
             }
         });
 
-        colorWheel.addEventListener('touchend', function(e) {
+        colorWheel.addEventListener('touchend', function (e) {
             e.preventDefault();
             isDragging = false;
         });
@@ -1509,7 +1589,7 @@
         const brightnessSlider = document.getElementById('brightnessSlider');
         const brightnessValue = document.getElementById('brightnessValue');
 
-        brightnessSlider.addEventListener('input', async function() {
+        brightnessSlider.addEventListener('input', async function () {
             document.getElementById('brightnessValue').textContent = `${this.value}%`;
 
             // ✅ SENDE HELLIGKEIT DIREKT AN LED!
@@ -1654,7 +1734,7 @@
         const temperatureValue = document.getElementById('temperatureValue');
 
         if (temperatureSlider) {
-            temperatureSlider.addEventListener('input', function() {
+            temperatureSlider.addEventListener('input', function () {
                 const temp = parseInt(this.value);
                 temperatureValue.textContent = temp + 'K';
 
@@ -1752,7 +1832,7 @@
         // Erweiterte Preset-Farben Event-Listener (alle Kategorien)
         function initPresetColors() {
             document.querySelectorAll('.preset-color').forEach(preset => {
-                preset.addEventListener('click', function() {
+                preset.addEventListener('click', function () {
                     const bgColor = window.getComputedStyle(this).backgroundColor;
                     const rgbMatch = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
 
@@ -1864,463 +1944,116 @@
         // Preset-Farben initialisieren
         initPresetColors();
 
-        // ✅ SICHERES FARBE SPEICHERN SYSTEM MIT XSS-SCHUTZ
-        // WICHTIG: Elemente werden im DOMContentLoaded geholt, nicht hier!
-        let saveColorBtn = null;
-        let savedColorsDiv = null;
+        // ✅ NEUE FAVORITEN LOGIK (5 Feste Slots)
+        const MAX_FAVORITES = 5;
+        let favorites = Array(MAX_FAVORITES).fill(null);
 
-        // ✅ SICHERE LOCALSTORAGE-DATEN LADEN MIT VALIDIERUNG
-        let savedColorsArray = [];
-        try {
-            const storedData = localStorage.getItem('ledSavedColors');
-            if (storedData) {
-                const parsed = JSON.parse(storedData);
-                // ✅ VALIDIERUNG: Nur sichere Farb-Objekte akzeptieren
-                savedColorsArray = Array.isArray(parsed) ? parsed.filter(color =>
-                    color &&
-                    typeof color.r === 'number' && color.r >= 0 && color.r <= 255 &&
-                    typeof color.g === 'number' && color.g >= 0 && color.g <= 255 &&
-                    typeof color.b === 'number' && color.b >= 0 && color.b <= 255 &&
-                    typeof color.hex === 'string' && /^#[0-9A-F]{6}$/i.test(color.hex)
-                ) : [];
+        // Favoriten laden
+        function loadFavorites() {
+            try {
+                const stored = localStorage.getItem('ledFavorites');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed) && parsed.length === MAX_FAVORITES) {
+                        favorites = parsed;
+                    }
+                }
+            } catch (e) {
+                console.error('Fehler beim Laden der Favoriten:', e);
+                favorites = Array(MAX_FAVORITES).fill(null);
             }
-        } catch (error) {
-            console.error('❌ Fehler beim Laden gespeicherter Farben:', error);
-            savedColorsArray = [];
+            updateFavoritesUI();
         }
 
-        // Funktion zum Speichern einer Farbe
-        function saveCurrentColor() {
-            console.log('🎨 Speichere Farbe:', currentColor);
-
-            if (!currentColor || currentColor.r === undefined) {
-                console.error('❌ Keine gültige Farbe zum Speichern');
-                showNotification('Keine Farbe ausgewählt', 'warning');
-                return;
+        // Favoriten speichern
+        function saveFavoritesToStorage() {
+            try {
+                localStorage.setItem('ledFavorites', JSON.stringify(favorites));
+            } catch (e) {
+                console.error('Fehler beim Speichern der Favoriten:', e);
             }
+        }
 
-            const colorData = {
-                r: Math.round(currentColor.r),
-                g: Math.round(currentColor.g),
-                b: Math.round(currentColor.b),
-                hex: '#' + [Math.round(currentColor.r), Math.round(currentColor.g), Math.round(currentColor.b)].map(x => x.toString(16).padStart(2, '0')).join('').toUpperCase(),
-                timestamp: Date.now(),
-                id: 'color_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9)
+        // UI aktualisieren
+        function updateFavoritesUI() {
+            const grid = document.getElementById('favoritesGrid');
+            if (!grid) return;
+
+            grid.innerHTML = ''; // Leeren
+
+            favorites.forEach((color, index) => {
+                const slot = document.createElement('div');
+                slot.className = `favorite-slot ${color ? 'filled' : 'empty'}`;
+                slot.dataset.index = index;
+
+                if (color) {
+                    slot.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
+                    slot.title = `RGB(${color.r}, ${color.g}, ${color.b})`;
+
+                    // Löschen Button (X)
+                    const deleteBtn = document.createElement('div');
+                    deleteBtn.className = 'delete-fav-btn';
+                    deleteBtn.innerHTML = '×';
+                    deleteBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        deleteFavorite(index);
+                    };
+                    slot.appendChild(deleteBtn);
+
+                    // Klick zum Anwenden
+                    slot.onclick = () => applyFavorite(index);
+                } else {
+                    // Klick zum Speichern
+                    slot.onclick = () => saveFavorite(index);
+                    slot.title = 'Klicken zum Speichern der aktuellen Farbe';
+                }
+
+                grid.appendChild(slot);
+            });
+        }
+
+        // Farbe speichern
+        function saveFavorite(index) {
+            if (!currentColor) return;
+
+            favorites[index] = {
+                r: currentColor.r,
+                g: currentColor.g,
+                b: currentColor.b
             };
 
-            console.log('🎨 Farb-Daten erstellt:', colorData);
-
-            // Prüfen ob Farbe bereits gespeichert
-            const existingColor = savedColorsArray.find(color =>
-                Math.round(color.r) === Math.round(colorData.r) &&
-                Math.round(color.g) === Math.round(colorData.g) &&
-                Math.round(color.b) === Math.round(colorData.b)
-            );
-
-            if (existingColor) {
-                showNotification('Farbe bereits gespeichert', 'warning');
-                return;
-            }
-
-            // Farbe zum Array hinzufügen
-            savedColorsArray.push(colorData);
-            console.log('✅ Farbe zu Array hinzugefügt. Gesamt:', savedColorsArray.length);
-
-            // In localStorage speichern
-            try {
-                localStorage.setItem('ledSavedColors', JSON.stringify(savedColorsArray));
-                console.log('✅ Farben in localStorage gespeichert');
-            } catch (error) {
-                console.error('❌ localStorage Fehler:', error);
-                showNotification('Speichern fehlgeschlagen', 'error');
-                return;
-            }
-
-            // Anzeige aktualisieren
-            displaySavedColors();
-
-            showNotification(`Farbe ${colorData.hex} gespeichert!`, 'success');
+            saveFavoritesToStorage();
+            updateFavoritesUI();
+            showNotification('Farbe als Favorit gespeichert!', 'success');
         }
 
-        // Funktion zum Anzeigen aller gespeicherten Farben
-        function displaySavedColors() {
-            if (!savedColorsDiv) return;
-
-            // Container leeren
-            savedColorsDiv.innerHTML = '';
-
-            if (savedColorsArray.length === 0) {
-                const emptyMessage = document.createElement('p');
-                emptyMessage.style.cssText = 'color: #ccc; text-align: center; margin: 20px 0;';
-                emptyMessage.textContent = 'Noch keine Farben gespeichert';
-                savedColorsDiv.appendChild(emptyMessage);
-                return;
+        // Farbe anwenden
+        function applyFavorite(index) {
+            const color = favorites[index];
+            if (color) {
+                currentColor = { ...color };
+                applyColor(color.r, color.g, color.b);
+                updateRgbSlidersFromColor(color);
+                updateRgbPreview();
+                showNotification('Favoriten-Farbe angewendet', 'success');
             }
-
-            // Für jede gespeicherte Farbe einen Kreis erstellen
-            savedColorsArray.forEach((colorData, index) => {
-                const colorCircle = createColorCircle(colorData, index);
-                savedColorsDiv.appendChild(colorCircle);
-            });
         }
 
-        // Funktion zum Erstellen eines Farbkreises
-        function createColorCircle(colorData, index) {
-            const colorCircle = document.createElement('div');
-            colorCircle.className = 'saved-color-circle';
-            colorCircle.dataset.colorId = colorData.id;
-            colorCircle.dataset.index = index;
-
-            colorCircle.style.cssText = `
-                width: 60px;
-                height: 60px;
-                background-color: rgb(${colorData.r}, ${colorData.g}, ${colorData.b});
-                border-radius: 50%;
-                position: relative;
-                display: inline-block;
-                margin: 8px;
-                border: 3px solid rgba(255,255,255,0.8);
-                cursor: pointer;
-                position: relative;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 20px rgba(${colorData.r}, ${colorData.g}, ${colorData.b}, 0.4);
-                transition: all 0.3s ease;
-                vertical-align: top;
-            `;
-
-            // Tooltip mit Farbwerten
-            colorCircle.title = `RGB(${colorData.r}, ${colorData.g}, ${colorData.b})\nHEX: ${colorData.hex}`;
-
-            // Hover-Effekte
-            colorCircle.addEventListener('mouseenter', () => {
-                colorCircle.style.transform = 'scale(1.15)';
-                colorCircle.style.boxShadow = `0 6px 20px rgba(0,0,0,0.4), 0 0 30px rgba(${colorData.r}, ${colorData.g}, ${colorData.b}, 0.6)`;
-            });
-
-            colorCircle.addEventListener('mouseleave', () => {
-                colorCircle.style.transform = 'scale(1)';
-                colorCircle.style.boxShadow = `0 4px 12px rgba(0,0,0,0.3), 0 0 20px rgba(${colorData.r}, ${colorData.g}, ${colorData.b}, 0.4)`;
-            });
-
-            // ✅ KLICK: GESPEICHERTE FARBE ANWENDEN
-            colorCircle.addEventListener('click', (e) => {
-                if (!e.target.classList.contains('delete-btn')) {
-                    currentColor = {
-                        r: colorData.r,
-                        g: colorData.g,
-                        b: colorData.b
-                    };
-                    console.log('🎨 Gespeicherte Farbe ausgewählt - currentColor gesetzt:', currentColor);
-                    applyColor(colorData.r, colorData.g, colorData.b);
-                    updateRgbPreview();
-
-                    // ✅ AUCH RGB-SLIDER AKTUALISIEREN
-                    updateRgbSlidersFromColor(currentColor);
-
-                    showNotification(`Farbe ${colorData.hex} angewendet`, 'success');
-                }
-            });
-
-            // Lösch-Button (X) erstellen
-            const deleteBtn = document.createElement('button');
-            deleteBtn.className = 'delete-btn';
-            deleteBtn.innerHTML = '×';
-            deleteBtn.style.cssText = `
-                position: absolute;
-                top: -10px;
-                right: -10px;
-                background: #ff4757;
-                color: white;
-                width: 24px;
-                height: 24px;
-                border-radius: 50%;
-                border: none;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                font-weight: bold;
-                font-size: 16px;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-                transition: all 0.2s ease;
-                z-index: 10;
-            `;
-
-            // Hover-Effekt für Lösch-Button
-            deleteBtn.addEventListener('mouseenter', () => {
-                deleteBtn.style.background = '#ff3742';
-                deleteBtn.style.transform = 'scale(1.1)';
-            });
-
-            deleteBtn.addEventListener('mouseleave', () => {
-                deleteBtn.style.background = '#ff4757';
-                deleteBtn.style.transform = 'scale(1)';
-            });
-
-            // Lösch-Funktion
-            deleteBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                deleteColor(colorData.id, index);
-            });
-
-            colorCircle.appendChild(deleteBtn);
-            return colorCircle;
+        // Farbe löschen
+        function deleteFavorite(index) {
+            favorites[index] = null;
+            saveFavoritesToStorage();
+            updateFavoritesUI();
+            showNotification('Favorit gelöscht', 'info');
         }
 
-        // Funktion zum Löschen einer Farbe
-        function deleteColor(colorId, index) {
-            console.log('🗑️ Lösche Farbe:', colorId, 'Index:', index);
-
-            // Bestätigung anzeigen
-            const confirmDelete = confirm('Möchten Sie diese Farbe wirklich löschen?');
-            if (!confirmDelete) return;
-
-            // Aus Array entfernen
-            const originalLength = savedColorsArray.length;
-            savedColorsArray = savedColorsArray.filter(color => color.id !== colorId);
-
-            console.log(`🗑️ Farben reduziert von ${originalLength} auf ${savedColorsArray.length}`);
-
-            // localStorage aktualisieren
-            try {
-                localStorage.setItem('ledSavedColors', JSON.stringify(savedColorsArray));
-                console.log('✅ localStorage nach Löschung aktualisiert');
-            } catch (error) {
-                console.error('❌ localStorage Update Fehler:', error);
-                showNotification('Löschen fehlgeschlagen', 'error');
-                return;
-            }
-
-            // Anzeige aktualisieren
-            displaySavedColors();
-
-            showNotification('Farbe erfolgreich gelöscht', 'success');
-        }
-
-        // Funktion zum Löschen aller Farben
-        async function clearAllColors() {
-            if (savedColorsArray.length === 0) {
-                showNotification('Keine Farben zum Löschen vorhanden', 'info');
-                return;
-            }
-
-            const confirmClear = confirm(`Möchten Sie wirklich alle ${savedColorsArray.length} gespeicherten Farben löschen?`);
-            if (!confirmClear) return;
-
-            console.log('🗑️ Lösche alle Farben...');
-
-            // Array leeren
-            savedColorsArray = [];
-
-            // localStorage leeren
-            try {
-                localStorage.setItem('ledSavedColors', JSON.stringify(savedColorsArray));
-                console.log('✅ Alle Farben aus localStorage entfernt');
-            } catch (error) {
-                console.error('❌ localStorage Clear Fehler:', error);
-                showNotification('Löschen fehlgeschlagen', 'error');
-                return;
-            }
-
-            // Anzeige aktualisieren
-            displaySavedColors();
-
-            showNotification('Alle Farben erfolgreich gelöscht', 'success');
-        }
-
-        // Moderne Bestätigungsdialog-Funktion
-        function showModernConfirmDialog(title, message, confirmText, cancelText) {
-            return new Promise((resolve) => {
-                // Overlay erstellen
-                const overlay = document.createElement('div');
-                overlay.style.cssText = `
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(0, 0, 0, 0.7);
-                    backdrop-filter: blur(5px);
-                    z-index: 10000;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    opacity: 0;
-                    transition: opacity 0.3s ease;
-                `;
-
-                // Dialog erstellen
-                const dialog = document.createElement('div');
-                dialog.style.cssText = `
-                    background: rgba(30, 30, 30, 0.95);
-                    border-radius: 20px;
-                    padding: 30px;
-                    max-width: 400px;
-                    width: 90%;
-                    text-align: center;
-                    border: 2px solid rgba(255, 255, 255, 0.2);
-                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-                    backdrop-filter: blur(20px);
-                    transform: scale(0.8);
-                    transition: transform 0.3s ease;
-                `;
-
-                // Titel
-                const titleEl = document.createElement('h3');
-                titleEl.textContent = title;
-                titleEl.style.cssText = `
-                    color: #fff;
-                    margin: 0 0 15px 0;
-                    font-size: 1.4rem;
-                    font-weight: bold;
-                `;
-
-                // Nachricht
-                const messageEl = document.createElement('p');
-                messageEl.textContent = message;
-                messageEl.style.cssText = `
-                    color: #ccc;
-                    margin: 0 0 25px 0;
-                    line-height: 1.5;
-                    font-size: 1rem;
-                `;
-
-                // Button-Container
-                const buttonContainer = document.createElement('div');
-                buttonContainer.style.cssText = `
-                    display: flex;
-                    gap: 15px;
-                    justify-content: center;
-                `;
-
-                // Abbrechen-Button
-                const cancelBtn = document.createElement('button');
-                cancelBtn.textContent = cancelText;
-                cancelBtn.style.cssText = `
-                    background: rgba(255, 255, 255, 0.1);
-                    color: #fff;
-                    border: 2px solid rgba(255, 255, 255, 0.3);
-                    padding: 12px 24px;
-                    border-radius: 25px;
-                    cursor: pointer;
-                    font-size: 1rem;
-                    font-weight: bold;
-                    transition: all 0.3s ease;
-                    min-width: 100px;
-                `;
-
-                // Bestätigen-Button
-                const confirmBtn = document.createElement('button');
-                confirmBtn.textContent = confirmText;
-                confirmBtn.style.cssText = `
-                    background: #ff4757;
-                    color: white;
-                    border: 2px solid #ff4757;
-                    padding: 12px 24px;
-                    border-radius: 25px;
-                    cursor: pointer;
-                    font-size: 1rem;
-                    font-weight: bold;
-                    transition: all 0.3s ease;
-                    min-width: 100px;
-                `;
-
-                // Hover-Effekte
-                cancelBtn.addEventListener('mouseenter', () => {
-                    cancelBtn.style.background = 'rgba(255, 255, 255, 0.2)';
-                    cancelBtn.style.transform = 'translateY(-2px)';
-                });
-
-                cancelBtn.addEventListener('mouseleave', () => {
-                    cancelBtn.style.background = 'rgba(255, 255, 255, 0.1)';
-                    cancelBtn.style.transform = 'translateY(0)';
-                });
-
-                confirmBtn.addEventListener('mouseenter', () => {
-                    confirmBtn.style.background = '#ff3742';
-                    confirmBtn.style.transform = 'translateY(-2px)';
-                });
-
-                confirmBtn.addEventListener('mouseleave', () => {
-                    confirmBtn.style.background = '#ff4757';
-                    confirmBtn.style.transform = 'translateY(0)';
-                });
-
-                // Event-Listener
-                cancelBtn.addEventListener('click', () => {
-                    closeDialog(false);
-                });
-
-                confirmBtn.addEventListener('click', () => {
-                    closeDialog(true);
-                });
-
-                // ESC-Taste
-                const handleKeydown = (e) => {
-                    if (e.key === 'Escape') {
-                        closeDialog(false);
-                    }
-                };
-
-                document.addEventListener('keydown', handleKeydown);
-
-                // Overlay-Klick
-                overlay.addEventListener('click', (e) => {
-                    if (e.target === overlay) {
-                        closeDialog(false);
-                    }
-                });
-
-                function closeDialog(result) {
-                    document.removeEventListener('keydown', handleKeydown);
-                    overlay.style.opacity = '0';
-                    dialog.style.transform = 'scale(0.8)';
-
-                    setTimeout(() => {
-                        if (overlay.parentNode) {
-                            overlay.parentNode.removeChild(overlay);
-                        }
-                        resolve(result);
-                    }, 300);
-                }
-
-                // Dialog zusammenbauen
-                buttonContainer.appendChild(cancelBtn);
-                buttonContainer.appendChild(confirmBtn);
-
-                dialog.appendChild(titleEl);
-                dialog.appendChild(messageEl);
-                dialog.appendChild(buttonContainer);
-
-                overlay.appendChild(dialog);
-                document.body.appendChild(overlay);
-
-                // Animation starten
-                setTimeout(() => {
-                    overlay.style.opacity = '1';
-                    dialog.style.transform = 'scale(1)';
-                }, 10);
-
-                // Focus auf Bestätigen-Button
-                setTimeout(() => {
-                    confirmBtn.focus();
-                }, 100);
-            });
-        }
-
-        // ✅ KONSOLIDIERTE INITIALISIERUNG - ALLE EVENT-LISTENER IN EINEM BLOCK
+        // ✅ DOMContentLoaded Handler (nur einmalig!)
         document.addEventListener('DOMContentLoaded', () => {
             console.log('🎨 Farbe.html wird initialisiert...');
 
-            // ✅ WICHTIG: DOM-Elemente JETZT holen (nach DOM geladen)
-            saveColorBtn = document.getElementById('saveColorBtn');
-            savedColorsDiv = document.getElementById('savedColors');
-            console.log('📦 DOM-Elemente geholt:', {
-                saveColorBtn: !!saveColorBtn,
-                savedColorsDiv: !!savedColorsDiv
-            });
-
-            // Basic-Farben initialisieren
-            initPresetColors();
+            // ✅ FAVORITEN LADEN (5 Slots)
+            loadFavorites();
+            console.log('✅ Favoriten-System initialisiert');
 
             // BLE initialisieren
             initBLE();
@@ -2339,39 +2072,16 @@
             updateRgbSlidersFromColor(currentColor);
             updateRgbPreview();
 
-            // Gespeicherte Farben laden und anzeigen
-            displaySavedColors();
-
             // Color Preview initialisieren
             const colorPreview = document.getElementById('colorPreview');
             if (colorPreview) {
                 colorPreview.style.backgroundColor = `rgb(${currentColor.r}, ${currentColor.g}, ${currentColor.b})`;
             }
 
-            // ✅ EVENT-LISTENER FÜR SPEICHERN-BUTTON
-            if (saveColorBtn) {
-                saveColorBtn.addEventListener('click', () => {
-                    console.log('🎨 Speichern-Button geklickt, currentColor:', currentColor);
-                    saveCurrentColor();
-                });
-                console.log('✅ Speichern-Button Event-Listener hinzugefügt');
-            } else {
-                console.error('❌ saveColorBtn nicht gefunden!');
-            }
-
-            // ✅ EVENT-LISTENER FÜR "ALLE LÖSCHEN" BUTTON
-            const clearAllBtn = document.getElementById('clearAllColorsBtn');
-            if (clearAllBtn) {
-                clearAllBtn.addEventListener('click', async () => {
-                    await clearAllColors();
-                });
-                console.log('✅ Alle-Löschen-Button Event-Listener hinzugefügt');
-            }
-
             // ✅ EVENT-LISTENER FÜR POWER TOGGLE
             const powerToggle = document.getElementById('powerToggle');
             if (powerToggle) {
-                powerToggle.addEventListener('change', async function() {
+                powerToggle.addEventListener('change', async function () {
                     const isOn = this.checked;
 
                     // ✅ VERWENDE GLOBALE toggleLEDPower FUNKTION!
@@ -2401,7 +2111,7 @@
             }
 
             // ✅ LÖSCH-FUNKTION FÜR EINZELNE FARBEN
-            window.deleteSavedColor = function(index) {
+            window.deleteSavedColor = function (index) {
                 if (confirm('Diese Farbe wirklich löschen?')) {
                     savedColorsArray.splice(index, 1);
                     localStorage.setItem('ledSavedColors', JSON.stringify(savedColorsArray));
