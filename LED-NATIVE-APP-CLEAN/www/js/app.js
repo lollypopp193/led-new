@@ -114,7 +114,7 @@ window.currentColor = {
 
 const APP_CONFIG = {
     // UI-Timing
-    DOM_READY_DELAY: 5000, // ✅ Startscreen EXAKT 5 Sekunden anzeigen
+    DOM_READY_DELAY: 1500, // ✅ Startscreen 1.5 Sekunden anzeigen (vorher 5000ms = zu lang!)
     ANIMATION_DELAY: 300,
     STARTUP_DELAY: 0, // ✅ KEIN zusätzlicher Delay!
     NOTIFICATION_DURATION: 3000,
