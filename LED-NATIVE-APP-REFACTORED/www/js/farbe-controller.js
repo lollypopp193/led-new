@@ -15,14 +15,14 @@ let currentColor = { r: 255, g: 0, b: 0 };
 
 function getLEDController() {
     if (window.parent && window.parent !== window && window.parent.bleController) {
-        console.log('🔗 Verwende Parent bleController');
+        console.log(' Verwende Parent bleController');
         return window.parent.bleController;
     }
     if (window.bleController) {
-        console.log('🔗 Verwende lokalen bleController');
+        console.log(' Verwende lokalen bleController');
         return window.bleController;
     }
-    console.error('❌ KRITISCH: Kein bleController gefunden!');
+    console.error(' KRITISCH: Kein bleController gefunden!');
     return null;
 }
 
@@ -37,9 +37,9 @@ function isConnected() {
 async function initBLE() {
     const controller = getLEDController();
     if (controller) {
-        console.log('✅ Zentrale BLE-Controller gefunden');
+        console.log(' Zentrale BLE-Controller gefunden');
     } else {
-        console.warn('⚠️ BLE-Controller nicht verfügbar - bitte in Hauptseite verbinden');
+        console.warn(' BLE-Controller nicht verfügbar - bitte in Hauptseite verbinden');
     }
 }
 
@@ -48,13 +48,13 @@ async function sendColorToBLE(r, g, b) {
         if (window.parent && window.parent.sendColorToLED) {
             const success = await window.parent.sendColorToLED(r, g, b);
             if (success) {
-                console.log(`🎨 ✅ ECHTE Hardware-Farbe gesendet: RGB(${r}, ${g}, ${b})`);
+                console.log(`  ECHTE Hardware-Farbe gesendet: RGB(${r}, ${g}, ${b})`);
                 if (window.showNotification) {
                     window.showNotification(`LED-Farbe gesetzt: RGB(${r}, ${g}, ${b})`, 'success');
                 }
                 return true;
             } else {
-                console.warn('⚠️ Bluetooth nicht verbunden');
+                console.warn(' Bluetooth nicht verbunden');
                 if (window.showNotification) {
                     window.showNotification('Bitte erst Bluetooth in Einstellungen verbinden!', 'warning');
                 }
@@ -65,7 +65,7 @@ async function sendColorToBLE(r, g, b) {
         if (window.bleController && window.bleController.isConnected) {
             const success = await window.bleController.setColorRGB(r, g, b);
             if (success) {
-                console.log(`🎨 ✅ Direkt: Hardware-Farbe gesendet: RGB(${r}, ${g}, ${b})`);
+                console.log(`  Direkt: Hardware-Farbe gesendet: RGB(${r}, ${g}, ${b})`);
                 if (window.showNotification) {
                     window.showNotification(`LED-Farbe gesetzt: RGB(${r}, ${g}, ${b})`, 'success');
                 }
@@ -73,13 +73,13 @@ async function sendColorToBLE(r, g, b) {
             }
         }
 
-        console.error('❌ KRITISCH: Keine Bluetooth-Verbindung!');
+        console.error(' KRITISCH: Keine Bluetooth-Verbindung!');
         if (window.showNotification) {
             window.showNotification('FEHLER: Bluetooth nicht verbunden! Bitte in Einstellungen verbinden.', 'error');
         }
         return false;
     } catch (error) {
-        console.error('❌ Hardware-Fehler:', error);
+        console.error(' Hardware-Fehler:', error);
         if (window.showNotification) {
             window.showNotification(`Fehler beim Senden: ${error.message}`, 'error');
         }
@@ -188,7 +188,7 @@ function selectColorAtPosition(e) {
         const color = getColorFromPosition(x, y, distance, angle, currentMode);
         if (color) {
             currentColor = { r: color.r, g: color.g, b: color.b };
-            console.log('🎨 Farbkreis-Klick - currentColor gesetzt:', currentColor);
+            console.log(' Farbkreis-Klick - currentColor gesetzt:', currentColor);
 
             if (window.parent && window.parent.setGlobalCurrentColor) {
                 window.parent.setGlobalCurrentColor(currentColor);
@@ -285,9 +285,60 @@ function renderColorSlots() {
     document.querySelectorAll('.color-slot').forEach((slot) => {
         const index = parseInt(slot.dataset.slot);
         const color = slots[index];
+
+        // Entferne alte Delete-Buttons
+        const oldBtn = slot.querySelector('.delete-btn');
+        if (oldBtn) oldBtn.remove();
+
         if (color) {
             slot.style.background = `rgb(${color.r}, ${color.g}, ${color.b})`;
             slot.classList.add('filled');
+
+            // Füge X-Button hinzu
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
+            deleteBtn.title = 'Farbe löschen';
+            deleteBtn.style.cssText = `
+                position: absolute;
+                top: 2px;
+                right: 2px;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: rgba(255, 0, 0, 0.8);
+                color: white;
+                border: none;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 10px;
+                opacity: 0;
+                transition: opacity 0.2s;
+                z-index: 10;
+            `;
+
+            // X-Button nur bei Hover zeigen (Desktop) oder Touch-Start (Mobile)
+            slot.addEventListener('mouseenter', () => {
+                deleteBtn.style.opacity = '1';
+            });
+            slot.addEventListener('mouseleave', () => {
+                deleteBtn.style.opacity = '0';
+            });
+            slot.addEventListener('touchstart', () => {
+                deleteBtn.style.opacity = '1';
+            }, { passive: true });
+
+            // Click-Handler für X-Button
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Verhindere Farb-Anwendung
+                if (confirm(window.i18n ? window.i18n.t('color.deleteConfirm') : 'Farbe wirklich löschen?')) {
+                    deleteColorFromSlot(index);
+                }
+            });
+
+            slot.appendChild(deleteBtn);
         } else {
             slot.style.background = 'rgba(255, 255, 255, 0.1)';
             slot.classList.remove('filled');
@@ -365,7 +416,7 @@ function initFarbeController() {
     initBLE();
     initColorWheel();
     initColorSlots();
-    console.log('✅ Farbe-Controller initialisiert');
+    console.log(' Farbe-Controller initialisiert');
 }
 
 // Global Export
@@ -386,4 +437,4 @@ if (document.readyState === 'loading') {
     initFarbeController();
 }
 
-// console.log('✅ Farbe-Controller geladen');
+// console.log(' Farbe-Controller geladen');
