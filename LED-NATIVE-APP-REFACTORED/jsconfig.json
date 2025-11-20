@@ -36,7 +36,8 @@
         }
     },
     "include": [
-        "www/**/*",
+        "www/js/**/*.js",
+        "www/*.js",
         "capacitor.config.json"
     ],
     "exclude": [
@@ -44,7 +45,9 @@
         "android",
         "ios",
         "dist",
-        "build"
+        "build",
+        "www/**/*.html",
+        "www/pages/**/*"
     ],
     "typeAcquisition": {
         "enable": true,

@@ -274,4 +274,4 @@ if (document.readyState === 'loading') {
     initLEDMusicControls();
 }
 
-console.log('✅ LED-Musik-Controller geladen');
+// console.log('✅ LED-Musik-Controller geladen');
