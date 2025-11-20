@@ -299,7 +299,34 @@ function initColorSlots() {
     renderColorSlots();
 
     document.querySelectorAll('.color-slot').forEach((slot) => {
-        // Linksklick - Farbe anwenden oder speichern
+        let pressTimer;
+
+        // Touch Start / Mouse Down - Long Press Timer starten
+        const startPress = (e) => {
+            const index = parseInt(slot.dataset.slot);
+            const slots = loadColorSlots();
+
+            if (slots[index]) {
+                // Nur bei gefüllten Slots: Long Press zum Löschen
+                pressTimer = setTimeout(() => {
+                    // Nach 800ms: Farbe löschen
+                    deleteColorFromSlot(index);
+                    if (window.navigator.vibrate) {
+                        window.navigator.vibrate(50); // Kurzes Vibrationsfeedback
+                    }
+                }, 800);
+            }
+        };
+
+        // Touch End / Mouse Up - Timer abbrechen
+        const cancelPress = () => {
+            if (pressTimer) {
+                clearTimeout(pressTimer);
+                pressTimer = null;
+            }
+        };
+
+        // Click - Farbe anwenden oder speichern (nur bei kurzem Tap)
         slot.addEventListener('click', () => {
             const index = parseInt(slot.dataset.slot);
             const slots = loadColorSlots();
@@ -313,12 +340,20 @@ function initColorSlots() {
             }
         });
 
-        // Rechtsklick - Farbe löschen
+        // Touch Events für Mobile
+        slot.addEventListener('touchstart', startPress);
+        slot.addEventListener('touchend', cancelPress);
+        slot.addEventListener('touchmove', cancelPress);
+
+        // Mouse Events für Desktop (Rechtsklick bleibt als Alternative)
+        slot.addEventListener('mousedown', startPress);
+        slot.addEventListener('mouseup', cancelPress);
+        slot.addEventListener('mouseleave', cancelPress);
+
         slot.addEventListener('contextmenu', (e) => {
             e.preventDefault();
             const index = parseInt(slot.dataset.slot);
             const slots = loadColorSlots();
-
             if (slots[index]) {
                 deleteColorFromSlot(index);
             }
