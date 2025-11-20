@@ -347,4 +347,4 @@ if (document.readyState === 'loading') {
     initEinstellungenController();
 }
 
-console.log('✅ Einstellungen-Controller geladen');
+// console.log('✅ Einstellungen-Controller geladen');

@@ -186,4 +186,4 @@ window.showInfo = showInfo;
 // Alias für Kompatibilität
 window.showGlobalNotification = showNotification;
 
-console.log('✅ Notification-System geladen');
+// console.log('✅ Notification-System geladen');

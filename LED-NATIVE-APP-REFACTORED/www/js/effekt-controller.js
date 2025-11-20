@@ -232,4 +232,4 @@ if (document.readyState === 'loading') {
     initEffektController();
 }
 
-console.log('✅ Effekt-Controller geladen');
+// console.log('✅ Effekt-Controller geladen');

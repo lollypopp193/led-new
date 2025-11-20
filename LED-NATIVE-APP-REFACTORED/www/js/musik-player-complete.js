@@ -306,4 +306,4 @@ if (document.readyState === 'loading') {
     initMusicPlayer();
 }
 
-console.log('✅ Musik-Player-Complete geladen');
+// console.log('✅ Musik-Player-Complete geladen');

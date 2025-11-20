@@ -267,4 +267,4 @@ window.resetTempoAndPitch = resetTempoAndPitch;
 // Auto-Init
 initTaskbarNavigation();
 
-console.log('✅ Musik-UI-Controller geladen');
+// console.log('✅ Musik-UI-Controller geladen');

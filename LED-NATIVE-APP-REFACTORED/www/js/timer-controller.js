@@ -323,4 +323,4 @@ if (document.readyState === 'loading') {
     initTimerController();
 }
 
-console.log('✅ Timer-Controller geladen');
+// console.log('✅ Timer-Controller geladen');

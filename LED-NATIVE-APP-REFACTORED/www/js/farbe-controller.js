@@ -273,4 +273,4 @@ if (document.readyState === 'loading') {
     initFarbeController();
 }
 
-console.log('✅ Farbe-Controller geladen');
+// console.log('✅ Farbe-Controller geladen');
