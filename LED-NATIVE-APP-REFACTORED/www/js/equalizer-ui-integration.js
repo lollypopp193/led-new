@@ -294,7 +294,7 @@
             addCustomPresetButton(name);
         });
 
-        console.log('✅ Custom-Presets geladen:', Object.keys(eq.customPresets).length);
+        // console.log('✅ Custom-Presets geladen:', Object.keys(eq.customPresets).length);
     }
 
     // Audio-Element Observer (falls später erstellt)
@@ -322,5 +322,5 @@
         connectEqualizer
     };
 
-    console.log('✅ Equalizer UI Integration geladen');
+    // console.log('✅ Equalizer UI Integration geladen');
 })();

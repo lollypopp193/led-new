@@ -34,7 +34,7 @@ class DeviceManager {
     getProtocolById(id) { return DEVICE_CONFIG.PROTOCOLS.find(function (p) { return p.id === id; }); }
     getAllProtocols() { return DEVICE_CONFIG.PROTOCOLS; }
     getSignalStrength(rssi) { if (!rssi) return 'unknown'; if (rssi >= DEVICE_CONFIG.RSSI_EXCELLENT) return 'excellent'; if (rssi >= DEVICE_CONFIG.RSSI_GOOD) return 'good'; if (rssi >= DEVICE_CONFIG.RSSI_FAIR) return 'fair'; if (rssi >= DEVICE_CONFIG.RSSI_POOR) return 'poor'; return 'very-poor'; }
-    loadDevices() { try { const stored = localStorage.getItem(DEVICE_CONFIG.STORAGE_KEY); if (stored) { this.devices = JSON.parse(stored); console.log('\u2705 ' + this.devices.length + ' Geräte geladen'); } } catch (err) { console.error('Fehler beim Laden der Geräte:', err); this.devices = []; } }
+    loadDevices() { try { const stored = localStorage.getItem(DEVICE_CONFIG.STORAGE_KEY); if (stored) { this.devices = JSON.parse(stored); /* console.log('✅ ' + this.devices.length + ' Geräte geladen'); */ } } catch (err) { console.error('Fehler beim Laden der Geräte:', err); this.devices = []; } }
     saveDevices() { try { localStorage.setItem(DEVICE_CONFIG.STORAGE_KEY, JSON.stringify(this.devices)); } catch (err) { console.error('Fehler beim Speichern der Geräte:', err); } }
     loadHistory() { try { const stored = localStorage.getItem(DEVICE_CONFIG.HISTORY_KEY); if (stored) { this.connectionHistory = JSON.parse(stored); } } catch (err) { console.error('Fehler beim Laden der Historie:', err); this.connectionHistory = []; } }
     saveHistory() { try { localStorage.setItem(DEVICE_CONFIG.HISTORY_KEY, JSON.stringify(this.connectionHistory)); } catch (err) { console.error('Fehler beim Speichern der Historie:', err); } }

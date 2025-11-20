@@ -249,9 +249,75 @@ function hsvToRgb(h, s, v) {
     };
 }
 
+// Color Slots Funktionen
+function loadColorSlots() {
+    try {
+        const saved = localStorage.getItem('color-slots');
+        return saved ? JSON.parse(saved) : {};
+    } catch (err) {
+        console.error('Fehler beim Laden der Farb-Slots:', err);
+        return {};
+    }
+}
+
+function saveColorToSlot(slotIndex, r, g, b) {
+    try {
+        const slots = loadColorSlots();
+        slots[slotIndex] = { r, g, b };
+        localStorage.setItem('color-slots', JSON.stringify(slots));
+        renderColorSlots();
+    } catch (err) {
+        console.error('Fehler beim Speichern:', err);
+    }
+}
+
+function applyColorFromSlot(slotIndex) {
+    const slots = loadColorSlots();
+    const color = slots[slotIndex];
+    if (color) {
+        currentColor = { r: color.r, g: color.g, b: color.b };
+        sendColorToBLE(color.r, color.g, color.b);
+    }
+}
+
+function renderColorSlots() {
+    const slots = loadColorSlots();
+    document.querySelectorAll('.color-slot').forEach((slot) => {
+        const index = parseInt(slot.dataset.slot);
+        const color = slots[index];
+        if (color) {
+            slot.style.background = `rgb(${color.r}, ${color.g}, ${color.b})`;
+            slot.classList.add('filled');
+        } else {
+            slot.style.background = 'rgba(255, 255, 255, 0.1)';
+            slot.classList.remove('filled');
+        }
+    });
+}
+
+function initColorSlots() {
+    renderColorSlots();
+
+    document.querySelectorAll('.color-slot').forEach((slot) => {
+        slot.addEventListener('click', () => {
+            const index = parseInt(slot.dataset.slot);
+            const slots = loadColorSlots();
+
+            if (slots[index]) {
+                // Slot ist gefüllt - Farbe anwenden
+                applyColorFromSlot(index);
+            } else {
+                // Slot ist leer - aktuelle Farbe speichern
+                saveColorToSlot(index, currentColor.r, currentColor.g, currentColor.b);
+            }
+        });
+    });
+}
+
 function initFarbeController() {
     initBLE();
     initColorWheel();
+    initColorSlots();
     console.log('✅ Farbe-Controller initialisiert');
 }
 

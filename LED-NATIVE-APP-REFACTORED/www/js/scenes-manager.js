@@ -11,7 +11,7 @@ class ScenesManager {
         this.storageKey = 'led-saved-scenes';
         this.categories = ['Entspannung', 'Party', 'Arbeit', 'Lesen', 'Schlafen', 'Romantisch', 'Gaming', 'Filme', 'Custom'];
         this.loadScenes();
-        console.log('✅ Szenen-Manager: ' + this.scenes.length + ' Szenen geladen');
+        // console.log('✅ Szenen-Manager: ' + this.scenes.length + ' Szenen geladen');
     }
 
     createScene(data) {

@@ -181,7 +181,7 @@ class EqualizerEngine {
             const stored = localStorage.getItem('eq-custom-presets');
             if (stored) {
                 this.customPresets = JSON.parse(stored);
-                console.log('✅ Custom-Presets geladen:', Object.keys(this.customPresets).length);
+                // console.log('✅ Custom-Presets geladen:', Object.keys(this.customPresets).length);
             }
         } catch (err) {
             console.warn('⚠️ Fehler beim Laden der Custom-Presets:', err);
