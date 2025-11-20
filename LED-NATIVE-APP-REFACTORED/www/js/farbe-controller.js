@@ -299,6 +299,7 @@ function initColorSlots() {
     renderColorSlots();
 
     document.querySelectorAll('.color-slot').forEach((slot) => {
+        // Linksklick - Farbe anwenden oder speichern
         slot.addEventListener('click', () => {
             const index = parseInt(slot.dataset.slot);
             const slots = loadColorSlots();
@@ -309,6 +310,17 @@ function initColorSlots() {
             } else {
                 // Slot ist leer - aktuelle Farbe speichern
                 saveColorToSlot(index, currentColor.r, currentColor.g, currentColor.b);
+            }
+        });
+
+        // Rechtsklick - Farbe löschen
+        slot.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            const index = parseInt(slot.dataset.slot);
+            const slots = loadColorSlots();
+
+            if (slots[index]) {
+                deleteColorFromSlot(index);
             }
         });
     });
