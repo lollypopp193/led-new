@@ -1,8 +1,6 @@
 /**
  * Bassboost Controller
- * Ver
-
-stärkt tiefe Frequenzen (20-250Hz) für kraftvollere Bässe
+ * Verstärkt tiefe Frequenzen (20-250Hz) für kraftvollere Bässe
  */
 
 class BassBoostController {
