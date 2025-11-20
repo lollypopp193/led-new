@@ -94,6 +94,9 @@
     <!-- Capacitor Core (must load before app.js) -->
     <script src="https://unpkg.com/@capacitor/core@5.5.1/dist/capacitor.js"></script>
 
+    <!-- Notification System (load first) -->
+    <script src="js/notifications.js"></script>
+
     <!-- Core Modules (load before app.js) -->
     <script src="js/event-manager.js"></script>
     <script src="js/performance-optimizer.js"></script>
@@ -103,6 +106,8 @@
     <script src="js/device-manager.js"></script>
     <script src="js/music-library-manager.js"></script>
     <script src="js/musik-integration.js"></script>
+    <script src="js/equalizer-engine.js"></script>
+    <script src="js/equalizer-ui-integration.js"></script>
 
     <!-- App JavaScript (Main) -->
     <script src="js/app.js"></script>

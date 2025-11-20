@@ -20,7 +20,7 @@ const PRECACHE_URLS = [
     '/js/capacitor-adapter.js',
     '/pages/Farbe.html',
     '/pages/Effekt.html',
-    '/pages/Musik.html',
+    '/pages/musik.html',
     '/pages/Timer.html',
     '/pages/Einstellungen.html',
     '/manifest.json'

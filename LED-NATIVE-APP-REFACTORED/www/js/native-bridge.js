@@ -308,8 +308,10 @@ class NativeBridge {
 // Create singleton instance
 const nativeBridge = new NativeBridge();
 
-// Export as ES module
-export default nativeBridge;
-
-// Also expose globally for compatibility
+// Expose globally for compatibility
 window.NativeBridge = nativeBridge;
+
+// CommonJS export for Node.js compatibility
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = nativeBridge;
+}

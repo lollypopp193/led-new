@@ -389,8 +389,10 @@ class CapacitorAdapter {
 // Create singleton instance
 const capacitorAdapter = new CapacitorAdapter();
 
-// Export as ES module
-export default capacitorAdapter;
-
-// Also expose globally for compatibility
+// Expose globally for compatibility
 window.CapacitorAdapter = capacitorAdapter;
+
+// CommonJS export for Node.js compatibility
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = capacitorAdapter;
+}

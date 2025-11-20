@@ -698,8 +698,10 @@ class BLEController {
     }
 }
 
-// Export
-export default BLEController;
-
 // Global exposure for compatibility
 window.BLEController = BLEController;
+
+// CommonJS export for Node.js compatibility
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = BLEController;
+}
