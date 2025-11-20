@@ -1,0 +1,64 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "module": "ES6",
+        "moduleResolution": "node",
+        "lib": [
+            "ES6",
+            "DOM",
+            "DOM.Iterable"
+        ],
+        "allowJs": true,
+        "checkJs": false,
+        "noEmit": true,
+        "strict": false,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "www/*"
+            ],
+            "@js/*": [
+                "www/js/*"
+            ],
+            "@css/*": [
+                "www/css/*"
+            ],
+            "@pages/*": [
+                "www/pages/*"
+            ],
+            "@assets/*": [
+                "www/assets/*"
+            ]
+        }
+    },
+    "include": [
+        "www/**/*",
+        "capacitor.config.json"
+    ],
+    "exclude": [
+        "node_modules",
+        "android",
+        "ios",
+        "dist",
+        "build"
+    ],
+    "typeAcquisition": {
+        "enable": true,
+        "include": [
+            "capacitor",
+            "@capacitor/core",
+            "@capacitor/android",
+            "@capacitor/app",
+            "@capacitor/filesystem",
+            "@capacitor/haptics",
+            "@capacitor/keyboard",
+            "@capacitor/splash-screen",
+            "@capacitor/status-bar",
+            "@capacitor-community/bluetooth-le"
+        ]
+    }
+}

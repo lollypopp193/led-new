@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <meta
+      name="description"
+      content="Professional LED control application with Bluetooth connectivity"
+    />
+    <meta name="theme-color" content="#0a0a0a" />
+    <title>LED Control Pro</title>
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json" />
+
+    <!-- Icons -->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="assets/icon-192x192.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="192x192"
+      href="assets/icon-192x192.png"
+    />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <canvas id="background-canvas"></canvas>
+
+    <!-- Startscreen -->
+    <div id="startscreen">
+      <div class="title">
+        LIGHTS SPACE
+        <span class="line2">WORLD</span>
+      </div>
+      <div class="subtitle">LED-App der nächsten Generation</div>
+    </div>
+
+    <!-- Appscreen -->
+    <div id="appscreen" style="display: none">
+      <div class="content-area">
+        <div class="app-container">
+          <div class="iframe-container">
+            <iframe
+              class="app-iframe"
+              id="app-iframe"
+              title="LED Control App"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-bar">
+        <button type="button" class="nav-item" data-app="farbe">
+          <i class="fas fa-palette"></i>
+          <span class="nav-item-text">Farbe</span>
+        </button>
+        <button type="button" class="nav-item" data-app="effekt">
+          <i class="fas fa-magic"></i>
+          <span class="nav-item-text">Effekte</span>
+        </button>
+        <button type="button" class="nav-item" data-app="musik">
+          <i class="fas fa-music"></i>
+          <span class="nav-item-text">Musik</span>
+        </button>
+        <button type="button" class="nav-item" data-app="timer">
+          <i class="fas fa-clock"></i>
+          <span class="nav-item-text">Timer</span>
+        </button>
+        <button type="button" class="nav-item" data-app="einstellungen">
+          <i class="fas fa-cog"></i>
+          <span class="nav-item-text">Einstellungen</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Capacitor Core (must load before app.js) -->
+    <script src="https://unpkg.com/@capacitor/core@5.5.1/dist/capacitor.js"></script>
+
+    <!-- Core Modules (load before app.js) -->
+    <script src="js/event-manager.js"></script>
+    <script src="js/performance-optimizer.js"></script>
+    <script src="js/led-abstraction-layer.js"></script>
+    <script src="js/scenes-manager.js"></script>
+    <script src="js/audio-reactive-engine.js"></script>
+    <script src="js/device-manager.js"></script>
+    <script src="js/music-library-manager.js"></script>
+    <script src="js/musik-integration.js"></script>
+
+    <!-- App JavaScript (Main) -->
+    <script src="js/app.js"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/sw.js")
+            .then((registration) => {
+              console.log("Service Worker registered:", registration.scope);
+            })
+            .catch((error) => {
+              console.error("Service Worker registration failed:", error);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>
