@@ -1,0 +1,277 @@
+/**
+ * LED-MUSIK-CONTROLLER.JS
+ * LED-Musik-Steuerung mit Audio-Reaktiv-Engine Integration
+ */
+'use strict';
+
+let ledMusicEnabled = false;
+let automaticMode = false;
+let syncAllBands = false;
+
+function initLEDMusicControls() {
+    // Toggle-Switches Event-Listener
+    const autoModeToggle = document.getElementById('ledMusicAutomaticMode');
+    const syncAllToggle = document.getElementById('ledMusicSyncAll');
+    const startBtn = document.getElementById('startAudioCapture');
+    const stopBtn = document.getElementById('stopAudioCapture');
+
+    if (autoModeToggle) {
+        autoModeToggle.addEventListener('change', function () {
+            automaticMode = this.checked;
+            console.log('🤖 Automatik-Modus:', automaticMode ? 'AN' : 'AUS');
+
+            if (automaticMode && window.audioReactiveEngine) {
+                // Automatisch Audio-Element finden und starten
+                const audioElement = document.querySelector('audio');
+                if (audioElement) {
+                    window.audioReactiveEngine.startAudioCapture(audioElement);
+                }
+            }
+        });
+    }
+
+    if (syncAllToggle) {
+        syncAllToggle.addEventListener('change', function () {
+            syncAllBands = this.checked;
+            console.log('🔗 Sync alle Bänder:', syncAllBands ? 'AN' : 'AUS');
+
+            if (syncAllBands && window.audioReactiveEngine) {
+                // Alle LED-Bänder synchronisieren
+                window.audioReactiveEngine.ledStrips.forEach(strip => {
+                    strip.enabled = true;
+                    strip.reactTo = 'all';
+                });
+            }
+        });
+    }
+
+    // Start Button - Audio-Element übergeben (KEIN Mikrofon)
+    if (startBtn) {
+        startBtn.addEventListener('click', async function () {
+            const audioElement = document.querySelector('audio');
+
+            if (!audioElement) {
+                if (window.showGlobalNotification) {
+                    window.showGlobalNotification('Kein Audio-Element gefunden', 'warning');
+                }
+                console.warn('⚠️ Kein Audio-Element gefunden');
+                return;
+            }
+
+            if (!window.audioReactiveEngine) {
+                if (window.showGlobalNotification) {
+                    window.showGlobalNotification('Audio-Reactive-Engine nicht verfügbar', 'error');
+                }
+                console.error('❌ Audio-Reactive-Engine nicht verfügbar');
+                return;
+            }
+
+            try {
+                console.log('🎵 Starte Musik-Analyse (Audio-Element, KEIN Mikrofon)...');
+                const success = await window.audioReactiveEngine.startAudioCapture(audioElement);
+
+                if (success) {
+                    startBtn.style.display = 'none';
+                    if (stopBtn) stopBtn.style.display = 'inline-block';
+
+                    if (window.showGlobalNotification) {
+                        window.showGlobalNotification('Musik-Analyse gestartet', 'success');
+                    }
+                    console.log('✅ Musik-Analyse läuft');
+                } else {
+                    if (window.showGlobalNotification) {
+                        window.showGlobalNotification('Musik-Analyse konnte nicht gestartet werden', 'error');
+                    }
+                }
+            } catch (err) {
+                console.error('❌ Fehler beim Starten:', err);
+                if (window.showGlobalNotification) {
+                    window.showGlobalNotification('Fehler: ' + err.message, 'error');
+                }
+            }
+        });
+    }
+
+    // Stop Button
+    if (stopBtn) {
+        stopBtn.addEventListener('click', async function () {
+            if (window.audioReactiveEngine) {
+                await window.audioReactiveEngine.stopAudioCapture();
+                stopBtn.style.display = 'none';
+                if (startBtn) startBtn.style.display = 'inline-block';
+
+                if (window.showGlobalNotification) {
+                    window.showGlobalNotification('Musik-Analyse gestoppt', 'info');
+                }
+                console.log('⏹️ Musik-Analyse gestoppt');
+            }
+        });
+    }
+
+    // LED-Band Count Slider
+    const ledBandCount = document.getElementById('ledBandCount');
+    if (ledBandCount) {
+        ledBandCount.addEventListener('input', function () {
+            const count = parseInt(this.value);
+            document.getElementById('ledBandCountValue').textContent = count;
+            updateBandTabs(count);
+        });
+    }
+
+    console.log('✅ LED-Musik-Controller initialisiert');
+}
+
+function updateBandTabs(count) {
+    const tabsContainer = document.getElementById('ledBandTabs');
+    if (!tabsContainer) return;
+
+    // Behalte den Audio-Reactive Tab
+    const audioReactiveTab = tabsContainer.querySelector('[data-band="audio-reactive"]');
+
+    // Lösche alle anderen Tabs
+    tabsContainer.innerHTML = '';
+
+    // Audio-Reactive Tab wieder hinzufügen
+    if (audioReactiveTab) {
+        tabsContainer.appendChild(audioReactiveTab);
+    }
+
+    // Füge die LED-Band Tabs hinzu
+    for (let i = 0; i < count; i++) {
+        const tab = document.createElement('button');
+        tab.type = 'button';
+        tab.className = 'led-band-tab';
+        tab.dataset.band = i;
+        tab.style.cssText = 'padding: 12px 20px; background: rgba(255, 190, 11, 0.2); border: 1px solid #FFBE0B; color: white; border-radius: 8px; cursor: pointer;';
+
+        const indicator = document.createElement('span');
+        indicator.style.cssText = 'display: inline-block; width: 12px; height: 12px; background: #FFBE0B; border-radius: 50%; margin-right: 8px;';
+
+        tab.appendChild(indicator);
+        tab.appendChild(document.createTextNode(' LED-Band ' + (i + 1)));
+
+        tab.addEventListener('click', function () {
+            // Alle Tabs deaktivieren
+            document.querySelectorAll('.led-band-tab').forEach(t => t.classList.remove('active'));
+            // Diesen Tab aktivieren
+            this.classList.add('active');
+            // Content anzeigen
+            showBandContent(i);
+        });
+
+        tabsContainer.appendChild(tab);
+    }
+
+    console.log(`📊 ${count} LED-Band Tabs erstellt`);
+}
+
+function showBandContent(bandIndex) {
+    // Alle Band-Contents verstecken
+    document.querySelectorAll('.led-band-content').forEach(content => {
+        content.style.display = 'none';
+    });
+
+    // Spezifischen Band-Content anzeigen
+    const content = document.getElementById(`ledBandContent-${bandIndex}`);
+    if (content) {
+        content.style.display = 'block';
+    } else {
+        // Content erstellen wenn nicht vorhanden
+        createBandContent(bandIndex);
+    }
+
+    console.log(`📺 Zeige LED-Band ${bandIndex + 1} Content`);
+}
+
+function createBandContent(bandIndex) {
+    // Erstelle Content für dieses spezifische LED-Band
+    const container = document.querySelector('.led-music-control-content');
+    if (!container) return;
+
+    const content = document.createElement('div');
+    content.id = `ledBandContent-${bandIndex}`;
+    content.className = 'led-band-content';
+    content.style.cssText = 'display: block; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 15px; margin-top: 20px;';
+
+    content.innerHTML = `
+        <h3 style="color: #FFBE0B; margin-bottom: 20px;">LED-Band ${bandIndex + 1} Einstellungen</h3>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 10px; color: #4ecdc4;">Effekt:</label>
+            <select id="band${bandIndex}_effect" style="width: 100%; padding: 10px; background: #333; color: white; border: 1px solid #555; border-radius: 8px;">
+                <option value="none">Kein Effekt</option>
+                <option value="pulse">Pulsieren</option>
+                <option value="wave">Welle</option>
+                <option value="strobe">Stroboskop</option>
+                <option value="fade">Fade</option>
+            </select>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 10px; color: #4ecdc4;">Frequenzband:</label>
+            <select id="band${bandIndex}_freq" style="width: 100%; padding: 10px; background: #333; color: white; border: 1px solid #555; border-radius: 8px;">
+                <option value="bass">Tiefe (Bass)</option>
+                <option value="mid">Mitte</option>
+                <option value="high">Höhen</option>
+                <option value="all">Alle</option>
+            </select>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 10px; color: #4ecdc4;">Reagiert auf:</label>
+            <select id="band${bandIndex}_reactTo" style="width: 100%; padding: 10px; background: #333; color: white; border: 1px solid #555; border-radius: 8px;">
+                <option value="rhythm">Rhythmus</option>
+                <option value="beats">Beats/Takt</option>
+                <option value="vocals">Gesang</option>
+                <option value="melody">Melodie</option>
+            </select>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 10px; color: #4ecdc4;">Farbe:</label>
+            <input type="color" id="band${bandIndex}_color" value="#4ecdc4" style="width: 100%; height: 50px; border: none; border-radius: 8px; cursor: pointer;">
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 10px; color: #4ecdc4;">Helligkeit: <span id="band${bandIndex}_brightness_value">100</span>%</label>
+            <input type="range" id="band${bandIndex}_brightness" min="0" max="100" value="100" style="width: 100%;">
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 10px; color: #4ecdc4;">Empfindlichkeit: <span id="band${bandIndex}_sensitivity_value">50</span>%</label>
+            <input type="range" id="band${bandIndex}_sensitivity" min="0" max="100" value="50" style="width: 100%;">
+        </div>
+    `;
+
+    container.appendChild(content);
+
+    // Event-Listener für die Controls hinzufügen
+    const brightnessSlider = document.getElementById(`band${bandIndex}_brightness`);
+    const sensitivitySlider = document.getElementById(`band${bandIndex}_sensitivity`);
+
+    if (brightnessSlider) {
+        brightnessSlider.addEventListener('input', function () {
+            document.getElementById(`band${bandIndex}_brightness_value`).textContent = this.value;
+        });
+    }
+
+    if (sensitivitySlider) {
+        sensitivitySlider.addEventListener('input', function () {
+            document.getElementById(`band${bandIndex}_sensitivity_value`).textContent = this.value;
+        });
+    }
+}
+
+// Global Export
+window.initLEDMusicControls = initLEDMusicControls;
+window.updateBandTabs = updateBandTabs;
+window.showBandContent = showBandContent;
+
+// Auto-Init
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLEDMusicControls);
+} else {
+    initLEDMusicControls();
+}
+
+console.log('✅ LED-Musik-Controller geladen');
