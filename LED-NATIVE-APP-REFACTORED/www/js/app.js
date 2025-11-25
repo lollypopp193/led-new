@@ -6,7 +6,81 @@
 
 const App = {
     ble: null, deviceManager: null, nativeBridge: null, capacitorAdapter: null, scenesManager: null, performanceOptimizer: null, ledAbstraction: null, eventManager: null, audioReactiveEngine: null, musikIntegration: null, musicLibraryManager: null, elements: {}, config: { startup_delay: 5000, particle_count: 120, theme: 'dark', language: 'de', autoConnect: false, saveState: true, animations: true, notifications: true, hapticFeedback: true, soundEffects: false }, state: { currentApp: null, initialized: false, isConnected: false, currentDevice: null, brightness: 100, currentColor: { r: 255, g: 255, b: 255 }, currentEffect: null, isPlaying: false },
-    async initialize() { if (this.state.initialized) { console.log('\u26a0\ufe0f App bereits initialisiert'); return; } console.log('\ud83d\ude80 LED Native App v4.0 - Zero Tolerance - Initialisierung...'); try { await this.initializeModules(); this.cacheDOMElements(); this.initParticles(); this.initNavigation(); this.initGlobalEventListeners(); this.loadSettings(); this.initStartupSequence(); this.state.initialized = true; console.log('\u2705 App erfolgreich initialisiert'); if (this.eventManager) this.eventManager.emit('app-ready', { timestamp: Date.now() }); } catch (err) { console.error('\u274c Initialisierung fehlgeschlagen:', err); this.showError('Initialisierung fehlgeschlagen'); } },
+    async initialize() {
+        if (this.state.initialized) { console.log('\u26a0\ufe0f App bereits initialisiert'); return; } console.log('\ud83d\ude80 LED Native App v4.0 - Zero Tolerance - Initialisierung...'); try {
+            // Sequenzielle Berechtigungen (nacheinander wie bei professionellen Apps)
+            if (window.permissionsSequencer) {
+                await window.permissionsSequencer.start((results) => {
+                    console.log('✅ Berechtigungen abgeschlossen:', results);
+                    // Nach Berechtigungen weiter initialisieren
+                    this.continueInitialization();
+                });
+                return; // Warte auf Berechtigungen
+            }
+            if (window.PermissionsHandler) {
+                await window.PermissionsHandler.init();
+                await window.PermissionsHandler.requestAllPermissions();
+            }
+            if (window.BluetoothForegroundService) {
+                await window.BluetoothForegroundService.init();
+                await window.BluetoothForegroundService.startForegroundService();
+                console.log('✅ Bluetooth Foreground Service gestartet');
+            }
+            if (window.AndroidMusicScanner) {
+                await window.AndroidMusicScanner.init();
+                console.log('✅ Android Music Scanner initialisiert');
+            }
+            if (window.i18n && window.i18n.init) {
+                window.i18n.init();
+                console.log('✅ i18n-System initialisiert');
+            }
+            // Auto-Scan SILENT im Hintergrund
+            if (window.LEDAutoScanner) {
+                setTimeout(function () {
+                    console.log('🔇 LED Auto-Scan (silent)...');
+                    window.LEDAutoScanner.startAutoScan();
+                }, 2000);
+            }
+            if (window.LibraryAutoScanner) {
+                setTimeout(function () {
+                    console.log('🔇 Musikbibliothek Auto-Scan (silent)...');
+                    window.LibraryAutoScanner.startAutoScan();
+                }, 3000);
+            }
+            if (window.AndroidMusicScanner) {
+                setTimeout(async function () {
+                    console.log('🔇 Android Music Scan (silent)...');
+                    try {
+                        await window.AndroidMusicScanner.scanMediaStore();
+                    } catch (e) { /* Silent fail */ }
+                }, 4000);
+            }
+            await this.initializeModules();
+            this.cacheDOMElements();
+            this.initParticles();
+            this.initNavigation();
+            this.initGlobalEventListeners();
+            this.loadSettings();
+            this.initStartupSequence();
+            this.state.initialized = true;
+            console.log('\u2705 App erfolgreich initialisiert');
+            if (this.eventManager) this.eventManager.emit('app-ready', { timestamp: Date.now() });
+        } catch (err) { console.error('\u274c Initialisierung fehlgeschlagen:', err); this.showError('Initialisierung fehlgeschlagen'); }
+    },
+    async continueInitialization() {
+        try {
+            await this.initializeModules();
+            this.cacheDOMElements();
+            this.initParticles();
+            this.initNavigation();
+            this.initGlobalEventListeners();
+            this.loadSettings();
+            this.initStartupSequence();
+            this.state.initialized = true;
+            console.log('\u2705 App erfolgreich initialisiert (nach Permissions)');
+            if (this.eventManager) this.eventManager.emit('app-ready', { timestamp: Date.now() });
+        } catch (err) { console.error('\u274c Fortsetzung fehlgeschlagen:', err); }
+    },
     async initializeModules() { try { console.log('\ud83d\udce6 Lade Module...'); if (window.eventManager) { this.eventManager = window.eventManager; console.log('\u2705 EventManager geladen'); } if (window.performanceOptimizer) { this.performanceOptimizer = window.performanceOptimizer; this.performanceOptimizer.init(); console.log('\u2705 PerformanceOptimizer geladen'); } if (window.ledAbstraction) { this.ledAbstraction = window.ledAbstraction; await this.ledAbstraction.detectLEDType(); console.log('\u2705 LED-Abstraction geladen'); } if (window.scenesManager) { this.scenesManager = window.scenesManager; console.log('\u2705 ScenesManager geladen'); } if (window.deviceManager) { this.deviceManager = window.deviceManager; console.log('\u2705 DeviceManager geladen'); } if (window.audioReactiveEngine) { this.audioReactiveEngine = window.audioReactiveEngine; console.log('\u2705 AudioReactiveEngine geladen'); } if (window.musikIntegration) { this.musikIntegration = window.musikIntegration; console.log('\u2705 MusikIntegration geladen'); } if (window.musicLibraryManager) { this.musicLibraryManager = window.musicLibraryManager; await this.musicLibraryManager.init(); console.log('\u2705 MusicLibraryManager geladen'); } if (typeof Capacitor !== 'undefined') { await this.initCapacitor(); } console.log('\u2705 Alle Module geladen'); } catch (err) { console.error('\u274c Modul-Initialisierung fehlgeschlagen:', err); throw err; } },
     async initCapacitor() { try { console.log('\ud83d\udce6 Initialisiere Capacitor...'); if (typeof SplashScreen !== 'undefined') { setTimeout(function () { SplashScreen.hide(); console.log('\u2705 SplashScreen verborgen'); }, 2000); } if (typeof StatusBar !== 'undefined') { StatusBar.setBackgroundColor({ color: '#1a1a2e' }); console.log('\u2705 StatusBar konfiguriert'); } if (typeof App !== 'undefined' && App.addListener) { App.addListener('backButton', function () { if (this.state.currentApp === 'farbe') { navigator.app.exitApp(); } else { this.openApp('farbe'); } }.bind(this)); console.log('\u2705 Back-Button Handler registriert'); } console.log('\u2705 Capacitor initialisiert'); } catch (err) { console.warn('\u26a0\ufe0f Capacitor-Initialisierung mit Fehlern:', err); } },
     cacheDOMElements() { this.elements.startScreen = document.getElementById('startscreen'); this.elements.appScreen = document.getElementById('appscreen'); this.elements.navBar = document.querySelector('.nav-bar'); this.elements.appIframe = document.getElementById('app-iframe'); this.elements.particleCanvas = document.getElementById('background-canvas'); this.elements.connectionStatus = document.getElementById('connection-status'); this.elements.notificationContainer = document.getElementById('notification-container'); console.log('\u2705 DOM-Elemente gecached'); },
@@ -22,7 +96,7 @@ const App = {
     updateConnectionStatus(connected) { if (this.elements.connectionStatus) { this.elements.connectionStatus.textContent = connected ? 'Verbunden' : 'Getrennt'; this.elements.connectionStatus.className = connected ? 'connected' : 'disconnected'; } },
     handleBLEConnected(data) { console.log('\ud83d\udce1 BLE Verbunden:', data); this.updateConnectionStatus(true); },
     handleBLEDisconnected(data) { console.log('\ud83d\udeab BLE Getrennt'); this.updateConnectionStatus(false); },
-    handleSceneActivated(data) { console.log('\ud83c\udfac Szene aktiviert:', data.name); this.showNotification('Szene: ' + data.name, 'success'); },
+    handleSceneActivated(data) { console.log('\ud83c\udfac Szene aktiviert:', data.name); },
     handleAppPause() { console.log('\u23f8\ufe0f App pausiert'); this.saveState(); if (this.audioReactiveEngine && this.audioReactiveEngine.isRunning) { this.audioReactiveEngine.stopAudioCapture(); } },
     handleAppResume() { console.log('\u25b6\ufe0f App fortgesetzt'); if (this.config.autoConnect && !this.state.isConnected) { setTimeout(function () { this.connectBLE(); }.bind(this), 1000); } },
     showNotification(message, type, duration) { type = type || 'info'; duration = duration || 3000; if (window.showGlobalNotification) { window.showGlobalNotification(message, type, duration); } else { console.log('[' + type.toUpperCase() + '] ' + message); } },
@@ -36,6 +110,72 @@ const App = {
     async importData(jsonString) { try { const data = JSON.parse(jsonString); if (data.settings) { Object.assign(this.config, data.settings); this.saveSettings(); } if (data.devices && this.deviceManager) { this.deviceManager.importDevices(data.devices); } if (data.scenes && this.scenesManager) { this.scenesManager.importScenes(data.scenes); } console.log('\u2705 Daten importiert'); this.showNotification('Import erfolgreich', 'success'); return true; } catch (err) { console.error('\u274c Import fehlgeschlagen:', err); this.showNotification('Import fehlgeschlagen', 'error'); return false; } }
 };
 
+// Berechtigungs-Dialog anzeigen
+function showPermissionsRequiredDialog() {
+    const dialog = document.createElement('div');
+    dialog.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+    `;
+
+    dialog.innerHTML = `
+        <div style="
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 400px;
+            text-align: center;
+            border: 2px solid #4ecdc4;
+            box-shadow: 0 10px 40px rgba(78,205,196,0.3);
+        ">
+            <i class="fas fa-shield-alt" style="font-size: 3rem; color: #4ecdc4; margin-bottom: 20px;"></i>
+            <h2 style="color: #fff; margin-bottom: 15px;">Berechtigungen erforderlich</h2>
+            <p style="color: #ccc; margin-bottom: 25px; line-height: 1.6;">
+                Diese App benötigt Bluetooth-, Standort- und Speicher-Berechtigungen, 
+                um LED-Geräte zu steuern und Musik abzuspielen.
+            </p>
+            <button onclick="this.closest('div').parentElement.remove(); window.permissionsHandler.requestAllPermissions();" 
+                style="
+                    background: linear-gradient(135deg, #4ecdc4, #44a08d);
+                    color: white;
+                    border: none;
+                    padding: 12px 30px;
+                    border-radius: 25px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    font-size: 1rem;
+                    box-shadow: 0 4px 15px rgba(78,205,196,0.4);
+                ">
+                Berechtigungen erteilen
+            </button>
+            <button onclick="this.closest('div').parentElement.remove();" 
+                style="
+                    background: transparent;
+                    color: #888;
+                    border: 1px solid #555;
+                    padding: 12px 30px;
+                    border-radius: 25px;
+                    margin-left: 10px;
+                    cursor: pointer;
+                    font-size: 1rem;
+                ">
+                Später
+            </button>
+        </div>
+    `;
+
+    document.body.appendChild(dialog);
+}
+
+window.showPermissionsRequiredDialog = showPermissionsRequiredDialog;
 window.App = App;
 
 document.addEventListener('DOMContentLoaded', function () { App.initialize(); });

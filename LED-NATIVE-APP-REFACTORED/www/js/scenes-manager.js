@@ -14,7 +14,7 @@ class ScenesManager {
         // console.log('✅ Szenen-Manager: ' + this.scenes.length + ' Szenen geladen');
     }
 
-    createScene(data) {
+    createScene(data, silent = true) {
         try {
             if (!data || !data.name || !data.color) throw new Error('Name und Farbe erforderlich');
             const scene = {
@@ -35,13 +35,15 @@ class ScenesManager {
             };
             this.scenes.push(scene);
             this.save();
-            console.log('✅ Szene erstellt:', scene.name);
-            this.notify('Szene "' + scene.name + '" erstellt', 'success');
-            this.emit('scene-created', scene);
+            if (!silent) {
+                // Keine grünen Balken mehr!
+                // console.log('✅ Szene erstellt:', scene.name);
+                // this.emit('scene-created', scene);
+            }
             return scene;
         } catch (e) {
             console.error('❌ Szene erstellen:', e);
-            this.notify('Fehler beim Erstellen', 'error');
+            if (!silent) this.notify('Fehler beim Erstellen', 'error');
             throw e;
         }
     }
@@ -60,8 +62,8 @@ class ScenesManager {
             if (updates.category) s.category = this.categories.includes(updates.category) ? updates.category : s.category;
             s.updatedAt = Date.now();
             this.save();
-            console.log('✅ Szene aktualisiert:', s.name);
-            this.emit('scene-updated', s);
+            // console.log('✅ Szene aktualisiert:', s.name);
+            // this.emit('scene-updated', s);
             return s;
         } catch (e) {
             console.error('❌ Update:', e);
@@ -77,8 +79,8 @@ class ScenesManager {
             this.scenes.splice(idx, 1);
             this.save();
             if (this.currentScene && this.currentScene.id === id) this.currentScene = null;
-            console.log('✅ Szene gelöscht:', s.name);
-            this.emit('scene-deleted', { id: id, name: s.name });
+            // console.log('✅ Szene gelöscht:', s.name);
+            // this.emit('scene-deleted', { id: id, name: s.name });
             return true;
         } catch (e) {
             console.error('❌ Löschen:', e);
@@ -93,7 +95,7 @@ class ScenesManager {
             const dup = { id: 'scene_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9), name: orig.name + ' (Kopie)', description: orig.description, color: { r: orig.color.r, g: orig.color.g, b: orig.color.b }, effect: orig.effect, brightness: orig.brightness, speed: orig.speed, devices: orig.devices.slice(), favorite: false, category: orig.category, tags: orig.tags.slice(), thumbnail: orig.thumbnail, createdAt: Date.now(), updatedAt: Date.now() };
             this.scenes.push(dup);
             this.save();
-            console.log('✅ Dupliziert:', dup.name);
+            // console.log('✅ Dupliziert:', dup.name);
             return dup;
         } catch (e) {
             console.error('❌ Duplizieren:', e);
@@ -105,7 +107,7 @@ class ScenesManager {
         try {
             const s = this.getScene(id);
             if (!s) throw new Error('Szene nicht gefunden');
-            console.log('🎬 Aktiviere:', s.name);
+            // console.log('🎬 Aktiviere:', s.name);
             let ok = false;
 
             if (window.ledController && window.ledController.isConnected) {
@@ -150,7 +152,6 @@ class ScenesManager {
             if (!ok) throw new Error('Keine Hardware-Verbindung');
             this.currentScene = s;
             console.log('✅ Aktiviert:', s.name);
-            this.notify('Szene "' + s.name + '" aktiviert', 'success');
             this.emit('scene-activated', s);
             return true;
         } catch (e) {
@@ -192,8 +193,8 @@ class ScenesManager {
             { name: 'Wald', description: 'Natürliches Grün', color: { r: 50, g: 200, b: 80 }, effect: 0, brightness: 75, speed: 50, category: 'Entspannung', tags: ['grün', 'natur'] },
             { name: 'Disco', description: 'Stroboskop', color: { r: 255, g: 255, b: 255 }, effect: 20, brightness: 100, speed: 100, category: 'Party', tags: ['schnell', 'stroboskop'] }
         ];
-        console.log('🎨 Erstelle ' + presets.length + ' Presets');
-        for (var i = 0; i < presets.length; i++) { this.createScene(presets[i]); }
+        console.log('🎨 Erstelle ' + presets.length + ' Presets (silent)');
+        for (var i = 0; i < presets.length; i++) { this.createScene(presets[i], true); }
         console.log('✅ Presets erstellt');
     }
 
@@ -252,7 +253,6 @@ class ScenesManager {
             }
             this.save();
             console.log('✅ ' + count + ' Szenen importiert');
-            this.notify(count + ' Szenen importiert', 'success');
             return count;
         } catch (e) {
             console.error('❌ Import:', e);
@@ -273,7 +273,6 @@ class ScenesManager {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
         console.log('✅ Szenen exportiert');
-        this.notify('Szenen exportiert', 'success');
     }
 
     save() {
@@ -295,7 +294,6 @@ class ScenesManager {
         this.currentScene = null;
         this.save();
         console.log('🗑️ Alle gelöscht');
-        this.notify('Alle Szenen gelöscht', 'info');
         return true;
     }
 

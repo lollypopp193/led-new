@@ -7,6 +7,50 @@
 let ledMusicEnabled = false;
 let automaticMode = false;
 let syncAllBands = false;
+let discoveredBands = [];
+let autoScanInterval = null;
+
+async function autoScanLEDBands() {
+    if (!window.bleController && !window.parent?.bleController) {
+        console.log('BLE-Controller nicht verfuegbar - Auto-Scan uebersprungen');
+        return;
+    }
+
+    try {
+        const controller = window.bleController || window.parent.bleController;
+        const devices = await controller.scanForDevices();
+
+        if (devices && devices.length > 0) {
+            discoveredBands = devices.filter(d => d.name && (d.name.includes('LED') || d.name.includes('BLE') || d.name.includes('Strip')));
+
+            if (discoveredBands.length > 0) {
+                console.log('Auto-Scan: ' + discoveredBands.length + ' LED-Baender gefunden');
+
+                const bandCount = Math.min(discoveredBands.length, 10);
+                const ledBandCountSlider = document.getElementById('ledBandCount');
+                if (ledBandCountSlider) {
+                    ledBandCountSlider.value = bandCount;
+                    document.getElementById('ledBandCountValue').textContent = bandCount;
+                    updateBandTabs(bandCount);
+                }
+
+                discoveredBands.forEach((device, index) => {
+                    if (window.audioReactiveEngine && window.audioReactiveEngine.ledStrips[index]) {
+                        window.audioReactiveEngine.ledStrips[index].connected = true;
+                        window.audioReactiveEngine.ledStrips[index].deviceInfo = device;
+                        window.audioReactiveEngine.ledStrips[index].name = device.name || ('LED-Band ' + (index + 1));
+                    }
+                });
+
+                if (window.showGlobalNotification) {
+                    window.showGlobalNotification(bandCount + ' LED-Baender automatisch erkannt', 'success');
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Auto-Scan Fehler:', error);
+    }
+}
 
 function initLEDMusicControls() {
     // Toggle-Switches Event-Listener
@@ -117,6 +161,8 @@ function initLEDMusicControls() {
             updateBandTabs(count);
         });
     }
+
+    autoScanLEDBands();
 
     console.log('✅ LED-Musik-Controller initialisiert');
 }
@@ -266,6 +312,7 @@ function createBandContent(bandIndex) {
 window.initLEDMusicControls = initLEDMusicControls;
 window.updateBandTabs = updateBandTabs;
 window.showBandContent = showBandContent;
+window.autoScanLEDBands = autoScanLEDBands;
 
 // Auto-Init
 if (document.readyState === 'loading') {

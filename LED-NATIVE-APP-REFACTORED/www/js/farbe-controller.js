@@ -277,6 +277,27 @@ function applyColorFromSlot(slotIndex) {
     if (color) {
         currentColor = { r: color.r, g: color.g, b: color.b };
         sendColorToBLE(color.r, color.g, color.b);
+
+        // Update Farbkreis-Vorschau
+        const colorPreview = document.getElementById('colorPreview');
+        if (colorPreview) {
+            colorPreview.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
+        }
+    }
+}
+
+function deleteColorFromSlot(slotIndex) {
+    try {
+        const slots = loadColorSlots();
+        delete slots[slotIndex];
+        localStorage.setItem('color-slots', JSON.stringify(slots));
+        renderColorSlots();
+
+        if (window.showNotification) {
+            window.showNotification('Farbe gelöscht', 'success');
+        }
+    } catch (err) {
+        console.error('Fehler beim Löschen:', err);
     }
 }
 
@@ -412,11 +433,210 @@ function initColorSlots() {
     });
 }
 
+// RGB-Popup Funktionen
+function openRGBPopup() {
+    const popup = document.getElementById('rgbPopup');
+    if (popup) {
+        popup.classList.add('active');
+
+        // Setze aktuelle Farbe in RGB-Slider
+        const redSlider = document.getElementById('redSlider');
+        const greenSlider = document.getElementById('greenSlider');
+        const blueSlider = document.getElementById('blueSlider');
+
+        if (redSlider) {
+            redSlider.value = currentColor.r;
+            document.getElementById('redValue').textContent = currentColor.r;
+        }
+        if (greenSlider) {
+            greenSlider.value = currentColor.g;
+            document.getElementById('greenValue').textContent = currentColor.g;
+        }
+        if (blueSlider) {
+            blueSlider.value = currentColor.b;
+            document.getElementById('blueValue').textContent = currentColor.b;
+        }
+
+        updateRGBPreview();
+    }
+}
+
+function closeRGBPopup() {
+    const popup = document.getElementById('rgbPopup');
+    if (popup) {
+        popup.classList.remove('active');
+    }
+}
+
+function updateRGBPreview() {
+    const r = parseInt(document.getElementById('redSlider')?.value || 0);
+    const g = parseInt(document.getElementById('greenSlider')?.value || 0);
+    const b = parseInt(document.getElementById('blueSlider')?.value || 0);
+
+    const preview = document.getElementById('rgbPreview');
+    if (preview) {
+        preview.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+    }
+
+    // Live-Update im Farbkreis
+    const colorPreview = document.getElementById('colorPreview');
+    if (colorPreview) {
+        colorPreview.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+    }
+
+    // Aktuelle Farbe aktualisieren
+    currentColor = { r, g, b };
+
+    // An Hardware senden
+    sendColorToBLE(r, g, b);
+}
+
+function initRGBSliders() {
+    const sliders = ['redSlider', 'greenSlider', 'blueSlider'];
+    const values = ['redValue', 'greenValue', 'blueValue'];
+
+    sliders.forEach((sliderId, index) => {
+        const slider = document.getElementById(sliderId);
+        const valueDisplay = document.getElementById(values[index]);
+
+        if (slider && valueDisplay) {
+            slider.addEventListener('input', (e) => {
+                valueDisplay.textContent = e.target.value;
+                updateRGBPreview();
+            });
+        }
+    });
+
+    // RGB-Button Event
+    const rgbBtn = document.getElementById('rgbButton');
+    if (rgbBtn) {
+        rgbBtn.addEventListener('click', openRGBPopup);
+    }
+
+    // Close-Button im Popup
+    const popup = document.getElementById('rgbPopup');
+    if (popup) {
+        popup.addEventListener('click', (e) => {
+            if (e.target === popup) {
+                closeRGBPopup();
+            }
+        });
+    }
+}
+
+// Helligkeit-Slider Init
+function initBrightnessSlider() {
+    const brightnessSlider = document.getElementById('brightnessSlider');
+    const brightnessValue = document.getElementById('brightnessValue');
+
+    if (brightnessSlider && brightnessValue) {
+        brightnessSlider.addEventListener('input', (e) => {
+            const value = e.target.value;
+            brightnessValue.textContent = value + '%';
+
+            // Farbe mit neuer Helligkeit senden
+            const brightness = value / 100;
+            const adjustedR = Math.round(currentColor.r * brightness);
+            const adjustedG = Math.round(currentColor.g * brightness);
+            const adjustedB = Math.round(currentColor.b * brightness);
+
+            sendColorToBLE(adjustedR, adjustedG, adjustedB);
+        });
+    }
+}
+
+// Power-Toggle Init
+function initPowerToggle() {
+    const powerToggle = document.getElementById('powerToggle');
+    const powerLabel = document.getElementById('powerLabel');
+
+    if (powerToggle) {
+        // Initial Label setzen
+        if (powerLabel) {
+            powerLabel.textContent = powerToggle.checked ? 'EIN' : 'AUS';
+            powerLabel.style.color = powerToggle.checked ? '#4ecdc4' : '#888';
+        }
+
+        powerToggle.addEventListener('change', async (e) => {
+            const isOn = e.target.checked;
+
+            // Update Label
+            if (powerLabel) {
+                powerLabel.textContent = isOn ? 'EIN' : 'AUS';
+                powerLabel.style.color = isOn ? '#4ecdc4' : '#888';
+            }
+
+            if (isOn) {
+                // LED einschalten - letzte Farbe senden
+                const brightness = document.getElementById('brightnessSlider')?.value || 100;
+                const adjustedR = Math.round(currentColor.r * (brightness / 100));
+                const adjustedG = Math.round(currentColor.g * (brightness / 100));
+                const adjustedB = Math.round(currentColor.b * (brightness / 100));
+
+                await sendColorToBLE(adjustedR, adjustedG, adjustedB);
+
+                if (window.showNotification) {
+                    window.showNotification('LED eingeschaltet', 'success');
+                }
+            } else {
+                // LED ausschalten - RGB(0,0,0) senden
+                await sendColorToBLE(0, 0, 0);
+
+                if (window.showNotification) {
+                    window.showNotification('LED ausgeschaltet', 'info');
+                }
+            }
+        });
+    }
+}
+
+// Basic-Farben-Buttons Init
+function initBasicColors() {
+    const basicColors = [
+        { name: 'Rot', r: 255, g: 0, b: 0 },
+        { name: 'Grün', r: 0, g: 255, b: 0 },
+        { name: 'Blau', r: 0, g: 0, b: 255 },
+        { name: 'Gelb', r: 255, g: 255, b: 0 },
+        { name: 'Cyan', r: 0, g: 255, b: 255 },
+        { name: 'Magenta', r: 255, g: 0, b: 255 },
+        { name: 'Weiß', r: 255, g: 255, b: 255 },
+        { name: 'Orange', r: 255, g: 165, b: 0 }
+    ];
+
+    const colorPresets = document.querySelectorAll('.preset-color');
+    colorPresets.forEach((btn, index) => {
+        if (basicColors[index]) {
+            btn.addEventListener('click', () => {
+                const color = basicColors[index];
+                currentColor = { r: color.r, g: color.g, b: color.b };
+
+                // Update Vorschau
+                const colorPreview = document.getElementById('colorPreview');
+                if (colorPreview) {
+                    colorPreview.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
+                }
+
+                // Farbe senden
+                const brightness = document.getElementById('brightnessSlider')?.value || 100;
+                const adjustedR = Math.round(color.r * (brightness / 100));
+                const adjustedG = Math.round(color.g * (brightness / 100));
+                const adjustedB = Math.round(color.b * (brightness / 100));
+
+                sendColorToBLE(adjustedR, adjustedG, adjustedB);
+            });
+        }
+    });
+}
+
 function initFarbeController() {
     initBLE();
     initColorWheel();
     initColorSlots();
-    console.log(' Farbe-Controller initialisiert');
+    initRGBSliders();
+    initBrightnessSlider();
+    initPowerToggle();
+    initBasicColors();
+    console.log('✅ Farbe-Controller vollständig initialisiert');
 }
 
 // Global Export
@@ -429,6 +649,9 @@ window.applyColor = applyColor;
 window.getColorFromPosition = getColorFromPosition;
 window.hsvToRgb = hsvToRgb;
 window.currentColor = currentColor;
+window.openRGBPopup = openRGBPopup;
+window.closeRGBPopup = closeRGBPopup;
+window.deleteColorFromSlot = deleteColorFromSlot;
 
 // Auto-Init
 if (document.readyState === 'loading') {

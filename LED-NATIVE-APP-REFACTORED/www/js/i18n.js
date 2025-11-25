@@ -1,21 +1,61 @@
 /**
- * i18n - Internationalisierung für LED Native App
- * Unterstützt Deutsch (Standard) und Englisch
+ * i18n - Internationalisierung für LED Native App v2.0
+ * Unterstützt Deutsch, Englisch, Spanisch, Französisch
+ * AUTO-AKTIVIERT beim App-Start
  */
 
-const translations = {
+const i18n = {
+    currentLanguage: 'de',
+    fallbackLanguage: 'de',
+
+    init() {
+        // Auto-Erkennung Browser-Sprache
+        const browserLang = (navigator.language || navigator.userLanguage || 'de').split('-')[0];
+        const savedLang = localStorage.getItem('app-language');
+        this.currentLanguage = savedLang || (this.translations[browserLang] ? browserLang : this.fallbackLanguage);
+        console.log(`🌍 i18n aktiviert: ${this.currentLanguage}`);
+    },
+
+    setLanguage(lang) {
+        if (this.translations[lang]) {
+            this.currentLanguage = lang;
+            localStorage.setItem('app-language', lang);
+            this.updateDOM();
+            console.log(`🌍 Sprache geändert: ${lang}`);
+        }
+    },
+
+    t(key) {
+        return this.translations[this.currentLanguage][key] || this.translations[this.fallbackLanguage][key] || key;
+    },
+
+    updateDOM() {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            el.textContent = this.t(key);
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-i18n-placeholder');
+            el.placeholder = this.t(key);
+        });
+    },
+
+    translations: {}
+};
+
+i18n.translations = {
     de: {
         // Allgemein
         'app.title': 'LED Control Pro',
-        'app.loading': 'Lädt...',
+        'app.loading': 'Laedt...',
         'app.error': 'Fehler',
         'app.success': 'Erfolg',
         'app.cancel': 'Abbrechen',
         'app.save': 'Speichern',
-        'app.delete': 'Löschen',
+        'app.delete': 'Loeschen',
         'app.reset': 'Zurücksetzen',
-        'app.close': 'Schließen',
-        'app.confirm': 'Bestätigen',
+        'app.close': 'Schliessen',
+        'app.confirm': 'Bestaetigen',
 
         // Navigation
         'nav.farbe': 'Farbe',
@@ -232,6 +272,238 @@ const translations = {
         'toast.disconnected': 'Disconnected',
         'toast.error': 'An error occurred',
         'toast.saved': 'Saved!',
+    },
+
+    // Spanisch
+    es: {
+        // General
+        'app.title': 'LED Control Pro',
+        'app.loading': 'Cargando...',
+        'app.error': 'Error',
+        'app.success': 'Exito',
+        'app.cancel': 'Cancelar',
+        'app.save': 'Guardar',
+        'app.delete': 'Eliminar',
+        'app.reset': 'Restablecer',
+        'app.close': 'Cerrar',
+        'app.confirm': 'Confirmar',
+
+        // Navigation
+        'nav.farbe': 'Color',
+        'nav.effekt': 'Efectos',
+        'nav.musik': 'Musica',
+        'nav.timer': 'Temporizador',
+        'nav.settings': 'Ajustes',
+
+        // Color
+        'color.title': 'Seleccion de Color',
+        'color.rgb': 'Controles RGB',
+        'color.red': 'Rojo (R)',
+        'color.green': 'Verde (G)',
+        'color.blue': 'Azul (B)',
+        'color.brightness': 'Brillo',
+        'color.saved': 'Colores Guardados',
+        'color.saveSuccess': 'Color guardado!',
+        'color.deleteConfirm': 'Eliminar color?',
+        'color.deleteSuccess': 'Color eliminado!',
+
+        // Effects
+        'effect.title': 'Efectos LED',
+        'effect.speed': 'Velocidad',
+        'effect.intensity': 'Intensidad',
+        'effect.preview': 'Vista previa',
+        'effect.apply': 'Aplicar',
+        'effect.feuer': 'Fuego',
+        'effect.matrix': 'Matrix',
+        'effect.nordlicht': 'Aurora',
+        'effect.glitzer': 'Brillo',
+        'effect.lava': 'Lava',
+        'effect.spirale': 'Espiral',
+        'effect.komet': 'Cometa',
+
+        // Music
+        'music.title': 'Reproductor de Musica',
+        'music.play': 'Reproducir',
+        'music.pause': 'Pausar',
+        'music.next': 'Siguiente',
+        'music.previous': 'Anterior',
+        'music.shuffle': 'Aleatorio',
+        'music.repeat': 'Repetir',
+        'music.favorite': 'Favorito',
+        'music.playlist': 'Lista',
+        'music.library': 'Biblioteca',
+        'music.nowPlaying': 'Reproduciendo',
+        'music.unknownArtist': 'Artista Desconocido',
+        'music.unknownTitle': 'Titulo Desconocido',
+        'music.unknownAlbum': 'Album Desconocido',
+
+        // Equalizer
+        'eq.title': 'Ecualizador',
+        'eq.enable': 'Activar Ecualizador',
+        'eq.preset': 'Ajuste predefinido',
+        'eq.flat': 'Plano',
+        'eq.pop': 'Pop',
+        'eq.rock': 'Rock',
+        'eq.bass': 'Refuerzo de Graves',
+        'eq.jazz': 'Jazz',
+        'eq.classical': 'Clasica',
+        'eq.savecustom': 'Guardar Ajuste Personal',
+        'eq.bassboost': 'Refuerzo de Graves',
+        'eq.bassboostIntensity': 'Intensidad del Refuerzo',
+
+        // LED-Music
+        'ledmusic.title': 'LED Musica',
+        'ledmusic.enable': 'LED Musica Activado',
+        'ledmusic.automatic': 'Modo Automatico',
+        'ledmusic.syncAll': 'Sincronizar Todo',
+        'ledmusic.bandCount': 'Numero de Bandas LED',
+        'ledmusic.scan': 'Escanear Bandas LED',
+        'ledmusic.bass': 'Graves',
+        'ledmusic.mid': 'Medios',
+        'ledmusic.treble': 'Agudos',
+        'ledmusic.frequency': 'Rango de Frecuencia',
+
+        // Timer
+        'timer.title': 'Temporizador y Automatizacion',
+        'timer.new': 'Nuevo Temporizador',
+        'timer.time': 'Hora',
+        'timer.action': 'Accion',
+        'timer.repeat': 'Repetir',
+        'timer.enabled': 'Activado',
+
+        // Settings
+        'settings.title': 'Ajustes',
+        'settings.language': 'Idioma',
+        'settings.theme': 'Tema',
+        'settings.bluetooth': 'Bluetooth',
+        'settings.wled': 'WLED/WiFi',
+        'settings.backup': 'Copia de Seguridad',
+        'settings.about': 'Acerca de',
+
+        // Toast
+        'toast.colorSaved': 'Color guardado!',
+        'toast.colorDeleted': 'Color eliminado!',
+        'toast.effectApplied': 'Efecto aplicado!',
+        'toast.connected': 'Conectado!',
+        'toast.disconnected': 'Desconectado',
+        'toast.error': 'Ocurrio un error',
+        'toast.saved': 'Guardado!',
+    },
+
+    // Französisch
+    fr: {
+        // General
+        'app.title': 'LED Control Pro',
+        'app.loading': 'Chargement...',
+        'app.error': 'Erreur',
+        'app.success': 'Succes',
+        'app.cancel': 'Annuler',
+        'app.save': 'Enregistrer',
+        'app.delete': 'Supprimer',
+        'app.reset': 'Reinitialiser',
+        'app.close': 'Fermer',
+        'app.confirm': 'Confirmer',
+
+        // Navigation
+        'nav.farbe': 'Couleur',
+        'nav.effekt': 'Effets',
+        'nav.musik': 'Musique',
+        'nav.timer': 'Minuteur',
+        'nav.settings': 'Parametres',
+
+        // Color
+        'color.title': 'Selection de Couleur',
+        'color.rgb': 'Controles RGB',
+        'color.red': 'Rouge (R)',
+        'color.green': 'Vert (G)',
+        'color.blue': 'Bleu (B)',
+        'color.brightness': 'Luminosite',
+        'color.saved': 'Couleurs Enregistrees',
+        'color.saveSuccess': 'Couleur enregistree!',
+        'color.deleteConfirm': 'Supprimer la couleur?',
+        'color.deleteSuccess': 'Couleur supprimee!',
+
+        // Effects
+        'effect.title': 'Effets LED',
+        'effect.speed': 'Vitesse',
+        'effect.intensity': 'Intensite',
+        'effect.preview': 'Apercu',
+        'effect.apply': 'Appliquer',
+        'effect.feuer': 'Feu',
+        'effect.matrix': 'Matrix',
+        'effect.nordlicht': 'Aurore',
+        'effect.glitzer': 'Paillettes',
+        'effect.lava': 'Lave',
+        'effect.spirale': 'Spirale',
+        'effect.komet': 'Comete',
+
+        // Music
+        'music.title': 'Lecteur de Musique',
+        'music.play': 'Lire',
+        'music.pause': 'Pause',
+        'music.next': 'Suivant',
+        'music.previous': 'Precedent',
+        'music.shuffle': 'Aleatoire',
+        'music.repeat': 'Repeter',
+        'music.favorite': 'Favori',
+        'music.playlist': 'Liste',
+        'music.library': 'Bibliotheque',
+        'music.nowPlaying': 'Lecture en cours',
+        'music.unknownArtist': 'Artiste Inconnu',
+        'music.unknownTitle': 'Titre Inconnu',
+        'music.unknownAlbum': 'Album Inconnu',
+
+        // Equalizer
+        'eq.title': 'Egaliseur',
+        'eq.enable': 'Activer Egaliseur',
+        'eq.preset': 'Preset',
+        'eq.flat': 'Plat',
+        'eq.pop': 'Pop',
+        'eq.rock': 'Rock',
+        'eq.bass': 'Renforcement Basses',
+        'eq.jazz': 'Jazz',
+        'eq.classical': 'Classique',
+        'eq.savecustom': 'Enregistrer Preset',
+        'eq.bassboost': 'Renforcement Basses',
+        'eq.bassboostIntensity': 'Intensite du Renforcement',
+
+        // LED-Music
+        'ledmusic.title': 'LED Musique',
+        'ledmusic.enable': 'LED Musique Active',
+        'ledmusic.automatic': 'Mode Automatique',
+        'ledmusic.syncAll': 'Synchroniser Tout',
+        'ledmusic.bandCount': 'Nombre de Bandes LED',
+        'ledmusic.scan': 'Scanner Bandes LED',
+        'ledmusic.bass': 'Basses',
+        'ledmusic.mid': 'Mediums',
+        'ledmusic.treble': 'Aigus',
+        'ledmusic.frequency': 'Plage de Frequence',
+
+        // Timer
+        'timer.title': 'Minuteur et Automatisation',
+        'timer.new': 'Nouveau Minuteur',
+        'timer.time': 'Heure',
+        'timer.action': 'Action',
+        'timer.repeat': 'Repeter',
+        'timer.enabled': 'Active',
+
+        // Settings
+        'settings.title': 'Parametres',
+        'settings.language': 'Langue',
+        'settings.theme': 'Theme',
+        'settings.bluetooth': 'Bluetooth',
+        'settings.wled': 'WLED/WiFi',
+        'settings.backup': 'Sauvegarde et Restauration',
+        'settings.about': 'A propos',
+
+        // Toast
+        'toast.colorSaved': 'Couleur enregistree!',
+        'toast.colorDeleted': 'Couleur supprimee!',
+        'toast.effectApplied': 'Effet applique!',
+        'toast.connected': 'Connecte!',
+        'toast.disconnected': 'Deconnecte',
+        'toast.error': 'Une erreur est survenue',
+        'toast.saved': 'Enregistre!',
     }
 };
 
@@ -243,7 +515,7 @@ class I18n {
 
     /**
      * Ändert die aktuelle Sprache
-     * @param {string} lang - Sprachcode (de, en)
+     * @param {string} lang - Sprachcode (de, en, es, fr)
      */
     setLanguage(lang) {
         if (!this.translations[lang]) {
@@ -260,9 +532,16 @@ class I18n {
         // Event für andere Module
         window.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
 
+        const messages = {
+            'de': 'Sprache geaendert: Deutsch',
+            'en': 'Language changed: English',
+            'es': 'Idioma cambiado: Espanol',
+            'fr': 'Langue modifiee: Francais'
+        };
+
         if (window.showGlobalNotification) {
             window.showGlobalNotification(
-                lang === 'de' ? 'Sprache geändert: Deutsch' : 'Language changed: English',
+                messages[lang] || messages['de'],
                 'success'
             );
         }
@@ -325,18 +604,20 @@ class I18n {
     }
 }
 
-// Globale Instanz
-const i18n = new I18n();
-
 // Auto-Init beim Laden
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => i18n.updateDOM());
+    document.addEventListener('DOMContentLoaded', () => {
+        i18n.init();
+        i18n.updateDOM();
+    });
 } else {
+    i18n.init();
     i18n.updateDOM();
 }
 
 // Globaler Export
 window.i18n = i18n;
-window.__ = (key, params) => i18n.t(key, params); // Shortcut-Funktion
+window.__ = (key) => i18n.t(key); // Shortcut-Funktion
+window.setLanguage = (lang) => i18n.setLanguage(lang); // Helper für UI
 
-console.log('✅ i18n-System geladen - Sprache:', i18n.getCurrentLanguage());
+console.log('✅ i18n-System v2.0 geladen - Sprache:', i18n.currentLanguage);

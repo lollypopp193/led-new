@@ -582,8 +582,8 @@
           </div>
         </div>
 
-        <!-- ✅ ERWEITERTE BLUETOOTH & LED-EINSTELLUNGEN -->
-        <div class="section">
+        <!-- Erweiterte Protokolle (WLED, Pixel-Level, etc.) entfernt - nicht benoetigt -->
+        <!-- <div class="section">
           <h3 class="section-title">🌐 Erweiterte Protokolle</h3>
           <div class="setting-item">
             <div class="setting-label">
@@ -649,11 +649,11 @@
               <div class="switch-handle"></div>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- Allgemeine Einstellungen -->
         <div class="section">
-          <h3 class="section-title">⚙️ Allgemein</h3>
+          <h3 class="section-title">Allgemein</h3>
           <div class="setting-item">
             <div class="setting-label">
               <div class="setting-title">Automatisch verbinden</div>
@@ -720,8 +720,369 @@
           </div>
         </div>
 
-        <!-- Erweiterte Einstellungen -->
-        <div class="section">
+        <!-- ========== NEUE SEKTIONEN (v3.0) ========== -->
+
+        <!-- SEKTION 1: BLUETOOTH-VERWALTUNG -->
+        <div class="section settings-section">
+          <div class="section-header">
+            <i class="fas fa-bluetooth-b"></i>
+            <h2>Bluetooth-Geräte</h2>
+          </div>
+
+          <div id="saved-devices" class="device-list">
+            <!-- Geräte werden hier dynamisch eingefügt -->
+          </div>
+
+          <button class="btn-primary btn-full" onclick="scanForNewDevice()">
+            <i class="fas fa-search"></i> Neues Gerät suchen
+          </button>
+
+          <div class="setting-row">
+            <div class="setting-label">
+              <i class="fas fa-sync"></i>
+              <div>
+                <h4>Automatisch verbinden</h4>
+                <p class="description">Beim App-Start gespeicherte Geräte verbinden</p>
+              </div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="autoReconnect" checked onchange="toggleAutoReconnect(this.checked)">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-label">
+              <i class="fas fa-bell"></i>
+              <div>
+                <h4>Hintergrund-Verbindung</h4>
+                <p class="description">Bluetooth-Verbindung im Hintergrund halten</p>
+              </div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="foregroundService" checked onchange="toggleForegroundService(this.checked)">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- SEKTION 2: MUSIKBIBLIOTHEK-VERWALTUNG -->
+        <div class="section settings-section">
+          <div class="section-header">
+            <i class="fas fa-music"></i>
+            <h2>Musikbibliothek</h2>
+          </div>
+
+          <div class="music-stats">
+            <div class="stat-card">
+              <i class="fas fa-compact-disc"></i>
+              <div>
+                <h3 id="totalTracks">--</h3>
+                <p>Titel</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-folder"></i>
+              <div>
+                <h3 id="totalFolders">--</h3>
+                <p>Ordner</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-clock"></i>
+              <div>
+                <h3 id="totalDuration">--:--:--</h3>
+                <p>Gesamtdauer</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="scan-actions">
+            <button class="btn-secondary" onclick="scanMediaStore()">
+              <i class="fas fa-mobile-alt"></i> System-Musik scannen
+            </button>
+            <button class="btn-secondary" onclick="requestSAFAccess()">
+              <i class="fas fa-sd-card"></i> SD-Karte Ordner hinzufügen
+            </button>
+          </div>
+
+          <div id="scanProgress" class="scan-progress" style="display: none;">
+            <div class="progress-header">
+              <span id="scanStatus">Scanne Musikdateien...</span>
+              <span id="scanCount">0 / 0</span>
+            </div>
+            <div class="progress-bar-container">
+              <div class="progress-bar" id="progressBar" style="width: 0%;"></div>
+            </div>
+            <button class="btn-text" onclick="cancelScan()">Abbrechen</button>
+          </div>
+
+          <div class="scanned-folders" id="scannedFolders" style="display: none;">
+            <h4>Gescannte Ordner:</h4>
+            <div class="folder-list" id="folderList">
+              <!-- Ordner werden hier dynamisch eingefügt -->
+            </div>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-label">
+              <i class="fas fa-sync"></i>
+              <div>
+                <h4>Automatisch aktualisieren</h4>
+                <p class="description">Neue Musikdateien automatisch erkennen</p>
+              </div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="autoScanMusic" checked onchange="toggleAutoScan(this.checked)">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- SEKTION 3: MUSIK-REAKTION EINSTELLUNGEN -->
+        <div class="section settings-section">
+          <div class="section-header">
+            <i class="fas fa-sliders-h"></i>
+            <h2>Musik-Reaktion</h2>
+          </div>
+
+          <div class="preset-selector" style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 600;">Reaktions-Preset:</label>
+            <select id="reactionPreset" onchange="loadReactionPreset(this.value)" style="width: 100%;">
+              <option value="balanced">Ausgewogen</option>
+              <option value="bass-heavy">Bass betont</option>
+              <option value="treble-focus">Höhen betont</option>
+              <option value="party">Party-Modus</option>
+              <option value="chill">Entspannt</option>
+              <option value="custom">Benutzerdefiniert</option>
+            </select>
+          </div>
+
+          <div class="slider-control">
+            <div class="slider-header">
+              <label><i class="fas fa-tachometer-alt"></i> Empfindlichkeit</label>
+              <span id="sensitivityValue" class="slider-value">1.0</span>
+            </div>
+            <input type="range" id="sensitivity" min="0.1" max="2.0" step="0.1" value="1.0" oninput="updateSensitivity(this.value)">
+            <div class="slider-labels">
+              <span>Sanft</span>
+              <span>Normal</span>
+              <span>Intensiv</span>
+            </div>
+          </div>
+
+          <div class="slider-control">
+            <div class="slider-header">
+              <label><i class="fas fa-wave-square"></i> Glättung</label>
+              <span id="smoothingValue" class="slider-value">0.7</span>
+            </div>
+            <input type="range" id="smoothing" min="0" max="1" step="0.1" value="0.7" oninput="updateSmoothing(this.value)">
+            <div class="slider-labels">
+              <span>Direkt</span>
+              <span>Mittel</span>
+              <span>Sanft</span>
+            </div>
+          </div>
+
+          <div class="slider-control">
+            <div class="slider-header">
+              <label><i class="fas fa-bolt"></i> Geschwindigkeit</label>
+              <span id="speedValue" class="slider-value">1.0x</span>
+            </div>
+            <input type="range" id="speed" min="0.5" max="3.0" step="0.1" value="1.0" oninput="updateSpeed(this.value)">
+            <div class="slider-labels">
+              <span>0.5x</span>
+              <span>1.0x</span>
+              <span>3.0x</span>
+            </div>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-label">
+              <i class="fas fa-heartbeat"></i>
+              <div>
+                <h4>Beat-Erkennung</h4>
+                <p class="description">LED reagiert auf erkannte Beats</p>
+              </div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="beatDetection" checked onchange="toggleBeatDetection(this.checked)">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="preset-actions">
+            <button class="btn-secondary" onclick="saveCustomPreset()">
+              <i class="fas fa-save"></i> Als Preset speichern
+            </button>
+            <button class="btn-text" onclick="resetToDefault()">
+              <i class="fas fa-undo"></i> Zurücksetzen
+            </button>
+          </div>
+        </div>
+
+        <!-- SEKTION 4: PRESET-VERWALTUNG -->
+        <div class="section settings-section">
+          <div class="section-header">
+            <i class="fas fa-star"></i>
+            <h2>Presets</h2>
+          </div>
+
+          <div class="preset-list" id="presetList">
+            <!-- Presets werden hier dynamisch eingefügt -->
+          </div>
+
+          <div class="preset-buttons">
+            <button class="btn-secondary" onclick="importPreset()">
+              <i class="fas fa-upload"></i> Preset importieren
+            </button>
+            <button class="btn-secondary" onclick="createNewPreset()">
+              <i class="fas fa-plus"></i> Neues Preset
+            </button>
+          </div>
+
+          <div class="device-sync" id="deviceSync" style="margin-top: 20px;">
+            <h4>Presets synchronisieren:</h4>
+            <p class="description" style="margin-bottom: 15px;">Aktuelles Preset auf andere Geräte übertragen</p>
+            <div class="device-sync-list" id="syncDeviceList">
+              <!-- Devices für Sync werden hier dynamisch eingefügt -->
+            </div>
+            <button class="btn-primary btn-full" onclick="syncPresetsToDevices()" style="margin-top: 15px;">
+              <i class="fas fa-sync"></i> Auf ausgewählte Geräte übertragen
+            </button>
+          </div>
+        </div>
+
+        <!-- SEKTION 5: ERWEITERT & BACKUP -->
+        <div class="section settings-section">
+          <div class="section-header">
+            <i class="fas fa-tools"></i>
+            <h2>Erweitert</h2>
+          </div>
+
+          <div class="cache-management" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 10px; margin-bottom: 20px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <i class="fas fa-database" style="font-size: 24px; color: var(--primary);"></i>
+              <div>
+                <h4 style="margin-bottom: 4px;">Cache & Daten</h4>
+                <p style="font-size: 12px; color: #aaa;">Musik-Index: <span id="cacheSize">-- MB</span></p>
+              </div>
+            </div>
+            <button class="btn-secondary" onclick="clearCache()">
+              <i class="fas fa-broom"></i> Cache leeren
+            </button>
+          </div>
+
+          <div class="backup-controls" style="margin-bottom: 20px;">
+            <h4 style="margin-bottom: 15px;">Backup & Wiederherstellung:</h4>
+            <button class="btn-secondary btn-full" onclick="createBackup()" style="margin-bottom: 10px;">
+              <i class="fas fa-download"></i> Backup erstellen
+            </button>
+            <button class="btn-secondary btn-full" onclick="restoreBackup()">
+              <i class="fas fa-upload"></i> Backup wiederherstellen
+            </button>
+            <p class="description" style="margin-top: 10px; text-align: center; font-size: 12px;">
+              Sichert: Geräte, Presets, Einstellungen, Musik-Index
+            </p>
+          </div>
+
+          <div class="diagnostics" style="margin-bottom: 20px;">
+            <h4 style="margin-bottom: 15px;">Diagnose:</h4>
+            <div class="diagnostic-info">
+              <div class="diagnostic-item">
+                <span>Bluetooth Status:</span>
+                <span class="status-badge success" id="btStatus">OK</span>
+              </div>
+              <div class="diagnostic-item">
+                <span>Berechtigungen:</span>
+                <span class="status-badge success" id="permStatus">Alle erteilt</span>
+              </div>
+              <div class="diagnostic-item">
+                <span>Foreground Service:</span>
+                <span class="status-badge success" id="fgServiceStatus">Aktiv</span>
+              </div>
+              <div class="diagnostic-item">
+                <span>Musikbibliothek:</span>
+                <span class="status-badge warning" id="libStatus">-- Titel</span>
+              </div>
+            </div>
+            <button class="btn-text" onclick="runFullDiagnostic()" style="width: 100%; justify-content: center; margin-top: 10px;">
+              <i class="fas fa-stethoscope"></i> Vollständige Diagnose
+            </button>
+          </div>
+
+          <div class="app-info" style="margin-bottom: 20px;">
+            <h4 style="margin-bottom: 10px;">App-Informationen:</h4>
+            <p style="font-size: 14px; color: #aaa; margin: 5px 0;">Version: 3.0.0</p>
+            <p style="font-size: 14px; color: #aaa; margin: 5px 0;">Build: 2025-11-24</p>
+            <p style="font-size: 14px; color: #aaa; margin: 5px 0;">Capacitor: 7.4.4</p>
+            <button class="btn-text" onclick="checkForUpdates()" style="width: 100%; justify-content: center; margin-top: 10px;">
+              <i class="fas fa-sync-alt"></i> Auf Updates prüfen
+            </button>
+          </div>
+
+          <div class="reset-section">
+            <h4 class="warning-text" style="margin-bottom: 15px;">Gefahr-Zone:</h4>
+            <button class="btn-danger btn-full" onclick="confirmResetApp()">
+              <i class="fas fa-exclamation-triangle"></i> App zurücksetzen
+            </button>
+            <p class="description warning-text" style="margin-top: 10px; text-align: center; font-size: 12px;">
+              Löscht ALLE Daten inkl. gespeicherte Geräte und Presets
+            </p>
+          </div>
+        </div>
+
+        <!-- SEKTION 6: HILFE & SUPPORT -->
+        <div class="section settings-section">
+          <div class="section-header">
+            <i class="fas fa-question-circle"></i>
+            <h2>Hilfe & Support</h2>
+          </div>
+
+          <div class="faq-links">
+            <a href="#" class="help-link" onclick="openFAQ('bluetooth'); return false;">
+              <i class="fas fa-bluetooth-b"></i>
+              <span>Bluetooth-Probleme lösen</span>
+              <i class="fas fa-chevron-right"></i>
+            </a>
+            <a href="#" class="help-link" onclick="openFAQ('music'); return false;">
+              <i class="fas fa-music"></i>
+              <span>Musik wird nicht gefunden</span>
+              <i class="fas fa-chevron-right"></i>
+            </a>
+            <a href="#" class="help-link" onclick="openFAQ('permissions'); return false;">
+              <i class="fas fa-shield-alt"></i>
+              <span>Berechtigungen verstehen</span>
+              <i class="fas fa-chevron-right"></i>
+            </a>
+            <a href="#" class="help-link" onclick="openFAQ('audio-analysis'); return false;">
+              <i class="fas fa-wave-square"></i>
+              <span>Audio-Analyse Einstellungen</span>
+              <i class="fas fa-chevron-right"></i>
+            </a>
+          </div>
+
+          <div class="contact-section" style="margin-top: 20px;">
+            <h4 style="margin-bottom: 15px;">Kontakt & Feedback:</h4>
+            <button class="btn-secondary btn-full" onclick="sendFeedback()" style="margin-bottom: 10px;">
+              <i class="fas fa-envelope"></i> Feedback senden
+            </button>
+            <button class="btn-secondary btn-full" onclick="reportBug()">
+              <i class="fas fa-bug"></i> Bug melden
+            </button>
+          </div>
+
+          <div class="legal-links">
+            <a href="#" onclick="openPrivacyPolicy(); return false;">Datenschutzerklärung</a>
+            <span>•</span>
+            <a href="#" onclick="openTerms(); return false;">Nutzungsbedingungen</a>
+            <span>•</span>
+            <a href="#" onclick="openLicenses(); return false;">Open-Source-Lizenzen</a>
+          </div>
+        </div>
+
+        <!-- Erweiterte Einstellungen (FPS, Paketgröße, HDR, Mikrofon) entfernt - nicht benötigt -->
+        <!-- <div class="section">
           <h3 class="section-title">🔧 Erweiterte Einstellungen</h3>
           <div class="setting-item">
             <div class="setting-label">
@@ -798,6 +1159,8 @@
     <!-- BLE Controller einbinden -->
     <!-- BLE Controller mit absolutem Pfad für iframe-Kompatibilität -->
     <script src="/js/ble-controller-pro.js"></script>
+    <!-- i18n für Sprachunterstützung -->
+    <script src="/js/i18n.js"></script>
     <!-- Einstellungen Controller JS -->
     <script src="/js/einstellungen-controller.js"></script>
   </body>

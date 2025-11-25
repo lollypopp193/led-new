@@ -97,10 +97,22 @@
     <!-- Notification System (load first) -->
     <script src="js/notifications.js"></script>
 
+    <!-- Permissions Handler -->
+    <script src="js/permissions-handler.js"></script>
+    <script src="js/android-permissions-manager.js"></script>
+    <script src="js/permissions-sequencer.js"></script>
+
     <!-- i18n System (load early) -->
     <script src="js/i18n.js"></script>
 
+    <!-- Bluetooth & Audio Core -->
+    <script src="js/bluetooth-foreground-service.js"></script>
+    <script src="js/audio-decoder-fft.js"></script>
+    <script src="js/android-music-scanner.js"></script>
+
     <!-- Core Modules (load before app.js) -->
+    <script src="js/ble-controller-pro.js"></script>
+    <script src="js/led-auto-scanner.js"></script>
     <script src="js/event-manager.js"></script>
     <script src="js/performance-optimizer.js"></script>
     <script src="js/led-abstraction-layer.js"></script>
@@ -114,6 +126,15 @@
     <script src="js/bassboost-controller.js"></script>
     <script src="js/crossfade-controller.js"></script>
     <script src="js/bpm-analyzer.js"></script>
+    <script src="js/sleep-timer-controller.js"></script>
+    <script src="js/sleep-timer-ui-controller.js"></script>
+    <script src="js/music-alarm-controller.js"></script>
+    <script src="js/crossfade-slider-fix.js"></script>
+    <script src="js/library-auto-scanner.js"></script>
+    <script src="js/library-search-filter.js"></script>
+    <script src="js/playlist-import-export.js"></script>
+    <script src="js/sonderzeichen-replacer.js"></script>
+    <script src="js/led-sidebar.js"></script>
 
     <!-- App JavaScript (Main) -->
     <script src="js/app.js"></script>

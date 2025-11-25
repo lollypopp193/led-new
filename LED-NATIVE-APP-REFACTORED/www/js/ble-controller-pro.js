@@ -175,6 +175,16 @@ class BLEController {
                 window.updateGlobalBLEStatus();
             }
 
+            // Save device to Foreground Service
+            if (window.BluetoothForegroundService) {
+                await window.BluetoothForegroundService.saveDevice(this.device, true, {
+                    serviceUUID: serviceUUID,
+                    characteristicUUID: charUUID
+                });
+                window.BluetoothForegroundService.onDeviceConnected(this.deviceId, this.deviceName);
+                console.log('✅ Device saved to Foreground Service');
+            }
+
             return true;
         } catch (error) {
             console.error('Connection failed:', error);
@@ -507,6 +517,12 @@ class BLEController {
             window.updateGlobalBLEStatus();
         }
 
+        // Notify Foreground Service
+        if (window.BluetoothForegroundService && this.deviceId) {
+            window.BluetoothForegroundService.onDeviceDisconnected(this.deviceId);
+            console.log('⚠️ Device disconnection reported to Foreground Service');
+        }
+
         // Attempt auto-reconnect
         this.attemptAutoReconnect();
     }
@@ -696,10 +712,47 @@ class BLEController {
         this.wledEnabled = enabled;
         console.log(`WLED integration ${enabled ? 'enabled' : 'disabled'}`);
     }
+
+    /**
+     * Reconnect to device by ID (for Foreground Service)
+     * @param {string} deviceId - Device ID to reconnect
+     * @returns {Promise<boolean>}
+     */
+    async reconnectToDevice(deviceId) {
+        try {
+            console.log(`🔄 Reconnecting to device: ${deviceId}`);
+
+            // If already connected to this device
+            if (this.isConnected && this.deviceId === deviceId) {
+                console.log('✅ Already connected to this device');
+                return true;
+            }
+
+            // Try to reconnect using stored device
+            if (this.device && this.device.id === deviceId) {
+                console.log('🔄 Reconnecting to stored device...');
+                return await this.connect(deviceId, this.protocol);
+            }
+
+            // Device not available - need user interaction
+            console.warn('⚠️ Device not available - user interaction required');
+            return false;
+        } catch (error) {
+            console.error('❌ Reconnect failed:', error);
+            return false;
+        }
+    }
 }
 
 // Global exposure for compatibility
 window.BLEController = BLEController;
+
+// Auto-initialize global instance
+if (typeof window !== 'undefined') {
+    window.bleController = new BLEController();
+    window.BLEControllerPro = window.bleController; // Alias für Kompatibilität
+    console.log('✅ BLE-Controller initialisiert (window.bleController)');
+}
 
 // CommonJS export for Node.js compatibility
 if (typeof module !== 'undefined' && module.exports) {
