@@ -7,6 +7,9 @@
 const MusicAlarmController = {
     alarms: [],
     checkInterval: null,
+    isSnoozing: false,
+    snoozeEndTime: null,
+    snoozeDuration: 5, // Minuten
 
     init() {
         console.log('⏰ Musikwecker Controller initialisiert');
@@ -107,15 +110,28 @@ const MusicAlarmController = {
 
     checkAlarms() {
         const enabled = localStorage.getItem('music-alarm-enabled') === 'true';
-        if (!enabled) return;
+        if (!enabled && !this.isSnoozing) return;
 
+        const now = new Date();
+
+        // Check Snooze
+        if (this.isSnoozing && this.snoozeEndTime) {
+            if (now >= this.snoozeEndTime) {
+                console.log('⏰ Snooze beendet - Wecker erneut ausgelöst');
+                this.isSnoozing = false;
+                this.snoozeEndTime = null;
+                this.triggerAlarm();
+                return;
+            }
+        }
+
+        // Check regulärer Alarm
         const alarmTime = localStorage.getItem('music-alarm-time');
         if (!alarmTime) return;
 
-        const now = new Date();
         const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
 
-        if (currentTime === alarmTime) {
+        if (currentTime === alarmTime && !this.isSnoozing) {
             this.triggerAlarm();
         }
     },
@@ -126,10 +142,8 @@ const MusicAlarmController = {
         const playlistId = localStorage.getItem('music-alarm-playlist');
         const fadeIn = localStorage.getItem('music-alarm-fadein') === 'true';
 
-        // Notification anzeigen
-        if (window.showGlobalNotification) {
-            window.showGlobalNotification('🌅 Guten Morgen! Wecker läutet...', 'info', 10000);
-        }
+        // Notification mit Snooze-Option anzeigen
+        this.showAlarmNotification();
 
         // Musik abspielen
         if (playlistId) {
@@ -138,11 +152,126 @@ const MusicAlarmController = {
             await this.playDefaultAlarmSound(fadeIn);
         }
 
-        // Alarm für heute deaktivieren (verhindert mehrfaches Auslösen)
-        const toggleCheckbox = document.getElementById('musicAlarmEnabled');
-        if (toggleCheckbox) {
-            toggleCheckbox.checked = false;
-            this.setAlarmEnabled(false);
+        // Bei Snooze nicht deaktivieren
+        if (!this.isSnoozing) {
+            // Alarm für heute deaktivieren (verhindert mehrfaches Auslösen)
+            const toggleCheckbox = document.getElementById('musicAlarmEnabled');
+            if (toggleCheckbox) {
+                toggleCheckbox.checked = false;
+                this.setAlarmEnabled(false);
+            }
+        }
+    },
+
+    showAlarmNotification() {
+        // Erstelle Alarm-Notification mit Snooze-Button
+        const notification = document.createElement('div');
+        notification.id = 'alarmNotification';
+        notification.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100000;
+            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+            color: white;
+            padding: 30px 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            text-align: center;
+            min-width: 300px;
+            animation: pulse 2s infinite;
+        `;
+
+        notification.innerHTML = `
+            <div style="font-size: 48px; margin-bottom: 15px;">⏰</div>
+            <h2 style="margin: 0 0 10px 0; font-size: 24px;">Guten Morgen!</h2>
+            <p style="margin: 0 0 20px 0; font-size: 16px;">Wecker läutet...</p>
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button id="snoozeBtn" style="
+                    padding: 12px 24px;
+                    border: none;
+                    border-radius: 8px;
+                    background: #FFD700;
+                    color: #1a1a1a;
+                    font-weight: bold;
+                    font-size: 16px;
+                    cursor: pointer;
+                ">😴 Snooze (${this.snoozeDuration} Min)</button>
+                <button id="dismissBtn" style="
+                    padding: 12px 24px;
+                    border: none;
+                    border-radius: 8px;
+                    background: white;
+                    color: #1a1a1a;
+                    font-weight: bold;
+                    font-size: 16px;
+                    cursor: pointer;
+                ">✓ Ausschalten</button>
+            </div>
+        `;
+
+        document.body.appendChild(notification);
+
+        // Event Listeners
+        document.getElementById('snoozeBtn').addEventListener('click', () => {
+            this.snooze();
+            notification.remove();
+        });
+
+        document.getElementById('dismissBtn').addEventListener('click', () => {
+            this.dismissAlarm();
+            notification.remove();
+        });
+
+        // Pulse Animation
+        if (!document.getElementById('alarm-pulse-style')) {
+            const style = document.createElement('style');
+            style.id = 'alarm-pulse-style';
+            style.textContent = `
+                @keyframes pulse {
+                    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+                    50% { transform: translate(-50%, -50%) scale(1.05); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    },
+
+    snooze() {
+        console.log(`😴 Snooze aktiviert (${this.snoozeDuration} Minuten)`);
+
+        this.isSnoozing = true;
+        this.snoozeEndTime = new Date(Date.now() + this.snoozeDuration * 60 * 1000);
+
+        // Stop Audio
+        const audioPlayer = document.getElementById('audioPlayer');
+        if (audioPlayer) {
+            audioPlayer.pause();
+        }
+
+        if (window.showGlobalNotification) {
+            window.showGlobalNotification(
+                `😴 Snooze aktiviert - Wecker läutet in ${this.snoozeDuration} Minuten erneut`,
+                'info'
+            );
+        }
+    },
+
+    dismissAlarm() {
+        console.log('✓ Alarm ausgeschaltet');
+
+        this.isSnoozing = false;
+        this.snoozeEndTime = null;
+
+        // Stop Audio
+        const audioPlayer = document.getElementById('audioPlayer');
+        if (audioPlayer) {
+            audioPlayer.pause();
+        }
+
+        if (window.showGlobalNotification) {
+            window.showGlobalNotification('✓ Alarm ausgeschaltet', 'success');
         }
     },
 
