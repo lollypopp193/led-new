@@ -1,5 +1,5 @@
 /**
- * i18n - Internationalisierung für LED Native App v2.0
+ * i18n - Internationalisierung für LED Native App v3.0
  * Unterstützt Deutsch, Englisch, Spanisch, Französisch
  * AUTO-AKTIVIERT beim App-Start
  */
@@ -620,4 +620,4 @@ window.i18n = i18n;
 window.__ = (key) => i18n.t(key); // Shortcut-Funktion
 window.setLanguage = (lang) => i18n.setLanguage(lang); // Helper für UI
 
-console.log('✅ i18n-System v2.0 geladen - Sprache:', i18n.currentLanguage);
+console.log('✅ i18n-System v3.0 geladen - Sprache:', i18n.currentLanguage);

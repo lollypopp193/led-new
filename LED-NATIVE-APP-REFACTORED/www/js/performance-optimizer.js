@@ -1,5 +1,5 @@
 /**
- * PERFORMANCE-OPTIMIZER.JS v2.0 - ZERO TOLERANCE IMPLEMENTATION
+ * PERFORMANCE-OPTIMIZER.JS v3.0 - ZERO TOLERANCE IMPLEMENTATION
  * Performance-Monitoring & Optimierung für LED Native App
  */
 'use strict';

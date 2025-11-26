@@ -1,7 +1,7 @@
 /**
  * PERMISSIONS HANDLER - Berechtigungen beim App-Start abfragen
  * Integriert mit AndroidPermissionsManager für native Android Permissions
- * @version 2.0
+ * @version 3.0
  */
 'use strict';
 

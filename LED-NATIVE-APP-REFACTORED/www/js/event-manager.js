@@ -1,5 +1,5 @@
 /**
- * EVENT-MANAGER.JS v2.0 - ZERO TOLERANCE IMPLEMENTATION
+ * EVENT-MANAGER.JS v3.0 - ZERO TOLERANCE IMPLEMENTATION
  * App-weites Event-System für LED Native App
  */
 'use strict';

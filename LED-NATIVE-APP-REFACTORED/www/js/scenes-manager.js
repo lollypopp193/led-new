@@ -1,5 +1,5 @@
 /**
- * SCENES-MANAGER.JS v2.0 - ZERO TOLERANCE IMPLEMENTATION
+ * SCENES-MANAGER.JS v3.0 - ZERO TOLERANCE IMPLEMENTATION
  * Vollständige Szenen-Verwaltung mit Hardware-Integration
  */
 'use strict';

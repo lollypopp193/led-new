@@ -1,5 +1,5 @@
 /**
- * LED-ABSTRACTION-LAYER.JS v2.0 - ZERO TOLERANCE IMPLEMENTATION
+ * LED-ABSTRACTION-LAYER.JS v3.0 - ZERO TOLERANCE IMPLEMENTATION
  * Universelle LED-Steuerung für verschiedene LED-Typen & Protokolle
  */
 'use strict';

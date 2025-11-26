@@ -83,7 +83,7 @@ Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert
 
 ### Changed
 - Komplette Code-Refaktorierung
-- Modular aufgebaut (50+ JS-Dateien)
+- Modular aufgebaut (71 JS-Dateien)
 - Zero Tolerance Policy implementiert
 
 ### Fixed
