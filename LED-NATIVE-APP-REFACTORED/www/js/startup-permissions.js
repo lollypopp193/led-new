@@ -171,35 +171,94 @@ class StartupPermissions {
     }
 
     /**
-     * Startet automatische Scans nach Berechtigungen
+     * Startet Auto-Scans nach Berechtigungen
      */
     startAutoScans() {
-        console.log('🔍 Starte Auto-Scans...');
+        console.log('🚀 Starte Auto-Scans...');
 
-        // LED-Bänder scannen wenn Bluetooth erlaubt
-        if (this.permissionsGranted.bluetooth) {
+        // Auto-Scan LED-Bänder mit Auto-Connect
+        if (this.permissionsGranted.bluetooth && this.permissionsGranted.location) {
             setTimeout(() => {
-                if (window.ledAutoScanner) {
-                    window.ledAutoScanner.startAutoScan();
-                }
+                this.autoScanAndConnectBLE();
             }, 1000);
         }
 
-        // Musik-Bibliothek scannen wenn Speicher erlaubt
+        // Auto-Scan Musik-Bibliothek (im Hintergrund)
         if (this.permissionsGranted.storage) {
             setTimeout(() => {
-                if (window.MusicLibraryManager) {
-                    window.MusicLibraryManager.startAutoScan();
-                }
+                this.autoScanMusicLibrary();
             }, 2000);
         }
     }
 
     /**
-     * Prüft ob alle Berechtigungen erteilt sind
+     * Auto-Scan und Auto-Connect für BLE-Geräte
      */
-    allPermissionsGranted() {
-        return Object.values(this.permissionsGranted).every(granted => granted);
+    async autoScanAndConnectBLE() {
+        console.log('🔵 BLE Auto-Scan + Auto-Connect gestartet');
+
+        try {
+            // Versuche gespeicherte Geräte zu laden
+            const savedDevices = localStorage.getItem('savedBLEDevices');
+            if (savedDevices) {
+                const devices = JSON.parse(savedDevices);
+                console.log(`📱 ${devices.length} gespeicherte Geräte gefunden`);
+
+                // Versuche Auto-Connect für gespeicherte Geräte
+                for (const device of devices) {
+                    try {
+                        if (window.bleController && window.bleController.connectToDevice) {
+                            await window.bleController.connectToDevice(device.id);
+                            console.log(`✅ Auto-Connected: ${device.name}`);
+                        }
+                    } catch (error) {
+                        console.log(`⚠️ Auto-Connect fehlgeschlagen für ${device.name}`);
+                    }
+                }
+            }
+
+            // Starte Scan für neue Geräte
+            if (window.bleController && window.bleController.scanForDevices) {
+                await window.bleController.scanForDevices();
+                console.log('✅ BLE-Scan abgeschlossen');
+            } else if (window.audioReactiveEngine && window.audioReactiveEngine.scanAndConnectDevices) {
+                await window.audioReactiveEngine.scanAndConnectDevices();
+                console.log('✅ Audio-Reactive BLE-Scan abgeschlossen');
+            }
+        } catch (error) {
+            console.error('❌ BLE Auto-Scan Fehler:', error);
+        }
+    }
+
+    /**
+     * Auto-Scan Musik-Bibliothek (im Hintergrund, ohne Dialog)
+     */
+    async autoScanMusicLibrary() {
+        console.log('🎵 Musik Auto-Scan (Hintergrund) gestartet');
+
+        try {
+            // Prüfe ob schon Tracks vorhanden
+            if (window.musicLibraryManager) {
+                const tracks = await window.musicLibraryManager.getAllTracks();
+
+                if (tracks.length === 0) {
+                    console.log('📂 Keine Tracks gefunden - warte auf User-Aktion');
+                    // User muss Ordner auswählen - kein automatischer Scan möglich
+                } else {
+                    console.log(`✅ ${tracks.length} Tracks in Bibliothek`);
+                }
+            }
+
+            // Android Music Scanner (Native)
+            if (window.Capacitor && window.Capacitor.isNativePlatform()) {
+                if (window.AndroidMusicScanner && window.AndroidMusicScanner.scanMediaStore) {
+                    console.log('📱 Android MediaStore Scan gestartet');
+                    await window.AndroidMusicScanner.scanMediaStore();
+                }
+            }
+        } catch (error) {
+            console.error('❌ Musik Auto-Scan Fehler:', error);
+        }
     }
 }
 
