@@ -23,7 +23,55 @@ class AudioReactiveEngine {
     updateFrequencyBars() { const bars = document.querySelectorAll('.freq-bar'); if (!bars || bars.length === 0) return; const step = Math.floor(this.dataArray.length / bars.length); bars.forEach(function (bar, idx) { const val = this.dataArray[idx * step]; bar.style.height = ((val / 255) * 100) + '%'; }.bind(this)); }
     updateStatusDisplay(bass, mid, treble, beat) { const elems = { bass: 'ledBassLevel', mid: 'ledMidLevel', treble: 'ledTrebleLevel', bpm: 'ledBPMValue', latency: 'ledLatencyValue' }; if (document.getElementById(elems.bass)) { document.getElementById(elems.bass).textContent = Math.round(bass * 100) + '%'; document.getElementById(elems.mid).textContent = Math.round(mid * 100) + '%'; document.getElementById(elems.treble).textContent = Math.round(treble * 100) + '%'; document.getElementById(elems.bpm).textContent = this.beatDetector.getBPM(); document.getElementById(elems.latency).textContent = this.beatDetector.getLatency() + 'ms'; const beatInd = document.getElementById('ledBeatIndicator'); if (beat && beatInd) { beatInd.classList.add('pulse'); setTimeout(function () { beatInd.classList.remove('pulse'); }, 100); } } }
     updateLEDStrips(bass, mid, treble, beat) { const vocal = this.getFrequencyRangeLevel(this.vocalRange); const genre = this.detectGenre(bass, mid, treble, vocal); this.ledStrips.forEach(function (strip, idx) { if (!strip.enabled) return; let intensity = 0; switch (strip.reactTo) { case 'rhythm': intensity = beat ? 1.0 : bass * 0.5; break; case 'beats': intensity = beat ? 1.0 : 0.1; break; case 'vocals': intensity = vocal; break; case 'melody': intensity = (mid * 0.7 + treble * 0.3); break; case 'gesang': intensity = vocal * 1.2; break; default: switch (strip.frequencyBand) { case 'bass': intensity = bass; break; case 'mid': intensity = mid; break; case 'high': case 'treble': intensity = treble; break; case 'all': intensity = (bass + mid + treble) / 3; break; } } intensity = intensity * (strip.sensitivity / 100) * (strip.brightness / 100); intensity = this.smoothIntensity(intensity); if (window.ledDevice && window.ledDevice.isConnected && window.ledDevice.characteristic) { try { const colorVal = Math.round(255 * intensity); let r = 0, g = 0, b = 0; if (genre === 'electronic') { r = colorVal; b = colorVal * 0.5; } else if (genre === 'rock') { r = colorVal; } else if (genre === 'jazz') { g = colorVal; b = colorVal * 0.7; } else { switch (strip.frequencyBand) { case 'bass': r = colorVal; break; case 'mid': g = colorVal; break; case 'high': case 'treble': b = colorVal; break; default: r = g = b = colorVal; } } if (beat && intensity > 0.5) r = g = b = 255; const cmd = new Uint8Array([0x7E, 0x00, 0x05, r, g, b, 0x00, 0xEF]); window.ledDevice.characteristic.writeValue(cmd); } catch (e) { } } }.bind(this)); }
-    detectGenre(bass, mid, treble, vocal) { const bassRatio = bass / (mid + treble + 0.01); const trebleRatio = treble / (bass + mid + 0.01); const vocalRatio = vocal / (bass + mid + treble + 0.01); let genre = 'unknown'; if (bassRatio > 1.5 && trebleRatio > 1.2) genre = 'electronic'; else if (bassRatio > 1.3 && vocalRatio < 0.3) genre = 'rock'; else if (vocalRatio > 0.4 && mid > 0.5) genre = 'pop'; else if (trebleRatio > 1.1 && bassRatio < 0.8) genre = 'jazz'; this.genreHistory.push(genre); if (this.genreHistory.length > 30) this.genreHistory.shift(); const counts = {}; this.genreHistory.forEach(g => counts[g] = (counts[g] || 0) + 1); let maxGenre = 'unknown'; let maxCount = 0; Object.keys(counts).forEach(g => { if (counts[g] > maxCount) { maxCount = counts[g]; maxGenre = g; } }); this.currentGenre = maxGenre; return maxGenre; }
+    detectGenre(bass, mid, treble, vocal) {
+        const bassRatio = bass / (mid + treble + 0.01);
+        const trebleRatio = treble / (bass + mid + 0.01);
+        const vocalRatio = vocal / (bass + mid + treble + 0.01);
+        const midRatio = mid / (bass + treble + 0.01);
+        const totalEnergy = bass + mid + treble;
+
+        let genre = 'unknown';
+
+        // Dubstep: Sehr hoher Bass, mittlere Treble, Wobble-Pattern
+        if (bassRatio > 2.0 && trebleRatio > 0.8 && totalEnergy > 1.5) genre = 'dubstep';
+        // Drum'n'Bass: Schneller Beat, hoher Bass + Treble
+        else if (bassRatio > 1.8 && trebleRatio > 1.3 && this.beatDetector.getBPM() > 160) genre = 'drumnbass';
+        // Hardstyle: Extrem hoher Bass, harter Beat
+        else if (bassRatio > 2.2 && this.beatDetector.getBPM() > 140) genre = 'hardstyle';
+        // Hardcore/Terror/Speedcore: Sehr schnell, extremer Bass
+        else if (bassRatio > 2.5 && this.beatDetector.getBPM() > 180) genre = 'hardcore';
+        // Uptempo: Sehr schnell, Bass betont
+        else if (bassRatio > 2.0 && this.beatDetector.getBPM() > 200) genre = 'uptempo';
+        // House/Future House: Balanciert, steady Beat
+        else if (bassRatio > 1.4 && bassRatio < 1.8 && midRatio > 0.9 && this.beatDetector.getBPM() > 120 && this.beatDetector.getBPM() < 130) genre = 'house';
+        // Electro: Hoher Bass + Treble
+        else if (bassRatio > 1.5 && trebleRatio > 1.2) genre = 'electronic';
+        // Rock: Hoher Bass, wenig Vocals
+        else if (bassRatio > 1.3 && vocalRatio < 0.3) genre = 'rock';
+        // Pop: Vocals dominant, ausgewogen
+        else if (vocalRatio > 0.4 && mid > 0.5) genre = 'pop';
+        // Jazz: Hohe Treble, wenig Bass
+        else if (trebleRatio > 1.1 && bassRatio < 0.8) genre = 'jazz';
+        // Classic: Ausgewogen, wenig Bass
+        else if (bassRatio < 1.0 && midRatio > 1.0 && vocalRatio < 0.4) genre = 'classic';
+
+        this.genreHistory.push(genre);
+        if (this.genreHistory.length > 30) this.genreHistory.shift();
+
+        const counts = {};
+        this.genreHistory.forEach(g => counts[g] = (counts[g] || 0) + 1);
+        let maxGenre = 'unknown';
+        let maxCount = 0;
+        Object.keys(counts).forEach(g => {
+            if (counts[g] > maxCount) {
+                maxCount = counts[g];
+                maxGenre = g;
+            }
+        });
+
+        this.currentGenre = maxGenre;
+        return maxGenre;
+    }
     smoothIntensity(intensity) { if (Math.abs(intensity - this.lastIntensity) > this.flickerThreshold) { intensity = this.lastIntensity * this.intensitySmoothing + intensity * (1 - this.intensitySmoothing); } this.lastIntensity = intensity; return intensity; }
     createFrequencyBars() { const cont = document.getElementById('ledFrequencyDisplay'); if (cont) { cont.innerHTML = ''; for (let i = 0; i < 64; i++) { const bar = document.createElement('div'); bar.className = 'freq-bar'; bar.style.cssText = 'height: 0%; flex: 1; background: linear-gradient(to top, #4ecdc4, #44a08d); border-radius: 2px; margin: 0 1px;'; cont.appendChild(bar); } } }
     syncWithBandSettings() { if (typeof window.bandSettings === 'undefined' || typeof window.activeBandCount === 'undefined') return; this.ledStrips = []; for (let i = 0; i < window.activeBandCount; i++) { const s = window.bandSettings[i]; this.ledStrips.push({ id: 'band_' + i, name: 'LED-Band ' + (i + 1), connected: false, enabled: s.enabled, frequencyBand: s.freqRange, effect: s.effect, sensitivity: s.sensitivity, color: s.color, brightness: s.brightness, speed: s.speed, reactTo: s.reactTo }); } this.renderAllStripControls(); }
