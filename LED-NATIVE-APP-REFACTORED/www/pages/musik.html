@@ -3267,33 +3267,18 @@
                 border-radius: 15px;
               "
             >
-              <h4 style="color: #4ecdc4; margin-bottom: 15px">
-                <i class="fas fa-headphones-alt"></i> DJ-Überblendung
-              </h4>
-
-              <div style="margin-bottom: 15px">
-                <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    cursor: pointer;
-                  "
-                >
-                  <input
-                    type="checkbox"
-                    id="seamlessTransition"
-                    checked
-                    style="transform: scale(1.2)"
-                  />
-                  <span style="font-weight: bold"
-                    >Überblendung</span
-                  >
-                </label>
-                <div style="font-size: 0.9em; color: #888; margin-top: 5px">
-                  Eliminiert Pausen zwischen Liedern - wie professionelles DJing
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                <h4 style="color: #4ecdc4; margin: 0; display: flex; align-items: center; gap: 10px;">
+                  <i class="fas fa-headphones-alt"></i> DJ-Überblendung
+                </h4>
+                <div class="toggle-switch">
+                  <input type="checkbox" id="seamlessTransition" checked>
+                  <span class="slider"></span>
                 </div>
               </div>
+              <p style="font-size: 0.9em; color: #888; margin-bottom: 15px;">
+                Eliminiert Pausen zwischen Liedern - wie professionelles DJing
+              </p>
 
               <div
                 style="
@@ -3347,88 +3332,35 @@
                 </div>
               </div>
 
-              <div
-                style="
-                  display: grid;
-                  grid-template-columns: 1fr 1fr;
-                  gap: 15px;
-                  margin-bottom: 15px;
-                "
-              >
-                <div>
-                  <label
-                    style="
-                      display: flex;
-                      align-items: center;
-                      gap: 10px;
-                      cursor: pointer;
-                    "
-                  >
-                    <input
-                      type="checkbox"
-                      id="autoDetect"
-                      checked
-                      style="transform: scale(1.2)"
-                    />
-                    <span>Auto-Erkennung Song-Ende</span>
-                  </label>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                  <span style="font-size: 0.9em;">Auto-Erkennung</span>
+                  <div class="toggle-switch small">
+                    <input type="checkbox" id="autoDetect" checked>
+                    <span class="slider"></span>
+                  </div>
                 </div>
-
-                <div>
-                  <label
-                    style="
-                      display: flex;
-                      align-items: center;
-                      gap: 10px;
-                      cursor: pointer;
-                    "
-                  >
-                    <input
-                      type="checkbox"
-                      id="beatMatching"
-                      style="transform: scale(1.2)"
-                    />
-                    <span>Beat-Matching</span>
-                  </label>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                  <span style="font-size: 0.9em;">Beat-Matching</span>
+                  <div class="toggle-switch small">
+                    <input type="checkbox" id="beatMatching">
+                    <span class="slider"></span>
+                  </div>
                 </div>
               </div>
 
               <!-- Pre-cueing Options -->
-              <div
-                style="
-                  margin-top: 15px;
-                  padding: 15px;
-                  background: rgba(0, 255, 255, 0.1);
-                  border-radius: 10px;
-                "
-              >
-                <h5 style="color: #4ecdc4; margin-bottom: 10px">
-                  <i class="fas fa-volume-up"></i> Pre-Cueing
-                </h5>
-                <div
-                  style="
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    gap: 10px;
-                  "
-                >
-                  <label
-                    style="
-                      display: flex;
-                      align-items: center;
-                      gap: 8px;
-                      cursor: pointer;
-                    "
-                  >
-                    <input
-                      type="checkbox"
-                      id="preCue"
-                      style="transform: scale(1.1)"
-                    />
-                    <span>Pre-Cue</span>
-                  </label>
-
-                  <div style="display: flex; align-items: center; gap: 10px">
+              <div style="margin-top: 15px; padding: 15px; background: rgba(0, 255, 255, 0.1); border-radius: 10px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                  <h5 style="color: #4ecdc4; margin: 0; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-volume-up"></i> Pre-Cueing
+                  </h5>
+                  <div class="toggle-switch small">
+                    <input type="checkbox" id="preCue">
+                    <span class="slider"></span>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px">
                     <span style="font-size: 0.9em">Lautstärke:</span>
                     <input
                       type="range"
@@ -3507,25 +3439,13 @@
                 </div>
               </div>
 
-              <div
-                style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px"
-              >
-                <div>
-                  <label
-                    style="
-                      display: flex;
-                      align-items: center;
-                      gap: 10px;
-                      cursor: pointer;
-                    "
-                  >
-                    <input
-                      type="checkbox"
-                      id="preservePitch"
-                      style="transform: scale(1.2)"
-                    />
-                    <span>Tonhoehe beibehalten</span>
-                  </label>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px">
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                  <span style="font-size: 0.9em;">Tonhöhe beibehalten</span>
+                  <div class="toggle-switch small">
+                    <input type="checkbox" id="preservePitch">
+                    <span class="slider"></span>
+                  </div>
                 </div>
 
                 <div>
@@ -3616,76 +3536,51 @@
                     </select>
                   </div>
 
-                  <div style="margin-bottom: 15px">
-                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                      <input type="checkbox" id="crossfadeAutoDetect" checked style="transform: scale(1.2)">
-                      <span>Song-Ende automatisch erkennen</span>
-                    </label>
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 6px;">
+                    <span style="font-size: 0.9em;">Song-Ende erkennen</span>
+                    <div class="toggle-switch small">
+                      <input type="checkbox" id="crossfadeAutoDetect" checked>
+                      <span class="slider"></span>
+                    </div>
                   </div>
-
-                  <div style="margin-bottom: 15px">
-                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                      <input type="checkbox" id="crossfadeBeatMatch" style="transform: scale(1.2)">
-                      <span>Beat-Matching (experimentell)</span>
-                    </label>
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 6px;">
+                    <span style="font-size: 0.9em;">Beat-Matching</span>
+                    <div class="toggle-switch small">
+                      <input type="checkbox" id="crossfadeBeatMatch">
+                      <span class="slider"></span>
+                    </div>
                   </div>
-
-                  <div style="margin-bottom: 15px">
-                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                      <input type="checkbox" id="crossfadePreLoad" checked style="transform: scale(1.2)">
-                      <span>Nächsten Track vorladen</span>
-                    </label>
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 6px;">
+                    <span style="font-size: 0.9em;">Track vorladen</span>
+                    <div class="toggle-switch small">
+                      <input type="checkbox" id="crossfadePreLoad" checked>
+                      <span class="slider"></span>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div
-                style="
-                  border-top: 1px solid rgba(255, 255, 255, 0.1);
-                  padding-top: 15px;
-                "
-              >
-                <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    cursor: pointer;
-                    margin-bottom: 15px;
-                  "
-                >
-                  <input
-                    type="checkbox"
-                    id="gaplessEnabled"
-                    checked
-                    style="transform: scale(1.2)"
-                  />
-                  <span style="font-weight: bold">Wiedergabe</span>
-                </label>
-                <div style="font-size: 0.9em; color: #888">
-                  Wiedergabe ohne Pausen zwischen Tracks
+              <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 15px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                  <div>
+                    <span style="font-weight: bold; display: block;">Gapless Wiedergabe</span>
+                    <span style="font-size: 0.85em; color: #888;">Ohne Pausen zwischen Tracks</span>
+                  </div>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="gaplessEnabled" checked>
+                    <span class="slider"></span>
+                  </div>
                 </div>
-              </div>
-
-              <div style="margin-top: 15px">
-                <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    cursor: pointer;
-                  "
-                >
-                  <input
-                    type="checkbox"
-                    id="preloadNext"
-                    checked
-                    style="transform: scale(1.2)"
-                  />
-                  <span>Naechsten Track vorladen</span>
-                </label>
-                <div style="font-size: 0.9em; color: #888; margin-top: 5px">
-                  Laedt den naechsten Track im Hintergrund vor
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                  <div>
+                    <span style="font-weight: bold; display: block;">Track vorladen</span>
+                    <span style="font-size: 0.85em; color: #888;">Lädt nächsten Track im Hintergrund</span>
+                  </div>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="preloadNext" checked>
+                    <span class="slider"></span>
+                  </div>
+                </div>
                 </div>
               </div>
             </div>
@@ -3703,26 +3598,15 @@
                 <i class="fas fa-volume-up"></i> Fade-Effekte
               </h3>
 
-              <div
-                style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px"
-              >
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px">
                 <div>
-                  <label
-                    style="
-                      display: flex;
-                      align-items: center;
-                      gap: 10px;
-                      cursor: pointer;
-                      margin-bottom: 12px;
-                    "
-                  >
-                    <input
-                      type="checkbox"
-                      id="fadeInEnabled"
-                      style="transform: scale(1.2)"
-                    />
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
                     <span style="font-weight: bold">Fade-In</span>
-                  </label>
+                    <div class="toggle-switch small">
+                      <input type="checkbox" id="fadeInEnabled">
+                      <span class="slider"></span>
+                    </div>
+                  </div>
                   <div style="margin-bottom: 10px">
                     <label
                       style="
@@ -3753,22 +3637,13 @@
                 </div>
 
                 <div>
-                  <label
-                    style="
-                      display: flex;
-                      align-items: center;
-                      gap: 10px;
-                      cursor: pointer;
-                      margin-bottom: 12px;
-                    "
-                  >
-                    <input
-                      type="checkbox"
-                      id="fadeOutEnabled"
-                      style="transform: scale(1.2)"
-                    />
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
                     <span style="font-weight: bold">Fade-Out</span>
-                  </label>
+                    <div class="toggle-switch small">
+                      <input type="checkbox" id="fadeOutEnabled">
+                      <span class="slider"></span>
+                    </div>
+                  </div>
                   <div style="margin-bottom: 10px">
                     <label
                       style="
@@ -9611,27 +9486,15 @@
               </h3>
 
               <div style="margin-bottom: 15px">
-                <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    cursor: pointer;
-                    margin-bottom: 12px;
-                  "
-                >
-                  <input
-                    type="checkbox"
-                    id="lyricsDisplay"
-                    checked
-                    style="transform: scale(1.2)"
-                  />
-                  <span style="font-weight: bold"
-                    >Lyrics-Anzeige</span
-                  >
-                </label>
-                <div style="font-size: 0.9em; color: #888; margin-bottom: 15px">
-                  Zeige Liedtexte wenn verfügbar
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                  <div>
+                    <span style="font-weight: bold; display: block;">Lyrics-Anzeige</span>
+                    <span style="font-size: 0.85em; color: #888;">Zeige Liedtexte wenn verfügbar</span>
+                  </div>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="lyricsDisplay" checked>
+                    <span class="slider"></span>
+                  </div>
                 </div>
 
                 <label style="display: block; margin-bottom: 8px">
@@ -9676,22 +9539,13 @@
                   <option value="custom">Benutzerdefiniert</option>
                 </select>
 
-                <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    cursor: pointer;
-                  "
-                >
-                  <input
-                    type="checkbox"
-                    id="animationsEnabled"
-                    checked
-                    style="transform: scale(1.2)"
-                  />
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px;">
                   <span>Animationen</span>
-                </label>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="animationsEnabled" checked>
+                    <span class="slider"></span>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -9728,10 +9582,9 @@
                       step="1"
                       value="3"
                       style="flex: 1"
+                      oninput="const labels=['Minimal','Niedrig','Normal','Hoch','Maximum'];document.getElementById('ramOptimizationValue').textContent=labels[this.value-1]"
                     />
-                    <span id="ramOptimizationValue" style="min-width: 80px"
-                      >Normal</span
-                    >
+                    <span id="ramOptimizationValue" style="min-width: 80px">Normal</span>
                   </div>
                 </div>
 
@@ -9757,23 +9610,13 @@
                   </select>
                 </div>
 
-                <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    cursor: pointer;
-                    margin-bottom: 15px;
-                  "
-                >
-                  <input
-                    type="checkbox"
-                    id="backgroundOptimization"
-                    checked
-                    style="transform: scale(1.2)"
-                  />
-                  <span>­ƒöï Hintergrund-Optimierung</span>
-                </label>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                  <span><i class="fas fa-cog"></i> Hintergrund-Optimierung</span>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="backgroundOptimization" checked>
+                    <span class="slider"></span>
+                  </div>
+                </div>
               </div>
 
               <div
@@ -9782,63 +9625,33 @@
                   padding-top: 15px;
                 "
               >
-                <h4
-                  style="color: #4ecdc4; margin-bottom: 10px; font-size: 1.1em"
-                >
-                  ­ƒÉø Fehlerbehandlung
+                <h4 style="color: #4ecdc4; margin-bottom: 15px; font-size: 1.1em">
+                  <i class="fas fa-bug"></i> Fehlerbehandlung
                 </h4>
 
-                <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    cursor: pointer;
-                    margin-bottom: 12px;
-                  "
-                >
-                  <input
-                    type="checkbox"
-                    id="autoErrorRecovery"
-                    checked
-                    style="transform: scale(1.2)"
-                  />
-                  <span> Automatische Fehlerkorrektur</span>
-                </label>
-
-                <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    cursor: pointer;
-                    margin-bottom: 12px;
-                  "
-                >
-                  <input
-                    type="checkbox"
-                    id="debugMode"
-                    style="transform: scale(1.2)"
-                  />
-                  <span>Debug-Modus</span>
-                </label>
-
-                <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    cursor: pointer;
-                    margin-bottom: 15px;
-                  "
-                >
-                  <input
-                    type="checkbox"
-                    id="errorLogging"
-                    style="transform: scale(1.2)"
-                  />
-                  <span>­ƒôØ Fehler-Protokollierung</span>
-                </label>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                    <span>Auto-Fehlerkorrektur</span>
+                    <div class="toggle-switch small">
+                      <input type="checkbox" id="autoErrorRecovery" checked>
+                      <span class="slider"></span>
+                    </div>
+                  </div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                    <span>Debug-Modus</span>
+                    <div class="toggle-switch small">
+                      <input type="checkbox" id="debugMode">
+                      <span class="slider"></span>
+                    </div>
+                  </div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                    <span>Fehler-Protokollierung</span>
+                    <div class="toggle-switch small">
+                      <input type="checkbox" id="errorLogging">
+                      <span class="slider"></span>
+                    </div>
+                  </div>
+                </div>
 
                 <div
                   style="
