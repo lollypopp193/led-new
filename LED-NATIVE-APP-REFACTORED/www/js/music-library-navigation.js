@@ -220,8 +220,117 @@ class MusicLibraryNavigation {
      * Sortier-Menü anzeigen
      */
     showSortMenu() {
-        // TODO: Implementiere Sortier-Optionen
         console.log('📊 Sortier-Menü');
+
+        // Sortier-Optionen
+        const sortOptions = [
+            { id: 'title-asc', label: 'Titel A-Z', icon: '🔤' },
+            { id: 'title-desc', label: 'Titel Z-A', icon: '🔤' },
+            { id: 'artist-asc', label: 'Interpret A-Z', icon: '👤' },
+            { id: 'artist-desc', label: 'Interpret Z-A', icon: '👤' },
+            { id: 'album-asc', label: 'Album A-Z', icon: '💿' },
+            { id: 'date-desc', label: 'Neueste zuerst', icon: '📅' },
+            { id: 'date-asc', label: 'Älteste zuerst', icon: '📅' },
+            { id: 'duration-asc', label: 'Kürzeste zuerst', icon: '⏱️' },
+            { id: 'duration-desc', label: 'Längste zuerst', icon: '⏱️' }
+        ];
+
+        // Modal erstellen
+        const modal = document.createElement('div');
+        modal.className = 'sort-modal';
+        modal.style.cssText = `
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8); z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+        `;
+
+        const content = document.createElement('div');
+        content.style.cssText = `
+            background: #1a1a2e; border-radius: 16px; padding: 20px;
+            max-width: 300px; width: 90%;
+        `;
+        content.innerHTML = `
+            <h3 style="color: #0ff; margin: 0 0 15px; text-align: center;">Sortieren nach</h3>
+            <div class="sort-options">
+                ${sortOptions.map(opt => `
+                    <button class="sort-option" data-sort="${opt.id}" style="
+                        display: flex; align-items: center; gap: 10px;
+                        width: 100%; padding: 12px; margin: 5px 0;
+                        background: rgba(255,255,255,0.1); border: none;
+                        border-radius: 8px; color: white; cursor: pointer;
+                        font-size: 14px; text-align: left;
+                    ">
+                        <span>${opt.icon}</span>
+                        <span>${opt.label}</span>
+                    </button>
+                `).join('')}
+            </div>
+        `;
+
+        modal.appendChild(content);
+        document.body.appendChild(modal);
+
+        // Event-Listener für Sortier-Optionen
+        content.querySelectorAll('.sort-option').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const sortId = btn.dataset.sort;
+                this.applySorting(sortId);
+                modal.remove();
+            });
+        });
+
+        // Schließen bei Klick außerhalb
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.remove();
+        });
+    }
+
+    /**
+     * Sortierung anwenden
+     */
+    applySorting(sortId) {
+        const [field, direction] = sortId.split('-');
+        const multiplier = direction === 'desc' ? -1 : 1;
+
+        this.allSongs.sort((a, b) => {
+            let valueA, valueB;
+
+            switch (field) {
+                case 'title':
+                    valueA = (a.title || '').toLowerCase();
+                    valueB = (b.title || '').toLowerCase();
+                    break;
+                case 'artist':
+                    valueA = (a.artist || '').toLowerCase();
+                    valueB = (b.artist || '').toLowerCase();
+                    break;
+                case 'album':
+                    valueA = (a.album || '').toLowerCase();
+                    valueB = (b.album || '').toLowerCase();
+                    break;
+                case 'date':
+                    valueA = a.dateAdded || 0;
+                    valueB = b.dateAdded || 0;
+                    break;
+                case 'duration':
+                    valueA = a.duration || 0;
+                    valueB = b.duration || 0;
+                    break;
+                default:
+                    return 0;
+            }
+
+            if (valueA < valueB) return -1 * multiplier;
+            if (valueA > valueB) return 1 * multiplier;
+            return 0;
+        });
+
+        // Liste neu rendern
+        this.renderCurrentView();
+
+        if (window.showNotification) {
+            window.showNotification('Sortierung angewendet', 'success');
+        }
     }
 
     /**

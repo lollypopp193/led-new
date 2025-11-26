@@ -2219,6 +2219,7 @@
                 value="0"
                 style="flex: 1"
                 disabled
+                oninput="document.getElementById('bassBoostValue').textContent = this.value + 'dB'"
               />
               <span
                 id="bassBoostValue"
@@ -2318,7 +2319,7 @@
           </h4>
           <div style="display: flex; gap: 20px; flex-wrap: wrap">
             <div style="flex: 1">
-              <label>Empfindlichkeit:</label>
+              <label>Empfindlichkeit: <span id="vizSensitivityValue">5</span></label>
               <input
                 type="range"
                 id="vizSensitivity"
@@ -2326,6 +2327,7 @@
                 max="10"
                 value="5"
                 style="width: 100%"
+                oninput="document.getElementById('vizSensitivityValue').textContent = this.value"
               />
             </div>
             <div style="flex: 1">
@@ -2338,7 +2340,7 @@
               />
             </div>
             <div style="flex: 1">
-              <label>Glättung:</label>
+              <label>Glättung: <span id="vizSmoothingValue">80%</span></label>
               <input
                 type="range"
                 id="vizSmoothing"
@@ -2346,6 +2348,7 @@
                 max="100"
                 value="80"
                 style="width: 100%"
+                oninput="document.getElementById('vizSmoothingValue').textContent = this.value + '%'"
               />
             </div>
           </div>
@@ -2434,8 +2437,9 @@
             </div>
           </div>
 
-          <!-- LED-Bänder Konfiguration -->
+          <!-- Gefundene LED-Bänder (automatisch aus Bluetooth-Scan) -->
           <div
+            id="foundLEDBandsContainer"
             style="
               background: rgba(78, 205, 196, 0.1);
               padding: 20px;
@@ -2444,54 +2448,11 @@
             "
           >
             <h3 style="color: #4ecdc4; margin-bottom: 15px">
-              <i class="fas fa-sliders-h"></i> LED-Bänder Konfiguration
+              <i class="fas fa-lightbulb"></i> Gefundene LED-Bänder
             </h3>
-            <div
-              style="
-                background: rgba(78, 205, 196, 0.1);
-                padding: 20px;
-                border-radius: 10px;
-              "
-            >
-              <label
-                style="
-                  color: #4ecdc4;
-                  font-size: 1.1rem;
-                  display: block;
-                  margin-bottom: 10px;
-                "
-                >Anzahl aktiver LED-Bänder</label
-              >
-              <div style="color: #a0f0ff; margin-bottom: 15px">
-                Wähle aus, wie viele LED-Bänder du verwenden möchtest (1-10)
-              </div>
-              <div style="display: flex; align-items: center; gap: 15px">
-                <input
-                  type="range"
-                  id="ledBandCount"
-                  min="1"
-                  max="10"
-                  value="3"
-                  style="
-                    flex: 1;
-                    height: 8px;
-                    border-radius: 4px;
-                    background: #333;
-                    outline: none;
-                  "
-                  oninput="document.getElementById('ledBandCountValue').textContent = this.value; updateBandTabs(this.value);"
-                />
-                <span
-                  id="ledBandCountValue"
-                  style="
-                    color: #4ecdc4;
-                    font-weight: bold;
-                    font-size: 1.2rem;
-                    min-width: 30px;
-                  "
-                  >3</span
-                >
-              </div>
+            <div id="foundLEDBandsList" style="color: #a0f0ff;">
+              <!-- Wird automatisch gefüllt mit gefundenen Bändern -->
+              <p style="color: #888;">Suche nach LED-Bändern...</p>
             </div>
           </div>
 
@@ -3102,6 +3063,7 @@
                         background: #333;
                         outline: none;
                       "
+                      oninput="this.parentElement.querySelector('.sensitivity-value').textContent = this.value + '%'"
                     />
                     <span
                       class="sensitivity-value"
@@ -3152,6 +3114,7 @@
                         background: #333;
                         outline: none;
                       "
+                      oninput="this.parentElement.querySelector('.speed-value').textContent = this.value + '%'"
                     />
                     <span
                       class="speed-value"
@@ -3189,6 +3152,7 @@
                         background: #333;
                         outline: none;
                       "
+                      oninput="this.parentElement.querySelector('.brightness-value').textContent = this.value + '%'"
                     />
                     <span
                       class="brightness-value"
@@ -3356,6 +3320,7 @@
                       step="0.5"
                       value="4"
                       style="flex: 1"
+                      oninput="document.getElementById('overlapTimeValue').textContent = parseFloat(this.value).toFixed(1) + 's'"
                     />
                     <span id="overlapTimeValue" style="min-width: 35px"
                       >4.0s</span
@@ -3477,6 +3442,7 @@
                       value="50"
                       style="flex: 1"
                       disabled
+                      oninput="document.getElementById('preCueVolumeValue').textContent = this.value + '%'"
                     />
                     <span id="preCueVolumeValue" style="font-size: 0.9em"
                       >50%</span
@@ -3519,6 +3485,7 @@
                       step="0.1"
                       value="1"
                       style="flex: 1"
+                      oninput="document.getElementById('tempoValue').textContent = Math.round(parseFloat(this.value) * 100) + '%'"
                     />
                     <span id="tempoValue" style="min-width: 50px">100%</span>
                   </div>
@@ -3537,6 +3504,7 @@
                       step="1"
                       value="0"
                       style="flex: 1"
+                      oninput="document.getElementById('pitchValue').textContent = (this.value > 0 ? '+' : '') + this.value"
                     />
                     <span id="pitchValue" style="min-width: 50px">0</span>
                   </div>
@@ -3622,6 +3590,7 @@
                         step="0.5"
                         value="3"
                         style="flex: 1"
+                        oninput="document.getElementById('crossfadeDurationValue').textContent = parseFloat(this.value).toFixed(1) + 's'"
                       />
                       <span id="crossfadeDurationValue" style="min-width: 50px"
                         >3.0s</span
@@ -3778,6 +3747,7 @@
                         step="0.1"
                         value="1"
                         style="flex: 1"
+                        oninput="document.getElementById('fadeInDurationValue').textContent = parseFloat(this.value).toFixed(1) + 's'"
                       />
                       <span
                         id="fadeInDurationValue"
@@ -3823,6 +3793,7 @@
                         step="0.1"
                         value="1"
                         style="flex: 1"
+                        oninput="document.getElementById('fadeOutDurationValue').textContent = parseFloat(this.value).toFixed(1) + 's'"
                       />
                       <span
                         id="fadeOutDurationValue"
@@ -9216,6 +9187,7 @@
                           step="5"
                           value="30"
                           style="flex: 1"
+                          oninput="document.getElementById('sleepTimerDurationValue').textContent = this.value + 'min'"
                         />
                         <span
                           id="sleepTimerDurationValue"
@@ -9252,23 +9224,6 @@
                       </select>
                     </div>
 
-                    <label
-                      style="
-                        display: flex;
-                        align-items: center;
-                        gap: 8px;
-                        cursor: pointer;
-                      "
-                    >
-                      <input
-                        type="checkbox"
-                        id="sleepTimerShakeToExtend"
-                        style="transform: scale(1.1)"
-                      />
-                      <span style="font-size: 0.9em">
-                        Schuetteln verlaengert Timer</span
-                      >
-                    </label>
                   </div>
                 </div>
 
@@ -9998,79 +9953,8 @@
       <script src="/js/music-alarm-controller.js"></script>
 
       <!-- LED-Musik-Control Funktionen (Basic - AudioReactiveEngine in audio-reactive-engine.js) -->
+      <!-- showNotification wird aus notifications.js geladen (ZERO Duplicate Code Policy) -->
       <script>
-        // NOTIFICATION FUNKTION
-        function showNotification(message, type = "info") {
-          // Erstelle temporäre Notification
-          const notification = document.createElement("div");
-          notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                padding: 15px 20px;
-                border-radius: 10px;
-                color: white;
-                font-weight: 500;
-                z-index: 10000;
-                max-width: 300px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            `;
-
-          // Setze Farbe basierend auf Typ
-          switch (type) {
-            case "success":
-              notification.style.background =
-                "linear-gradient(135deg, #2ed573, #26a664)";
-              break;
-            case "error":
-              notification.style.background =
-                "linear-gradient(135deg, #ff4757, #ee2e45)";
-              break;
-            case "warning":
-              notification.style.background =
-                "linear-gradient(135deg, #ffa502, #ff7907)";
-              break;
-            default:
-              notification.style.background =
-                "linear-gradient(135deg, #4ecdc4, #44a08d)";
-          }
-
-          notification.textContent = message;
-          document.body.appendChild(notification);
-
-          // Entferne nach 3 Sekunden
-          setTimeout(() => {
-            notification.style.animation = "slideOut 0.3s ease";
-            setTimeout(() => notification.remove(), 300);
-          }, 3000);
-        }
-
-        // CSS ANIMATIONEN FÜR NOTIFICATIONS
-        const style = document.createElement("style");
-        style.textContent = `
-            @keyframes slideIn {
-                from {
-                    transform: translateX(100%);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-            }
-            @keyframes slideOut {
-                from {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-                to {
-                    transform: translateX(100%);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-
         // LED-Musik-Steuerung Variablen
         let ledMusicAudioContext = null;
         let ledMusicAnalyser = null;
@@ -11436,32 +11320,6 @@
         isScanningLibrary: () => isScanningLibrary,
         getScannedFiles: () => scannedFiles,
       };
-    </script>
-
-    <!-- DEBUG-CODE - NUR ZUM TESTEN -->
-    <script>
-      // TEST-CODE - NUR ZUM DEBUGGEN
-      window.addEventListener("load", function () {
-        console.log("=== MUSIK.HTML DEBUG ===");
-        console.log(
-          "Taskbar Buttons:",
-          document.querySelectorAll(".taskbar-btn").length
-        );
-        console.log(
-          "Content Panels:",
-          document.querySelectorAll(".content-panel").length
-        );
-
-        // Liste alle Panel-IDs
-        document.querySelectorAll(".content-panel").forEach((panel) => {
-          console.log("Panel gefunden:", panel.id);
-        });
-
-        // Teste Event-Listener
-        document.querySelectorAll(".taskbar-btn").forEach((btn, index) => {
-          console.log(`Button ${index + 1}:`, btn.getAttribute("data-content"));
-        });
-      });
     </script>
 
     <!-- ========== NEUE AUDIO-ANALYSE CONTROLS (v3.0.1 FIX) ========== -->

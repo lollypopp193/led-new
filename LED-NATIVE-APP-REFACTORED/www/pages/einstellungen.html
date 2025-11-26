@@ -669,6 +669,44 @@
           </div>
         </div>
 
+        <!-- SEKTION: SYNC & SZENEN -->
+        <div class="section">
+          <h3 class="section-title">☁️ Sync & Szenen</h3>
+          <div class="setting-item">
+            <div class="setting-label">
+              <div class="setting-title">Cloud-Sync</div>
+              <div class="setting-description">
+                Einstellungen zwischen Geräten synchronisieren
+              </div>
+            </div>
+            <div class="switch" id="cloudSyncSwitch" onclick="toggleCloudSync()">
+              <div class="switch-handle"></div>
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">
+              <div class="setting-title">Szenen-Manager</div>
+              <div class="setting-description">
+                Speichere Farb-/Effekt-Kombinationen als Szenen
+              </div>
+            </div>
+            <button class="btn btn-outline" onclick="openScenesManager()" style="padding: 8px 16px; border-radius: 8px; background: linear-gradient(135deg, #4ecdc4, #44a08d); border: none; color: white; cursor: pointer;">
+              <i class="fas fa-film"></i> Szenen öffnen
+            </button>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">
+              <div class="setting-title">Sprachsteuerung</div>
+              <div class="setting-description">
+                LED-Bänder mit Sprachbefehlen steuern
+              </div>
+            </div>
+            <div class="switch" id="voiceControlSwitch" onclick="toggleVoiceControl()">
+              <div class="switch-handle"></div>
+            </div>
+          </div>
+        </div>
+
         <!-- ========== NEUE SEKTIONEN (v3.0) ========== -->
 
         <!-- SEKTION 1: BLUETOOTH-VERWALTUNG -->

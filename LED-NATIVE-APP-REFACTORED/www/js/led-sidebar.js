@@ -384,8 +384,88 @@ class LEDSidebar {
     }
 
     editGroup(groupId) {
-        // TODO: Vollständige Gruppen-Bearbeitung mit Band-Auswahl
-        alert('Gruppen-Bearbeitung - Coming Soon');
+        const group = this.groups.find(g => g.id === groupId);
+        if (!group) return;
+
+        // Modal erstellen
+        const modal = document.createElement('div');
+        modal.className = 'edit-group-modal';
+        modal.style.cssText = `
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.9); z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+        `;
+
+        const content = document.createElement('div');
+        content.style.cssText = `
+            background: #1a1a2e; border-radius: 16px; padding: 20px;
+            max-width: 400px; width: 90%; max-height: 80vh; overflow-y: auto;
+        `;
+
+        // Verfügbare Bänder für Auswahl
+        const availableBands = this.bands.map(band => `
+            <label style="display: flex; align-items: center; gap: 10px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px; margin: 5px 0; cursor: pointer;">
+                <input type="checkbox" value="${band.id}" ${group.bandIds?.includes(band.id) ? 'checked' : ''} style="width: 20px; height: 20px;">
+                <span style="color: white;">${band.name}</span>
+            </label>
+        `).join('');
+
+        content.innerHTML = `
+            <h3 style="color: #0ff; margin: 0 0 15px;">Gruppe bearbeiten</h3>
+            <div style="margin-bottom: 15px;">
+                <label style="color: #888; font-size: 12px;">Gruppenname</label>
+                <input type="text" id="editGroupName" value="${group.name}" style="
+                    width: 100%; padding: 12px; background: rgba(255,255,255,0.1);
+                    border: 1px solid rgba(255,255,255,0.2); border-radius: 8px;
+                    color: white; font-size: 16px; margin-top: 5px;
+                ">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="color: #888; font-size: 12px;">Bänder auswählen</label>
+                <div style="margin-top: 10px; max-height: 200px; overflow-y: auto;">
+                    ${availableBands || '<p style="color: #666;">Keine Bänder verfügbar</p>'}
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button id="cancelEditGroup" style="
+                    flex: 1; padding: 12px; background: rgba(255,255,255,0.1);
+                    border: none; border-radius: 8px; color: white; cursor: pointer;
+                ">Abbrechen</button>
+                <button id="saveEditGroup" style="
+                    flex: 1; padding: 12px; background: linear-gradient(135deg, #0ff, #00a);
+                    border: none; border-radius: 8px; color: white; cursor: pointer; font-weight: bold;
+                ">Speichern</button>
+            </div>
+        `;
+
+        modal.appendChild(content);
+        document.body.appendChild(modal);
+
+        // Event-Listener
+        document.getElementById('cancelEditGroup').addEventListener('click', () => modal.remove());
+
+        document.getElementById('saveEditGroup').addEventListener('click', () => {
+            const newName = document.getElementById('editGroupName').value.trim();
+            const selectedBands = Array.from(content.querySelectorAll('input[type="checkbox"]:checked'))
+                .map(cb => cb.value);
+
+            if (newName) {
+                group.name = newName;
+                group.bandIds = selectedBands;
+                this.saveGroupsToStorage();
+                this.renderGroups();
+
+                if (window.showNotification) {
+                    window.showNotification('Gruppe aktualisiert', 'success');
+                }
+            }
+            modal.remove();
+        });
+
+        // Schließen bei Klick außerhalb
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.remove();
+        });
     }
 
     deleteGroup(groupId) {

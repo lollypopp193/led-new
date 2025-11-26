@@ -376,20 +376,134 @@ const AndroidMusicScanner = {
 
     /**
      * Metadaten aus Datei extrahieren (ID3 Tags)
-     * HINWEIS: Benötigt zusätzliche Library (z.B. jsmediatags)
+     * Unterstützt: MediaStore-Metadaten, ID3v1 Tags
      */
     async extractMetadata(file) {
-        // TODO: Implement ID3 Tag Reading
-        // Placeholder - gibt Basis-Infos zurück
-        return {
-            title: file.name.replace(/\.[^/.]+$/, ''),
-            artist: 'Unbekannter Künstler',
-            album: 'Unbekanntes Album',
-            duration: 0,
-            genre: '',
-            year: 0,
-            cover: null
-        };
+        try {
+            // Basis-Metadaten aus Dateiname
+            const baseName = file.name.replace(/\.[^/.]+$/, '');
+            let metadata = {
+                title: baseName,
+                artist: 'Unbekannter Künstler',
+                album: 'Unbekanntes Album',
+                duration: 0,
+                genre: '',
+                year: 0,
+                cover: null
+            };
+
+            // Versuch 1: Parse Dateiname (Format: "Artist - Title" oder "01. Title")
+            const artistTitleMatch = baseName.match(/^(.+?)\s*-\s*(.+)$/);
+            if (artistTitleMatch) {
+                metadata.artist = artistTitleMatch[1].trim();
+                metadata.title = artistTitleMatch[2].trim();
+            }
+
+            // Versuch 2: ID3v1 Tags lesen (letzte 128 Bytes der Datei)
+            if (file instanceof File || file instanceof Blob) {
+                const id3v1 = await this.readID3v1Tags(file);
+                if (id3v1) {
+                    if (id3v1.title) metadata.title = id3v1.title;
+                    if (id3v1.artist) metadata.artist = id3v1.artist;
+                    if (id3v1.album) metadata.album = id3v1.album;
+                    if (id3v1.year) metadata.year = parseInt(id3v1.year) || 0;
+                    if (id3v1.genre !== undefined) metadata.genre = this.getGenreName(id3v1.genre);
+                }
+            }
+
+            // Versuch 3: Audio-Dauer ermitteln
+            if (file instanceof File || file instanceof Blob) {
+                metadata.duration = await this.getAudioDuration(file);
+            }
+
+            return metadata;
+        } catch (error) {
+            console.warn('⚠️ Metadaten-Extraktion fehlgeschlagen:', error);
+            return {
+                title: file.name.replace(/\.[^/.]+$/, ''),
+                artist: 'Unbekannter Künstler',
+                album: 'Unbekanntes Album',
+                duration: 0,
+                genre: '',
+                year: 0,
+                cover: null
+            };
+        }
+    },
+
+    /**
+     * ID3v1 Tags lesen (letzte 128 Bytes)
+     */
+    async readID3v1Tags(file) {
+        try {
+            const size = file.size;
+            if (size < 128) return null;
+
+            const slice = file.slice(size - 128, size);
+            const buffer = await slice.arrayBuffer();
+            const view = new DataView(buffer);
+
+            // Prüfe "TAG" Header
+            const tag = String.fromCharCode(view.getUint8(0), view.getUint8(1), view.getUint8(2));
+            if (tag !== 'TAG') return null;
+
+            // ID3v1 Format: TAG(3) + Title(30) + Artist(30) + Album(30) + Year(4) + Comment(30) + Genre(1)
+            const decoder = new TextDecoder('iso-8859-1');
+
+            return {
+                title: decoder.decode(new Uint8Array(buffer, 3, 30)).replace(/\0/g, '').trim(),
+                artist: decoder.decode(new Uint8Array(buffer, 33, 30)).replace(/\0/g, '').trim(),
+                album: decoder.decode(new Uint8Array(buffer, 63, 30)).replace(/\0/g, '').trim(),
+                year: decoder.decode(new Uint8Array(buffer, 93, 4)).replace(/\0/g, '').trim(),
+                genre: view.getUint8(127)
+            };
+        } catch (error) {
+            return null;
+        }
+    },
+
+    /**
+     * Audio-Dauer ermitteln
+     */
+    async getAudioDuration(file) {
+        return new Promise((resolve) => {
+            const audio = new Audio();
+            audio.preload = 'metadata';
+
+            audio.onloadedmetadata = () => {
+                resolve(Math.round(audio.duration));
+                URL.revokeObjectURL(audio.src);
+            };
+
+            audio.onerror = () => {
+                resolve(0);
+                URL.revokeObjectURL(audio.src);
+            };
+
+            audio.src = URL.createObjectURL(file);
+        });
+    },
+
+    /**
+     * Genre-ID zu Name konvertieren (ID3v1 Standard)
+     */
+    getGenreName(genreId) {
+        const genres = [
+            'Blues', 'Classic Rock', 'Country', 'Dance', 'Disco', 'Funk', 'Grunge',
+            'Hip-Hop', 'Jazz', 'Metal', 'New Age', 'Oldies', 'Other', 'Pop', 'R&B',
+            'Rap', 'Reggae', 'Rock', 'Techno', 'Industrial', 'Alternative', 'Ska',
+            'Death Metal', 'Pranks', 'Soundtrack', 'Euro-Techno', 'Ambient', 'Trip-Hop',
+            'Vocal', 'Jazz+Funk', 'Fusion', 'Trance', 'Classical', 'Instrumental',
+            'Acid', 'House', 'Game', 'Sound Clip', 'Gospel', 'Noise', 'AlternRock',
+            'Bass', 'Soul', 'Punk', 'Space', 'Meditative', 'Instrumental Pop',
+            'Instrumental Rock', 'Ethnic', 'Gothic', 'Darkwave', 'Techno-Industrial',
+            'Electronic', 'Pop-Folk', 'Eurodance', 'Dream', 'Southern Rock', 'Comedy',
+            'Cult', 'Gangsta', 'Top 40', 'Christian Rap', 'Pop/Funk', 'Jungle',
+            'Native American', 'Cabaret', 'New Wave', 'Psychedelic', 'Rave', 'Showtunes',
+            'Trailer', 'Lo-Fi', 'Tribal', 'Acid Punk', 'Acid Jazz', 'Polka', 'Retro',
+            'Musical', 'Rock & Roll', 'Hard Rock'
+        ];
+        return genres[genreId] || '';
     },
 
     /**

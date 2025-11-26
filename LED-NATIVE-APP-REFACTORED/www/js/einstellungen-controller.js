@@ -315,12 +315,49 @@ function saveSettings() {
     }
 }
 
-function loadSavedDevices() {
-    console.log('Lade gespeicherte Geräte...');
-}
+// loadSavedDevices() ist weiter unten vollständig implementiert (Zeile 846+)
 
 async function autoConnectDevices() {
-    console.log('Auto-Connect aktiviert...');
+    console.log('🔄 Auto-Connect startet...');
+    try {
+        // Gespeicherte Geräte aus LocalStorage laden
+        const savedDevices = JSON.parse(localStorage.getItem('savedBLEDevices') || '[]');
+
+        if (savedDevices.length === 0) {
+            console.log('ℹ️ Keine gespeicherten Geräte für Auto-Connect');
+            return;
+        }
+
+        // Mit BluetoothForegroundService verbinden wenn verfügbar
+        if (window.BluetoothForegroundService) {
+            for (const device of savedDevices) {
+                if (device.autoConnect) {
+                    console.log(`🔗 Verbinde automatisch mit: ${device.name || device.deviceId}`);
+                    try {
+                        await window.BluetoothForegroundService.connect(device.deviceId);
+                        console.log(`✅ Verbunden mit: ${device.name}`);
+                        if (window.showNotification) {
+                            window.showNotification(`Verbunden mit ${device.name}`, 'success');
+                        }
+                    } catch (err) {
+                        console.warn(`⚠️ Auto-Connect fehlgeschlagen für ${device.name}:`, err.message);
+                    }
+                }
+            }
+        }
+        // Fallback: Globaler BLE-Controller
+        else if (bleController && bleController.connect) {
+            const primaryDevice = savedDevices.find(d => d.isPrimary) || savedDevices[0];
+            if (primaryDevice) {
+                console.log(`🔗 Verbinde mit Hauptgerät: ${primaryDevice.name}`);
+                await bleController.connect(primaryDevice.deviceId);
+            }
+        }
+
+        updateConnectionStatus();
+    } catch (error) {
+        console.error('❌ Auto-Connect Fehler:', error);
+    }
 }
 
 function initEinstellungenController() {
@@ -890,6 +927,199 @@ async function updateMusicStats() {
     }
 }
 
+// ========== VERSTECKTE FEATURES AKTIVIEREN ==========
+
+/**
+ * Cloud-Sync Toggle
+ */
+function toggleCloudSync() {
+    const switchEl = document.getElementById('cloudSyncSwitch');
+    if (!switchEl) return;
+
+    const isActive = switchEl.classList.toggle('active');
+
+    if (window.cloudSync) {
+        if (isActive) {
+            window.cloudSync.enable();
+            if (window.showNotification) {
+                window.showNotification('Cloud-Sync aktiviert', 'success');
+            }
+        } else {
+            window.cloudSync.disable();
+            if (window.showNotification) {
+                window.showNotification('Cloud-Sync deaktiviert', 'info');
+            }
+        }
+    }
+
+    localStorage.setItem('cloudSyncEnabled', isActive);
+}
+
+/**
+ * Szenen-Manager öffnen
+ */
+function openScenesManager() {
+    // Prüfe ob ScenesManager existiert
+    if (!window.scenesManager) {
+        if (window.showNotification) {
+            window.showNotification('Szenen-Manager lädt...', 'info');
+        }
+        return;
+    }
+
+    // Erstelle Modal für Szenen-Manager
+    const modal = document.createElement('div');
+    modal.id = 'scenes-manager-modal';
+    modal.style.cssText = `
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.95); z-index: 10000;
+        display: flex; flex-direction: column; padding: 20px;
+        overflow-y: auto;
+    `;
+
+    const scenes = window.scenesManager.getAllScenes();
+    const categories = window.scenesManager.categories || ['Party', 'Entspannung', 'Arbeit', 'Custom'];
+
+    modal.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="color: #0ff; margin: 0;">🎬 Szenen-Manager</h2>
+            <button onclick="document.getElementById('scenes-manager-modal').remove()" style="
+                background: none; border: none; color: white; font-size: 24px; cursor: pointer;
+            ">✕</button>
+        </div>
+        
+        <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+            ${categories.map(cat => `
+                <button class="scene-category-btn" data-category="${cat}" style="
+                    padding: 8px 16px; border-radius: 20px; border: 1px solid #4ecdc4;
+                    background: transparent; color: #4ecdc4; cursor: pointer;
+                ">${cat}</button>
+            `).join('')}
+        </div>
+        
+        <div id="scenes-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px;">
+            ${scenes.length === 0 ? '<p style="color: #888; grid-column: 1/-1;">Keine Szenen vorhanden. Erstelle deine erste Szene!</p>' : ''}
+            ${scenes.map(scene => `
+                <div class="scene-card" onclick="applySceneFromManager('${scene.id}')" style="
+                    background: linear-gradient(135deg, rgb(${scene.color.r}, ${scene.color.g}, ${scene.color.b}), rgba(0,0,0,0.5));
+                    border-radius: 12px; padding: 15px; cursor: pointer;
+                    border: 2px solid transparent; transition: all 0.3s;
+                " onmouseover="this.style.borderColor='#0ff'" onmouseout="this.style.borderColor='transparent'">
+                    <div style="font-weight: bold; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.5);">${scene.name}</div>
+                    <div style="font-size: 12px; color: rgba(255,255,255,0.7);">${scene.category || 'Custom'}</div>
+                    ${scene.favorite ? '<span style="position: absolute; top: 5px; right: 5px;">⭐</span>' : ''}
+                </div>
+            `).join('')}
+        </div>
+        
+        <button onclick="createNewScene()" style="
+            margin-top: 20px; padding: 15px; width: 100%;
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            border: none; border-radius: 12px; color: white;
+            font-size: 16px; font-weight: bold; cursor: pointer;
+        ">
+            <i class="fas fa-plus"></i> Neue Szene erstellen
+        </button>
+    `;
+
+    document.body.appendChild(modal);
+}
+
+/**
+ * Szene aus Manager anwenden
+ */
+function applySceneFromManager(sceneId) {
+    if (window.scenesManager) {
+        window.scenesManager.applyScene(sceneId);
+        if (window.showNotification) {
+            window.showNotification('Szene angewendet!', 'success');
+        }
+    }
+}
+
+/**
+ * Neue Szene erstellen
+ */
+function createNewScene() {
+    const name = prompt('Name der Szene:');
+    if (!name) return;
+
+    // Aktuelle Farbe und Helligkeit nehmen
+    const currentColor = window.currentColor || { r: 255, g: 255, b: 255 };
+    const currentBrightness = parseInt(document.getElementById('brightnessSlider')?.value || 80);
+
+    if (window.scenesManager) {
+        window.scenesManager.createScene({
+            name: name,
+            color: currentColor,
+            brightness: currentBrightness,
+            effect: 0,
+            category: 'Custom'
+        });
+
+        if (window.showNotification) {
+            window.showNotification(`Szene "${name}" erstellt!`, 'success');
+        }
+
+        // Modal aktualisieren
+        document.getElementById('scenes-manager-modal')?.remove();
+        openScenesManager();
+    }
+}
+
+/**
+ * Sprachsteuerung Toggle
+ */
+function toggleVoiceControl() {
+    const switchEl = document.getElementById('voiceControlSwitch');
+    if (!switchEl) return;
+
+    const isActive = switchEl.classList.toggle('active');
+
+    if (window.voiceCommands) {
+        if (isActive) {
+            window.voiceCommands.startListening();
+            if (window.showNotification) {
+                window.showNotification('Sprachsteuerung aktiviert - Sage "LED rot" oder "Helligkeit 50"', 'success');
+            }
+        } else {
+            window.voiceCommands.stopListening();
+            if (window.showNotification) {
+                window.showNotification('Sprachsteuerung deaktiviert', 'info');
+            }
+        }
+    } else {
+        if (window.showNotification) {
+            window.showNotification('Sprachsteuerung nicht verfügbar', 'warning');
+        }
+        switchEl.classList.remove('active');
+    }
+
+    localStorage.setItem('voiceControlEnabled', isActive);
+}
+
+/**
+ * Einstellungen laden (Sync, Voice)
+ */
+function loadHiddenFeatureSettings() {
+    // Cloud-Sync Status
+    const cloudSyncEnabled = localStorage.getItem('cloudSyncEnabled') === 'true';
+    const cloudSyncSwitch = document.getElementById('cloudSyncSwitch');
+    if (cloudSyncSwitch && cloudSyncEnabled) {
+        cloudSyncSwitch.classList.add('active');
+    }
+
+    // Voice Control Status
+    const voiceEnabled = localStorage.getItem('voiceControlEnabled') === 'true';
+    const voiceSwitch = document.getElementById('voiceControlSwitch');
+    if (voiceSwitch && voiceEnabled) {
+        voiceSwitch.classList.add('active');
+    }
+}
+
+// Bei DOMContentLoaded laden
+document.addEventListener('DOMContentLoaded', loadHiddenFeatureSettings);
+
 // GLOBAL EXPORTS
 window.scanForNewDevice = scanForNewDevice;
 window.toggleAutoReconnect = toggleAutoReconnect;
@@ -924,5 +1154,12 @@ window.reportBug = reportBug;
 window.openPrivacyPolicy = openPrivacyPolicy;
 window.openTerms = openTerms;
 window.openLicenses = openLicenses;
+
+// VERSTECKTE FEATURES EXPORTS
+window.toggleCloudSync = toggleCloudSync;
+window.openScenesManager = openScenesManager;
+window.applySceneFromManager = applySceneFromManager;
+window.createNewScene = createNewScene;
+window.toggleVoiceControl = toggleVoiceControl;
 
 // console.log('✅ Einstellungen-Controller geladen');
