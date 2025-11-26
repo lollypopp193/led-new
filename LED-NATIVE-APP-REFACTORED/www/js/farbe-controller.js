@@ -4,11 +4,7 @@
  */
 'use strict';
 
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
+// escapeHtml → siehe utils.js
 
 let currentMode = 'rainbow';
 let currentColor = { r: 255, g: 0, b: 0 };
