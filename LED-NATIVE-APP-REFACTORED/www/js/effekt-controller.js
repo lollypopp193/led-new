@@ -400,25 +400,6 @@ function getAnimationClass(effectName) {
 }
 
 /**
- * Zeigt Benachrichtigung an
- * @param {string} message - Nachricht
- * @param {string} type - Typ (success, error, info, warning)
- */
-function showNotification(message, type = "success") {
-    if (!notification) return;
-
-    const content = notification.querySelector(".notification-content");
-    if (content) {
-        content.textContent = message;
-    }
-    notification.classList.add("active");
-
-    setTimeout(() => {
-        notification.classList.remove("active");
-    }, 3000);
-}
-
-/**
  * Sendet Effekt an Hardware via BLE
  * @param {string} effectName - Effekt-Name
  * @param {number} speed - Geschwindigkeit 1-10
@@ -502,7 +483,9 @@ window.updateAnimationSpeed = updateAnimationSpeed;
 window.renderEffekte = renderEffekte;
 window.selectEffekt = selectEffekt;
 window.sendEffectToBLE = sendEffectToBLE;
-window.showNotification = showNotification;
+
+// showNotification() - wird aus notifications.js geladen (ZERO Duplicate Code Policy)
+
 window.effekte = effekte;
 
 // Auto-Init

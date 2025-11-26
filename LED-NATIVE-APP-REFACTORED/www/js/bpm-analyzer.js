@@ -25,14 +25,18 @@ class BPMAnalyzer {
      * @param {AudioContext} audioContext
      */
     init(audioContext) {
-        this.audioContext = audioContext;
+        try {
+            this.audioContext = audioContext;
 
-        this.analyzer = this.audioContext.createAnalyser();
-        this.analyzer.fftSize = this.bufferLength;
-        this.bufferLength = this.analyzer.frequencyBinCount;
-        this.dataArray = new Uint8Array(this.bufferLength);
+            this.analyzer = this.audioContext.createAnalyser();
+            this.analyzer.fftSize = this.bufferLength;
+            this.bufferLength = this.analyzer.frequencyBinCount;
+            this.dataArray = new Uint8Array(this.bufferLength);
 
-        console.log('✅ BPM-Analyzer initialisiert');
+            console.log('✅ BPM-Analyzer initialisiert');
+        } catch (error) {
+            console.error('❌ BPM-Analyzer Init fehlgeschlagen:', error);
+        }
     }
 
     /**

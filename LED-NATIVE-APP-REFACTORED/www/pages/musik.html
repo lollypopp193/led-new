@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
@@ -1863,6 +1863,9 @@
             <div class="progress" id="progressBar"></div>
           </div>
           <span class="time" id="totalTime">0:00</span>
+          <span class="time" id="bpmDisplay" style="color: #4ecdc4; margin-left: 15px; font-size: 0.9em;">
+            <i class="fas fa-drum"></i> -- BPM
+          </span>
         </div>
 
         <!-- Player Controls -->
@@ -3597,7 +3600,7 @@
                 <div style="display: flex; align-items: center; justify-content: space-between;">
                   <span style="font-weight: bold">Crossfade aktivieren</span>
                   <div class="toggle-switch">
-                    <input type="checkbox" id="crossfadeEnabled">
+                    <input type="checkbox" id="crossfadeToggle">
                     <span class="slider"></span>
                   </div>
                 </div>
@@ -3631,7 +3634,7 @@
                       >Crossfade-Typ:</label
                     >
                     <select
-                      id="crossfadeTypeAdvanced"
+                      id="crossfadeType"
                       style="
                         width: 100%;
                         padding: 8px;
@@ -3646,7 +3649,29 @@
                         Logarithmisch
                       </option>
                       <option value="exponential">Exponentiell</option>
+                      <option value="s-curve">S-Kurve</option>
                     </select>
+                  </div>
+
+                  <div style="margin-bottom: 15px">
+                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                      <input type="checkbox" id="crossfadeAutoDetect" checked style="transform: scale(1.2)">
+                      <span>Song-Ende automatisch erkennen</span>
+                    </label>
+                  </div>
+
+                  <div style="margin-bottom: 15px">
+                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                      <input type="checkbox" id="crossfadeBeatMatch" style="transform: scale(1.2)">
+                      <span>Beat-Matching (experimentell)</span>
+                    </label>
+                  </div>
+
+                  <div style="margin-bottom: 15px">
+                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                      <input type="checkbox" id="crossfadePreLoad" checked style="transform: scale(1.2)">
+                      <span>Nächsten Track vorladen</span>
+                    </label>
                   </div>
                 </div>
               </div>
@@ -9003,9 +9028,6 @@
                                               // Load saved playlist on page load
                                               loadPlaylist();
                                           }
-
-                                          //  ENTFERNT - Funktion war nicht im globalen Scope verfügbar
-                                          // Taskbar-Navigation wird jetzt durch separates Script unten initialisiert
     </script>
 
     <!--  TASKBAR NAVIGATION FIX - Direkter Event-Listener -->
@@ -9931,6 +9953,7 @@
       </div>
 
       <!-- Core Scripts (von index.html synchronisiert) -->
+      <script src="/js/notifications.js"></script>
       <script src="/js/umlaut-fixer.js"></script>
       <script src="/js/toggle-switch-manager.js"></script>
       <script src="/js/slider-live-values.js"></script>
@@ -9954,6 +9977,25 @@
       <script src="/js/equalizer-engine.js"></script>
       <script src="/js/equalizer-ui-integration.js"></script>
       <script src="/js/led-musik-controller.js"></script>
+      
+      <!-- MUSIK-SPEZIFISCHE MODULE -->
+      <script src="/js/bassboost-controller.js"></script>
+      <script src="/js/advanced-visualizer.js"></script>
+      <script src="/js/crossfade-controller.js"></script>
+      <script src="/js/crossfade-slider-fix.js"></script>
+      <script src="/js/playlist-drag-drop.js"></script>
+      <script src="/js/playlist-import-export.js"></script>
+      <script src="/js/library-auto-scanner.js"></script>
+      <script src="/js/library-search-filter.js"></script>
+      <script src="/js/android-music-scanner.js"></script>
+      <script src="/js/bpm-analyzer.js"></script>
+      <script src="/js/voice-commands.js"></script>
+      <script src="/js/media-session-controller.js"></script>
+      <script src="/js/audio-decoder-fft.js"></script>
+      <script src="/js/share-manager.js"></script>
+      <script src="/js/sleep-timer-controller.js"></script>
+      <script src="/js/sleep-timer-ui-controller.js"></script>
+      <script src="/js/music-alarm-controller.js"></script>
 
       <!-- LED-Musik-Control Funktionen (Basic - AudioReactiveEngine in audio-reactive-engine.js) -->
       <script>
@@ -11269,7 +11311,7 @@
             genres: window.musicLibrary.genres,
             folders: window.musicLibrary.folders,
             lastScan: new Date().toISOString(),
-            scanVersion: "2.0",
+            scanVersion: "3.0",
           };
 
           localStorage.setItem(
@@ -11422,85 +11464,130 @@
       });
     </script>
 
-    <!-- ========== NEUE AUDIO-ANALYSE CONTROLS (v3.0) ========== -->
+    <!-- ========== NEUE AUDIO-ANALYSE CONTROLS (v3.0.1 FIX) ========== -->
     <script>
-      // Audio-Analyse UI Controls Integration
-      
-      // Empfindlichkeit anpassen
-      function updateSensitivity(value) {
-        const display = document.getElementById('sensitivityValue');
-        if (display) display.textContent = value;
-        if (window.AudioDecoderFFT && window.audioDecoderInstance) {
-          window.audioDecoderInstance.setSensitivity(parseFloat(value));
-        }
-      }
+      (function() {
+        'use strict';
 
-      // Smoothing (Glättung) anpassen
-      function updateSmoothing(value) {
-        const display = document.getElementById('smoothingValue');
-        if (display) display.textContent = value;
-        if (window.AudioDecoderFFT && window.audioDecoderInstance) {
-          window.audioDecoderInstance.setSmoothing(parseFloat(value));
-        }
-      }
-
-      // Geschwindigkeit anpassen
-      function updateSpeed(value) {
-        const display = document.getElementById('speedValue');
-        if (display) display.textContent = value + 'x';
-        if (window.AudioDecoderFFT && window.audioDecoderInstance) {
-          window.audioDecoderInstance.setSpeed(parseFloat(value));
-        }
-      }
-
-      // Audio-Feature Display aktualisieren
-      function updateAudioFeatureDisplay(features) {
-        const bassEl = document.getElementById('bassValue');
-        const midEl = document.getElementById('midValue');
-        const trebleEl = document.getElementById('trebleValue');
-        const bpmEl = document.getElementById('bpmValue');
-
-        if (bassEl) bassEl.textContent = Math.round(features.bass * 100) + '%';
-        if (midEl) midEl.textContent = Math.round(features.mid * 100) + '%';
-        if (trebleEl) trebleEl.textContent = Math.round(features.treble * 100) + '%';
-        if (bpmEl && features.bpm) bpmEl.textContent = Math.round(features.bpm);
-      }
-
-      // Datei-Analyse starten
-      async function startFileAnalysisForCurrentTrack() {
-        try {
-          if (!window.currentTrack || !window.currentTrack.file) {
-            showNotification('Kein Track ausgewählt', 'warning');
-            return;
+        // Hilfsfunktionen global verfügbar machen
+        window.updateSensitivity = function(value) {
+          const display = document.getElementById('sensitivityValue');
+          if (display) display.textContent = value;
+          if (window.AudioDecoderFFT && window.audioDecoderInstance) {
+            window.audioDecoderInstance.setSensitivity(parseFloat(value));
           }
+        };
 
-          if (!window.audioDecoderInstance) {
-            window.audioDecoderInstance = new window.AudioDecoderFFT();
-            await window.audioDecoderInstance.init();
+        window.updateSmoothing = function(value) {
+          const display = document.getElementById('smoothingValue');
+          if (display) display.textContent = value;
+          if (window.AudioDecoderFFT && window.audioDecoderInstance) {
+            window.audioDecoderInstance.setSmoothing(parseFloat(value));
           }
+        };
 
-          const success = await window.audioDecoderInstance.loadAudioFile(window.currentTrack.file);
-          if (!success) {
-            showNotification('Fehler beim Laden der Audio-Datei', 'error');
-            return;
+        window.updateSpeed = function(value) {
+          const display = document.getElementById('speedValue');
+          if (display) display.textContent = value + 'x';
+          if (window.AudioDecoderFFT && window.audioDecoderInstance) {
+            window.audioDecoderInstance.setSpeed(parseFloat(value));
           }
+        };
 
-          window.audioDecoderInstance.startAnalysis((features) => {
-            updateAudioFeatureDisplay(features);
-            if (window.BLEControllerPro && window.BLEControllerPro.isConnected) {
-              window.BLEControllerPro.sendMusicReactiveData(features);
+        function updateAudioFeatureDisplay(features) {
+          const bassEl = document.getElementById('bassValue');
+          const midEl = document.getElementById('midValue');
+          const trebleEl = document.getElementById('trebleValue');
+          const bpmEl = document.getElementById('bpmValue');
+
+          if (bassEl) bassEl.textContent = Math.round(features.bass * 100) + '%';
+          if (midEl) midEl.textContent = Math.round(features.mid * 100) + '%';
+          if (trebleEl) trebleEl.textContent = Math.round(features.treble * 100) + '%';
+          if (bpmEl && features.bpm) bpmEl.textContent = Math.round(features.bpm);
+        }
+
+        // Datei-Analyse starten (Global verfügbar für Button-Klick)
+        window.startFileAnalysisForCurrentTrack = async function() {
+          try {
+            if (!window.currentTrack || !window.currentTrack.file) {
+              if (typeof showNotification === 'function') {
+                showNotification('Kein Track ausgewählt', 'warning');
+              } else {
+                console.warn('Kein Track ausgewählt');
+              }
+              return;
             }
-          });
 
-          showNotification('Audio-Analyse gestartet', 'success');
-        } catch (error) {
-          console.error('Fehler bei Datei-Analyse:', error);
-          showNotification('Fehler: ' + error.message, 'error');
-        }
-      }
+            if (!window.audioDecoderInstance) {
+              if (window.AudioDecoderFFT) {
+                window.audioDecoderInstance = new window.AudioDecoderFFT();
+                await window.audioDecoderInstance.init();
+              } else {
+                console.error('AudioDecoderFFT nicht gefunden');
+                return;
+              }
+            }
 
-      console.log('✅ Audio-Analyse Controls geladen');
+            const success = await window.audioDecoderInstance.loadAudioFile(window.currentTrack.file);
+            if (!success) {
+              if (typeof showNotification === 'function') {
+                showNotification('Fehler beim Laden der Audio-Datei', 'error');
+              }
+              return;
+            }
+
+            window.audioDecoderInstance.startAnalysis((features) => {
+              updateAudioFeatureDisplay(features);
+              if (window.BLEControllerPro && window.BLEControllerPro.isConnected) {
+                window.BLEControllerPro.sendMusicReactiveData(features);
+              }
+            });
+
+            if (typeof showNotification === 'function') {
+              showNotification('Audio-Analyse gestartet', 'success');
+            }
+          } catch (error) {
+            console.error('Fehler bei Datei-Analyse:', error);
+            if (typeof showNotification === 'function') {
+              showNotification('Fehler: ' + error.message, 'error');
+            }
+          }
+        };
+
+        console.log('✅ Audio-Analyse Controls v3.0.1 geladen');
+      })();
     </script>
+
+    <!-- Voice Command Indicator (für voice-commands.js) -->
+    <div id="voiceIndicator" style="
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px 30px;
+      border-radius: 50px;
+      box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
+      display: none;
+      align-items: center;
+      gap: 15px;
+      z-index: 9999;
+      animation: pulse 1.5s ease-in-out infinite;
+    ">
+      <i class="fas fa-microphone" style="font-size: 24px; animation: mic-pulse 1s ease-in-out infinite;"></i>
+      <span style="font-size: 16px; font-weight: 600;">Hört zu...</span>
+    </div>
+    <style>
+      @keyframes pulse {
+        0%, 100% { transform: translateX(-50%) scale(1); }
+        50% { transform: translateX(-50%) scale(1.05); }
+      }
+      @keyframes mic-pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.6; }
+      }
+    </style>
   </body>
 </html>
 

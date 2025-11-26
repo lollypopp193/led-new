@@ -12,14 +12,15 @@
  * @param {number} duration - Anzeigedauer in ms (default: 3000)
  */
 function showNotification(message, type = 'info', duration = 3000) {
-    // Prüfe ob Container existiert
-    let container = document.getElementById('notification-container');
+    try {
+        // Prüfe ob Container existiert
+        let container = document.getElementById('notification-container');
 
-    if (!container) {
-        // Erstelle Container wenn nicht vorhanden
-        container = document.createElement('div');
-        container.id = 'notification-container';
-        container.style.cssText = `
+        if (!container) {
+            // Erstelle Container wenn nicht vorhanden
+            container = document.createElement('div');
+            container.id = 'notification-container';
+            container.style.cssText = `
             position: fixed;
             top: 20px;
             right: 20px;
@@ -29,34 +30,34 @@ function showNotification(message, type = 'info', duration = 3000) {
             gap: 10px;
             pointer-events: none;
         `;
-        document.body.appendChild(container);
-    }
+            document.body.appendChild(container);
+        }
 
-    // Erstelle Notification-Element
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
+        // Erstelle Notification-Element
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
 
-    // Icon basierend auf Typ
-    const icons = {
-        success: '✓',
-        error: '✕',
-        warning: '⚠',
-        info: 'ℹ'
-    };
+        // Icon basierend auf Typ
+        const icons = {
+            success: '✓',
+            error: '✕',
+            warning: '⚠',
+            info: 'ℹ'
+        };
 
-    const icon = icons[type] || icons.info;
+        const icon = icons[type] || icons.info;
 
-    // Farben basierend auf Typ
-    const colors = {
-        success: '#4caf50',
-        error: '#f44336',
-        warning: '#ff9800',
-        info: '#2196f3'
-    };
+        // Farben basierend auf Typ
+        const colors = {
+            success: '#4caf50',
+            error: '#f44336',
+            warning: '#ff9800',
+            info: '#2196f3'
+        };
 
-    const color = colors[type] || colors.info;
+        const color = colors[type] || colors.info;
 
-    notification.style.cssText = `
+        notification.style.cssText = `
         background: ${color};
         color: white;
         padding: 15px 20px;
@@ -75,14 +76,14 @@ function showNotification(message, type = 'info', duration = 3000) {
         transform: translateX(100%);
     `;
 
-    notification.innerHTML = `
+        notification.innerHTML = `
         <span style="font-size: 20px; font-weight: bold;">${icon}</span>
         <span style="flex: 1;">${message}</span>
     `;
 
-    // Animation hinzufügen
-    const style = document.createElement('style');
-    style.textContent = `
+        // Animation hinzufügen
+        const style = document.createElement('style');
+        style.textContent = `
         @keyframes slideIn {
             from {
                 opacity: 0;
@@ -105,39 +106,42 @@ function showNotification(message, type = 'info', duration = 3000) {
         }
     `;
 
-    if (!document.getElementById('notification-styles')) {
-        style.id = 'notification-styles';
-        document.head.appendChild(style);
+        if (!document.getElementById('notification-styles')) {
+            style.id = 'notification-styles';
+            document.head.appendChild(style);
+        }
+
+        // Notification anzeigen
+        container.appendChild(notification);
+
+        // Animation starten
+        setTimeout(() => {
+            notification.style.opacity = '1';
+            notification.style.transform = 'translateX(0)';
+        }, 10);
+
+        // Automatisch entfernen nach Duration
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease-in';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, duration);
+
+        // Click zum Schließen
+        notification.addEventListener('click', () => {
+            notification.style.animation = 'slideOut 0.3s ease-in';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        });
+    } catch (error) {
+        console.error('❌ Notification-Fehler:', error);
     }
-
-    // Notification anzeigen
-    container.appendChild(notification);
-
-    // Animation starten
-    setTimeout(() => {
-        notification.style.opacity = '1';
-        notification.style.transform = 'translateX(0)';
-    }, 10);
-
-    // Automatisch entfernen nach Duration
-    setTimeout(() => {
-        notification.style.animation = 'slideOut 0.3s ease-in';
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
-        }, 300);
-    }, duration);
-
-    // Click zum Schließen
-    notification.addEventListener('click', () => {
-        notification.style.animation = 'slideOut 0.3s ease-in';
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
-        }, 300);
-    });
 }
 
 /**
@@ -186,4 +190,4 @@ window.showInfo = showInfo;
 // Alias für Kompatibilität
 window.showGlobalNotification = showNotification;
 
-// console.log('✅ Notification-System geladen');
+console.log('✅ Notification-System geladen');

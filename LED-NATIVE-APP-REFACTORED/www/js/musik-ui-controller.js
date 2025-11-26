@@ -4,44 +4,7 @@
  */
 'use strict';
 
-// Notification System
-function showNotification(message, type = 'info') {
-    const notification = document.createElement('div');
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 15px 20px;
-        border-radius: 10px;
-        color: white;
-        font-weight: 500;
-        z-index: 10000;
-        max-width: 300px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    `;
-
-    switch (type) {
-        case 'success':
-            notification.style.background = 'linear-gradient(135deg, #2ed573, #26a664)';
-            break;
-        case 'error':
-            notification.style.background = 'linear-gradient(135deg, #ff4757, #ee2e45)';
-            break;
-        case 'warning':
-            notification.style.background = 'linear-gradient(135deg, #ffa502, #ff7907)';
-            break;
-        default:
-            notification.style.background = 'linear-gradient(135deg, #4ecdc4, #44a08d)';
-    }
-
-    notification.textContent = message;
-    document.body.appendChild(notification);
-
-    setTimeout(() => {
-        notification.style.animation = 'slideOut 0.3s ease';
-        setTimeout(() => notification.remove(), 300);
-    }, 3000);
-}
+// showNotification() - wird aus notifications.js geladen (ZERO Duplicate Code Policy)
 
 // Taskbar Navigation
 function initTaskbarNavigation() {
