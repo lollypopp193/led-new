@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
@@ -563,20 +563,20 @@
       </div>
 
       <div class="status-bar">
-        <span id="connectionStatus">🔍 Bereit zum Scannen</span>
+        <span id="connectionStatus">ðŸ” Bereit zum Scannen</span>
       </div>
 
       <div class="content">
-        <!-- Bluetooth Geräte -->
+        <!-- Bluetooth GerÃ¤te -->
         <div class="section">
-          <h3 class="section-title">Bluetooth Geräte</h3>
+          <h3 class="section-title">Bluetooth GerÃ¤te</h3>
           <button type="button" class="scan-button" id="scanButton">
-            <span id="scanIcon">🔍</span>
-            <span id="scanText">Geräte suchen</span>
+            <span id="scanIcon">ðŸ”</span>
+            <span id="scanText">GerÃ¤te suchen</span>
           </button>
           <div class="device-list" id="deviceList">
             <div class="no-devices">
-              Keine Geräte gefunden. Tippe auf "Geräte suchen" um LED-Bänder zu
+              Keine GerÃ¤te gefunden. Tippe auf "GerÃ¤te suchen" um LED-BÃ¤nder zu
               finden.
             </div>
           </div>
@@ -584,22 +584,22 @@
 
         <!-- Erweiterte Protokolle (WLED, Pixel-Level, etc.) entfernt - nicht benoetigt -->
         <!-- <div class="section">
-          <h3 class="section-title">🌐 Erweiterte Protokolle</h3>
+          <h3 class="section-title">ðŸŒ Erweiterte Protokolle</h3>
           <div class="setting-item">
             <div class="setting-label">
               <div class="setting-title">WLED-Integration (WiFi-LEDs)</div>
               <div class="setting-description">
-                Unterstützung für WLED-Controller über WiFi
+                UnterstÃ¼tzung fÃ¼r WLED-Controller Ã¼ber WiFi
               </div>
             </div>
             <div class="switch" id="wledSwitch">
               <div class="switch-handle"></div>
             </div>
           </div>
-          <!-- ✅ WLED-GERÄTE-SCANNER MIT ECHTER FUNKTIONALITÄT -->
+          <!-- âœ… WLED-GERÃ„TE-SCANNER MIT ECHTER FUNKTIONALITÃ„T -->
           <div class="setting-item" id="wledScanSection" style="display: none">
             <div class="setting-label">
-              <div class="setting-title">WLED-Geräte scannen</div>
+              <div class="setting-title">WLED-GerÃ¤te scannen</div>
               <div class="setting-description">
                 Suche nach WLED-Controllern im lokalen Netzwerk
               </div>
@@ -613,44 +613,15 @@
               <i class="fas fa-search"></i> WLED scannen
             </button>
           </div>
-          <!-- ✅ GEFUNDENE WLED-GERÄTE -->
+          <!-- âœ… GEFUNDENE WLED-GERÃ„TE -->
           <div
             class="setting-item"
             id="wledDevicesSection"
             style="display: none"
           >
             <div class="setting-label">
-              <div class="setting-title">Gefundene WLED-Geräte</div>
+              <div class="setting-title">Gefundene WLED-GerÃ¤te</div>
               <div class="setting-description">WLED-Controller im Netzwerk</div>
-            </div>
-            <div id="wledDevicesList" class="wled-devices-list">
-              <div class="wled-no-devices">Keine WLED-Geräte gefunden</div>
-            </div>
-          </div>
-          <div class="setting-item">
-            <div class="setting-label">
-              <div class="setting-title">Hierarchische Gruppen</div>
-              <div class="setting-description">
-                Untergruppen für bessere Organisation
-              </div>
-            </div>
-            <div class="switch active" id="hierarchicalGroupsSwitch">
-              <div class="switch-handle"></div>
-            </div>
-          </div>
-          <div class="setting-item">
-            <div class="setting-label">
-              <div class="setting-title">Pixel-Level-Kontrolle</div>
-              <div class="setting-description">
-                Einzelne LEDs ansteuern (experimentell)
-              </div>
-            </div>
-            <div class="switch" id="pixelControlSwitch">
-              <div class="switch-handle"></div>
-            </div>
-          </div>
-        </div> -->
-
         <!-- Allgemeine Einstellungen -->
         <div class="section">
           <h3 class="section-title">Allgemein</h3>
@@ -658,7 +629,7 @@
             <div class="setting-label">
               <div class="setting-title">Automatisch verbinden</div>
               <div class="setting-description">
-                Beim App-Start automatisch mit gespeicherten Geräten verbinden
+                Beim App-Start automatisch mit gespeicherten GerÃ¤ten verbinden
               </div>
             </div>
             <div class="switch active" id="autoConnectSwitch">
@@ -669,7 +640,7 @@
             <div class="setting-label">
               <div class="setting-title">Helligkeit</div>
               <div class="setting-description">
-                Standard-Helligkeit für neue Verbindungen
+                Standard-Helligkeit fÃ¼r neue Verbindungen
               </div>
             </div>
             <div class="slider-container">
@@ -686,36 +657,14 @@
           </div>
           <div class="setting-item">
             <div class="setting-label">
-              <div class="setting-title">Benachrichtigungen</div>
-              <div class="setting-description">
-                Verbindungsstatus und Fehlermeldungen anzeigen
-              </div>
-            </div>
-            <div class="switch active" id="notificationsSwitch">
-              <div class="switch-handle"></div>
-            </div>
-          </div>
-          <div class="setting-item">
-            <div class="setting-label">
-              <div class="setting-title">Dunkler Modus</div>
-              <div class="setting-description">
-                Verwende dunkles Design für alle Oberflächen
-              </div>
-            </div>
-            <div class="switch active" id="darkModeSwitch">
-              <div class="switch-handle"></div>
-            </div>
-          </div>
-          <div class="setting-item">
-            <div class="setting-label">
               <div class="setting-title">Sprache</div>
-              <div class="setting-description">App-Sprache auswählen</div>
+              <div class="setting-description">App-Sprache auswÃ¤hlen</div>
             </div>
             <select id="languageSelect" class="language-select">
               <option value="de">Deutsch</option>
               <option value="en">English</option>
-              <option value="es">Español</option>
-              <option value="fr">Français</option>
+              <option value="es">EspaÃ±ol</option>
+              <option value="fr">FranÃ§ais</option>
             </select>
           </div>
         </div>
@@ -726,15 +675,15 @@
         <div class="section settings-section">
           <div class="section-header">
             <i class="fas fa-bluetooth-b"></i>
-            <h2>Bluetooth-Geräte</h2>
+            <h2>Bluetooth-GerÃ¤te</h2>
           </div>
 
           <div id="saved-devices" class="device-list">
-            <!-- Geräte werden hier dynamisch eingefügt -->
+            <!-- GerÃ¤te werden hier dynamisch eingefÃ¼gt -->
           </div>
 
           <button class="btn-primary btn-full" onclick="scanForNewDevice()">
-            <i class="fas fa-search"></i> Neues Gerät suchen
+            <i class="fas fa-search"></i> Neues GerÃ¤t suchen
           </button>
 
           <div class="setting-row">
@@ -742,7 +691,7 @@
               <i class="fas fa-sync"></i>
               <div>
                 <h4>Automatisch verbinden</h4>
-                <p class="description">Beim App-Start gespeicherte Geräte verbinden</p>
+                <p class="description">Beim App-Start gespeicherte GerÃ¤te verbinden</p>
               </div>
             </div>
             <label class="toggle-switch">
@@ -802,7 +751,7 @@
               <i class="fas fa-mobile-alt"></i> System-Musik scannen
             </button>
             <button class="btn-secondary" onclick="requestSAFAccess()">
-              <i class="fas fa-sd-card"></i> SD-Karte Ordner hinzufügen
+              <i class="fas fa-sd-card"></i> SD-Karte Ordner hinzufÃ¼gen
             </button>
           </div>
 
@@ -820,7 +769,7 @@
           <div class="scanned-folders" id="scannedFolders" style="display: none;">
             <h4>Gescannte Ordner:</h4>
             <div class="folder-list" id="folderList">
-              <!-- Ordner werden hier dynamisch eingefügt -->
+              <!-- Ordner werden hier dynamisch eingefÃ¼gt -->
             </div>
           </div>
 
@@ -851,7 +800,7 @@
             <select id="reactionPreset" onchange="loadReactionPreset(this.value)" style="width: 100%;">
               <option value="balanced">Ausgewogen</option>
               <option value="bass-heavy">Bass betont</option>
-              <option value="treble-focus">Höhen betont</option>
+              <option value="treble-focus">HÃ¶hen betont</option>
               <option value="party">Party-Modus</option>
               <option value="chill">Entspannt</option>
               <option value="custom">Benutzerdefiniert</option>
@@ -873,7 +822,7 @@
 
           <div class="slider-control">
             <div class="slider-header">
-              <label><i class="fas fa-wave-square"></i> Glättung</label>
+              <label><i class="fas fa-wave-square"></i> GlÃ¤ttung</label>
               <span id="smoothingValue" class="slider-value">0.7</span>
             </div>
             <input type="range" id="smoothing" min="0" max="1" step="0.1" value="0.7" oninput="updateSmoothing(this.value)">
@@ -916,7 +865,7 @@
               <i class="fas fa-save"></i> Als Preset speichern
             </button>
             <button class="btn-text" onclick="resetToDefault()">
-              <i class="fas fa-undo"></i> Zurücksetzen
+              <i class="fas fa-undo"></i> ZurÃ¼cksetzen
             </button>
           </div>
         </div>
@@ -929,7 +878,7 @@
           </div>
 
           <div class="preset-list" id="presetList">
-            <!-- Presets werden hier dynamisch eingefügt -->
+            <!-- Presets werden hier dynamisch eingefÃ¼gt -->
           </div>
 
           <div class="preset-buttons">
@@ -943,12 +892,12 @@
 
           <div class="device-sync" id="deviceSync" style="margin-top: 20px;">
             <h4>Presets synchronisieren:</h4>
-            <p class="description" style="margin-bottom: 15px;">Aktuelles Preset auf andere Geräte übertragen</p>
+            <p class="description" style="margin-bottom: 15px;">Aktuelles Preset auf andere GerÃ¤te Ã¼bertragen</p>
             <div class="device-sync-list" id="syncDeviceList">
-              <!-- Devices für Sync werden hier dynamisch eingefügt -->
+              <!-- Devices fÃ¼r Sync werden hier dynamisch eingefÃ¼gt -->
             </div>
             <button class="btn-primary btn-full" onclick="syncPresetsToDevices()" style="margin-top: 15px;">
-              <i class="fas fa-sync"></i> Auf ausgewählte Geräte übertragen
+              <i class="fas fa-sync"></i> Auf ausgewÃ¤hlte GerÃ¤te Ã¼bertragen
             </button>
           </div>
         </div>
@@ -982,7 +931,7 @@
               <i class="fas fa-upload"></i> Backup wiederherstellen
             </button>
             <p class="description" style="margin-top: 10px; text-align: center; font-size: 12px;">
-              Sichert: Geräte, Presets, Einstellungen, Musik-Index
+              Sichert: GerÃ¤te, Presets, Einstellungen, Musik-Index
             </p>
           </div>
 
@@ -1007,7 +956,7 @@
               </div>
             </div>
             <button class="btn-text" onclick="runFullDiagnostic()" style="width: 100%; justify-content: center; margin-top: 10px;">
-              <i class="fas fa-stethoscope"></i> Vollständige Diagnose
+              <i class="fas fa-stethoscope"></i> VollstÃ¤ndige Diagnose
             </button>
           </div>
 
@@ -1017,17 +966,17 @@
             <p style="font-size: 14px; color: #aaa; margin: 5px 0;">Build: 2025-11-24</p>
             <p style="font-size: 14px; color: #aaa; margin: 5px 0;">Capacitor: 7.4.4</p>
             <button class="btn-text" onclick="checkForUpdates()" style="width: 100%; justify-content: center; margin-top: 10px;">
-              <i class="fas fa-sync-alt"></i> Auf Updates prüfen
+              <i class="fas fa-sync-alt"></i> Auf Updates prÃ¼fen
             </button>
           </div>
 
           <div class="reset-section">
             <h4 class="warning-text" style="margin-bottom: 15px;">Gefahr-Zone:</h4>
             <button class="btn-danger btn-full" onclick="confirmResetApp()">
-              <i class="fas fa-exclamation-triangle"></i> App zurücksetzen
+              <i class="fas fa-exclamation-triangle"></i> App zurÃ¼cksetzen
             </button>
             <p class="description warning-text" style="margin-top: 10px; text-align: center; font-size: 12px;">
-              Löscht ALLE Daten inkl. gespeicherte Geräte und Presets
+              LÃ¶scht ALLE Daten inkl. gespeicherte GerÃ¤te und Presets
             </p>
           </div>
         </div>
@@ -1042,7 +991,7 @@
           <div class="faq-links">
             <a href="#" class="help-link" onclick="openFAQ('bluetooth'); return false;">
               <i class="fas fa-bluetooth-b"></i>
-              <span>Bluetooth-Probleme lösen</span>
+              <span>Bluetooth-Probleme lÃ¶sen</span>
               <i class="fas fa-chevron-right"></i>
             </a>
             <a href="#" class="help-link" onclick="openFAQ('music'); return false;">
@@ -1073,22 +1022,22 @@
           </div>
 
           <div class="legal-links">
-            <a href="#" onclick="openPrivacyPolicy(); return false;">Datenschutzerklärung</a>
-            <span>•</span>
+            <a href="#" onclick="openPrivacyPolicy(); return false;">DatenschutzerklÃ¤rung</a>
+            <span>â€¢</span>
             <a href="#" onclick="openTerms(); return false;">Nutzungsbedingungen</a>
-            <span>•</span>
+            <span>â€¢</span>
             <a href="#" onclick="openLicenses(); return false;">Open-Source-Lizenzen</a>
           </div>
         </div>
 
-        <!-- Erweiterte Einstellungen (FPS, Paketgröße, HDR, Mikrofon) entfernt - nicht benötigt -->
+        <!-- Erweiterte Einstellungen (FPS, PaketgrÃ¶ÃŸe, HDR, Mikrofon) entfernt - nicht benÃ¶tigt -->
         <!-- <div class="section">
-          <h3 class="section-title">🔧 Erweiterte Einstellungen</h3>
+          <h3 class="section-title">ðŸ”§ Erweiterte Einstellungen</h3>
           <div class="setting-item">
             <div class="setting-label">
               <div class="setting-title">FPS (Bildrate)</div>
               <div class="setting-description">
-                Bildwiederholrate für Animationen
+                Bildwiederholrate fÃ¼r Animationen
               </div>
             </div>
             <div class="slider-container">
@@ -1105,9 +1054,9 @@
           </div>
           <div class="setting-item">
             <div class="setting-label">
-              <div class="setting-title">Paketgröße</div>
+              <div class="setting-title">PaketgrÃ¶ÃŸe</div>
               <div class="setting-description">
-                BLE-Datenpaket Größe (Bytes)
+                BLE-Datenpaket GrÃ¶ÃŸe (Bytes)
               </div>
             </div>
             <div class="slider-container">
@@ -1126,7 +1075,7 @@
             <div class="setting-label">
               <div class="setting-title">Hardware-Beschleunigung</div>
               <div class="setting-description">
-                GPU-Beschleunigung für bessere Performance
+                GPU-Beschleunigung fÃ¼r bessere Performance
               </div>
             </div>
             <div class="switch active" id="hwAccelSwitch">
@@ -1137,7 +1086,7 @@
             <div class="setting-label">
               <div class="setting-title">Mikrofon-Empfindlichkeit</div>
               <div class="setting-description">
-                Empfindlichkeit für Musik-Reaktion
+                Empfindlichkeit fÃ¼r Musik-Reaktion
               </div>
             </div>
             <div class="slider-container">
@@ -1166,9 +1115,10 @@
     <script src="/js/title-style-unifier.js"></script>
     <script src="/js/led-sidebar-swipe.js"></script>
     
-    <!-- BLE Controller mit absolutem Pfad für iframe-Kompatibilität -->
+    <!-- BLE Controller mit absolutem Pfad fÃ¼r iframe-KompatibilitÃ¤t -->
     <script src="/js/ble-controller-pro.js"></script>
     <!-- Einstellungen Controller JS -->
     <script src="/js/einstellungen-controller.js"></script>
   </body>
 </html>
+
