@@ -2111,6 +2111,19 @@
             Jazz
           </button>
         </div>
+        
+        <!-- Custom Presets -->
+        <div style="margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 10px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+            <span style="font-weight: bold; color: #4ecdc4;"><i class="fas fa-save"></i> Eigene Presets</span>
+            <button type="button" onclick="saveCustomEQPreset()" style="padding: 6px 12px; background: #4ecdc4; color: #1a1a2e; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85em;">
+              <i class="fas fa-plus"></i> Speichern
+            </button>
+          </div>
+          <div id="customPresetsContainer" style="display: flex; flex-wrap: wrap; gap: 8px;">
+            <!-- Custom Presets werden hier dynamisch eingefügt -->
+          </div>
+        </div>
 
         <div class="equalizer">
           <div class="eq-band">

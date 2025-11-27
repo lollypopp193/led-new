@@ -224,65 +224,85 @@
     }
 
     function addCustomPresetButton(name) {
-        const presetsContainer = document.querySelector('.presets');
-        if (!presetsContainer) return;
+        const customContainer = document.getElementById('customPresetsContainer');
+        if (!customContainer) return;
 
         // Prüfen ob Button bereits existiert
-        const existing = Array.from(presetsContainer.children).find(btn =>
-            btn.textContent.trim() === name
-        );
+        if (customContainer.querySelector(`[data-custom-preset="${name}"]`)) return;
 
-        if (existing) return;
+        // Container für Button + Löschen
+        const wrapper = document.createElement('div');
+        wrapper.style.cssText = 'display: flex; align-items: center; gap: 4px;';
+        wrapper.dataset.customPreset = name;
 
-        // Neuen Button erstellen
+        // Preset-Button
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = 'preset-btn';
+        btn.style.cssText = 'padding: 6px 12px; background: rgba(78, 205, 196, 0.2); border: 1px solid #4ecdc4; color: #4ecdc4; border-radius: 6px; cursor: pointer; font-size: 0.85em;';
         btn.textContent = name;
 
-        // Event-Listener
+        // Event-Listener für Anwenden
         btn.addEventListener('click', function () {
             if (eq && eq.customPresets[name]) {
                 const values = eq.customPresets[name];
-
-                // Werte anwenden
                 values.forEach((val, idx) => eq.setFrequency(idx, val));
 
-                // UI updaten
+                // UI Slider updaten
                 const sliders = document.querySelectorAll('.eq-slider');
                 sliders.forEach((slider, idx) => {
-                    if (values[idx] !== undefined) {
-                        slider.value = values[idx];
-                    }
+                    if (values[idx] !== undefined) slider.value = values[idx];
                 });
 
-                // Active-State
+                // Active-State bei Haupt-Presets entfernen
                 document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
+
+                // Visuelles Feedback
+                btn.style.background = 'rgba(78, 205, 196, 0.5)';
+                setTimeout(() => btn.style.background = 'rgba(78, 205, 196, 0.2)', 300);
             }
         });
 
-        // Kontext-Menü zum Löschen
-        btn.addEventListener('contextmenu', function (e) {
-            e.preventDefault();
+        // Löschen-Button
+        const deleteBtn = document.createElement('button');
+        deleteBtn.type = 'button';
+        deleteBtn.style.cssText = 'padding: 4px 8px; background: rgba(255, 107, 107, 0.2); border: 1px solid #ff6b6b; color: #ff6b6b; border-radius: 4px; cursor: pointer; font-size: 0.75em;';
+        deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
+        deleteBtn.title = 'Löschen';
 
+        deleteBtn.addEventListener('click', function () {
             if (confirm('Preset "' + name + '" löschen?')) {
                 if (eq && eq.deleteCustomPreset(name)) {
-                    this.remove();
+                    wrapper.remove();
+                    updateCustomPresetsEmptyState();
                     console.log('✅ Preset gelöscht:', name);
                 }
             }
         });
 
-        // Einfügen vor den Speichern/Zurücksetzen Buttons
-        const lastPresetBtn = Array.from(presetsContainer.children).find(btn =>
-            btn.textContent.trim() === 'Jazz'
-        );
+        wrapper.appendChild(btn);
+        wrapper.appendChild(deleteBtn);
+        customContainer.appendChild(wrapper);
 
-        if (lastPresetBtn) {
-            lastPresetBtn.after(btn);
-        } else {
-            presetsContainer.appendChild(btn);
+        updateCustomPresetsEmptyState();
+    }
+
+    function updateCustomPresetsEmptyState() {
+        const customContainer = document.getElementById('customPresetsContainer');
+        if (!customContainer) return;
+
+        // Zähle echte Preset-Elemente (nicht den Empty-State)
+        const presetCount = customContainer.querySelectorAll('[data-custom-preset]').length;
+
+        // Entferne existierende Empty-State
+        const existingEmpty = customContainer.querySelector('.custom-presets-empty');
+        if (existingEmpty) existingEmpty.remove();
+
+        if (presetCount === 0) {
+            const empty = document.createElement('span');
+            empty.className = 'custom-presets-empty';
+            empty.style.cssText = 'color: #666; font-size: 0.85em; font-style: italic;';
+            empty.textContent = 'Keine eigenen Presets gespeichert';
+            customContainer.appendChild(empty);
         }
     }
 
@@ -319,8 +339,19 @@
         applyPreset,
         resetEqualizer,
         saveCustomPreset,
-        connectEqualizer
+        connectEqualizer,
+        loadCustomPresetsUI,
+        updateCustomPresetsEmptyState
     };
 
-    // console.log('✅ Equalizer UI Integration geladen');
+    // Globale Funktion für onclick im HTML
+    window.saveCustomEQPreset = saveCustomPreset;
+
+    // Beim Start Custom-Presets laden und Empty-State setzen
+    setTimeout(() => {
+        loadCustomPresetsUI();
+        updateCustomPresetsEmptyState();
+    }, 1500);
+
+    console.log('✅ Equalizer UI Integration geladen');
 })();
