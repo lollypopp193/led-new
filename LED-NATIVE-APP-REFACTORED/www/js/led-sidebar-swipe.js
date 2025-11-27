@@ -35,38 +35,48 @@ class LEDSidebarSwipe {
         sidebar.className = 'led-sidebar';
         sidebar.innerHTML = `
             <div class="sidebar-header">
-                <h2><i class="fas fa-lightbulb"></i> LED-Bänder</h2>
-                <button class="close-btn" onclick="window.ledSidebar.close()">
-                    <i class="fas fa-times"></i>
-                </button>
+                <h2><i class="fas fa-lightbulb"></i> LED Bänder Area</h2>
+                <div class="header-controls">
+                    <!-- Master Ein/Aus für alle LED-Bänder -->
+                    <label class="toggle-switch master-toggle" title="Alle LED-Bänder ein/ausschalten">
+                        <input type="checkbox" id="master-led-toggle" checked 
+                               onchange="window.ledSidebar.toggleAllDevices(this.checked)">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <button class="close-btn" onclick="window.ledSidebar.close()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
             </div>
             
             <div class="sidebar-content">
                 <!-- Gruppen-Bereich -->
                 <div class="sidebar-section">
                     <div class="section-header">
-                        <h3>Gruppen</h3>
+                        <h3><i class="fas fa-layer-group"></i> Gruppen</h3>
                         <button class="add-group-btn" onclick="window.ledSidebar.createGroup()">
                             <i class="fas fa-plus"></i>
                         </button>
                     </div>
-                    <div id="groups-list" class="groups-list"></div>
+                    <div id="groups-list" class="groups-list">
+                        <p class="empty-hint">Keine Gruppen erstellt</p>
+                    </div>
                 </div>
 
                 <!-- LED-Bänder -->
                 <div class="sidebar-section">
                     <div class="section-header">
-                        <h3>LED-Bänder (<span id="device-count">0</span>)</h3>
-                        <button class="scan-btn" onclick="window.ledSidebar.scanDevices()">
+                        <h3><i class="fas fa-lightbulb"></i> Gefundene Bänder (<span id="device-count">0</span>)</h3>
+                        <button class="scan-btn" onclick="window.ledSidebar.scanDevices()" title="Nach LED-Bändern suchen">
                             <i class="fas fa-search"></i>
                         </button>
                     </div>
                     <div id="devices-list" class="devices-list"></div>
                 </div>
 
-                <!-- Verknüpfungsoptionen -->
+                <!-- Schnellaktionen -->
                 <div class="sidebar-section">
-                    <h3>Steuerung</h3>
+                    <h3><i class="fas fa-bolt"></i> Schnellaktionen</h3>
                     <div class="control-options">
                         <button class="control-btn" onclick="window.ledSidebar.linkAll()">
                             <i class="fas fa-link"></i> Alle verknüpfen
@@ -74,6 +84,20 @@ class LEDSidebarSwipe {
                         <button class="control-btn" onclick="window.ledSidebar.unlinkAll()">
                             <i class="fas fa-unlink"></i> Alle trennen
                         </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Gruppen-Bearbeiten Dialog -->
+            <div id="group-edit-dialog" class="group-dialog" style="display:none;">
+                <div class="dialog-content">
+                    <h3 id="group-dialog-title">Gruppe bearbeiten</h3>
+                    <input type="text" id="group-name-input" placeholder="Gruppenname...">
+                    <div id="group-devices-select" class="device-select-list"></div>
+                    <div class="dialog-buttons">
+                        <button onclick="window.ledSidebar.saveGroup()">Speichern</button>
+                        <button onclick="window.ledSidebar.deleteCurrentGroup()" class="delete-btn">Löschen</button>
+                        <button onclick="window.ledSidebar.closeGroupDialog()">Abbrechen</button>
                     </div>
                 </div>
             </div>
@@ -353,9 +377,17 @@ class LEDSidebarSwipe {
      */
     linkAll() {
         console.log('🔗 Alle LED-Bänder verknüpfen');
+        this.devices.forEach(device => {
+            device.linked = true;
+        });
+        this.saveDevicesToStorage();
+        this.renderDevices();
+
         if (window.deviceManager) {
             window.deviceManager.linkAllDevices();
         }
+
+        this.showNotification('Alle LED-Bänder verknüpft', 'success');
     }
 
     /**
@@ -363,8 +395,58 @@ class LEDSidebarSwipe {
      */
     unlinkAll() {
         console.log('🔓 Alle LED-Bänder trennen');
+        this.devices.forEach(device => {
+            device.linked = false;
+        });
+        this.saveDevicesToStorage();
+        this.renderDevices();
+
         if (window.deviceManager) {
             window.deviceManager.unlinkAllDevices();
+        }
+
+        this.showNotification('Alle LED-Bänder getrennt', 'info');
+    }
+
+    /**
+     * Alle LED-Bänder ein/ausschalten (Master-Toggle)
+     */
+    toggleAllDevices(enabled) {
+        console.log(`🔘 Alle LED-Bänder: ${enabled ? 'EIN' : 'AUS'}`);
+
+        this.devices.forEach(device => {
+            device.enabled = enabled;
+        });
+
+        this.saveDevicesToStorage();
+        this.renderDevices();
+
+        // BLE-Controller benachrichtigen
+        if (window.BLEControllerPro || window.ledController) {
+            const controller = window.BLEControllerPro || window.ledController;
+            if (enabled) {
+                controller.turnOn && controller.turnOn();
+            } else {
+                controller.turnOff && controller.turnOff();
+            }
+        }
+
+        this.showNotification(
+            enabled ? 'Alle LED-Bänder eingeschaltet' : 'Alle LED-Bänder ausgeschaltet',
+            enabled ? 'success' : 'info'
+        );
+    }
+
+    /**
+     * Einzelnes Gerät verknüpfen/trennen
+     */
+    toggleDeviceLink(deviceId) {
+        const device = this.devices.find(d => d.id === deviceId);
+        if (device) {
+            device.linked = !device.linked;
+            this.saveDevicesToStorage();
+            this.renderDevices();
+            console.log(`🔗 LED-Band ${deviceId}: ${device.linked ? 'verknüpft' : 'getrennt'}`);
         }
     }
 
@@ -374,9 +456,219 @@ class LEDSidebarSwipe {
     async scanDevices() {
         console.log('🔍 Scanne nach LED-Bändern...');
 
-        if (window.ledAutoScanner) {
-            await window.ledAutoScanner.startScan();
+        const scanBtn = document.querySelector('.scan-btn');
+        if (scanBtn) {
+            scanBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            scanBtn.disabled = true;
+        }
+
+        try {
+            if (window.ledAutoScanner) {
+                await window.ledAutoScanner.startScan();
+            } else if (window.BLEControllerPro) {
+                await window.BLEControllerPro.scan();
+            }
+
             this.loadDevices();
+            this.showNotification(`${this.devices.length} LED-Bänder gefunden`, 'success');
+        } catch (error) {
+            console.error('Scan-Fehler:', error);
+            this.showNotification('Scan fehlgeschlagen', 'error');
+        } finally {
+            if (scanBtn) {
+                scanBtn.innerHTML = '<i class="fas fa-search"></i>';
+                scanBtn.disabled = false;
+            }
+        }
+    }
+
+    /**
+     * Gruppe erstellen/bearbeiten Dialog öffnen
+     */
+    createGroup() {
+        this.currentEditingGroup = null;
+        document.getElementById('group-dialog-title').textContent = 'Neue Gruppe erstellen';
+        document.getElementById('group-name-input').value = '';
+        this.renderDeviceSelectList();
+        document.getElementById('group-edit-dialog').style.display = 'flex';
+    }
+
+    /**
+     * Gruppe bearbeiten
+     */
+    editGroup(groupId) {
+        const group = this.groups.find(g => g.id === groupId);
+        if (!group) return;
+
+        this.currentEditingGroup = group;
+        document.getElementById('group-dialog-title').textContent = 'Gruppe bearbeiten';
+        document.getElementById('group-name-input').value = group.name;
+        this.renderDeviceSelectList(group.devices);
+        document.getElementById('group-edit-dialog').style.display = 'flex';
+    }
+
+    /**
+     * Geräte-Auswahlliste rendern
+     */
+    renderDeviceSelectList(selectedDevices = []) {
+        const container = document.getElementById('group-devices-select');
+        if (!container) return;
+
+        container.innerHTML = this.devices.map(device => `
+            <label class="device-select-item">
+                <input type="checkbox" value="${device.id}" 
+                       ${selectedDevices.includes(device.id) ? 'checked' : ''}>
+                <span>${device.name || device.id}</span>
+            </label>
+        `).join('');
+    }
+
+    /**
+     * Gruppe speichern
+     */
+    saveGroup() {
+        const name = document.getElementById('group-name-input').value.trim();
+        if (!name) {
+            this.showNotification('Bitte Gruppenname eingeben', 'error');
+            return;
+        }
+
+        const selectedDevices = Array.from(
+            document.querySelectorAll('#group-devices-select input:checked')
+        ).map(input => input.value);
+
+        if (this.currentEditingGroup) {
+            // Bestehende Gruppe aktualisieren
+            this.currentEditingGroup.name = name;
+            this.currentEditingGroup.devices = selectedDevices;
+        } else {
+            // Neue Gruppe erstellen
+            const group = {
+                id: Date.now(),
+                name: name,
+                devices: selectedDevices
+            };
+            this.groups.push(group);
+        }
+
+        this.saveGroupsToStorage();
+        this.renderGroups();
+        this.closeGroupDialog();
+        this.showNotification(`Gruppe "${name}" gespeichert`, 'success');
+    }
+
+    /**
+     * Aktuelle Gruppe löschen
+     */
+    deleteCurrentGroup() {
+        if (!this.currentEditingGroup) return;
+
+        if (confirm(`Gruppe "${this.currentEditingGroup.name}" wirklich löschen?`)) {
+            this.groups = this.groups.filter(g => g.id !== this.currentEditingGroup.id);
+            this.saveGroupsToStorage();
+            this.renderGroups();
+            this.closeGroupDialog();
+            this.showNotification('Gruppe gelöscht', 'info');
+        }
+    }
+
+    /**
+     * Gruppen-Dialog schließen
+     */
+    closeGroupDialog() {
+        document.getElementById('group-edit-dialog').style.display = 'none';
+        this.currentEditingGroup = null;
+    }
+
+    /**
+     * Gruppen rendern (erweitert)
+     */
+    renderGroups() {
+        const groupsList = document.getElementById('groups-list');
+        if (!groupsList) return;
+
+        if (this.groups.length === 0) {
+            groupsList.innerHTML = '<p class="empty-hint">Keine Gruppen erstellt</p>';
+            return;
+        }
+
+        groupsList.innerHTML = this.groups.map(group => `
+            <div class="group-item" onclick="window.ledSidebar.selectGroup(${group.id})">
+                <div class="group-info">
+                    <strong>${group.name}</strong>
+                    <span class="device-count">${group.devices.length} Geräte</span>
+                </div>
+                <div class="group-actions">
+                    <button onclick="event.stopPropagation(); window.ledSidebar.editGroup(${group.id})" 
+                            class="edit-btn" title="Bearbeiten">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    /**
+     * Gruppe auswählen (nur diese Geräte steuern)
+     */
+    selectGroup(groupId) {
+        const group = this.groups.find(g => g.id === groupId);
+        if (!group) return;
+
+        // Alle Geräte deaktivieren, nur Gruppen-Geräte aktivieren
+        this.devices.forEach(device => {
+            device.selected = group.devices.includes(device.id);
+        });
+
+        this.renderDevices();
+        this.showNotification(`Gruppe "${group.name}" ausgewählt`, 'info');
+    }
+
+    /**
+     * Geräte in Storage speichern
+     */
+    saveDevicesToStorage() {
+        try {
+            localStorage.setItem('led-sidebar-devices', JSON.stringify(this.devices));
+        } catch (e) {
+            console.error('Speichern fehlgeschlagen:', e);
+        }
+    }
+
+    /**
+     * Gruppen in Storage speichern
+     */
+    saveGroupsToStorage() {
+        try {
+            localStorage.setItem('led-sidebar-groups', JSON.stringify(this.groups));
+        } catch (e) {
+            console.error('Speichern fehlgeschlagen:', e);
+        }
+    }
+
+    /**
+     * Gruppen aus Storage laden
+     */
+    loadGroupsFromStorage() {
+        try {
+            const stored = localStorage.getItem('led-sidebar-groups');
+            if (stored) {
+                this.groups = JSON.parse(stored);
+            }
+        } catch (e) {
+            console.error('Laden fehlgeschlagen:', e);
+            this.groups = [];
+        }
+    }
+
+    /**
+     * Notification anzeigen
+     */
+    showNotification(message, type = 'info') {
+        if (window.showNotification) {
+            window.showNotification(message, type);
+        } else {
+            console.log(`[${type.toUpperCase()}] ${message}`);
         }
     }
 }

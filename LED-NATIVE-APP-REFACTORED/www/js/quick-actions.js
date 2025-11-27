@@ -13,8 +13,9 @@ class QuickActions {
     init() {
         this.registerDefaultActions();
         this.setupKeyboardShortcuts();
-        this.createQuickAccessMenu();
-        console.log('✅ Quick Actions initialisiert');
+        // Quick Access Menu deaktiviert für native App
+        // this.createQuickAccessMenu();
+        console.log('✅ Quick Actions initialisiert (Keyboard Shortcuts only)');
     }
 
     registerDefaultActions() {
