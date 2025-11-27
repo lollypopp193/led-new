@@ -61,6 +61,20 @@ class PermissionsSequencer {
         const permission = this.permissions[this.currentIndex];
         console.log(`📋 Frage ${permission.title} an...`);
 
+        // DIREKT native Android Permission-Dialog anzeigen (ohne Vor-Dialog)
+        // So wie bei normalen Android Apps
+        const granted = await this.requestPermission(permission.id);
+        this.results[permission.id] = granted;
+
+        this.currentIndex++;
+        // Kurze Pause zwischen Dialogen
+        setTimeout(() => this.showNextPermission(), 500);
+    }
+
+    // Alte Methode mit Vor-Dialog (deaktiviert)
+    async showPermissionDialogWithExplanation(permission) {
+        // Zeigt Erklärungsdialog vor nativer Permission
+        // Wurde durch direkte native Dialoge ersetzt
         await this.showPermissionDialog(permission);
     }
 
@@ -266,76 +280,22 @@ class PermissionsSequencer {
     }
 
     showSuccessMessage() {
-        const msg = document.createElement('div');
-        msg.style.cssText = `
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
-            padding: 30px 40px;
-            border-radius: 20px;
-            z-index: 99999;
-            box-shadow: 0 10px 40px rgba(46, 204, 113, 0.5);
-            animation: bounceIn 0.5s ease;
-        `;
-        msg.innerHTML = `
-            <i class="fas fa-check-circle" style="
-                font-size: 3rem;
-                color: #fff;
-                display: block;
-                margin-bottom: 15px;
-            "></i>
-            <p style="
-                color: #fff;
-                font-size: 18px;
-                font-weight: 600;
-                margin: 0;
-            ">Bereit zum Start!</p>
-        `;
+        // Kein visuelles Feedback - App startet einfach (wie normale Android Apps)
+        console.log('✅ Alle Berechtigungen erteilt - App startet...');
 
-        document.body.appendChild(msg);
-        setTimeout(() => {
-            msg.style.animation = 'fadeOut 0.3s ease';
-            setTimeout(() => msg.remove(), 300);
-        }, 1500);
+        // Optional: Dezente Toast-Benachrichtigung
+        if (window.showNotification) {
+            window.showNotification('App bereit', 'success');
+        }
     }
 
     showWarningMessage() {
-        const msg = document.createElement('div');
-        msg.style.cssText = `
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #f39c12, #e67e22);
-            padding: 30px 40px;
-            border-radius: 20px;
-            z-index: 99999;
-            box-shadow: 0 10px 40px rgba(243, 156, 18, 0.5);
-            animation: shake 0.5s ease;
-        `;
-        msg.innerHTML = `
-            <i class="fas fa-exclamation-triangle" style="
-                font-size: 3rem;
-                color: #fff;
-                display: block;
-                margin-bottom: 15px;
-            "></i>
-            <p style="
-                color: #fff;
-                font-size: 16px;
-                font-weight: 600;
-                margin: 0;
-                text-align: center;
-            ">Einige Funktionen möglicherweise eingeschränkt</p>
-        `;
+        // Dezente Warnung statt großes Popup
+        console.log('⚠️ Einige Berechtigungen fehlen');
 
-        document.body.appendChild(msg);
-        setTimeout(() => {
-            msg.style.animation = 'fadeOut 0.3s ease';
-            setTimeout(() => msg.remove(), 300);
-        }, 2000);
+        if (window.showNotification) {
+            window.showNotification('Einige Funktionen eingeschränkt', 'warning');
+        }
     }
 }
 
@@ -343,27 +303,27 @@ class PermissionsSequencer {
 const style = document.createElement('style');
 style.textContent = `
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+from { opacity: 0; }
+to { opacity: 1; }
 }
 @keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
+from { opacity: 1; }
+to { opacity: 0; }
 }
 @keyframes slideUp {
-    from { transform: translateY(50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+from { transform: translateY(50px); opacity: 0; }
+to { transform: translateY(0); opacity: 1; }
 }
 @keyframes bounceIn {
-    0% { transform: translate(-50%, -50%) scale(0.3); }
-    50% { transform: translate(-50%, -50%) scale(1.05); }
-    70% { transform: translate(-50%, -50%) scale(0.9); }
-    100% { transform: translate(-50%, -50%) scale(1); }
+0% { transform: translate(-50%, -50%) scale(0.3); }
+50% { transform: translate(-50%, -50%) scale(1.05); }
+70% { transform: translate(-50%, -50%) scale(0.9); }
+100% { transform: translate(-50%, -50%) scale(1); }
 }
 @keyframes shake {
-    0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
-    10%, 30%, 50%, 70%, 90% { transform: translate(-50%, -50%) rotate(-5deg); }
-    20%, 40%, 60%, 80% { transform: translate(-50%, -50%) rotate(5deg); }
+0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+10%, 30%, 50%, 70%, 90% { transform: translate(-50%, -50%) rotate(-5deg); }
+20%, 40%, 60%, 80% { transform: translate(-50%, -50%) rotate(5deg); }
 }
 `;
 document.head.appendChild(style);
