@@ -11194,6 +11194,55 @@
             window.showNotification('🎉 Party-Modus aktiviert!', 'success');
           }
         };
+        
+        // ========== BIBLIOTHEKS-NAVIGATION ==========
+        document.querySelectorAll('.library-nav-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const section = this.dataset.section;
+            
+            // Aktiven Button markieren
+            document.querySelectorAll('.library-nav-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Alle Sektionen ausblenden
+            document.querySelectorAll('.library-section').forEach(s => s.classList.remove('active'));
+            
+            // Gewählte Sektion einblenden
+            const targetSection = document.getElementById(section + '-section');
+            if (targetSection) {
+              targetSection.classList.add('active');
+              console.log('📚 Bibliothek:', section);
+            }
+          });
+        });
+        
+        // Header-Buttons in Bibliothek
+        const searchBtn = document.getElementById('librarySearchBtn');
+        const searchBar = document.getElementById('librarySearchBar');
+        if (searchBtn && searchBar) {
+          searchBtn.addEventListener('click', function() {
+            searchBar.style.display = searchBar.style.display === 'none' ? 'block' : 'none';
+          });
+        }
+        
+        const sortBtn = document.getElementById('librarySortBtn');
+        const sortOptions = document.getElementById('librarySortOptions');
+        if (sortBtn && sortOptions) {
+          sortBtn.addEventListener('click', function() {
+            sortOptions.style.display = sortOptions.style.display === 'none' ? 'block' : 'none';
+          });
+        }
+        
+        // Sortier-Buttons
+        document.querySelectorAll('.sort-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            console.log('📊 Sortiere nach:', this.dataset.sort);
+          });
+        });
+        
+        console.log('✅ Bibliotheks-Navigation aktiviert');
       });
     </script>
   </body>
