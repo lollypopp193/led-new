@@ -2587,111 +2587,33 @@
               <i class="fas fa-lightbulb"></i> Gefundene LED-Bänder
             </h3>
             <div id="foundLEDBandsList" style="color: #a0f0ff;">
-              <!-- Wird automatisch gefüllt mit gefundenen Bändern -->
-              <p style="color: #888;">Suche nach LED-Bändern...</p>
-            </div>
-          </div>
-
-          <!-- Die gefundenen LED-Bänder werden dynamisch via JavaScript angezeigt -->
-
-          <!-- Audio-Reactive Engine Content -->
-          <div
-            id="ledBandContent-audio-reactive"
-            class="led-band-content"
-            style="display: block"
-          >
-            <!-- Audio Control -->
             <div
+              id="ledFrequencyDisplay"
               style="
-                background: rgba(255, 255, 255, 0.05);
-                border-radius: 15px;
-                padding: 25px;
-                margin-bottom: 20px;
+                display: flex;
+                align-items: end;
+                gap: 2px;
+                height: 120px;
+                background: rgba(0, 0, 0, 0.3);
+                border-radius: 10px;
+                padding: 10px;
               "
             >
-              <h3 style="color: #4ecdc4; margin-bottom: 15px">
-                <i class="fas fa-music"></i> Musik-Analyse (KEIN Mikrofon)
-              </h3>
-              <div style="display: flex; gap: 15px; flex-wrap: wrap">
-                <button
-                  type="button"
-                  id="startAudioCapture"
-                  style="
-                    padding: 12px 25px;
-                    background: linear-gradient(45deg, #4ecdc4, #44a08d);
-                    color: white;
-                    border: none;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    font-weight: bold;
-                  "
-                >
-                  <i class="fas fa-music"></i> Musik-Analyse starten
-                </button>
-                <button
-                  type="button"
-                  id="stopAudioCapture"
-                  style="
-                    padding: 12px 25px;
-                    background: rgba(255, 255, 255, 0.1);
-                    color: white;
-                    border: 1px solid rgba(255, 255, 255, 0.3);
-                    border-radius: 8px;
-                    cursor: pointer;
-                    display: none;
-                  "
-                >
-                  <i class="fas fa-stop"></i> Audio-Erfassung stoppen
-                </button>
-                <div style="display: none;"></div>
-              </div>
+              <!-- Frequenz-Balken werden dynamisch generiert -->
             </div>
-
-            <!-- Frequency Visualizer -->
             <div
               style="
-                background: rgba(255, 255, 255, 0.05);
-                border-radius: 15px;
-                padding: 25px;
-                margin-bottom: 20px;
+                display: flex;
+                justify-content: space-between;
+                color: #ccc;
+                font-size: 0.9rem;
+                margin-top: 5px;
               "
             >
-              <h3 style="color: #4ecdc4; margin-bottom: 15px">
-                <i class="fas fa-chart-bar"></i> Frequenz-Analyse
-              </h3>
-              <div
-                id="ledFrequencyDisplay"
-                style="
-                  display: flex;
-                  align-items: end;
-                  gap: 2px;
-                  height: 120px;
-                  background: rgba(0, 0, 0, 0.3);
-                  border-radius: 10px;
-                  padding: 10px;
-                "
-              >
-                <!-- Frequenz-Balken werden dynamisch generiert -->
-              </div>
-              <div
-                style="
-                  display: flex;
-                  justify-content: space-between;
-                  color: #ccc;
-                  font-size: 0.9rem;
-                  margin-top: 5px;
-                "
-              >
-                <span>Bass</span>
-                <span>Mitten</span>
-                <span>Hoehen</span>
-              </div>
+              <span>Bass</span>
+              <span>Mitten</span>
+              <span>Höhen</span>
             </div>
-
-            <!-- Live-Status Grid -->
-            <div
-              style="
-                background: rgba(255, 255, 255, 0.05);
                 border-radius: 15px;
                 padding: 25px;
                 margin-bottom: 20px;
@@ -3841,6 +3763,14 @@
               <i class="fas fa-sort-alpha-down"></i>
               <span>Name</span>
             </button>
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+              <button onclick="saveCustomEQPreset()" class="action-btn" style="flex: 1;">
+                <i class="fas fa-save"></i> Speichern
+              </button>
+              <button onclick="deleteCustomEQPreset()" class="action-btn danger" style="flex: 1;">
+                <i class="fas fa-trash"></i> Löschen
+              </button>
+            </div>
             <button type="button" class="sort-btn" data-sort="artist">
               <i class="fas fa-user"></i>
               <span>Interpret</span>
@@ -8969,35 +8899,7 @@
             margin-bottom: 30px;
           "
         >
-          <!-- Playlist Export/Import -->
-          <div class="settings-section">
-            <div class="section-header">
-              <i class="fas fa-list"></i>
-              <h3>Playlist Verwaltung</h3>
-            </div>
-
-            <div class="section-content">
-              <div class="button-grid">
-                <button
-                  type="button"
-                  onclick="exportPlaylist()"
-                  class="action-btn warning"
-                >
-                  <i class="fas fa-file-export"></i> Playlist exportieren
-                </button>
-
-                <button
-                  type="button"
-                  onclick="importPlaylist()"
-                  class="action-btn"
-                >
-                  <i class="fas fa-file-import"></i> Playlist importieren
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Sleep-Timer & Musikwecker entfernt - nicht benoetigt -->
+          <!-- Sleep-Timer & Musikwecker -->
               <div
                 style="
                   display: grid;
