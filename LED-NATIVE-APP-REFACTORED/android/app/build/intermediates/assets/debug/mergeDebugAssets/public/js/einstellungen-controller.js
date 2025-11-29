@@ -1312,12 +1312,33 @@ function initSettingsEventListeners() {
         languageSelect.value = savedLang;
     }
 
-    // Switches klickbar machen (für alle div.switch Elemente)
+    // Switches klickbar machen (spezifische Handler)
+    const switchMap = {
+        'autoConnectSwitch': toggleAutoConnect,
+        'notificationsSwitch': toggleNotifications,
+        'darkModeSwitch': toggleDarkMode,
+        'hierarchicalGroupsSwitch': toggleHierarchicalGroups,
+        'voiceControlSwitch': toggleVoiceControl,
+        'cloudSyncSwitch': toggleCloudSync
+    };
+
+    Object.entries(switchMap).forEach(([id, handler]) => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.onclick = handler;
+        }
+    });
+
+    // Switches klickbar machen (für alle div.switch Elemente ohne spezifischen Handler)
     document.querySelectorAll('.switch').forEach(switchEl => {
         if (!switchEl.onclick) {
             switchEl.onclick = function () {
-                // Für Switches die noch keinen Handler haben
+                // Für Switches die noch keinen Handler haben (rein visuell oder später handled)
                 this.classList.toggle('active');
+                // Speichern wenn ID vorhanden
+                if (this.id) {
+                    localStorage.setItem(this.id, this.classList.contains('active'));
+                }
             };
         }
     });

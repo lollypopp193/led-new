@@ -11006,91 +11006,243 @@
       }
     </style>
     
-    <!-- TOGGLE-SWITCH FIX: Macht alle Toggles klickbar -->
+    <!-- TOGGLE-SWITCH FIX V3: Einfacher und direkter -->
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-        // Alle Toggle-Switches klickbar machen
-        document.addEventListener('click', function(e) {
+        console.log('🔧 Toggle-Fix V3 wird geladen...');
+        
+        // ========== EINFACHER TOGGLE-HANDLER ==========
+        // Event Delegation - ein Handler für ALLE Toggles
+        document.body.addEventListener('click', function(e) {
+          // Finde das nächste .toggle-switch Element
           const toggle = e.target.closest('.toggle-switch');
           if (!toggle) return;
           
-          const slider = e.target.closest('.slider');
-          if (slider || e.target === toggle) {
-            const checkbox = toggle.querySelector('input[type="checkbox"]');
-            if (checkbox && e.target !== checkbox) {
-              checkbox.checked = !checkbox.checked;
-              checkbox.dispatchEvent(new Event('change', { bubbles: true }));
-              console.log('Toggle:', checkbox.id || 'unknown', '→', checkbox.checked ? 'AN' : 'AUS');
-            }
+          // Ignoriere wenn direkt auf Checkbox geklickt
+          if (e.target.type === 'checkbox') return;
+          
+          // Finde die Checkbox
+          const checkbox = toggle.querySelector('input[type="checkbox"]');
+          if (!checkbox) return;
+          
+          // Toggle den Status
+          checkbox.checked = !checkbox.checked;
+          
+          // Feuere change Event
+          checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+          
+          console.log('🔘 Toggle:', checkbox.id || 'unbekannt', '→', checkbox.checked ? 'AN' : 'AUS');
+          
+          // Speichere Status
+          if (checkbox.id) {
+            localStorage.setItem('musik_toggle_' + checkbox.id, checkbox.checked);
           }
         });
         
-        console.log('✅ Musik-Toggles aktiviert');
+        console.log('✅ Toggle-Handler via Event Delegation aktiviert');
         
-        // Sleep-Timer aktivieren/deaktivieren
+        // ========== SPEZIFISCHE HANDLER ==========
+        // Handler für spezifische Toggle-Funktionen
+        function setupSpecificHandlers() {
+          // Equalizer Toggle
+          const eqToggle = document.getElementById('eqToggle');
+          if (eqToggle) {
+            eqToggle.addEventListener('change', function() {
+              console.log('Equalizer:', this.checked ? 'AN' : 'AUS');
+              if (window.EqualizerEngine) window.EqualizerEngine.toggle(this.checked);
+            });
+          }
+          
+          // Bass Boost Toggle
+          const bassToggle = document.getElementById('bassBoostToggle');
+          if (bassToggle) {
+            bassToggle.addEventListener('change', function() {
+              console.log('Bass Boost:', this.checked ? 'AN' : 'AUS');
+              if (window.BassBoostController) window.BassBoostController.toggle(this.checked);
+            });
+          }
+          
+          // Visualizer Toggle
+          const vizToggle = document.getElementById('visualizerToggle');
+          if (vizToggle) {
+            vizToggle.addEventListener('change', function() {
+              console.log('Visualisierung:', this.checked ? 'AN' : 'AUS');
+              if (window.AudioVisualizer) {
+                this.checked ? window.AudioVisualizer.start() : window.AudioVisualizer.stop();
+              }
+            });
+          }
+          
+          // LED-Musik Toggle
+          const ledMusicToggle = document.getElementById('ledMusicToggle');
+          if (ledMusicToggle) {
+            ledMusicToggle.addEventListener('change', function() {
+              console.log('LED-Musiksteuerung:', this.checked ? 'AN' : 'AUS');
+              if (window.LEDMusicController) window.LEDMusicController.toggle(this.checked);
+            });
+          }
+          
+          // Automatischer Modus Toggle
+          const autoModeToggle = document.getElementById('ledMusicAutomaticMode');
+          if (autoModeToggle) {
+            autoModeToggle.addEventListener('change', function() {
+              console.log('Automatischer Modus:', this.checked ? 'AN' : 'AUS');
+            });
+          }
+          
+          // Party-Modus Toggle
+          const partyToggle = document.getElementById('partyToggle');
+          if (partyToggle) {
+            partyToggle.addEventListener('change', function() {
+              console.log('Party-Modus:', this.checked ? 'AN' : 'AUS');
+              if (window.showNotification) {
+                window.showNotification(this.checked ? '🎉 Party-Modus aktiviert!' : 'Party-Modus deaktiviert', this.checked ? 'success' : 'info');
+              }
+            });
+          }
+          
+          // Sleep-Timer Toggle
+          const sleepToggle = document.getElementById('sleepTimerEnabled');
+          if (sleepToggle) {
+            sleepToggle.addEventListener('change', function() {
+              const settings = document.getElementById('sleepTimerSettings');
+              if (settings) {
+                settings.style.opacity = this.checked ? '1' : '0.5';
+                settings.style.pointerEvents = this.checked ? 'auto' : 'none';
+                settings.querySelectorAll('input, select').forEach(el => el.disabled = !this.checked);
+              }
+              console.log('Sleep-Timer:', this.checked ? 'AN' : 'AUS');
+            });
+          }
+          
+          // Musik-Wecker Toggle
+          const alarmToggle = document.getElementById('musicAlarmEnabled');
+          if (alarmToggle) {
+            alarmToggle.addEventListener('change', function() {
+              const settings = document.getElementById('musicAlarmSettings');
+              if (settings) {
+                settings.style.opacity = this.checked ? '1' : '0.5';
+                settings.style.pointerEvents = this.checked ? 'auto' : 'none';
+                settings.querySelectorAll('input, select').forEach(el => el.disabled = !this.checked);
+              }
+              console.log('Musik-Wecker:', this.checked ? 'AN' : 'AUS');
+            });
+          }
+          
+          // Generische Handler für alle anderen Toggles
+          const genericToggles = [
+            'seamlessTransition', 'autoDetect', 'beatMatching', 'preCue',
+            'preservePitch', 'crossfadeToggle', 'crossfadeAutoDetect',
+            'gaplessEnabled', 'preloadNext', 'fadeInEnabled', 'fadeOutEnabled'
+          ];
+          
+          genericToggles.forEach(id => {
+            const toggle = document.getElementById(id);
+            if (toggle && !toggle.hasAttribute('data-handler-set')) {
+              toggle.setAttribute('data-handler-set', 'true');
+              toggle.addEventListener('change', function() {
+                console.log(id + ':', this.checked ? 'AN' : 'AUS');
+              });
+            }
+          });
+        }
+        
+        setupSpecificHandlers();
+        
+        console.log('✅ Alle Musik-Toggles aktiviert');
+        
+        // ========== SLEEP-TIMER SETTINGS ==========
         window.toggleSleepTimerSettings = function(enabled) {
           const settings = document.getElementById('sleepTimerSettings');
           if (settings) {
-            if (enabled) {
-              settings.style.opacity = '1';
-              settings.style.pointerEvents = 'auto';
-              if (window.SleepTimerController) {
-                window.SleepTimerController.toggle(true);
-              }
-              console.log('Sleep-Timer aktiviert');
-            } else {
-              settings.style.opacity = '0.5';
-              settings.style.pointerEvents = 'none';
-              if (window.SleepTimerController) {
-                window.SleepTimerController.toggle(false);
-              }
-              console.log('Sleep-Timer deaktiviert');
+            settings.style.opacity = enabled ? '1' : '0.5';
+            settings.style.pointerEvents = enabled ? 'auto' : 'none';
+            settings.querySelectorAll('input, select').forEach(el => el.disabled = !enabled);
+            if (window.SleepTimerController) {
+              window.SleepTimerController.toggle(enabled);
             }
+            console.log('Sleep-Timer:', enabled ? 'aktiviert' : 'deaktiviert');
           }
         };
         
-        // Musik-Wecker aktivieren/deaktivieren
+        // ========== MUSIK-WECKER SETTINGS ==========
         window.toggleMusicAlarmSettings = function(enabled) {
           const settings = document.getElementById('musicAlarmSettings');
           if (settings) {
-            if (enabled) {
-              settings.style.opacity = '1';
-              settings.style.pointerEvents = 'auto';
-              if (window.MusicAlarmController) {
-                window.MusicAlarmController.toggle(true);
-              }
-              console.log('Musik-Wecker aktiviert');
-            } else {
-              settings.style.opacity = '0.5';
-              settings.style.pointerEvents = 'none';
-              if (window.MusicAlarmController) {
-                window.MusicAlarmController.toggle(false);
-              }
-              console.log('Musik-Wecker deaktiviert');
+            settings.style.opacity = enabled ? '1' : '0.5';
+            settings.style.pointerEvents = enabled ? 'auto' : 'none';
+            settings.querySelectorAll('input, select').forEach(el => el.disabled = !enabled);
+            if (window.MusicAlarmController) {
+              window.MusicAlarmController.toggle(enabled);
             }
+            console.log('Musik-Wecker:', enabled ? 'aktiviert' : 'deaktiviert');
           }
         };
         
-        // Party-Modus Toggle
+        // ========== PARTY-MODUS ==========
         window.togglePartyMode = function(enabled) {
           console.log('Party-Modus:', enabled ? 'AN' : 'AUS');
-          if (enabled) {
-            // Aktiviere alle Party-Features
-            document.querySelectorAll('#party .toggle-switch input[type="checkbox"]').forEach(cb => {
+          const partyPanel = document.getElementById('party');
+          if (partyPanel) {
+            partyPanel.querySelectorAll('.toggle-switch input[type="checkbox"]').forEach(cb => {
               if (cb.id !== 'partyToggle') {
-                cb.disabled = false;
+                cb.disabled = !enabled;
               }
             });
-            if (window.showNotification) {
-              window.showNotification('Party-Modus aktiviert!', 'success');
-            }
-          } else {
-            // Deaktiviere Party-Features
-            if (window.showNotification) {
-              window.showNotification('Party-Modus deaktiviert', 'info');
-            }
+          }
+          if (enabled && window.showNotification) {
+            window.showNotification('🎉 Party-Modus aktiviert!', 'success');
           }
         };
+        
+        // ========== BIBLIOTHEKS-NAVIGATION ==========
+        document.querySelectorAll('.library-nav-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const section = this.dataset.section;
+            
+            // Aktiven Button markieren
+            document.querySelectorAll('.library-nav-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Alle Sektionen ausblenden
+            document.querySelectorAll('.library-section').forEach(s => s.classList.remove('active'));
+            
+            // Gewählte Sektion einblenden
+            const targetSection = document.getElementById(section + '-section');
+            if (targetSection) {
+              targetSection.classList.add('active');
+              console.log('📚 Bibliothek:', section);
+            }
+          });
+        });
+        
+        // Header-Buttons in Bibliothek
+        const searchBtn = document.getElementById('librarySearchBtn');
+        const searchBar = document.getElementById('librarySearchBar');
+        if (searchBtn && searchBar) {
+          searchBtn.addEventListener('click', function() {
+            searchBar.style.display = searchBar.style.display === 'none' ? 'block' : 'none';
+          });
+        }
+        
+        const sortBtn = document.getElementById('librarySortBtn');
+        const sortOptions = document.getElementById('librarySortOptions');
+        if (sortBtn && sortOptions) {
+          sortBtn.addEventListener('click', function() {
+            sortOptions.style.display = sortOptions.style.display === 'none' ? 'block' : 'none';
+          });
+        }
+        
+        // Sortier-Buttons
+        document.querySelectorAll('.sort-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            console.log('📊 Sortiere nach:', this.dataset.sort);
+          });
+        });
+        
+        console.log('✅ Bibliotheks-Navigation aktiviert');
       });
     </script>
   </body>

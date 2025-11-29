@@ -11006,48 +11006,40 @@
       }
     </style>
     
-    <!-- TOGGLE-SWITCH FIX V2: Robuster Handler für ALLE Toggles -->
+    <!-- TOGGLE-SWITCH FIX V3: Einfacher und direkter -->
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-        console.log('🔧 Toggle-Fix V2 wird geladen...');
+        console.log('🔧 Toggle-Fix V3 wird geladen...');
         
-        // ========== ROBUSTER TOGGLE-HANDLER ==========
-        // Dieser Handler macht ALLE Toggle-Switches klickbar
-        function makeTogglesClickable() {
-          document.querySelectorAll('.toggle-switch').forEach(function(toggle) {
-            // Entferne alte Handler
-            const newToggle = toggle.cloneNode(true);
-            toggle.parentNode.replaceChild(newToggle, toggle);
-            
-            // Neuer Click-Handler auf das gesamte Toggle-Element
-            newToggle.style.cursor = 'pointer';
-            newToggle.addEventListener('click', function(e) {
-              // Verhindere Doppel-Toggle wenn direkt auf Checkbox geklickt
-              if (e.target.type === 'checkbox') return;
-              
-              const checkbox = this.querySelector('input[type="checkbox"]');
-              if (checkbox) {
-                checkbox.checked = !checkbox.checked;
-                
-                // Trigger change event
-                const event = new Event('change', { bubbles: true });
-                checkbox.dispatchEvent(event);
-                
-                console.log('🔘 Toggle geklickt:', checkbox.id || 'unbekannt', '→', checkbox.checked ? 'AN' : 'AUS');
-                
-                // Status speichern
-                if (checkbox.id) {
-                  localStorage.setItem('musik_toggle_' + checkbox.id, checkbox.checked);
-                }
-              }
-            });
-          });
+        // ========== EINFACHER TOGGLE-HANDLER ==========
+        // Event Delegation - ein Handler für ALLE Toggles
+        document.body.addEventListener('click', function(e) {
+          // Finde das nächste .toggle-switch Element
+          const toggle = e.target.closest('.toggle-switch');
+          if (!toggle) return;
           
-          console.log('✅ ' + document.querySelectorAll('.toggle-switch').length + ' Toggles aktiviert');
-        }
+          // Ignoriere wenn direkt auf Checkbox geklickt
+          if (e.target.type === 'checkbox') return;
+          
+          // Finde die Checkbox
+          const checkbox = toggle.querySelector('input[type="checkbox"]');
+          if (!checkbox) return;
+          
+          // Toggle den Status
+          checkbox.checked = !checkbox.checked;
+          
+          // Feuere change Event
+          checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+          
+          console.log('🔘 Toggle:', checkbox.id || 'unbekannt', '→', checkbox.checked ? 'AN' : 'AUS');
+          
+          // Speichere Status
+          if (checkbox.id) {
+            localStorage.setItem('musik_toggle_' + checkbox.id, checkbox.checked);
+          }
+        });
         
-        // Initial ausführen
-        makeTogglesClickable();
+        console.log('✅ Toggle-Handler via Event Delegation aktiviert');
         
         // ========== SPEZIFISCHE HANDLER ==========
         // Handler für spezifische Toggle-Funktionen
