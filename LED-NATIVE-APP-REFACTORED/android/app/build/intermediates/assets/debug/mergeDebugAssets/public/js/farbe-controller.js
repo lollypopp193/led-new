@@ -727,6 +727,9 @@ function kelvinToRgb(kelvin) {
 
 function initFarbeController() {
     initBLE();
+    // Beim Öffnen der Farbe-Seite: Stoppe alle laufenden Effekte
+    stopAllEffects();
+
     initColorWheel();
     initColorSlots();
     initRGBSliders();
@@ -735,6 +738,38 @@ function initFarbeController() {
     initBasicColors();
     initSidePanel();
     console.log('✅ Farbe-Controller vollständig initialisiert');
+}
+
+/**
+ * Stoppt alle laufenden Effekte wenn man zur Farbe-Seite wechselt
+ */
+function stopAllEffects() {
+    try {
+        // Stoppe Effekte im Parent (Hauptfenster)
+        if (window.parent && window.parent !== window) {
+            if (window.parent.App && window.parent.App.state) {
+                window.parent.App.state.currentEffect = null;
+            }
+            if (window.parent.stopCurrentEffect) {
+                window.parent.stopCurrentEffect();
+            }
+        }
+
+        // Stoppe lokale Effekte
+        if (window.stopCurrentEffect) {
+            window.stopCurrentEffect();
+        }
+
+        // Informiere BLE Controller
+        const controller = getLEDController();
+        if (controller && controller.stopEffect) {
+            controller.stopEffect();
+        }
+
+        console.log('🛑 Alle Effekte gestoppt (Wechsel zu Farbe)');
+    } catch (e) {
+        console.warn('Effekte stoppen fehlgeschlagen:', e);
+    }
 }
 
 // Global Export
@@ -754,6 +789,7 @@ window.currentColor = currentColor;
 window.openRGBPopup = openRGBPopup;
 window.closeRGBPopup = closeRGBPopup;
 window.deleteColorFromSlot = deleteColorFromSlot;
+window.stopAllEffects = stopAllEffects;
 
 // Auto-Init
 if (document.readyState === 'loading') {
