@@ -1,4 +1,4 @@
-/**
+﻿/**
  * AUTO-START-MANAGER.JS - ZERO TOLERANCE
  * Startet automatisch beim App-Start:
  * - Berechtigungen nacheinander
@@ -15,7 +15,7 @@ class AutoStartManager {
     }
 
     async init() {
-        console.log('🚀 Auto-Start Manager initialisiert');
+        // console.log('🚀 Auto-Start Manager initialisiert');
 
         // Warte bis App bereit ist
         if (document.readyState === 'loading') {
@@ -26,7 +26,7 @@ class AutoStartManager {
     }
 
     async start() {
-        console.log('▶️ Auto-Start Sequenz gestartet');
+        // console.log('▶️ Auto-Start Sequenz gestartet');
 
         try {
             // 1. Prüfe ob Intro übersprungen werden soll
@@ -42,7 +42,7 @@ class AutoStartManager {
             await this.initializeUI();
 
             this.initialized = true;
-            console.log('✅ Auto-Start Sequenz abgeschlossen');
+            // console.log('✅ Auto-Start Sequenz abgeschlossen');
         } catch (error) {
             console.error('❌ Auto-Start Fehler:', error);
         }
@@ -53,7 +53,7 @@ class AutoStartManager {
         const hasSeenIntro = localStorage.getItem('hasSeenIntro');
         if (hasSeenIntro === 'true') {
             this.introSkipped = true;
-            console.log('⏭️ Intro übersprungen');
+            // console.log('⏭️ Intro übersprungen');
         } else {
             localStorage.setItem('hasSeenIntro', 'true');
         }
@@ -61,9 +61,9 @@ class AutoStartManager {
 
     async requestPermissions() {
         if (window.startupPermissions && window.startupPermissions.requestAllPermissions) {
-            console.log('🔐 Starte Berechtigungsanfragen...');
+            // console.log('🔐 Starte Berechtigungsanfragen...');
             const permissions = await window.startupPermissions.requestAllPermissions();
-            console.log('✅ Berechtigungen erhalten:', permissions);
+            // console.log('✅ Berechtigungen erhalten:', permissions);
             return permissions;
         } else {
             console.warn('⚠️ StartupPermissions nicht verfügbar');
@@ -72,7 +72,7 @@ class AutoStartManager {
     }
 
     async startAutoScans() {
-        console.log('🔍 Starte Auto-Scans...');
+        // console.log('🔍 Starte Auto-Scans...');
 
         // BLE Auto-Scan + Auto-Connect
         setTimeout(() => {
@@ -86,31 +86,31 @@ class AutoStartManager {
     }
 
     async autoConnectBLE() {
-        console.log('🔵 BLE Auto-Connect...');
+        // console.log('🔵 BLE Auto-Connect...');
 
         try {
             // Lade gespeicherte Geräte
             const savedDevices = localStorage.getItem('savedBLEDevices');
             if (savedDevices) {
                 const devices = JSON.parse(savedDevices);
-                console.log(`📱 ${devices.length} gespeicherte BLE-Geräte`);
+                // console.log(`📱 ${devices.length} gespeicherte BLE-Geräte`);
 
                 // Auto-Connect zu jedem gespeicherten Gerät
                 for (const device of devices) {
                     try {
                         if (window.bleController) {
                             await window.bleController.connect(device.id);
-                            console.log(`✅ Verbunden: ${device.name || device.id}`);
+                            // console.log(`✅ Verbunden: ${device.name || device.id}`);
                         }
                     } catch (error) {
-                        console.log(`⚠️ Verbindung fehlgeschlagen: ${device.name || device.id}`);
+                        // console.log(`⚠️ Verbindung fehlgeschlagen: ${device.name || device.id}`);
                     }
                 }
             }
 
             // Starte Scan für neue Geräte (im Hintergrund)
             if (window.bleController && window.bleController.scan) {
-                console.log('🔍 BLE-Scan im Hintergrund...');
+                // console.log('🔍 BLE-Scan im Hintergrund...');
                 await window.bleController.scan({ timeout: 5000 });
             }
         } catch (error) {
@@ -119,25 +119,25 @@ class AutoStartManager {
     }
 
     async autoScanMusic() {
-        console.log('🎵 Musik Auto-Scan...');
+        // console.log('🎵 Musik Auto-Scan...');
 
         try {
             if (window.musicLibraryManager) {
                 const tracks = await window.musicLibraryManager.getAllTracks();
 
                 if (tracks && tracks.length > 0) {
-                    console.log(`✅ ${tracks.length} Tracks in Bibliothek`);
+                    // console.log(`✅ ${tracks.length} Tracks in Bibliothek`);
                 } else {
-                    console.log('📂 Keine Tracks - warte auf User-Aktion');
+                    // console.log('📂 Keine Tracks - warte auf User-Aktion');
                 }
             }
 
             // Android MediaStore Scan (Native)
             if (window.Capacitor && window.Capacitor.isNativePlatform()) {
                 if (window.AndroidMusicScanner) {
-                    console.log('📱 Android MediaStore Scan...');
+                    // console.log('📱 Android MediaStore Scan...');
                     const result = await window.AndroidMusicScanner.scanMediaStore();
-                    console.log(`✅ ${result.count || 0} Tracks gefunden`);
+                    // console.log(`✅ ${result.count || 0} Tracks gefunden`);
                 }
             }
         } catch (error) {
@@ -146,7 +146,7 @@ class AutoStartManager {
     }
 
     async initializeUI() {
-        console.log('🎨 Initialisiere UI...');
+        // console.log('🎨 Initialisiere UI...');
 
         // Verstecke "Szene erstellt/geladen" Benachrichtigungen beim Start
         const hideStartupNotifications = () => {
@@ -164,7 +164,7 @@ class AutoStartManager {
         setTimeout(hideStartupNotifications, 500);
         setTimeout(hideStartupNotifications, 1000);
 
-        console.log('✅ UI initialisiert');
+        // console.log('✅ UI initialisiert');
     }
 }
 
@@ -172,4 +172,4 @@ class AutoStartManager {
 window.AutoStartManager = AutoStartManager;
 window.autoStartManager = new AutoStartManager();
 
-console.log('✅ Auto-Start Manager geladen');
+// console.log('✅ Auto-Start Manager geladen');

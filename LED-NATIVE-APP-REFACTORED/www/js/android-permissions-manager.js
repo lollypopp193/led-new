@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ANDROID PERMISSIONS MANAGER - Native Android Runtime Permissions
  * Verwendet Capacitor Plugins für Android-spezifische Berechtigungen
  * @version 1.0
@@ -31,9 +31,9 @@ const AndroidPermissionsManager = {
             if (typeof Capacitor !== 'undefined' && Capacitor.getPlatform() === 'android') {
                 const info = await Capacitor.Plugins.Device.getInfo();
                 this.androidVersion = info.androidSDKVersion || info.osVersion;
-                console.log('📱 Android API Level:', this.androidVersion);
+                // console.log('📱 Android API Level:', this.androidVersion);
             } else {
-                console.log('🌐 Web Environment - keine nativen Permissions nötig');
+                // console.log('🌐 Web Environment - keine nativen Permissions nötig');
                 this.androidVersion = null;
             }
         } catch (error) {
@@ -46,7 +46,7 @@ const AndroidPermissionsManager = {
      * Alle Berechtigungen anfordern (beim ersten App-Start)
      */
     async requestAllPermissions() {
-        console.log('📋 Fordere alle Android Permissions an...');
+        // console.log('📋 Fordere alle Android Permissions an...');
 
         const results = {
             bluetooth: await this.requestBluetoothPermissions(),
@@ -55,7 +55,7 @@ const AndroidPermissionsManager = {
             notifications: await this.requestNotificationPermissions()
         };
 
-        console.log('✅ Permission Requests abgeschlossen:', results);
+        // console.log('✅ Permission Requests abgeschlossen:', results);
         return results;
     },
 
@@ -67,19 +67,19 @@ const AndroidPermissionsManager = {
         try {
             // Android 12+ (API 31+) braucht neue Permissions
             if (this.androidVersion >= 31) {
-                console.log('📡 Fordere BLUETOOTH_SCAN & BLUETOOTH_CONNECT an...');
+                // console.log('📡 Fordere BLUETOOTH_SCAN & BLUETOOTH_CONNECT an...');
 
                 // Capacitor hat kein direktes BT-Permission Plugin
                 // Wir nutzen die Web Bluetooth API als Trigger
                 if ('bluetooth' in navigator) {
                     // User-Geste erforderlich - wird beim ersten Scan triggered
                     this.permissionStatus.bluetooth.granted = true;
-                    console.log('✅ Bluetooth verfügbar (wird beim ersten Scan angefragt)');
+                    // console.log('✅ Bluetooth verfügbar (wird beim ersten Scan angefragt)');
                     return { granted: true };
                 }
             } else {
                 // Android 10-11: Bluetooth + Location
-                console.log('📡 Fordere Legacy Bluetooth Permissions an...');
+                // console.log('📡 Fordere Legacy Bluetooth Permissions an...');
                 this.permissionStatus.bluetooth.granted = true;
                 return { granted: true };
             }
@@ -102,14 +102,14 @@ const AndroidPermissionsManager = {
 
             // Android 10-11 braucht Location für BT-Scan
             if (this.androidVersion >= 29 && this.androidVersion < 31) {
-                console.log('📍 Fordere Location Permission für Bluetooth an...');
+                // console.log('📍 Fordere Location Permission für Bluetooth an...');
 
                 const { Geolocation } = Capacitor.Plugins;
                 if (Geolocation) {
                     try {
                         const position = await Geolocation.getCurrentPosition();
                         this.permissionStatus.location.granted = true;
-                        console.log('✅ Location Permission erteilt');
+                        // console.log('✅ Location Permission erteilt');
                         return { granted: true };
                     } catch (err) {
                         if (err.message && err.message.includes('denied')) {
@@ -122,7 +122,7 @@ const AndroidPermissionsManager = {
             }
 
             // Android 12+ braucht keine Location für BT
-            console.log('✅ Location nicht erforderlich (Android 12+)');
+            // console.log('✅ Location nicht erforderlich (Android 12+)');
             return { granted: true, reason: 'Not required' };
         } catch (error) {
             console.error('❌ Location Permission Fehler:', error);
@@ -149,13 +149,13 @@ const AndroidPermissionsManager = {
 
             // Android 13+ (API 33+) - READ_MEDIA_AUDIO
             if (this.androidVersion >= 33) {
-                console.log('🎵 Fordere READ_MEDIA_AUDIO Permission an (Android 13+)...');
+                // console.log('🎵 Fordere READ_MEDIA_AUDIO Permission an (Android 13+)...');
 
                 try {
                     const result = await Filesystem.requestPermissions();
                     if (result.publicStorage === 'granted') {
                         this.permissionStatus.mediaAudio.granted = true;
-                        console.log('✅ READ_MEDIA_AUDIO erteilt');
+                        // console.log('✅ READ_MEDIA_AUDIO erteilt');
                         return { granted: true, type: 'READ_MEDIA_AUDIO' };
                     } else {
                         this.permissionStatus.mediaAudio.denied = true;
@@ -169,13 +169,13 @@ const AndroidPermissionsManager = {
             }
             // Android 10-12 - READ_EXTERNAL_STORAGE
             else if (this.androidVersion >= 29) {
-                console.log('📂 Fordere READ_EXTERNAL_STORAGE an (Android 10-12)...');
+                // console.log('📂 Fordere READ_EXTERNAL_STORAGE an (Android 10-12)...');
 
                 try {
                     const result = await Filesystem.requestPermissions();
                     if (result.publicStorage === 'granted') {
                         this.permissionStatus.storage.granted = true;
-                        console.log('✅ READ_EXTERNAL_STORAGE erteilt');
+                        // console.log('✅ READ_EXTERNAL_STORAGE erteilt');
                         return { granted: true, type: 'READ_EXTERNAL_STORAGE' };
                     } else {
                         this.permissionStatus.storage.denied = true;
@@ -189,7 +189,7 @@ const AndroidPermissionsManager = {
             }
 
             // Fallback für ältere Android-Versionen
-            console.log('✅ Legacy Storage Permission (automatisch erteilt)');
+            // console.log('✅ Legacy Storage Permission (automatisch erteilt)');
             this.permissionStatus.storage.granted = true;
             return { granted: true, reason: 'Legacy' };
         } catch (error) {
@@ -215,7 +215,7 @@ const AndroidPermissionsManager = {
 
             // Android 13+ braucht POST_NOTIFICATIONS
             if (this.androidVersion >= 33) {
-                console.log('🔔 Fordere POST_NOTIFICATIONS an (Android 13+)...');
+                // console.log('🔔 Fordere POST_NOTIFICATIONS an (Android 13+)...');
 
                 const { LocalNotifications } = Capacitor.Plugins;
                 if (LocalNotifications) {
@@ -223,7 +223,7 @@ const AndroidPermissionsManager = {
                         const result = await LocalNotifications.requestPermissions();
                         if (result.display === 'granted') {
                             this.permissionStatus.notifications.granted = true;
-                            console.log('✅ POST_NOTIFICATIONS erteilt');
+                            // console.log('✅ POST_NOTIFICATIONS erteilt');
                             return { granted: true };
                         } else {
                             this.permissionStatus.notifications.denied = true;
@@ -238,7 +238,7 @@ const AndroidPermissionsManager = {
             }
 
             // Android <13: Notifications sind automatisch erlaubt
-            console.log('✅ Notifications automatisch erlaubt (<Android 13)');
+            // console.log('✅ Notifications automatisch erlaubt (<Android 13)');
             this.permissionStatus.notifications.granted = true;
             return { granted: true, reason: 'Auto-granted' };
         } catch (error) {
@@ -251,11 +251,11 @@ const AndroidPermissionsManager = {
      * Alle Permission-Stati prüfen (ohne neue Abfrage)
      */
     async checkAllPermissions() {
-        console.log('🔍 Prüfe alle Permission-Stati...');
+        // console.log('🔍 Prüfe alle Permission-Stati...');
 
         try {
             if (typeof Capacitor === 'undefined' || Capacitor.getPlatform() !== 'android') {
-                console.log('🌐 Web Environment - alle Permissions OK');
+                // console.log('🌐 Web Environment - alle Permissions OK');
                 return {
                     bluetooth: true,
                     location: true,
@@ -289,7 +289,7 @@ const AndroidPermissionsManager = {
                 notifications: this.permissionStatus.notifications.granted
             };
 
-            console.log('📊 Permission Status:', status);
+            // console.log('📊 Permission Status:', status);
             return status;
         } catch (error) {
             console.error('❌ Permission Check Fehler:', error);
@@ -320,7 +320,7 @@ const AndroidPermissionsManager = {
             return false;
         }
 
-        console.log('✅ Alle erforderlichen Permissions vorhanden');
+        // console.log('✅ Alle erforderlichen Permissions vorhanden');
         return true;
     },
 
@@ -333,7 +333,7 @@ const AndroidPermissionsManager = {
                 const { App } = Capacitor.Plugins;
                 if (App.openSettings) {
                     await App.openSettings();
-                    console.log('📱 App-Einstellungen geöffnet');
+                    // console.log('📱 App-Einstellungen geöffnet');
                 }
             } else {
                 console.warn('⚠️ App.openSettings() nicht verfügbar');
@@ -357,13 +357,13 @@ const AndroidPermissionsManager = {
 
         const message = rationales[permissionType] || 'Diese Berechtigung wird für die App-Funktion benötigt.';
         alert(message);
-        console.log('ℹ️ Permission Rationale:', permissionType, message);
+        // console.log('ℹ️ Permission Rationale:', permissionType, message);
     }
 };
 
 // Global verfügbar machen
 window.AndroidPermissionsManager = AndroidPermissionsManager;
-console.log('✅ Android Permissions Manager geladen');
+// console.log('✅ Android Permissions Manager geladen');
 
 // Export für Module
 if (typeof module !== 'undefined' && module.exports) {

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * LED AUTO SCANNER - Automatisches Scannen und Verbinden von LED-Bändern beim App-Start
  */
 'use strict';
@@ -9,10 +9,10 @@ const LEDAutoScanner = {
     isScanning: false,
 
     async startAutoScan() {
-        console.log('🔍 Starte automatischen LED-Bänder Scan...');
+        // console.log('🔍 Starte automatischen LED-Bänder Scan...');
 
         if (this.isScanning) {
-            console.log('⚠️ Scan bereits aktiv');
+            // console.log('⚠️ Scan bereits aktiv');
             return;
         }
 
@@ -23,7 +23,7 @@ const LEDAutoScanner = {
             const savedDevices = this.loadSavedDevices();
 
             if (savedDevices && savedDevices.length > 0) {
-                console.log(`📱 ${savedDevices.length} gespeicherte Geräte gefunden`);
+                // console.log(`📱 ${savedDevices.length} gespeicherte Geräte gefunden`);
                 await this.connectSavedDevices(savedDevices);
             }
 
@@ -33,7 +33,7 @@ const LEDAutoScanner = {
             // Aktualisiere UI
             this.updateLEDCount();
 
-            console.log(`✅ Scan abgeschlossen: ${this.connectedDevices.length} Geräte verbunden`);
+            // console.log(`✅ Scan abgeschlossen: ${this.connectedDevices.length} Geräte verbunden`);
         } catch (error) {
             console.error('❌ Auto-Scan Fehler:', error);
         } finally {
@@ -42,7 +42,7 @@ const LEDAutoScanner = {
     },
 
     async connectSavedDevices(savedDevices) {
-        console.log('🔗 Verbinde gespeicherte Geräte...');
+        // console.log('🔗 Verbinde gespeicherte Geräte...');
 
         for (const device of savedDevices) {
             try {
@@ -56,7 +56,7 @@ const LEDAutoScanner = {
                             name: device.name,
                             controller: ble
                         });
-                        console.log(`✅ Verbunden: ${device.name}`);
+                        // console.log(`✅ Verbunden: ${device.name}`);
                     }
                 }
             } catch (error) {
@@ -66,7 +66,7 @@ const LEDAutoScanner = {
     },
 
     async scanForNewDevices() {
-        console.log('🔍 Scanne nach neuen Geräten...');
+        // console.log('🔍 Scanne nach neuen Geräten...');
 
         try {
             if (!navigator.bluetooth) {
@@ -78,7 +78,7 @@ const LEDAutoScanner = {
             // Automatischer Scan im Hintergrund ist nicht möglich
             // Verwende gespeicherte Geräte für Auto-Connect
 
-            console.log('ℹ️ Automatischer Scan erfordert Benutzer-Interaktion');
+            // console.log('ℹ️ Automatischer Scan erfordert Benutzer-Interaktion');
         } catch (error) {
             console.error('❌ Scan-Fehler:', error);
         }
@@ -89,7 +89,7 @@ const LEDAutoScanner = {
             const saved = localStorage.getItem('led-devices');
             if (saved) {
                 const devices = JSON.parse(saved);
-                console.log(`💾 ${devices.length} gespeicherte Geräte geladen`);
+                // console.log(`💾 ${devices.length} gespeicherte Geräte geladen`);
                 return devices;
             }
         } catch (error) {
@@ -111,7 +111,7 @@ const LEDAutoScanner = {
                     savedAt: Date.now()
                 });
                 localStorage.setItem('led-devices', JSON.stringify(saved));
-                console.log(`💾 Gerät gespeichert: ${device.name}`);
+                // console.log(`💾 Gerät gespeichert: ${device.name}`);
             }
         } catch (error) {
             console.error('❌ Fehler beim Speichern:', error);
@@ -147,7 +147,7 @@ const LEDAutoScanner = {
         // Zeige Geräte-Liste an
         this.displayConnectedDevices();
 
-        console.log(`📊 LED-Count aktualisiert: ${this.connectedDevices.length}`);
+        // console.log(`📊 LED-Count aktualisiert: ${this.connectedDevices.length}`);
     },
 
     displayConnectedDevices() {

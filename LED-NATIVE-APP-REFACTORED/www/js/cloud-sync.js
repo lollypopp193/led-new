@@ -1,4 +1,4 @@
-/**
+﻿/**
  * CLOUD SYNC SYSTEM v1.0
  * Synchronisierung von Einstellungen, Playlists & Custom-Namen
  */
@@ -17,7 +17,7 @@ class CloudSync {
         this.loadSyncSettings();
         this.setupAutoSync();
         this.setupChangeTracking();
-        console.log('✅ Cloud Sync System initialisiert');
+        // console.log('✅ Cloud Sync System initialisiert');
     }
 
     loadSyncSettings() {
@@ -43,7 +43,7 @@ class CloudSync {
         this.syncEnabled = true;
         this.saveSyncSettings();
         this.startAutoSync();
-        console.log('☁️ Cloud Sync aktiviert');
+        // console.log('☁️ Cloud Sync aktiviert');
 
         if (window.showGlobalNotification) {
             window.showGlobalNotification('☁️ Cloud Sync aktiviert', 'success');
@@ -54,7 +54,7 @@ class CloudSync {
         this.syncEnabled = false;
         this.saveSyncSettings();
         this.stopAutoSync();
-        console.log('⛔ Cloud Sync deaktiviert');
+        // console.log('⛔ Cloud Sync deaktiviert');
 
         if (window.showGlobalNotification) {
             window.showGlobalNotification('⛔ Cloud Sync deaktiviert', 'info');
@@ -80,14 +80,14 @@ class CloudSync {
             }
         }, 300000); // 5 Min
 
-        console.log('⏱️ Auto-Sync gestartet (5 Min Intervall)');
+        // console.log('⏱️ Auto-Sync gestartet (5 Min Intervall)');
     }
 
     stopAutoSync() {
         if (this.syncInterval) {
             clearInterval(this.syncInterval);
             this.syncInterval = null;
-            console.log('⏱️ Auto-Sync gestoppt');
+            // console.log('⏱️ Auto-Sync gestoppt');
         }
     }
 
@@ -138,7 +138,7 @@ class CloudSync {
             return;
         }
 
-        console.log('🔄 Starte Cloud Sync...');
+        // console.log('🔄 Starte Cloud Sync...');
 
         try {
             const data = this.collectSyncData();
@@ -150,7 +150,7 @@ class CloudSync {
             this.saveSyncSettings();
             this.pendingChanges.clear();
 
-            console.log('✅ Cloud Sync erfolgreich');
+            // console.log('✅ Cloud Sync erfolgreich');
 
             if (window.showGlobalNotification) {
                 window.showGlobalNotification('✅ Daten synchronisiert', 'success');
@@ -251,7 +251,7 @@ class CloudSync {
             return;
         }
 
-        console.log('📥 Stelle Daten von Cloud wieder her...');
+        // console.log('📥 Stelle Daten von Cloud wieder her...');
 
         try {
             const data = await this.downloadFromCloud();
@@ -262,7 +262,7 @@ class CloudSync {
 
             this.applyCloudData(data.data);
 
-            console.log('✅ Wiederherstellung erfolgreich');
+            // console.log('✅ Wiederherstellung erfolgreich');
 
             if (window.showGlobalNotification) {
                 window.showGlobalNotification('✅ Daten wiederhergestellt', 'success');
@@ -311,7 +311,7 @@ class CloudSync {
             }
         });
 
-        console.log('✅ Cloud-Daten angewendet');
+        // console.log('✅ Cloud-Daten angewendet');
     }
 
     /**
@@ -331,7 +331,7 @@ class CloudSync {
 
         URL.revokeObjectURL(url);
 
-        console.log('💾 Backup exportiert');
+        // console.log('💾 Backup exportiert');
 
         if (window.showGlobalNotification) {
             window.showGlobalNotification('💾 Backup exportiert', 'success');
@@ -349,7 +349,7 @@ class CloudSync {
 
             this.applyCloudData(data.data);
 
-            console.log('✅ Backup importiert');
+            // console.log('✅ Backup importiert');
 
             if (window.showGlobalNotification) {
                 window.showGlobalNotification('✅ Backup importiert', 'success');
@@ -573,5 +573,5 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = CloudSync;
 }
 
-console.log('✅ Cloud Sync geladen');
-console.log('☁️ Nutze: cloudSync.showSyncDialog()');
+// console.log('✅ Cloud Sync geladen');
+// console.log('☁️ Nutze: cloudSync.showSyncDialog()');

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * LED CUSTOM NAMES v1.0
  * Ermöglicht benutzerdefinierte Namen für LED-Bänder
  */
@@ -12,7 +12,7 @@ class LEDCustomNames {
 
     init() {
         this.loadCustomNames();
-        console.log('✅ LED Custom Names initialisiert');
+        // console.log('✅ LED Custom Names initialisiert');
     }
 
     /**
@@ -24,7 +24,7 @@ class LEDCustomNames {
             if (saved) {
                 const parsed = JSON.parse(saved);
                 this.customNames = new Map(Object.entries(parsed));
-                console.log(`📝 ${this.customNames.size} Custom-Namen geladen`);
+                // console.log(`📝 ${this.customNames.size} Custom-Namen geladen`);
             }
         } catch (error) {
             console.error('❌ Fehler beim Laden der Custom-Namen:', error);
@@ -38,7 +38,7 @@ class LEDCustomNames {
         try {
             const obj = Object.fromEntries(this.customNames);
             localStorage.setItem('led-custom-names', JSON.stringify(obj));
-            console.log('✅ Custom-Namen gespeichert');
+            // console.log('✅ Custom-Namen gespeichert');
         } catch (error) {
             console.error('❌ Fehler beim Speichern:', error);
         }
@@ -63,7 +63,7 @@ class LEDCustomNames {
         }
 
         this.saveCustomNames();
-        console.log(`📝 Custom-Name gesetzt: ${deviceId} → ${customName}`);
+        // console.log(`📝 Custom-Name gesetzt: ${deviceId} → ${customName}`);
 
         // Update UI
         this.updateUI(deviceId);
@@ -314,7 +314,7 @@ class LEDCustomNames {
     clearAll() {
         this.customNames.clear();
         this.saveCustomNames();
-        console.log('🗑️ Alle Custom-Namen gelöscht');
+        // console.log('🗑️ Alle Custom-Namen gelöscht');
 
         if (window.showGlobalNotification) {
             window.showGlobalNotification('🗑️ Alle Namen zurückgesetzt', 'info');
@@ -337,4 +337,4 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = LEDCustomNames;
 }
 
-console.log('✅ LED Custom Names geladen');
+// console.log('✅ LED Custom Names geladen');

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * VISUALIZATION-MANAGER.JS
  * Musik-Visualisierung ohne schwarzen Bildschirm
  * Balken, Wellen, Partikel, Kreis, Spirale, Linie, Spektrum, Feuer
@@ -21,7 +21,7 @@ class VisualizationManager {
      * Initialisiert den Visualization-Manager
      */
     init() {
-        console.log('🎨 Visualization-Manager initialisiert');
+        // console.log('🎨 Visualization-Manager initialisiert');
         this.setupCanvas();
     }
 
@@ -53,7 +53,7 @@ class VisualizationManager {
         this.ctx = this.canvas.getContext('2d');
         this.resizeCanvas();
 
-        console.log('✅ Visualisierungs-Canvas erstellt');
+        // console.log('✅ Visualisierungs-Canvas erstellt');
     }
 
     /**
@@ -75,7 +75,7 @@ class VisualizationManager {
     start(mode = 'balken') {
         this.currentMode = mode;
         this.isActive = true;
-        console.log(`▶️ Visualisierung gestartet: ${mode}`);
+        // console.log(`▶️ Visualisierung gestartet: ${mode}`);
         this.animate();
     }
 
@@ -88,7 +88,7 @@ class VisualizationManager {
             cancelAnimationFrame(this.animationFrame);
         }
         this.clearCanvas();
-        console.log('⏹️ Visualisierung gestoppt');
+        // console.log('⏹️ Visualisierung gestoppt');
     }
 
     /**
@@ -333,7 +333,7 @@ class VisualizationManager {
      * @param {string} mode - Neuer Modus
      */
     switchMode(mode) {
-        console.log(`🎨 Wechsle Visualisierung: ${this.currentMode} → ${mode}`);
+        // console.log(`🎨 Wechsle Visualisierung: ${this.currentMode} → ${mode}`);
         this.currentMode = mode;
     }
 }

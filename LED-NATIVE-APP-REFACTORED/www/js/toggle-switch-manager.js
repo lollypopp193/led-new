@@ -1,4 +1,4 @@
-/**
+﻿/**
  * TOGGLE-SWITCH-MANAGER.JS
  * Verwaltet alle Ein/Aus-Schalter in der App
  * Gelb = Eingeschaltet, Schwarz = Ausgeschaltet
@@ -16,7 +16,7 @@ class ToggleSwitchManager {
      * Initialisiert den Toggle-Switch-Manager
      */
     init() {
-        console.log('🔘 Toggle-Switch-Manager initialisiert');
+        // console.log('🔘 Toggle-Switch-Manager initialisiert');
         this.setupStyles();
         this.observeDOM();
         this.convertAllSwitches();
@@ -144,7 +144,7 @@ class ToggleSwitchManager {
         if (!checkbox.id) checkbox.id = switchId;
         this.switches.set(switchId, { checkbox, container, slider });
 
-        console.log(`✅ Toggle-Switch erstellt: ${switchId}`, checkbox.checked ? 'EIN (Gelb)' : 'AUS (Schwarz)');
+        // console.log(`✅ Toggle-Switch erstellt: ${switchId}`, checkbox.checked ? 'EIN (Gelb)' : 'AUS (Schwarz)');
 
         return container;
     }
@@ -155,7 +155,7 @@ class ToggleSwitchManager {
      * @param {boolean} checked - Neuer State
      */
     onToggleChange(checkbox, checked) {
-        console.log(`🔘 Toggle ${checkbox.id} geändert:`, checked ? '✅ EIN (Gelb)' : '❌ AUS (Schwarz)');
+        // console.log(`🔘 Toggle ${checkbox.id} geändert:`, checked ? '✅ EIN (Gelb)' : '❌ AUS (Schwarz)');
 
         // Event für andere Module
         const event = new CustomEvent('toggleChange', {
@@ -188,7 +188,7 @@ class ToggleSwitchManager {
         });
 
         if (converted > 0) {
-            console.log(`✅ ${converted} Checkboxen zu Toggle-Switches konvertiert`);
+            // console.log(`✅ ${converted} Checkboxen zu Toggle-Switches konvertiert`);
         }
     }
 

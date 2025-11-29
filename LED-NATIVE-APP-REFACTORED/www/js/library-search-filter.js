@@ -1,4 +1,4 @@
-/**
+﻿/**
  * LIBRARY SEARCH & FILTER - Vollständige Such- und Filterfunktionalität
  */
 'use strict';
@@ -18,7 +18,7 @@ const LibrarySearchFilter = {
      * Initialisierung
      */
     init() {
-        console.log('🔍 Library Search & Filter initialisiert');
+        // console.log('🔍 Library Search & Filter initialisiert');
 
         // Such-Input Event-Listener
         const searchInput = document.getElementById('librarySearchInput');
@@ -118,7 +118,7 @@ const LibrarySearchFilter = {
             return;
         }
 
-        console.log(`🔍 Suche: "${query}"`);
+        // console.log(`🔍 Suche: "${query}"`);
 
         // Bibliothek abrufen
         const library = this.getLibrary();
@@ -134,7 +134,7 @@ const LibrarySearchFilter = {
             );
         });
 
-        console.log(`✅ ${this.searchResults.length} Ergebnisse gefunden`);
+        // console.log(`✅ ${this.searchResults.length} Ergebnisse gefunden`);
         this.displayResults(this.searchResults);
     },
 
@@ -143,7 +143,7 @@ const LibrarySearchFilter = {
      */
     applyFilter(type, value) {
         this.activeFilters[type] = value;
-        console.log(`🎛️ Filter angewendet: ${type} = ${value}`);
+        // console.log(`🎛️ Filter angewendet: ${type} = ${value}`);
         this.applyAllFilters();
     },
 
@@ -195,7 +195,7 @@ const LibrarySearchFilter = {
             );
         }
 
-        console.log(`📊 Gefilterte Ergebnisse: ${filtered.length}/${library.length}`);
+        // console.log(`📊 Gefilterte Ergebnisse: ${filtered.length}/${library.length}`);
         this.displayResults(filtered);
     },
 
@@ -219,7 +219,7 @@ const LibrarySearchFilter = {
 
         // Alle Songs anzeigen
         this.displayResults(this.getLibrary());
-        console.log('🔄 Filter zurückgesetzt');
+        // console.log('🔄 Filter zurückgesetzt');
     },
 
     /**
@@ -300,7 +300,7 @@ const LibrarySearchFilter = {
      * Song abspielen
      */
     playSong(song) {
-        console.log(`▶️ Spiele ab: ${song.name}`);
+        // console.log(`▶️ Spiele ab: ${song.name}`);
 
         // Track zu Recently Played hinzufügen
         this.addToRecentlyPlayed(song);

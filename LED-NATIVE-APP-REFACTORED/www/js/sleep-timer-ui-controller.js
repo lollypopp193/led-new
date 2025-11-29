@@ -1,4 +1,4 @@
-/**
+﻿/**
  * SLEEP TIMER UI CONTROLLER - Vollständige Implementierung
  * @version 1.0.0
  */
@@ -10,7 +10,7 @@ const SleepTimerUI = {
     enabled: false,
 
     init() {
-        console.log('💤 Sleep Timer UI initialisiert');
+        // console.log('💤 Sleep Timer UI initialisiert');
         this.attachEventListeners();
         this.loadSettings();
     },
@@ -50,7 +50,7 @@ const SleepTimerUI = {
             actionSelect.addEventListener('change', (e) => {
                 const action = e.target.value;
                 localStorage.setItem('sleep-timer-action', action);
-                console.log('✅ Sleep Timer Aktion:', action);
+                // console.log('✅ Sleep Timer Aktion:', action);
             });
         }
 
@@ -77,7 +77,7 @@ const SleepTimerUI = {
         const minutes = durationSlider ? parseInt(durationSlider.value) : 30;
         this.remainingMs = minutes * 60 * 1000;
 
-        console.log(`⏰ Sleep Timer gestartet: ${minutes} Min`);
+        // console.log(`⏰ Sleep Timer gestartet: ${minutes} Min`);
 
         this.timerId = setInterval(() => {
             this.remainingMs -= 1000;
@@ -108,14 +108,14 @@ const SleepTimerUI = {
         }
 
         this.updateRemainingDisplay();
-        console.log('🛑 Sleep Timer gestoppt');
+        // console.log('🛑 Sleep Timer gestoppt');
     },
 
     executeAction() {
         const actionSelect = document.getElementById('sleepTimerAction');
         const action = actionSelect ? actionSelect.value : 'pause';
 
-        console.log('🎬 Sleep Timer Aktion:', action);
+        // console.log('🎬 Sleep Timer Aktion:', action);
 
         switch (action) {
             case 'pause':
@@ -140,7 +140,7 @@ const SleepTimerUI = {
         const audioPlayer = document.getElementById('audioPlayer');
         if (audioPlayer) {
             audioPlayer.pause();
-            console.log('⏸️ Musik pausiert');
+            // console.log('⏸️ Musik pausiert');
         }
     },
 
@@ -149,7 +149,7 @@ const SleepTimerUI = {
         if (audioPlayer) {
             audioPlayer.pause();
             audioPlayer.currentTime = 0;
-            console.log('⏹️ Musik gestoppt');
+            // console.log('⏹️ Musik gestoppt');
         }
     },
 
@@ -167,7 +167,7 @@ const SleepTimerUI = {
                 audioPlayer.volume = 0;
                 audioPlayer.pause();
                 clearInterval(fadeOut);
-                console.log('🔉 Musik ausgefadet');
+                // console.log('🔉 Musik ausgefadet');
             }
         }, fadeInterval);
     },
@@ -212,7 +212,7 @@ const SleepTimerUI = {
             const change = Math.abs(x + y + z - lastX - lastY - lastZ);
 
             if (change > threshold) {
-                console.log('📳 Schütteln erkannt - Timer verlängert');
+                // console.log('📳 Schütteln erkannt - Timer verlängert');
                 this.remainingMs += 5 * 60 * 1000; // +5 Min
 
                 if (window.showGlobalNotification) {
@@ -260,4 +260,4 @@ if (document.readyState === 'loading') {
 }
 
 window.SleepTimerUI = SleepTimerUI;
-console.log('✅ Sleep Timer UI Controller geladen');
+// console.log('✅ Sleep Timer UI Controller geladen');

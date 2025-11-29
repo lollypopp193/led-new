@@ -1,4 +1,4 @@
-/**
+﻿/**
  * BLE Controller Pro - Professional Bluetooth Low Energy Controller
  * @module BLEControllerPro
  * @version 3.0.0
@@ -72,7 +72,7 @@ class BLEController {
         this.maxReconnectAttempts = 3;
         this.reconnectDelay = 3000; // ms
 
-        console.log('BLEController initialized v3.0.0');
+        // console.log('BLEController initialized v3.0.0');
     }
 
     /**
@@ -98,7 +98,7 @@ class BLEController {
         }
 
         try {
-            console.log('Scanning for BLE devices...');
+            // console.log('Scanning for BLE devices...');
 
             const options = {
                 filters: [
@@ -111,7 +111,7 @@ class BLEController {
             };
 
             this.device = await navigator.bluetooth.requestDevice(options);
-            console.log(`Device found: ${this.device.name}`);
+            // console.log(`Device found: ${this.device.name}`);
 
             return this.device;
         } catch (error) {
@@ -141,21 +141,21 @@ class BLEController {
                 throw new Error('No device to connect');
             }
 
-            console.log(`Connecting to ${this.device.name}...`);
+            // console.log(`Connecting to ${this.device.name}...`);
 
             // Connect GATT server
             this.server = await this.device.gatt.connect();
-            console.log('GATT server connected');
+            // console.log('GATT server connected');
 
             // Get service
             const serviceUUID = this.SERVICES[protocol] || this.SERVICES.ELK_BLEDOM;
             this.service = await this.server.getPrimaryService(serviceUUID);
-            console.log('Service found');
+            // console.log('Service found');
 
             // Get characteristic
             const charUUID = this.CHARACTERISTICS[protocol] || this.CHARACTERISTICS.ELK_BLEDOM;
             this.characteristic = await this.service.getCharacteristic(charUUID);
-            console.log('Characteristic found');
+            // console.log('Characteristic found');
 
             // Set state
             this.isConnected = true;
@@ -168,7 +168,7 @@ class BLEController {
                 this.handleDisconnect();
             });
 
-            console.log(`Successfully connected to ${this.deviceName}`);
+            // console.log(`Successfully connected to ${this.deviceName}`);
 
             // Notify app
             if (window.updateGlobalBLEStatus) {
@@ -182,7 +182,7 @@ class BLEController {
                     characteristicUUID: charUUID
                 });
                 window.BluetoothForegroundService.onDeviceConnected(this.deviceId, this.deviceName);
-                console.log('✅ Device saved to Foreground Service');
+                // console.log('✅ Device saved to Foreground Service');
             }
 
             return true;
@@ -247,7 +247,7 @@ class BLEController {
 
                 this.lastCommandTime = Date.now();
 
-                console.log(`Command sent (attempt ${attempt}):`,
+                // console.log(`Command sent (attempt ${attempt}):`,
                     Array.from(data).map(b => '0x' + b.toString(16).padStart(2, '0')).join(' '));
 
                 // Wait for confirmation
@@ -284,7 +284,7 @@ class BLEController {
                     this.CHARACTERISTICS[this.protocol]
                 );
                 this.isConnected = true;
-                console.log('Reconnected successfully');
+                // console.log('Reconnected successfully');
                 return true;
             }
         } catch (error) {
@@ -329,7 +329,7 @@ class BLEController {
         const result = await this.sendCommand(command);
 
         if (result) {
-            console.log(`Color set: RGB(${r}, ${g}, ${b})`);
+            // console.log(`Color set: RGB(${r}, ${g}, ${b})`);
         }
 
         return result;
@@ -348,7 +348,7 @@ class BLEController {
         const result = await this.sendCommand(command);
 
         if (result) {
-            console.log(`Brightness set: ${level}%`);
+            // console.log(`Brightness set: ${level}%`);
         }
 
         return result;
@@ -366,7 +366,7 @@ class BLEController {
         const result = await this.sendCommand(command);
 
         if (result) {
-            console.log(`Effect ${effectId} activated`);
+            // console.log(`Effect ${effectId} activated`);
         }
 
         return result;
@@ -385,7 +385,7 @@ class BLEController {
         const result = await this.sendCommand(command);
 
         if (result) {
-            console.log(`Power ${state ? 'ON' : 'OFF'}`);
+            // console.log(`Power ${state ? 'ON' : 'OFF'}`);
         }
 
         return result;
@@ -436,7 +436,7 @@ class BLEController {
             return false;
         }
 
-        console.log('Starting test sequence...');
+        // console.log('Starting test sequence...');
 
         try {
             await this.setColorRGB(255, 0, 0); // Red
@@ -448,7 +448,7 @@ class BLEController {
             await this.setColorRGB(255, 255, 255); // White
             await this.delay(500);
 
-            console.log('Test sequence completed');
+            // console.log('Test sequence completed');
             return true;
         } catch (error) {
             console.error('Test sequence failed:', error);
@@ -462,7 +462,7 @@ class BLEController {
     disconnect() {
         if (this.device?.gatt?.connected) {
             this.device.gatt.disconnect();
-            console.log('Disconnected');
+            // console.log('Disconnected');
         }
 
         this.isConnected = false;
@@ -507,7 +507,7 @@ class BLEController {
      * Handle disconnection
      */
     handleDisconnect() {
-        console.log('Device disconnected');
+        // console.log('Device disconnected');
         this.isConnected = false;
 
         this.showNotification('Verbindung unterbrochen', 'warning');
@@ -520,7 +520,7 @@ class BLEController {
         // Notify Foreground Service
         if (window.BluetoothForegroundService && this.deviceId) {
             window.BluetoothForegroundService.onDeviceDisconnected(this.deviceId);
-            console.log('⚠️ Device disconnection reported to Foreground Service');
+            // console.log('⚠️ Device disconnection reported to Foreground Service');
         }
 
         // Attempt auto-reconnect
@@ -533,7 +533,7 @@ class BLEController {
      */
     async attemptAutoReconnect() {
         for (let attempt = 1; attempt <= this.maxReconnectAttempts; attempt++) {
-            console.log(`Auto-reconnect attempt ${attempt}/${this.maxReconnectAttempts}`);
+            // console.log(`Auto-reconnect attempt ${attempt}/${this.maxReconnectAttempts}`);
 
             this.showNotification(`Wiederverbindung... (${attempt}/${this.maxReconnectAttempts})`, 'info');
 
@@ -565,7 +565,7 @@ class BLEController {
         } else if (window.NativeBridge?.showToast) {
             window.NativeBridge.showToast(message, type === 'error' ? 'long' : 'short');
         } else {
-            console.log(`[${type.toUpperCase()}] ${message}`);
+            // console.log(`[${type.toUpperCase()}] ${message}`);
         }
     }
 
@@ -615,7 +615,7 @@ class BLEController {
     async scanWLEDDevices() {
         if (!this.wledEnabled) return [];
 
-        console.log('Scanning for WLED devices...');
+        // console.log('Scanning for WLED devices...');
         const devices = [];
         const baseIP = '192.168.1.';
         const promises = [];
@@ -642,7 +642,7 @@ class BLEController {
         }
 
         this.wledDevices = devices;
-        console.log(`Found ${devices.length} WLED devices`);
+        // console.log(`Found ${devices.length} WLED devices`);
         return devices;
     }
 
@@ -710,7 +710,7 @@ class BLEController {
      */
     setWLEDEnabled(enabled) {
         this.wledEnabled = enabled;
-        console.log(`WLED integration ${enabled ? 'enabled' : 'disabled'}`);
+        // console.log(`WLED integration ${enabled ? 'enabled' : 'disabled'}`);
     }
 
     /**
@@ -720,17 +720,17 @@ class BLEController {
      */
     async reconnectToDevice(deviceId) {
         try {
-            console.log(`🔄 Reconnecting to device: ${deviceId}`);
+            // console.log(`🔄 Reconnecting to device: ${deviceId}`);
 
             // If already connected to this device
             if (this.isConnected && this.deviceId === deviceId) {
-                console.log('✅ Already connected to this device');
+                // console.log('✅ Already connected to this device');
                 return true;
             }
 
             // Try to reconnect using stored device
             if (this.device && this.device.id === deviceId) {
-                console.log('🔄 Reconnecting to stored device...');
+                // console.log('🔄 Reconnecting to stored device...');
                 return await this.connect(deviceId, this.protocol);
             }
 
@@ -751,7 +751,7 @@ window.BLEController = BLEController;
 if (typeof window !== 'undefined') {
     window.bleController = new BLEController();
     window.BLEControllerPro = window.bleController; // Alias für Kompatibilität
-    console.log('✅ BLE-Controller initialisiert (window.bleController)');
+    // console.log('✅ BLE-Controller initialisiert (window.bleController)');
 }
 
 // CommonJS export for Node.js compatibility

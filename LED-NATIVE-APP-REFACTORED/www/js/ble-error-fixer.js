@@ -1,4 +1,4 @@
-/**
+﻿/**
  * BLE-ERROR-FIXER.JS
  * Behebt "BLE nicht verfügbar" und "BLE-Controller.init ist not a function" Fehler
  * Stellt sicher dass BLE korrekt initialisiert wird
@@ -17,7 +17,7 @@ class BLEErrorFixer {
      * Initialisiert den BLE-Error-Fixer
      */
     async init() {
-        console.log('🔧 BLE-Error-Fixer startet...');
+        // console.log('🔧 BLE-Error-Fixer startet...');
 
         // Warte auf DOM Ready
         if (document.readyState === 'loading') {
@@ -54,7 +54,7 @@ class BLEErrorFixer {
 
                 // Erstelle init-Methode
                 controller.init = async function () {
-                    console.log('✅ BLE-Controller.init aufgerufen (gefixed)');
+                    // console.log('✅ BLE-Controller.init aufgerufen (gefixed)');
                     this.isInitialized = true;
                     this.isAvailable = true;
                     return true;
@@ -63,10 +63,10 @@ class BLEErrorFixer {
 
             // Initialisiere BLE-Controller
             if (!controller.isInitialized) {
-                console.log('🔵 Initialisiere BLE-Controller...');
+                // console.log('🔵 Initialisiere BLE-Controller...');
                 await controller.init();
                 this.bleInitialized = true;
-                console.log('✅ BLE-Controller erfolgreich initialisiert');
+                // console.log('✅ BLE-Controller erfolgreich initialisiert');
             }
 
         } catch (error) {
@@ -74,7 +74,7 @@ class BLEErrorFixer {
 
             if (this.retryCount < this.maxRetries) {
                 this.retryCount++;
-                console.log(`🔄 Retry ${this.retryCount}/${this.maxRetries}...`);
+                // console.log(`🔄 Retry ${this.retryCount}/${this.maxRetries}...`);
                 await this.delay(1000);
                 await this.initializeBLE();
             } else {
@@ -95,45 +95,45 @@ class BLEErrorFixer {
             devices: [],
 
             init: async function () {
-                console.log('🔵 Dummy BLE-Controller.init()');
+                // console.log('🔵 Dummy BLE-Controller.init()');
                 this.isInitialized = true;
                 return true;
             },
 
             scan: async function () {
-                console.log('🔍 Dummy BLE-Controller.scan()');
+                // console.log('🔍 Dummy BLE-Controller.scan()');
                 return [];
             },
 
             connect: async function (deviceId) {
-                console.log('🔗 Dummy BLE-Controller.connect()', deviceId);
+                // console.log('🔗 Dummy BLE-Controller.connect()', deviceId);
                 this.isConnected = true;
                 return true;
             },
 
             disconnect: async function () {
-                console.log('🔌 Dummy BLE-Controller.disconnect()');
+                // console.log('🔌 Dummy BLE-Controller.disconnect()');
                 this.isConnected = false;
                 return true;
             },
 
             setColor: async function (r, g, b) {
-                console.log('🎨 Dummy BLE-Controller.setColor()', r, g, b);
+                // console.log('🎨 Dummy BLE-Controller.setColor()', r, g, b);
                 return true;
             },
 
             setBrightness: async function (brightness) {
-                console.log('💡 Dummy BLE-Controller.setBrightness()', brightness);
+                // console.log('💡 Dummy BLE-Controller.setBrightness()', brightness);
                 return true;
             },
 
             setEffect: async function (effectId) {
-                console.log('✨ Dummy BLE-Controller.setEffect()', effectId);
+                // console.log('✨ Dummy BLE-Controller.setEffect()', effectId);
                 return true;
             }
         };
 
-        console.log('✅ Dummy BLE-Controller erstellt');
+        // console.log('✅ Dummy BLE-Controller erstellt');
     }
 
     /**
@@ -151,7 +151,7 @@ class BLEErrorFixer {
         errorMessages.forEach(errorText => {
             const elements = this.findElementsWithText(errorText);
             elements.forEach(el => {
-                console.log(`👻 Verstecke Fehler-Meldung: "${errorText}"`);
+                // console.log(`👻 Verstecke Fehler-Meldung: "${errorText}"`);
                 el.style.display = 'none';
                 el.classList.add('error-hidden');
             });

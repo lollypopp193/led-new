@@ -1,11 +1,11 @@
-/**
+﻿/**
  * CROSSFADE & FADE SLIDER FIX - Verbindet Slider mit Sekundenzahlen
  * @version 1.0.0
  */
 'use strict';
 
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('🎚️ Crossfade Slider Fix geladen');
+    // console.log('🎚️ Crossfade Slider Fix geladen');
 
     // Crossfade Dauer Slider
     const crossfadeSlider = document.getElementById('crossfadeDuration');
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
         crossfadeType.addEventListener('change', function () {
             const type = this.value;
             localStorage.setItem('crossfade-type', type);
-            console.log('✅ Crossfade-Typ:', type);
+            // console.log('✅ Crossfade-Typ:', type);
 
             if (window.CrossfadeController) {
                 window.CrossfadeController.setType(type);
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fadeCurve.addEventListener('change', function () {
             const curve = this.value;
             localStorage.setItem('fade-curve', curve);
-            console.log('✅ Fade-Kurve:', curve);
+            // console.log('✅ Fade-Kurve:', curve);
         });
 
         const savedCurve = localStorage.getItem('fade-curve');
@@ -103,5 +103,5 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    console.log('✅ Crossfade Slider Fix aktiv');
+    // console.log('✅ Crossfade Slider Fix aktiv');
 });

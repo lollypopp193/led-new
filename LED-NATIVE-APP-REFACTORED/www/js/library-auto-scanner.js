@@ -1,4 +1,4 @@
-/**
+﻿/**
  * LIBRARY AUTO SCANNER - Automatisches Scannen der Musikbibliothek beim App-Start
  */
 'use strict';
@@ -17,10 +17,10 @@ const LibraryAutoScanner = {
      * Auto-Scan beim App-Start
      */
     async startAutoScan() {
-        console.log('🔍 Starte automatischen Bibliotheks-Scan...');
+        // console.log('🔍 Starte automatischen Bibliotheks-Scan...');
 
         if (this.isScanning) {
-            console.log('⚠️ Scan bereits aktiv');
+            // console.log('⚠️ Scan bereits aktiv');
             return;
         }
 
@@ -33,7 +33,7 @@ const LibraryAutoScanner = {
             const oneDayMs = 24 * 60 * 60 * 1000;
 
             if (lastScan && (now - parseInt(lastScan)) < oneDayMs) {
-                console.log('ℹ️ Bibliothek wurde kürzlich gescannt, lade gespeicherte Daten');
+                // console.log('ℹ️ Bibliothek wurde kürzlich gescannt, lade gespeicherte Daten');
                 this.loadStoredLibrary();
                 return;
             }
@@ -44,7 +44,7 @@ const LibraryAutoScanner = {
             // Speichere Scan-Zeitstempel
             localStorage.setItem('library-last-scan', now.toString());
 
-            console.log(`✅ Auto-Scan abgeschlossen: ${this.foundSongs.length} Songs gefunden`);
+            // console.log(`✅ Auto-Scan abgeschlossen: ${this.foundSongs.length} Songs gefunden`);
         } catch (error) {
             console.error('❌ Auto-Scan Fehler:', error);
         } finally {
@@ -181,7 +181,7 @@ const LibraryAutoScanner = {
         };
 
         localStorage.setItem('music-library', JSON.stringify(library));
-        console.log(`💾 Bibliothek gespeichert: ${this.foundSongs.length} Songs`);
+        // console.log(`💾 Bibliothek gespeichert: ${this.foundSongs.length} Songs`);
 
         // UI aktualisieren
         this.updateUI();
@@ -204,7 +204,7 @@ const LibraryAutoScanner = {
                     this.categories.folders = new Set(library.categories.folders);
                 }
 
-                console.log(`📚 Bibliothek geladen: ${this.foundSongs.length} Songs`);
+                // console.log(`📚 Bibliothek geladen: ${this.foundSongs.length} Songs`);
                 this.updateUI();
             }
         } catch (error) {
@@ -227,7 +227,7 @@ const LibraryAutoScanner = {
         }
 
         // Statistik anzeigen
-        console.log(`📊 Bibliothek-Statistik:
+        // console.log(`📊 Bibliothek-Statistik:
             Songs: ${this.foundSongs.length}
             Künstler: ${this.categories.artists.size}
             Alben: ${this.categories.albums.size}

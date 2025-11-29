@@ -1,4 +1,4 @@
-/**
+﻿/**
  * BPM Analyzer & Beat-Matching
  * Erkennt BPM (Beats Per Minute) und synchronisiert Tracks
  */
@@ -33,7 +33,7 @@ class BPMAnalyzer {
             this.bufferLength = this.analyzer.frequencyBinCount;
             this.dataArray = new Uint8Array(this.bufferLength);
 
-            console.log('✅ BPM-Analyzer initialisiert');
+            // console.log('✅ BPM-Analyzer initialisiert');
         } catch (error) {
             console.error('❌ BPM-Analyzer Init fehlgeschlagen:', error);
         }
@@ -50,7 +50,7 @@ class BPMAnalyzer {
         }
 
         sourceNode.connect(this.analyzer);
-        console.log('🔊 Audio-Quelle mit BPM-Analyzer verbunden');
+        // console.log('🔊 Audio-Quelle mit BPM-Analyzer verbunden');
     }
 
     /**
@@ -64,7 +64,7 @@ class BPMAnalyzer {
         this.isAnalyzing = true;
         this.beatHistory = [];
 
-        console.log('🎵 BPM-Analyse gestartet');
+        // console.log('🎵 BPM-Analyse gestartet');
 
         this.analysisInterval = setInterval(() => {
             this.detectBeat();
@@ -81,7 +81,7 @@ class BPMAnalyzer {
         }
 
         this.isAnalyzing = false;
-        console.log('🛑 BPM-Analyse gestoppt');
+        // console.log('🛑 BPM-Analyse gestoppt');
     }
 
     /**
@@ -225,7 +225,7 @@ class BPMAnalyzer {
             this.analyzer = null;
         }
 
-        console.log('🧹 BPM-Analyzer disposed');
+        // console.log('🧹 BPM-Analyzer disposed');
     }
 }
 
@@ -235,4 +235,4 @@ const bpmAnalyzer = new BPMAnalyzer();
 // Export
 window.bpmAnalyzer = bpmAnalyzer;
 
-console.log('✅ BPM-Analyzer geladen');
+// console.log('✅ BPM-Analyzer geladen');

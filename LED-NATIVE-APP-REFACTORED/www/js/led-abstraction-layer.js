@@ -1,4 +1,4 @@
-/**
+﻿/**
  * LED-ABSTRACTION-LAYER.JS v3.0 - ZERO TOLERANCE IMPLEMENTATION
  * Universelle LED-Steuerung für verschiedene LED-Typen & Protokolle
  */
@@ -20,12 +20,12 @@ class LEDAbstractionLayer {
             this.controller = window.ledController || window.bleController;
         }
 
-        console.log('✅ LED-Abstraction-Layer initialisiert');
+        // console.log('✅ LED-Abstraction-Layer initialisiert');
     }
 
     async detectLEDType() {
         try {
-            console.log('🔍 Erkenne LED-Typ...');
+            // console.log('🔍 Erkenne LED-Typ...');
             const testPattern = new Uint8Array([0x7E, 0xFF, 0xFF, 0xFF, 0xEF]);
 
             if (!this.controller || !this.controller.isConnected) {
@@ -50,7 +50,7 @@ class LEDAbstractionLayer {
 
             if (!this.ledType) this.ledType = 'WS2812B';
 
-            console.log('✅ LED-Typ erkannt:', this.ledType);
+            // console.log('✅ LED-Typ erkannt:', this.ledType);
             this.optimizeForLEDType();
             return this.ledType;
         } catch (e) {
@@ -66,29 +66,29 @@ class LEDAbstractionLayer {
                 this.colorOrder = 'GRB';
                 this.pixelCount = 60;
                 this.maxBrightness = 255;
-                console.log('🔧 Optimiert für WS2812B (GRB)');
+                // console.log('🔧 Optimiert für WS2812B (GRB)');
                 break;
             case 'APA102':
                 this.colorOrder = 'BGR';
                 this.pixelCount = 60;
                 this.maxBrightness = 31;
-                console.log('🔧 Optimiert für APA102 (BGR)');
+                // console.log('🔧 Optimiert für APA102 (BGR)');
                 break;
             case 'SK6812':
                 this.colorOrder = 'GRB';
                 this.pixelCount = 60;
                 this.maxBrightness = 255;
-                console.log('🔧 Optimiert für SK6812 (GRB)');
+                // console.log('🔧 Optimiert für SK6812 (GRB)');
                 break;
             case 'WS2811':
                 this.colorOrder = 'RGB';
                 this.pixelCount = 50;
                 this.maxBrightness = 255;
-                console.log('🔧 Optimiert für WS2811 (RGB)');
+                // console.log('🔧 Optimiert für WS2811 (RGB)');
                 break;
             default:
                 this.colorOrder = 'RGB';
-                console.log('🔧 Generic-Modus (RGB)');
+                // console.log('🔧 Generic-Modus (RGB)');
         }
     }
 
@@ -247,7 +247,7 @@ class LEDAbstractionLayer {
         const validOrders = ['RGB', 'RBG', 'GRB', 'GBR', 'BRG', 'BGR'];
         if (validOrders.indexOf(order) !== -1) {
             this.colorOrder = order;
-            console.log('✅ Color Order:', order);
+            // console.log('✅ Color Order:', order);
             return true;
         }
         console.error('❌ Ungültige Color Order:', order);
@@ -260,7 +260,7 @@ class LEDAbstractionLayer {
             g: Math.max(0, Math.min(1, parseFloat(g) || 1.0)),
             b: Math.max(0, Math.min(1, parseFloat(b) || 1.0))
         };
-        console.log('✅ White Balance:', this.whiteBalance);
+        // console.log('✅ White Balance:', this.whiteBalance);
     }
 
     setGammaCorrection(enabled, gammaValue) {
@@ -268,7 +268,7 @@ class LEDAbstractionLayer {
         if (gammaValue !== undefined) {
             this.gammaValue = Math.max(1.0, Math.min(4.0, parseFloat(gammaValue) || 2.8));
         }
-        console.log('✅ Gamma:', this.gammaCorrection, this.gammaValue);
+        // console.log('✅ Gamma:', this.gammaCorrection, this.gammaValue);
     }
 
     getInfo() {
@@ -291,12 +291,12 @@ class LEDAbstractionLayer {
         this.gammaCorrection = true;
         this.gammaValue = 2.8;
         this.whiteBalance = { r: 1.0, g: 1.0, b: 0.85 };
-        console.log('🔄 LED-Abstraction-Layer zurückgesetzt');
+        // console.log('🔄 LED-Abstraction-Layer zurückgesetzt');
     }
 }
 
 window.LEDAbstractionLayer = LEDAbstractionLayer;
 window.ledAbstraction = new LEDAbstractionLayer();
-console.log('✅ LED-Abstraction-Layer global verfügbar als window.ledAbstraction');
+// console.log('✅ LED-Abstraction-Layer global verfügbar als window.ledAbstraction');
 
 if (typeof module !== 'undefined' && module.exports) module.exports = LEDAbstractionLayer;

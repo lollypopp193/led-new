@@ -1,4 +1,4 @@
-/**
+﻿/**
  * MUSIK-PLAYER-COMPLETE.JS
  * Vollständiger Musik-Player - ALLE Funktionen aus musik.html Inline-JS
  */
@@ -124,7 +124,7 @@ class LibraryManager {
     }
 
     updateSection(section) {
-        console.log('Aktualisiere Section:', section);
+        // console.log('Aktualisiere Section:', section);
     }
 
     updateAllSections() {
@@ -151,7 +151,7 @@ class LibraryManager {
     }
 
     toggleSortOptions() {
-        console.log('Toggle sort options');
+        // console.log('Toggle sort options');
     }
 }
 
@@ -282,7 +282,7 @@ function initMusicPlayer() {
         });
     }
 
-    console.log('✅ Musik-Player initialisiert');
+    // console.log('✅ Musik-Player initialisiert');
 }
 
 // Global Export
@@ -306,4 +306,4 @@ if (document.readyState === 'loading') {
     initMusicPlayer();
 }
 
-// console.log('✅ Musik-Player-Complete geladen');
+// // console.log('✅ Musik-Player-Complete geladen');

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * MUSIK-COMPLETE-FIXES.JS
  * Vollständige Behebung ALLER UI-Probleme in der Musik-Seite
  * Basierend auf detaillierter User-Spezifikation
@@ -40,11 +40,11 @@ class MusikCompleteFixes {
         window.addEventListener('pageshow', () => this.applyAllFixes());
 
         this.initialized = true;
-        console.log('✅ Musik-Complete-Fixes v2.0 initialisiert');
+        // console.log('✅ Musik-Complete-Fixes v2.0 initialisiert');
     }
 
     applyAllFixes() {
-        console.log('🔧 Wende ALLE Fixes an...');
+        // console.log('🔧 Wende ALLE Fixes an...');
 
         try {
             // Basis-Fixes
@@ -75,7 +75,7 @@ class MusikCompleteFixes {
             // Toggle-Switch CSS injizieren
             this.injectToggleSwitchCSS();
 
-            console.log('✅ ALLE Fixes erfolgreich angewendet');
+            // console.log('✅ ALLE Fixes erfolgreich angewendet');
         } catch (error) {
             console.error('❌ Fehler beim Anwenden der Fixes:', error);
         }
@@ -113,7 +113,7 @@ class MusikCompleteFixes {
             converted++;
         });
 
-        console.log(`✅ ${converted} Checkboxen zu Toggle-Switches konvertiert`);
+        // console.log(`✅ ${converted} Checkboxen zu Toggle-Switches konvertiert`);
     }
 
     injectToggleSwitchCSS() {
@@ -253,7 +253,7 @@ class MusikCompleteFixes {
             }
         }
 
-        console.log('✅ Equalizer komplett gefixt');
+        // console.log('✅ Equalizer komplett gefixt');
     }
 
     fixBassboost() {
@@ -382,7 +382,7 @@ class MusikCompleteFixes {
             });
         }
 
-        console.log('✅ Visualisierung komplett gefixt');
+        // console.log('✅ Visualisierung komplett gefixt');
     }
 
     // ==========================================
@@ -438,7 +438,7 @@ class MusikCompleteFixes {
         // Umlaute in Frequenzbereich fixen
         this.fixFrequencyLabels();
 
-        console.log('✅ LED-Musik komplett gefixt');
+        // console.log('✅ LED-Musik komplett gefixt');
     }
 
     replaceDummyLEDBands() {
@@ -599,7 +599,7 @@ class MusikCompleteFixes {
             };
         });
 
-        console.log('✅ Party-Modus komplett gefixt');
+        // console.log('✅ Party-Modus komplett gefixt');
     }
 
     // ==========================================
@@ -668,7 +668,7 @@ class MusikCompleteFixes {
         // Kontextmenü bei langem Drücken
         this.setupSongContextMenu();
 
-        console.log('✅ Bibliothek komplett gefixt');
+        // console.log('✅ Bibliothek komplett gefixt');
     }
 
     filterLibraryBySearch(query) {
@@ -1102,7 +1102,7 @@ class MusikCompleteFixes {
             }
         });
 
-        console.log('✅ CSS-Artefakte entfernt');
+        // console.log('✅ CSS-Artefakte entfernt');
     }
 
     fixUmlauts() {
@@ -1129,7 +1129,7 @@ class MusikCompleteFixes {
             }
         });
 
-        console.log('✅ Umlaute gefixt');
+        // console.log('✅ Umlaute gefixt');
     }
 
     removeUnnecessaryElements() {
@@ -1158,7 +1158,7 @@ class MusikCompleteFixes {
             }
         });
 
-        console.log('✅ Unnötige Elemente entfernt');
+        // console.log('✅ Unnötige Elemente entfernt');
     }
 
     removeDuplicates() {
@@ -1179,7 +1179,7 @@ class MusikCompleteFixes {
             eqSaveBtns[i].style.display = 'none';
         }
 
-        console.log('✅ Duplikate entfernt');
+        // console.log('✅ Duplikate entfernt');
     }
 
     makeAllSlidersFunctional() {
@@ -1201,10 +1201,10 @@ class MusikCompleteFixes {
             });
         });
 
-        console.log(`✅ ${allSliders.length} Slider funktional gemacht`);
+        // console.log(`✅ ${allSliders.length} Slider funktional gemacht`);
     }
 }
 
 // Initialisieren
 window.MusikCompleteFixes = new MusikCompleteFixes();
-console.log('✅ Musik-Complete-Fixes geladen');
+// console.log('✅ Musik-Complete-Fixes geladen');

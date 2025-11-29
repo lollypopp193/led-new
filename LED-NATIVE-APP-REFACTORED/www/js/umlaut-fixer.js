@@ -1,4 +1,4 @@
-/**
+﻿/**
  * UMLAUT-FIXER.JS
  * Ersetzt falsche Umlaut-Codierungen (UE, AE, OE) durch echte deutsche Umlaute
  * Automatische Korrektur beim Laden aller HTML-Inhalte
@@ -71,7 +71,7 @@
             const fixedText = fixUmlauts(originalText);
             if (originalText !== fixedText) {
                 textNode.nodeValue = fixedText;
-                console.log(`Umlaut korrigiert: "${originalText}" → "${fixedText}"`);
+                // console.log(`Umlaut korrigiert: "${originalText}" → "${fixedText}"`);
             }
         });
 
@@ -84,7 +84,7 @@
                     const fixedValue = fixUmlauts(originalValue);
                     if (originalValue !== fixedValue) {
                         el.setAttribute(attr, fixedValue);
-                        console.log(`Attribut korrigiert: ${attr}="${originalValue}" → "${fixedValue}"`);
+                        // console.log(`Attribut korrigiert: ${attr}="${originalValue}" → "${fixedValue}"`);
                     }
                 }
             });
@@ -117,14 +117,14 @@
             characterData: true
         });
 
-        console.log('✅ Umlaut-Observer aktiv');
+        // console.log('✅ Umlaut-Observer aktiv');
     }
 
     /**
      * Initialisiert den Umlaut-Fixer
      */
     function init() {
-        console.log('🔧 Umlaut-Fixer startet...');
+        // console.log('🔧 Umlaut-Fixer startet...');
 
         // Sofortige Korrektur
         fixDOMUmlauts();
@@ -132,7 +132,7 @@
         // Observer für zukünftige Änderungen
         observeDOM();
 
-        console.log('✅ Umlaut-Fixer erfolgreich initialisiert');
+        // console.log('✅ Umlaut-Fixer erfolgreich initialisiert');
     }
 
     // Auto-Init beim DOM-Ready

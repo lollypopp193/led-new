@@ -1,4 +1,4 @@
-/**
+﻿/**
  * MEDIASTORE-BRIDGE.JS - Native Android MediaStore Integration
  * Zugriff auf Android's MediaStore.Audio für Musikdateien
  * Unterstützt: Android 10-14, READ_MEDIA_AUDIO Permission
@@ -38,11 +38,11 @@ class MediaStoreBridge {
     async init() {
         this.loadCache();
         this.loadTrackFeatures();
-        console.log('✅ MediaStore Bridge initialisiert');
-        console.log(`📱 Native Platform: ${this.isNative}`);
+        // console.log('✅ MediaStore Bridge initialisiert');
+        // console.log(`📱 Native Platform: ${this.isNative}`);
 
         if (this.tracks.length > 0) {
-            console.log(`📋 ${this.tracks.length} Tracks aus Cache geladen`);
+            // console.log(`📋 ${this.tracks.length} Tracks aus Cache geladen`);
         }
     }
 
@@ -51,7 +51,7 @@ class MediaStoreBridge {
      */
     async checkPermissions() {
         if (!this.isNative) {
-            console.log('⚠️ Nicht auf nativer Plattform - verwende File System Access API');
+            // console.log('⚠️ Nicht auf nativer Plattform - verwende File System Access API');
             return true;
         }
 
@@ -104,12 +104,12 @@ class MediaStoreBridge {
 
         // Cache prüfen
         if (!forceRescan && this.isCacheValid()) {
-            console.log('📋 Verwende gecachte Bibliothek');
+            // console.log('📋 Verwende gecachte Bibliothek');
             return this.tracks;
         }
 
         this.isScanning = true;
-        console.log('🔍 Starte Bibliothek-Scan...');
+        // console.log('🔍 Starte Bibliothek-Scan...');
 
         try {
             const hasPermission = await this.checkPermissions();
@@ -127,7 +127,7 @@ class MediaStoreBridge {
             this.saveCache();
             this.buildIndices();
 
-            console.log(`✅ Scan abgeschlossen: ${this.tracks.length} Tracks`);
+            // console.log(`✅ Scan abgeschlossen: ${this.tracks.length} Tracks`);
 
             // Event dispatchen
             window.dispatchEvent(new CustomEvent('libraryScanned', {
@@ -476,7 +476,7 @@ class MediaStoreBridge {
             this.folders.get(folder).push(track);
         }
 
-        console.log(`📊 Indizes: ${this.artists.size} Künstler, ${this.albums.size} Alben, ${this.folders.size} Ordner`);
+        // console.log(`📊 Indizes: ${this.artists.size} Künstler, ${this.albums.size} Alben, ${this.folders.size} Ordner`);
     }
 
     /**
@@ -501,7 +501,7 @@ class MediaStoreBridge {
 
         try {
             localStorage.setItem(this.FEATURES_KEY, JSON.stringify(this.trackFeatures));
-            console.log(`✅ Features gespeichert für: ${track.title}`);
+            // console.log(`✅ Features gespeichert für: ${track.title}`);
             return true;
         } catch (error) {
             console.error('❌ Features-Speichern Fehler:', error);
@@ -517,7 +517,7 @@ class MediaStoreBridge {
             const stored = localStorage.getItem(this.FEATURES_KEY);
             if (stored) {
                 this.trackFeatures = JSON.parse(stored);
-                console.log(`✅ ${Object.keys(this.trackFeatures).length} Track-Features geladen`);
+                // console.log(`✅ ${Object.keys(this.trackFeatures).length} Track-Features geladen`);
             }
         } catch (error) {
             console.error('❌ Features-Laden Fehler:', error);
@@ -536,7 +536,7 @@ class MediaStoreBridge {
                 version: '1.0'
             };
             localStorage.setItem(this.CACHE_KEY, JSON.stringify(cacheData));
-            console.log('💾 Bibliothek-Cache gespeichert');
+            // console.log('💾 Bibliothek-Cache gespeichert');
         } catch (error) {
             console.error('❌ Cache-Speichern Fehler:', error);
         }
@@ -582,7 +582,7 @@ class MediaStoreBridge {
         this.folders.clear();
         this.lastScanTime = null;
         localStorage.removeItem(this.CACHE_KEY);
-        console.log('🗑️ Cache geleert');
+        // console.log('🗑️ Cache geleert');
     }
 
     // === Abfrage-Methoden ===
@@ -692,7 +692,7 @@ class MediaStoreBridge {
 // Global verfügbar machen
 window.MediaStoreBridge = MediaStoreBridge;
 window.mediaStoreBridge = new MediaStoreBridge();
-console.log('✅ MediaStore Bridge global verfügbar als window.mediaStoreBridge');
+// console.log('✅ MediaStore Bridge global verfügbar als window.mediaStoreBridge');
 
 // Export für Module
 if (typeof module !== 'undefined' && module.exports) {

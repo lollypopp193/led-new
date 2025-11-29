@@ -1,4 +1,4 @@
-/**
+﻿/**
  * EQUALIZER UI INTEGRATION - Verbindet Equalizer-Engine mit musik.html UI
  */
 (function () {
@@ -10,7 +10,7 @@
 
     // Warte bis DOM geladen ist
     document.addEventListener('DOMContentLoaded', function () {
-        console.log('🎛️ Initializing Equalizer UI...');
+        // console.log('🎛️ Initializing Equalizer UI...');
 
         // Equalizer-Engine laden
         if (window.equalizerEngine) {
@@ -46,7 +46,7 @@
         try {
             isConnected = await eq.connect(audioElement);
             if (isConnected) {
-                console.log('✅ Equalizer verbunden mit Audio-Element');
+                // console.log('✅ Equalizer verbunden mit Audio-Element');
             }
         } catch (err) {
             console.error('❌ Equalizer-Verbindung fehlgeschlagen:', err);
@@ -80,7 +80,7 @@
             });
         });
 
-        console.log('✅ Preset-Buttons verbunden:', presetBtns.length);
+        // console.log('✅ Preset-Buttons verbunden:', presetBtns.length);
     }
 
     function setupSliders() {
@@ -98,7 +98,7 @@
             });
         });
 
-        console.log('✅ EQ-Sliders verbunden:', sliders.length);
+        // console.log('✅ EQ-Sliders verbunden:', sliders.length);
     }
 
     function setupBassBoost() {
@@ -135,7 +135,7 @@
             });
         }
 
-        console.log('✅ Bass-Boost UI verbunden');
+        // console.log('✅ Bass-Boost UI verbunden');
     }
 
     function setupToggle() {
@@ -168,7 +168,7 @@
                 }
             });
 
-            console.log('✅ Preset angewendet:', presetName, values);
+            // console.log('✅ Preset angewendet:', presetName, values);
         }
     }
 
@@ -202,7 +202,7 @@
             }
         });
 
-        console.log('🔄 Equalizer zurückgesetzt');
+        // console.log('🔄 Equalizer zurückgesetzt');
     }
 
     function saveCustomPreset() {
@@ -274,7 +274,7 @@
                 if (eq && eq.deleteCustomPreset(name)) {
                     wrapper.remove();
                     updateCustomPresetsEmptyState();
-                    console.log('✅ Preset gelöscht:', name);
+                    // console.log('✅ Preset gelöscht:', name);
                 }
             }
         });
@@ -314,7 +314,7 @@
             addCustomPresetButton(name);
         });
 
-        // console.log('✅ Custom-Presets geladen:', Object.keys(eq.customPresets).length);
+        // // console.log('✅ Custom-Presets geladen:', Object.keys(eq.customPresets).length);
     }
 
     // Audio-Element Observer (falls später erstellt)
@@ -353,5 +353,5 @@
         updateCustomPresetsEmptyState();
     }, 1500);
 
-    console.log('✅ Equalizer UI Integration geladen');
+    // console.log('✅ Equalizer UI Integration geladen');
 })();

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * BLUETOOTH FOREGROUND SERVICE - Dauerhafte BT-Verbindung mit Auto-Reconnect
  * Implementiert Foreground Service für persistente Bluetooth-Verbindungen
  * @version 1.0
@@ -33,11 +33,11 @@ const BluetoothForegroundService = {
      * Initialisierung - IndexedDB & Service Setup
      */
     async init() {
-        console.log('🔵 Bluetooth Foreground Service initialisieren...');
+        // console.log('🔵 Bluetooth Foreground Service initialisieren...');
 
         try {
             await this.initDatabase();
-            console.log('✅ Bluetooth Service initialisiert');
+            // console.log('✅ Bluetooth Service initialisiert');
             return true;
         } catch (error) {
             console.error('❌ Bluetooth Service Init Fehler:', error);
@@ -59,7 +59,7 @@ const BluetoothForegroundService = {
 
             request.onsuccess = () => {
                 this.db = request.result;
-                console.log('✅ Bluetooth Device DB initialisiert');
+                // console.log('✅ Bluetooth Device DB initialisiert');
                 resolve(this.db);
             };
 
@@ -77,7 +77,7 @@ const BluetoothForegroundService = {
                     store.createIndex('isPrimary', 'isPrimary', { unique: false });
                     store.createIndex('lastConnected', 'lastConnected', { unique: false });
 
-                    console.log('✅ Device ObjectStore erstellt');
+                    // console.log('✅ Device ObjectStore erstellt');
                 }
             };
         });
@@ -118,11 +118,11 @@ const BluetoothForegroundService = {
                 deviceData.id = existing.id;
                 deviceData.dateAdded = existing.dateAdded;
                 await this.updateDevice(existing.id, deviceData);
-                console.log('✅ Gerät aktualisiert:', device.name);
+                // console.log('✅ Gerät aktualisiert:', device.name);
             } else {
                 // Insert
                 await this.insertDevice(deviceData);
-                console.log('✅ Gerät gespeichert:', device.name);
+                // console.log('✅ Gerät gespeichert:', device.name);
             }
 
             return true;
@@ -205,7 +205,7 @@ const BluetoothForegroundService = {
             const request = store.delete(id);
 
             request.onsuccess = () => {
-                console.log('✅ Gerät gelöscht:', id);
+                // console.log('✅ Gerät gelöscht:', id);
                 resolve(true);
             };
             request.onerror = () => reject(request.error);
@@ -217,12 +217,12 @@ const BluetoothForegroundService = {
      */
     async startForegroundService() {
         if (this.isServiceRunning) {
-            console.log('⚠️ Service läuft bereits');
+            // console.log('⚠️ Service läuft bereits');
             return true;
         }
 
         try {
-            console.log('🚀 Starte Foreground Service...');
+            // console.log('🚀 Starte Foreground Service...');
 
             // Notification anzeigen
             await this.showForegroundNotification();
@@ -231,7 +231,7 @@ const BluetoothForegroundService = {
             this.startHealthCheck();
 
             this.isServiceRunning = true;
-            console.log('✅ Foreground Service aktiv');
+            // console.log('✅ Foreground Service aktiv');
             return true;
         } catch (error) {
             console.error('❌ Foreground Service Start Fehler:', error);
@@ -244,12 +244,12 @@ const BluetoothForegroundService = {
      */
     async stopForegroundService() {
         if (!this.isServiceRunning) {
-            console.log('⚠️ Service läuft nicht');
+            // console.log('⚠️ Service läuft nicht');
             return;
         }
 
         try {
-            console.log('🛑 Stoppe Foreground Service...');
+            // console.log('🛑 Stoppe Foreground Service...');
 
             // Notification entfernen
             await this.hideForegroundNotification();
@@ -262,7 +262,7 @@ const BluetoothForegroundService = {
             this.reconnectTimers.clear();
 
             this.isServiceRunning = false;
-            console.log('✅ Foreground Service gestoppt');
+            // console.log('✅ Foreground Service gestoppt');
         } catch (error) {
             console.error('❌ Foreground Service Stop Fehler:', error);
         }
@@ -290,7 +290,7 @@ const BluetoothForegroundService = {
                     ]
                 });
 
-                console.log('🔔 Foreground Notification angezeigt');
+                // console.log('🔔 Foreground Notification angezeigt');
             } else {
                 console.warn('⚠️ LocalNotifications nicht verfügbar (Web Environment)');
             }
@@ -307,7 +307,7 @@ const BluetoothForegroundService = {
             if (typeof Capacitor !== 'undefined' && Capacitor.Plugins.LocalNotifications) {
                 const { LocalNotifications } = Capacitor.Plugins;
                 await LocalNotifications.cancel({ notifications: [{ id: this.config.NOTIFICATION_ID }] });
-                console.log('🔕 Foreground Notification entfernt');
+                // console.log('🔕 Foreground Notification entfernt');
             }
         } catch (error) {
             console.error('❌ Notification Remove Fehler:', error);
@@ -331,14 +331,14 @@ const BluetoothForegroundService = {
      * Auto-Reconnect: Alle gespeicherten Geräte verbinden
      */
     async autoReconnectAll() {
-        console.log('🔄 Auto-Reconnect für alle gespeicherten Geräte...');
+        // console.log('🔄 Auto-Reconnect für alle gespeicherten Geräte...');
 
         try {
             const devices = await this.getSavedDevices();
-            console.log(`📋 ${devices.length} Gerät(e) gefunden`);
+            // console.log(`📋 ${devices.length} Gerät(e) gefunden`);
 
             if (devices.length === 0) {
-                console.log('ℹ️ Keine gespeicherten Geräte');
+                // console.log('ℹ️ Keine gespeicherten Geräte');
                 return;
             }
 
@@ -355,7 +355,7 @@ const BluetoothForegroundService = {
                 await this.delay(1000); // 1s Pause zwischen Verbindungen
             }
 
-            console.log('✅ Auto-Reconnect abgeschlossen');
+            // console.log('✅ Auto-Reconnect abgeschlossen');
         } catch (error) {
             console.error('❌ Auto-Reconnect Fehler:', error);
         }
@@ -365,7 +365,7 @@ const BluetoothForegroundService = {
      * Einzelnes Gerät wieder verbinden
      */
     async reconnectDevice(deviceData) {
-        console.log(`🔄 Versuche Verbindung zu: ${deviceData.name}`);
+        // console.log(`🔄 Versuche Verbindung zu: ${deviceData.name}`);
 
         try {
             // Web Bluetooth API verwenden
@@ -389,7 +389,7 @@ const BluetoothForegroundService = {
                         lastConnected: Date.now(),
                         reconnectAttempts: 0
                     });
-                    console.log(`✅ Verbunden: ${deviceData.name}`);
+                    // console.log(`✅ Verbunden: ${deviceData.name}`);
                     return true;
                 } else {
                     throw new Error('Reconnect fehlgeschlagen');
@@ -406,7 +406,7 @@ const BluetoothForegroundService = {
                 deviceData.reconnectAttempts++;
                 await this.updateDevice(deviceData.id, deviceData);
 
-                console.log(`🔁 Retry ${deviceData.reconnectAttempts}/${this.config.MAX_RECONNECT_ATTEMPTS} in ${this.config.RECONNECT_INTERVAL}ms`);
+                // console.log(`🔁 Retry ${deviceData.reconnectAttempts}/${this.config.MAX_RECONNECT_ATTEMPTS} in ${this.config.RECONNECT_INTERVAL}ms`);
 
                 const timer = setTimeout(() => {
                     this.reconnectDevice(deviceData);
@@ -430,7 +430,7 @@ const BluetoothForegroundService = {
         }
 
         this.healthCheckTimer = setInterval(async () => {
-            console.log('💓 Health Check...');
+            // console.log('💓 Health Check...');
 
             const devices = await this.getSavedDevices();
 
@@ -450,7 +450,7 @@ const BluetoothForegroundService = {
             }
         }, this.config.HEALTH_CHECK_INTERVAL);
 
-        console.log('💓 Health Check gestartet');
+        // console.log('💓 Health Check gestartet');
     },
 
     /**
@@ -460,7 +460,7 @@ const BluetoothForegroundService = {
         if (this.healthCheckTimer) {
             clearInterval(this.healthCheckTimer);
             this.healthCheckTimer = null;
-            console.log('💓 Health Check gestoppt');
+            // console.log('💓 Health Check gestoppt');
         }
     },
 
@@ -468,7 +468,7 @@ const BluetoothForegroundService = {
      * Device Connection Event (von BLE Controller aufgerufen)
      */
     onDeviceConnected(deviceId, deviceName) {
-        console.log(`✅ Device Connected Event: ${deviceName}`);
+        // console.log(`✅ Device Connected Event: ${deviceName}`);
 
         // Device zu connectedDevices Map hinzufügen
         this.connectedDevices.set(deviceId, {
@@ -502,7 +502,7 @@ const BluetoothForegroundService = {
         this.getSavedDevices().then(devices => {
             const device = devices.find(d => d.deviceId === deviceId);
             if (device) {
-                console.log(`🔄 Auto-Reconnect für ${device.name}...`);
+                // console.log(`🔄 Auto-Reconnect für ${device.name}...`);
                 this.reconnectDevice(device);
             }
         });
@@ -523,7 +523,7 @@ const BluetoothForegroundService = {
 
 // Global verfügbar machen
 window.BluetoothForegroundService = BluetoothForegroundService;
-console.log('✅ Bluetooth Foreground Service geladen');
+// console.log('✅ Bluetooth Foreground Service geladen');
 
 // Export für Module
 if (typeof module !== 'undefined' && module.exports) {

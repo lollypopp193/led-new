@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Bassboost Controller
  * Verstärkt tiefe Frequenzen (20-250Hz) für kraftvollere Bässe
  */
@@ -43,7 +43,7 @@ class BassBoostController {
             }
 
             this.initialized = true;
-            console.log('✅ Bassboost initialisiert');
+            // console.log('✅ Bassboost initialisiert');
 
             // Wende gespeicherten Zustand an
             this.applyState();
@@ -68,14 +68,14 @@ class BassBoostController {
 
         if (enabled) {
             this.bassFilter.gain.value = this.intensity;
-            console.log(`🔊 Bassboost aktiviert: ${this.intensity}dB`);
+            // console.log(`🔊 Bassboost aktiviert: ${this.intensity}dB`);
 
             if (window.showGlobalNotification) {
                 window.showGlobalNotification(`Bass Boost aktiviert: ${this.intensity}dB`, 'success');
             }
         } else {
             this.bassFilter.gain.value = 0;
-            console.log('🔇 Bassboost deaktiviert');
+            // console.log('🔇 Bassboost deaktiviert');
 
             if (window.showGlobalNotification) {
                 window.showGlobalNotification('Bass Boost deaktiviert', 'info');
@@ -101,7 +101,7 @@ class BassBoostController {
 
         if (this.enabled && this.bassFilter) {
             this.bassFilter.gain.value = intensity;
-            console.log(`🎚️ Bassboost Intensität: ${intensity}dB`);
+            // console.log(`🎚️ Bassboost Intensität: ${intensity}dB`);
         }
 
         this.saveState();
@@ -145,7 +145,7 @@ class BassBoostController {
                 const state = JSON.parse(saved);
                 this.enabled = state.enabled || false;
                 this.intensity = state.intensity || 0;
-                console.log('📥 Bassboost-State geladen:', state);
+                // console.log('📥 Bassboost-State geladen:', state);
             }
         } catch (err) {
             console.error('❌ Fehler beim Laden von Bassboost:', err);
@@ -206,7 +206,7 @@ class BassBoostController {
         // Initial UI-Update
         this.updateUI();
 
-        console.log('🎛️ Bassboost UI gebunden');
+        // console.log('🎛️ Bassboost UI gebunden');
     }
 
     /**
@@ -224,7 +224,7 @@ class BassBoostController {
 
         this.initialized = false;
         this.bassFilter = null;
-        console.log('🧹 Bassboost disposed');
+        // console.log('🧹 Bassboost disposed');
     }
 }
 
@@ -241,4 +241,4 @@ if (document.readyState === 'loading') {
 // Globaler Export
 window.bassBoostController = bassBoostController;
 
-console.log('✅ Bassboost-Controller geladen');
+// console.log('✅ Bassboost-Controller geladen');

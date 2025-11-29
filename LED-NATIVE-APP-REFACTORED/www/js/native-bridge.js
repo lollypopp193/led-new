@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Native Bridge - Provides seamless communication between Web and Native layers
  * @module NativeBridge
  * @version 3.0.0
@@ -28,7 +28,7 @@ class NativeBridge {
      */
     async initialize() {
         if (this.initialized) {
-            console.log('NativeBridge already initialized');
+            // console.log('NativeBridge already initialized');
             return;
         }
 
@@ -38,15 +38,15 @@ class NativeBridge {
 
             if (this.isNative) {
                 this.platform = window.Capacitor.getPlatform();
-                console.log(`Running on native platform: ${this.platform}`);
+                // console.log(`Running on native platform: ${this.platform}`);
                 await this.detectCapabilities();
             } else {
-                console.log('Running on web platform');
+                // console.log('Running on web platform');
                 await this.detectWebCapabilities();
             }
 
             this.initialized = true;
-            console.log('NativeBridge initialized successfully');
+            // console.log('NativeBridge initialized successfully');
             this.logCapabilities();
         } catch (error) {
             console.error('Failed to initialize NativeBridge:', error);
@@ -116,7 +116,7 @@ class NativeBridge {
      * Log detected capabilities
      */
     logCapabilities() {
-        console.log('Platform Capabilities:', {
+        // console.log('Platform Capabilities:', {
             platform: this.platform,
             isNative: this.isNative,
             ...this.capabilities
@@ -187,7 +187,7 @@ class NativeBridge {
         } catch (error) {
             console.error('Toast failed:', error);
             // Silent fallback
-            console.log('Toast message:', message);
+            // console.log('Toast message:', message);
         }
     }
 

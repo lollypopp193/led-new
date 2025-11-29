@@ -1,4 +1,4 @@
-/**
+﻿/**
  * LED-MUSIK-CONTROLLER.JS
  * LED-Musik-Steuerung mit Audio-Reaktiv-Engine Integration
  */
@@ -12,7 +12,7 @@ let autoScanInterval = null;
 
 async function autoScanLEDBands() {
     if (!window.bleController && !window.parent?.bleController) {
-        console.log('BLE-Controller nicht verfuegbar - Auto-Scan uebersprungen');
+        // console.log('BLE-Controller nicht verfuegbar - Auto-Scan uebersprungen');
         return;
     }
 
@@ -24,7 +24,7 @@ async function autoScanLEDBands() {
             discoveredBands = devices.filter(d => d.name && (d.name.includes('LED') || d.name.includes('BLE') || d.name.includes('Strip')));
 
             if (discoveredBands.length > 0) {
-                console.log('Auto-Scan: ' + discoveredBands.length + ' LED-Baender gefunden');
+                // console.log('Auto-Scan: ' + discoveredBands.length + ' LED-Baender gefunden');
 
                 const bandCount = Math.min(discoveredBands.length, 10);
                 const ledBandCountSlider = document.getElementById('ledBandCount');
@@ -62,7 +62,7 @@ function initLEDMusicControls() {
     if (autoModeToggle) {
         autoModeToggle.addEventListener('change', function () {
             automaticMode = this.checked;
-            console.log('🤖 Automatik-Modus:', automaticMode ? 'AN' : 'AUS');
+            // console.log('🤖 Automatik-Modus:', automaticMode ? 'AN' : 'AUS');
 
             if (automaticMode && window.audioReactiveEngine) {
                 // Automatisch Audio-Element finden und starten
@@ -77,7 +77,7 @@ function initLEDMusicControls() {
     if (syncAllToggle) {
         syncAllToggle.addEventListener('change', function () {
             syncAllBands = this.checked;
-            console.log('🔗 Sync alle Bänder:', syncAllBands ? 'AN' : 'AUS');
+            // console.log('🔗 Sync alle Bänder:', syncAllBands ? 'AN' : 'AUS');
 
             if (syncAllBands && window.audioReactiveEngine) {
                 // Alle LED-Bänder synchronisieren
@@ -111,7 +111,7 @@ function initLEDMusicControls() {
             }
 
             try {
-                console.log('🎵 Starte Musik-Analyse (Audio-Element, KEIN Mikrofon)...');
+                // console.log('🎵 Starte Musik-Analyse (Audio-Element, KEIN Mikrofon)...');
                 const success = await window.audioReactiveEngine.startAudioCapture(audioElement);
 
                 if (success) {
@@ -121,7 +121,7 @@ function initLEDMusicControls() {
                     if (window.showGlobalNotification) {
                         window.showGlobalNotification('Musik-Analyse gestartet', 'success');
                     }
-                    console.log('✅ Musik-Analyse läuft');
+                    // console.log('✅ Musik-Analyse läuft');
                 } else {
                     if (window.showGlobalNotification) {
                         window.showGlobalNotification('Musik-Analyse konnte nicht gestartet werden', 'error');
@@ -147,7 +147,7 @@ function initLEDMusicControls() {
                 if (window.showGlobalNotification) {
                     window.showGlobalNotification('Musik-Analyse gestoppt', 'info');
                 }
-                console.log('⏹️ Musik-Analyse gestoppt');
+                // console.log('⏹️ Musik-Analyse gestoppt');
             }
         });
     }
@@ -164,7 +164,7 @@ function initLEDMusicControls() {
 
     autoScanLEDBands();
 
-    console.log('✅ LED-Musik-Controller initialisiert');
+    // console.log('✅ LED-Musik-Controller initialisiert');
 }
 
 function updateBandTabs(count) {
@@ -208,7 +208,7 @@ function updateBandTabs(count) {
         tabsContainer.appendChild(tab);
     }
 
-    console.log(`📊 ${count} LED-Band Tabs erstellt`);
+    // console.log(`📊 ${count} LED-Band Tabs erstellt`);
 }
 
 function showBandContent(bandIndex) {
@@ -226,7 +226,7 @@ function showBandContent(bandIndex) {
         createBandContent(bandIndex);
     }
 
-    console.log(`📺 Zeige LED-Band ${bandIndex + 1} Content`);
+    // console.log(`📺 Zeige LED-Band ${bandIndex + 1} Content`);
 }
 
 function createBandContent(bandIndex) {
@@ -321,4 +321,4 @@ if (document.readyState === 'loading') {
     initLEDMusicControls();
 }
 
-// console.log('✅ LED-Musik-Controller geladen');
+// // console.log('✅ LED-Musik-Controller geladen');

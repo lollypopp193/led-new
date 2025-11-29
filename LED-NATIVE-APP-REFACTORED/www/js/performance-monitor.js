@@ -1,4 +1,4 @@
-/**
+﻿/**
  * PERFORMANCE MONITOR v1.0
  * Performance-Überwachung & Optimierung
  */
@@ -22,7 +22,7 @@ class PerformanceMonitor {
         this.setupLazyLoading();
         this.optimizeImages();
         this.setupMemoryManagement();
-        console.log('✅ Performance Monitor initialisiert');
+        // console.log('✅ Performance Monitor initialisiert');
     }
 
     /**
@@ -36,7 +36,7 @@ class PerformanceMonitor {
         this.startMemoryMonitoring();
         this.trackPageLoad();
 
-        console.log('📊 Performance Monitoring gestartet');
+        // console.log('📊 Performance Monitoring gestartet');
     }
 
     stopMonitoring() {
@@ -52,7 +52,7 @@ class PerformanceMonitor {
             this.memoryInterval = null;
         }
 
-        console.log('⏹️ Performance Monitoring gestoppt');
+        // console.log('⏹️ Performance Monitoring gestoppt');
     }
 
     /**
@@ -145,7 +145,7 @@ class PerformanceMonitor {
                     timestamp: Date.now()
                 });
 
-                console.log(`📊 Page Load: ${loadTime}ms (DOM: ${domReady}ms)`);
+                // console.log(`📊 Page Load: ${loadTime}ms (DOM: ${domReady}ms)`);
 
                 // Warnung bei langsamem Load
                 if (loadTime > 3000) {
@@ -199,12 +199,12 @@ class PerformanceMonitor {
             componentObserver.observe(component);
         });
 
-        console.log('✅ Lazy Loading aktiviert');
+        // console.log('✅ Lazy Loading aktiviert');
     }
 
     loadComponent(element) {
         const componentName = element.dataset.lazyLoad;
-        console.log(`📦 Loading component: ${componentName}`);
+        // console.log(`📦 Loading component: ${componentName}`);
 
         // Trigger component load event
         const event = new CustomEvent('component-load', {
@@ -275,7 +275,7 @@ class PerformanceMonitor {
         // Cleanup Caches
         this.cleanupCaches();
 
-        console.log('🧹 Garbage Collection ausgeführt');
+        // console.log('🧹 Garbage Collection ausgeführt');
     }
 
     cleanupDetachedNodes() {
@@ -313,7 +313,7 @@ class PerformanceMonitor {
             loadTimes: [],
             renderTimes: []
         };
-        console.log('🧹 Performance Monitor Cleanup');
+        // console.log('🧹 Performance Monitor Cleanup');
     }
 
     /**
@@ -436,7 +436,7 @@ window.performanceMonitor = new PerformanceMonitor();
 // Auto-start monitoring in development
 if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
     window.performanceMonitor.startMonitoring();
-    console.log('🔧 Development Mode: Performance Monitoring aktiviert');
+    // console.log('🔧 Development Mode: Performance Monitoring aktiviert');
 }
 
 // Export helpers
@@ -448,5 +448,5 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = PerformanceMonitor;
 }
 
-console.log('✅ Performance Monitor geladen');
-console.log('📊 Nutze: performanceMonitor.showPerformanceOverlay()');
+// console.log('✅ Performance Monitor geladen');
+// console.log('📊 Nutze: performanceMonitor.showPerformanceOverlay()');

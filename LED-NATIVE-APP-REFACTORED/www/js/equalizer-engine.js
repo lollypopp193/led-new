@@ -1,4 +1,4 @@
-/**
+﻿/**
  * EQUALIZER-ENGINE.JS v4.0 - ZERO TOLERANCE
  * Web Audio API Equalizer mit Presets, Custom-Save & Bass-Boost
  */
@@ -34,7 +34,7 @@ class EqualizerEngine {
 
     init() {
         this.loadCustomPresets();
-        console.log('✅ Equalizer Engine initialisiert');
+        // console.log('✅ Equalizer Engine initialisiert');
     }
 
     async connect(audioElement) {
@@ -83,7 +83,7 @@ class EqualizerEngine {
             lastNode.connect(this.gainNode);
             this.gainNode.connect(this.audioContext.destination);
 
-            console.log('✅ Equalizer verbunden');
+            // console.log('✅ Equalizer verbunden');
             return true;
         } catch (err) {
             console.error('❌ Equalizer-Verbindung fehlgeschlagen:', err);
@@ -94,7 +94,7 @@ class EqualizerEngine {
     setFrequency(index, gainDB) {
         if (index >= 0 && index < this.filters.length) {
             this.filters[index].gain.value = gainDB;
-            console.log(`🎛️ ${this.frequencies[index]}Hz → ${gainDB}dB`);
+            // console.log(`🎛️ ${this.frequencies[index]}Hz → ${gainDB}dB`);
         }
     }
 
@@ -110,7 +110,7 @@ class EqualizerEngine {
         });
 
         this.currentPreset = presetName.toLowerCase();
-        console.log('✅ Preset angewendet:', presetName);
+        // console.log('✅ Preset angewendet:', presetName);
         return preset;
     }
 
@@ -122,7 +122,7 @@ class EqualizerEngine {
         this.isBassBoostEnabled = enabled;
         if (this.bassBoostFilter) {
             this.bassBoostFilter.gain.value = enabled ? intensity : 0;
-            console.log('🔊 Bass-Boost:', enabled ? `${intensity}dB` : 'AUS');
+            // console.log('🔊 Bass-Boost:', enabled ? `${intensity}dB` : 'AUS');
         }
     }
 
@@ -138,7 +138,7 @@ class EqualizerEngine {
             this.bassBoostFilter.gain.value = 0;
         }
 
-        console.log('🎚️ Equalizer:', enabled ? 'EIN' : 'AUS');
+        // console.log('🎚️ Equalizer:', enabled ? 'EIN' : 'AUS');
     }
 
     saveCustomPreset(name) {
@@ -153,7 +153,7 @@ class EqualizerEngine {
         // In LocalStorage speichern
         try {
             localStorage.setItem('eq-custom-presets', JSON.stringify(this.customPresets));
-            console.log('✅ Preset gespeichert:', name, values);
+            // console.log('✅ Preset gespeichert:', name, values);
             return true;
         } catch (err) {
             console.error('❌ Speichern fehlgeschlagen:', err);
@@ -166,7 +166,7 @@ class EqualizerEngine {
             delete this.customPresets[name];
             try {
                 localStorage.setItem('eq-custom-presets', JSON.stringify(this.customPresets));
-                console.log('✅ Preset gelöscht:', name);
+                // console.log('✅ Preset gelöscht:', name);
                 return true;
             } catch (err) {
                 console.error('❌ Löschen fehlgeschlagen:', err);
@@ -181,7 +181,7 @@ class EqualizerEngine {
             const stored = localStorage.getItem('eq-custom-presets');
             if (stored) {
                 this.customPresets = JSON.parse(stored);
-                // console.log('✅ Custom-Presets geladen:', Object.keys(this.customPresets).length);
+                // // console.log('✅ Custom-Presets geladen:', Object.keys(this.customPresets).length);
             }
         } catch (err) {
             console.warn('⚠️ Fehler beim Laden der Custom-Presets:', err);
@@ -203,13 +203,13 @@ class EqualizerEngine {
         this.filters.forEach(f => f.gain.value = 0);
         this.bassBoostFilter.gain.value = 0;
         this.currentPreset = 'flat';
-        console.log('🔄 Equalizer zurückgesetzt');
+        // console.log('🔄 Equalizer zurückgesetzt');
     }
 }
 
 // Global verfügbar machen
 window.EqualizerEngine = EqualizerEngine;
 window.equalizerEngine = new EqualizerEngine();
-console.log('✅ Equalizer Engine global verfügbar als window.equalizerEngine');
+// console.log('✅ Equalizer Engine global verfügbar als window.equalizerEngine');
 
 if (typeof module !== 'undefined' && module.exports) module.exports = EqualizerEngine;

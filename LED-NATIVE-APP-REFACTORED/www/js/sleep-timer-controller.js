@@ -1,4 +1,4 @@
-/**
+﻿/**
  * SLEEP TIMER & MUSIKWECKER CONTROLLER
  * Vollständige Implementierung mit Hardware-Integration
  */
@@ -18,7 +18,7 @@ const SleepTimerController = {
      * Initialisierung
      */
     init() {
-        console.log('🕐 Sleep Timer Controller initialisiert');
+        // console.log('🕐 Sleep Timer Controller initialisiert');
 
         // Sleep Timer Toggle
         const sleepTimerToggle = document.getElementById('sleepTimerEnabled');
@@ -82,14 +82,14 @@ const SleepTimerController = {
                 settings.style.opacity = '1';
                 settings.style.pointerEvents = 'auto';
             }
-            console.log(`⏰ Sleep Timer gestartet: ${this.sleepTimerDuration} Minuten`);
+            // console.log(`⏰ Sleep Timer gestartet: ${this.sleepTimerDuration} Minuten`);
         } else {
             this.stopSleepTimer();
             if (settings) {
                 settings.style.opacity = '0.5';
                 settings.style.pointerEvents = 'none';
             }
-            console.log('⏰ Sleep Timer gestoppt');
+            // console.log('⏰ Sleep Timer gestoppt');
         }
     },
 
@@ -137,18 +137,18 @@ const SleepTimerController = {
         switch (this.sleepTimerAction) {
             case 'pause':
                 audioPlayer.pause();
-                console.log('⏸️ Sleep Timer: Musik pausiert');
+                // console.log('⏸️ Sleep Timer: Musik pausiert');
                 break;
 
             case 'stop':
                 audioPlayer.pause();
                 audioPlayer.currentTime = 0;
-                console.log('⏹️ Sleep Timer: Musik gestoppt');
+                // console.log('⏹️ Sleep Timer: Musik gestoppt');
                 break;
 
             case 'fadeOut':
                 this.fadeOutAudio(audioPlayer);
-                console.log('🔉 Sleep Timer: Fade-Out gestartet');
+                // console.log('🔉 Sleep Timer: Fade-Out gestartet');
                 break;
         }
 
@@ -197,14 +197,14 @@ const SleepTimerController = {
                 settings.style.opacity = '1';
                 settings.style.pointerEvents = 'auto';
             }
-            console.log(`⏰ Musikwecker aktiviert: ${this.alarmTime}`);
+            // console.log(`⏰ Musikwecker aktiviert: ${this.alarmTime}`);
         } else {
             this.stopAlarmCheck();
             if (settings) {
                 settings.style.opacity = '0.5';
                 settings.style.pointerEvents = 'none';
             }
-            console.log('⏰ Musikwecker deaktiviert');
+            // console.log('⏰ Musikwecker deaktiviert');
         }
     },
 
@@ -255,7 +255,7 @@ const SleepTimerController = {
      * Alarm auslösen
      */
     triggerAlarm() {
-        console.log('🔔 Musikwecker ausgelöst!');
+        // console.log('🔔 Musikwecker ausgelöst!');
 
         const audioPlayer = document.getElementById('audioPlayer');
         const fadeInCheckbox = document.getElementById('alarmFadeIn');
@@ -318,7 +318,7 @@ const SleepTimerController = {
      * Alarm Playlist laden
      */
     loadAlarmPlaylist(type) {
-        console.log(`📻 Lade Alarm-Playlist: ${type}`);
+        // console.log(`📻 Lade Alarm-Playlist: ${type}`);
         // Implementierung abhängig von playlist-System
         // Wird von music-library-manager.js gesteuert
     },
@@ -375,7 +375,7 @@ const SleepTimerController = {
             window.showGlobalNotification('Sleep Timer um 5min verlängert', 'info');
         }
 
-        console.log('📳 Sleep Timer durch Schütteln verlängert');
+        // console.log('📳 Sleep Timer durch Schütteln verlängert');
     },
 
     /**

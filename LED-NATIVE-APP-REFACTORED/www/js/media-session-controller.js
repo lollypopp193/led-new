@@ -1,4 +1,4 @@
-/**
+﻿/**
  * MEDIA SESSION CONTROLLER v1.0
  * Native Media Notifications & Lockscreen Controls
  */
@@ -18,7 +18,7 @@ class MediaSessionController {
         }
 
         this.setupMediaSessionHandlers();
-        console.log('✅ Media Session Controller initialisiert');
+        // console.log('✅ Media Session Controller initialisiert');
     }
 
     setupMediaSessionHandlers() {
@@ -26,51 +26,51 @@ class MediaSessionController {
 
         // Play/Pause
         navigator.mediaSession.setActionHandler('play', () => {
-            console.log('▶️ MediaSession: Play');
+            // console.log('▶️ MediaSession: Play');
             this.handlePlay();
         });
 
         navigator.mediaSession.setActionHandler('pause', () => {
-            console.log('⏸️ MediaSession: Pause');
+            // console.log('⏸️ MediaSession: Pause');
             this.handlePause();
         });
 
         // Previous/Next Track
         navigator.mediaSession.setActionHandler('previoustrack', () => {
-            console.log('⏮️ MediaSession: Previous Track');
+            // console.log('⏮️ MediaSession: Previous Track');
             this.handlePreviousTrack();
         });
 
         navigator.mediaSession.setActionHandler('nexttrack', () => {
-            console.log('⏭️ MediaSession: Next Track');
+            // console.log('⏭️ MediaSession: Next Track');
             this.handleNextTrack();
         });
 
         // Seek
         navigator.mediaSession.setActionHandler('seekto', (details) => {
-            console.log('⏩ MediaSession: Seek to', details.seekTime);
+            // console.log('⏩ MediaSession: Seek to', details.seekTime);
             this.handleSeek(details.seekTime);
         });
 
         navigator.mediaSession.setActionHandler('seekbackward', (details) => {
             const seekOffset = details.seekOffset || 10;
-            console.log('⏪ MediaSession: Seek Backward', seekOffset);
+            // console.log('⏪ MediaSession: Seek Backward', seekOffset);
             this.handleSeekBackward(seekOffset);
         });
 
         navigator.mediaSession.setActionHandler('seekforward', (details) => {
             const seekOffset = details.seekOffset || 10;
-            console.log('⏩ MediaSession: Seek Forward', seekOffset);
+            // console.log('⏩ MediaSession: Seek Forward', seekOffset);
             this.handleSeekForward(seekOffset);
         });
 
         // Stop
         navigator.mediaSession.setActionHandler('stop', () => {
-            console.log('⏹️ MediaSession: Stop');
+            // console.log('⏹️ MediaSession: Stop');
             this.handleStop();
         });
 
-        console.log('✅ MediaSession Handlers registriert');
+        // console.log('✅ MediaSession Handlers registriert');
     }
 
     /**
@@ -109,7 +109,7 @@ class MediaSessionController {
         }
 
         navigator.mediaSession.metadata = new MediaMetadata(metadata);
-        console.log('📀 Metadata aktualisiert:', metadata.title);
+        // console.log('📀 Metadata aktualisiert:', metadata.title);
     }
 
     /**
@@ -120,7 +120,7 @@ class MediaSessionController {
 
         // States: 'none', 'paused', 'playing'
         navigator.mediaSession.playbackState = state;
-        console.log(`🎵 Playback State: ${state}`);
+        // console.log(`🎵 Playback State: ${state}`);
     }
 
     /**
@@ -267,14 +267,14 @@ class MediaSessionController {
             }
         }, 1000);
 
-        console.log('⏱️ Position Updates gestartet');
+        // console.log('⏱️ Position Updates gestartet');
     }
 
     stopPositionUpdates() {
         if (this.positionUpdateInterval) {
             clearInterval(this.positionUpdateInterval);
             this.positionUpdateInterval = null;
-            console.log('⏱️ Position Updates gestoppt');
+            // console.log('⏱️ Position Updates gestoppt');
         }
     }
 
@@ -317,7 +317,7 @@ class MediaSessionController {
             }
         });
 
-        console.log('✅ Audio Player Integration aktiviert');
+        // console.log('✅ Audio Player Integration aktiviert');
     }
 
     /**
@@ -340,7 +340,7 @@ class MediaSessionController {
         navigator.mediaSession.metadata = null;
         this.updatePlaybackState('none');
         this.stopPositionUpdates();
-        console.log('🗑️ Metadata gelöscht');
+        // console.log('🗑️ Metadata gelöscht');
     }
 
     /**
@@ -379,4 +379,4 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = MediaSessionController;
 }
 
-console.log('✅ Media Session Controller geladen');
+// console.log('✅ Media Session Controller geladen');

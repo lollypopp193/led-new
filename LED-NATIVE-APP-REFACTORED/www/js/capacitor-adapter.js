@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Capacitor Adapter - Simplified Capacitor plugin integration
  * @module CapacitorAdapter
  * @version 3.0.0
@@ -20,7 +20,7 @@ class CapacitorAdapter {
      */
     async initialize() {
         if (this.initialized) {
-            console.log('CapacitorAdapter already initialized');
+            // console.log('CapacitorAdapter already initialized');
             return;
         }
 
@@ -32,9 +32,9 @@ class CapacitorAdapter {
                 this.platform = window.Capacitor.getPlatform();
                 this.loadPlugins();
                 await this.setupAppLifecycle();
-                console.log(`CapacitorAdapter initialized on ${this.platform}`);
+                // console.log(`CapacitorAdapter initialized on ${this.platform}`);
             } else {
-                console.log('Running in web mode - Capacitor not available');
+                // console.log('Running in web mode - Capacitor not available');
             }
 
             this.initialized = true;
@@ -64,7 +64,7 @@ class CapacitorAdapter {
             // Community plugins
             this.plugins.BluetoothLe = Plugins.BluetoothLe;
 
-            console.log('Capacitor plugins loaded:', Object.keys(this.plugins));
+            // console.log('Capacitor plugins loaded:', Object.keys(this.plugins));
         } catch (error) {
             console.error('Error loading plugins:', error);
         }
@@ -80,23 +80,23 @@ class CapacitorAdapter {
         try {
             // Listen to app state changes
             this.plugins.App.addListener('appStateChange', (state) => {
-                console.log('App state changed:', state.isActive ? 'active' : 'background');
+                // console.log('App state changed:', state.isActive ? 'active' : 'background');
                 this.handleAppStateChange(state.isActive);
             });
 
             // Listen to app URL open events
             this.plugins.App.addListener('appUrlOpen', (data) => {
-                console.log('App URL opened:', data.url);
+                // console.log('App URL opened:', data.url);
                 this.handleAppUrlOpen(data.url);
             });
 
             // Listen to back button
             this.plugins.App.addListener('backButton', (event) => {
-                console.log('Back button pressed');
+                // console.log('Back button pressed');
                 this.handleBackButton(event);
             });
 
-            console.log('App lifecycle listeners setup complete');
+            // console.log('App lifecycle listeners setup complete');
         } catch (error) {
             console.error('Error setting up app lifecycle:', error);
         }
@@ -109,11 +109,11 @@ class CapacitorAdapter {
     handleAppStateChange(isActive) {
         if (isActive) {
             // App came to foreground
-            console.log('App resumed');
+            // console.log('App resumed');
             this.emit('app:resume');
         } else {
             // App went to background
-            console.log('App paused');
+            // console.log('App paused');
             this.emit('app:pause');
         }
     }
@@ -160,7 +160,7 @@ class CapacitorAdapter {
 
         try {
             await this.plugins.SplashScreen.hide();
-            console.log('Splash screen hidden');
+            // console.log('Splash screen hidden');
         } catch (error) {
             console.error('Error hiding splash screen:', error);
         }
@@ -180,7 +180,7 @@ class CapacitorAdapter {
             } else {
                 await this.plugins.StatusBar.setStyle({ style: 'DARK' });
             }
-            console.log(`Status bar style set to: ${style}`);
+            // console.log(`Status bar style set to: ${style}`);
         } catch (error) {
             console.error('Error setting status bar style:', error);
         }
@@ -196,7 +196,7 @@ class CapacitorAdapter {
 
         try {
             await this.plugins.StatusBar.setBackgroundColor({ color });
-            console.log(`Status bar color set to: ${color}`);
+            // console.log(`Status bar color set to: ${color}`);
         } catch (error) {
             console.error('Error setting status bar color:', error);
         }
@@ -272,7 +272,7 @@ class CapacitorAdapter {
                 directory: Directory.Data,
                 encoding
             });
-            console.log(`File written: ${path}`);
+            // console.log(`File written: ${path}`);
             return true;
         } catch (error) {
             console.error('Error writing file:', error);
@@ -296,7 +296,7 @@ class CapacitorAdapter {
                 directory: Directory.Data,
                 encoding
             });
-            console.log(`File read: ${path}`);
+            // console.log(`File read: ${path}`);
             return result.data;
         } catch (error) {
             console.error('Error reading file:', error);
@@ -318,7 +318,7 @@ class CapacitorAdapter {
                 path,
                 directory: Directory.Data
             });
-            console.log(`File deleted: ${path}`);
+            // console.log(`File deleted: ${path}`);
             return true;
         } catch (error) {
             console.error('Error deleting file:', error);

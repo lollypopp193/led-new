@@ -1,4 +1,4 @@
-/**
+﻿/**
  * EINSTELLUNGEN-FIXES.JS
  * Behebt alle Probleme in der Einstellungen-Seite
  * - Sonderzeichen fixen
@@ -21,11 +21,11 @@ class EinstellungenFixes {
         } else {
             setTimeout(() => this.applyFixes(), 100);
         }
-        console.log('✅ Einstellungen-Fixes initialisiert');
+        // console.log('✅ Einstellungen-Fixes initialisiert');
     }
 
     applyFixes() {
-        console.log('🔧 Wende Einstellungen-Fixes an...');
+        // console.log('🔧 Wende Einstellungen-Fixes an...');
 
         this.fixSonderzeichen();
         this.convertAllCheckboxesToToggles();
@@ -39,7 +39,7 @@ class EinstellungenFixes {
         this.fixUISettings();
         this.injectToggleCSS();
 
-        console.log('✅ Einstellungen-Fixes angewendet');
+        // console.log('✅ Einstellungen-Fixes angewendet');
     }
 
     fixSonderzeichen() {
@@ -79,7 +79,7 @@ class EinstellungenFixes {
             }
         });
 
-        console.log('✅ Sonderzeichen gefixt');
+        // console.log('✅ Sonderzeichen gefixt');
     }
 
     convertAllCheckboxesToToggles() {
@@ -106,7 +106,7 @@ class EinstellungenFixes {
             converted++;
         });
 
-        console.log(`✅ ${converted} Checkboxen zu Toggle-Switches konvertiert`);
+        // console.log(`✅ ${converted} Checkboxen zu Toggle-Switches konvertiert`);
     }
 
     makeAllSlidersFunctional() {
@@ -126,7 +126,7 @@ class EinstellungenFixes {
             });
         });
 
-        console.log(`✅ ${sliders.length} Slider funktional gemacht`);
+        // console.log(`✅ ${sliders.length} Slider funktional gemacht`);
     }
 
     removePerformanceSection() {
@@ -153,7 +153,7 @@ class EinstellungenFixes {
             }
         });
 
-        console.log('✅ Performance-Sektion entfernt (läuft automatisch im Hintergrund)');
+        // console.log('✅ Performance-Sektion entfernt (läuft automatisch im Hintergrund)');
     }
 
     fixBluetoothIcon() {
@@ -418,4 +418,4 @@ class EinstellungenFixes {
 
 // Initialisieren
 window.EinstellungenFixes = new EinstellungenFixes();
-console.log('✅ Einstellungen-Fixes geladen');
+// console.log('✅ Einstellungen-Fixes geladen');

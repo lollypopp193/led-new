@@ -1,4 +1,4 @@
-/**
+﻿/**
  * MUSIK-MASTER-FIXES.JS
  * Vollständige Behebung aller UI-Probleme in der Musik-Seite
  * - Alle Haken → Ein/Aus-Schalter
@@ -32,14 +32,14 @@ class MusikMasterFixes {
         }
 
         this.initialized = true;
-        console.log('✅ Musik-Master-Fixes initialisiert');
+        // console.log('✅ Musik-Master-Fixes initialisiert');
     }
 
     /**
      * Alle Fixes anwenden
      */
     applyAllFixes() {
-        console.log('🔧 Wende alle Fixes an...');
+        // console.log('🔧 Wende alle Fixes an...');
 
         // 1. Haken → Toggle-Switches
         this.convertAllCheckboxesToToggles();
@@ -71,7 +71,7 @@ class MusikMasterFixes {
         // 10. Nicht benötigte Elemente entfernen
         this.removeUnnecessaryElements();
 
-        console.log('✅ Alle Fixes angewendet');
+        // console.log('✅ Alle Fixes angewendet');
     }
 
     /**
@@ -107,7 +107,7 @@ class MusikMasterFixes {
             }
         });
 
-        console.log('✅ Checkboxen zu Toggles konvertiert');
+        // console.log('✅ Checkboxen zu Toggles konvertiert');
     }
 
     /**
@@ -152,7 +152,7 @@ class MusikMasterFixes {
                         window.EqualizerEngine.applyPreset(preset);
                     }
 
-                    console.log(`✅ EQ-Preset "${preset}" angewendet`);
+                    // console.log(`✅ EQ-Preset "${preset}" angewendet`);
                 }
             });
         });
@@ -171,11 +171,11 @@ class MusikMasterFixes {
                 const flatBtn = document.querySelector('[data-preset="flat"]');
                 if (flatBtn) flatBtn.classList.add('active');
 
-                console.log('✅ Equalizer zurückgesetzt');
+                // console.log('✅ Equalizer zurückgesetzt');
             };
         }
 
-        console.log('✅ Equalizer-Presets gefixt');
+        // console.log('✅ Equalizer-Presets gefixt');
     }
 
     /**
@@ -205,11 +205,11 @@ class MusikMasterFixes {
                     detail: { type: visualType }
                 }));
 
-                console.log(`✅ Visualizer-Effekt "${visualType}" aktiviert`);
+                // console.log(`✅ Visualizer-Effekt "${visualType}" aktiviert`);
             });
         });
 
-        console.log('✅ Visualizer-Buttons gefixt');
+        // console.log('✅ Visualizer-Buttons gefixt');
     }
 
     /**
@@ -259,7 +259,7 @@ class MusikMasterFixes {
             seenSave.add(btn.textContent.trim());
         });
 
-        console.log('✅ Duplikate entfernt');
+        // console.log('✅ Duplikate entfernt');
     }
 
     /**
@@ -324,7 +324,7 @@ class MusikMasterFixes {
             node.textContent = text;
         });
 
-        console.log('✅ Umlaute gefixt');
+        // console.log('✅ Umlaute gefixt');
     }
 
     /**
@@ -379,7 +379,7 @@ class MusikMasterFixes {
             }
         });
 
-        console.log('✅ CSS-Artefakte entfernt');
+        // console.log('✅ CSS-Artefakte entfernt');
     }
 
     /**
@@ -441,7 +441,7 @@ class MusikMasterFixes {
             sleepSlider.disabled = false;
         }
 
-        console.log('✅ Alle Slider gefixt');
+        // console.log('✅ Alle Slider gefixt');
     }
 
     /**
@@ -527,7 +527,7 @@ class MusikMasterFixes {
             };
         });
 
-        console.log('✅ Speichern-Dialog hinzugefügt');
+        // console.log('✅ Speichern-Dialog hinzugefügt');
     }
 
     /**
@@ -573,7 +573,7 @@ class MusikMasterFixes {
             window.showNotification(`Preset "${name}" gespeichert!`, 'success');
         }
 
-        console.log(`✅ Preset "${name}" gespeichert`);
+        // console.log(`✅ Preset "${name}" gespeichert`);
     }
 
     /**
@@ -617,7 +617,7 @@ class MusikMasterFixes {
                 }
             });
 
-            console.log(`✅ Preset "${preset.name}" geladen`);
+            // console.log(`✅ Preset "${preset.name}" geladen`);
         }
     }
 
@@ -669,7 +669,7 @@ class MusikMasterFixes {
             }
         });
 
-        console.log('✅ LED-Band Anzeige gefixt');
+        // console.log('✅ LED-Band Anzeige gefixt');
     }
 
     /**
@@ -704,7 +704,7 @@ class MusikMasterFixes {
         // Geschwindigkeit in LED-Musik entfernen (nicht nötig)
         // Wird beibehalten für Effekt-Geschwindigkeit
 
-        console.log('✅ Unnötige Elemente entfernt');
+        // console.log('✅ Unnötige Elemente entfernt');
     }
 }
 
@@ -712,4 +712,4 @@ class MusikMasterFixes {
 window.MusikMasterFixes = MusikMasterFixes;
 window.musikMasterFixes = new MusikMasterFixes();
 
-console.log('✅ Musik-Master-Fixes geladen');
+// console.log('✅ Musik-Master-Fixes geladen');

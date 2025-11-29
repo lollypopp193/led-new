@@ -1,4 +1,4 @@
-/**
+﻿/**
  * PLAYLIST IMPORT/EXPORT - Vollständige Playlist-Verwaltung
  */
 'use strict';
@@ -8,7 +8,7 @@ const PlaylistImportExport = {
      * Playlist exportieren
      */
     async exportPlaylist() {
-        console.log('📤 Exportiere Playlist...');
+        // console.log('📤 Exportiere Playlist...');
 
         try {
             const playlist = this.getCurrentPlaylist();
@@ -48,7 +48,7 @@ const PlaylistImportExport = {
             }
 
             alert(`Playlist erfolgreich exportiert! ${playlist.length} Songs`);
-            console.log('✅ Playlist exportiert');
+            // console.log('✅ Playlist exportiert');
 
         } catch (error) {
             console.error('❌ Export-Fehler:', error);
@@ -60,7 +60,7 @@ const PlaylistImportExport = {
      * Playlist importieren
      */
     async importPlaylist() {
-        console.log('📥 Importiere Playlist...');
+        // console.log('📥 Importiere Playlist...');
 
         try {
             // Datei-Input erstellen
@@ -87,7 +87,7 @@ const PlaylistImportExport = {
                         await this.importSongs(importData.songs);
 
                         alert(`Playlist erfolgreich importiert! ${importData.songs.length} Songs`);
-                        console.log('✅ Playlist importiert');
+                        // console.log('✅ Playlist importiert');
 
                     } catch (error) {
                         console.error('❌ Import-Fehler:', error);
@@ -169,7 +169,7 @@ const PlaylistImportExport = {
 
             // In LocalStorage
             localStorage.setItem('current-playlist', JSON.stringify(playlist));
-            console.log(`💾 Playlist gespeichert: ${playlist.length} Songs`);
+            // console.log(`💾 Playlist gespeichert: ${playlist.length} Songs`);
 
         } catch (error) {
             console.error('❌ Fehler beim Speichern:', error);
@@ -210,7 +210,7 @@ const PlaylistImportExport = {
                     directory: Directory.Documents
                 });
 
-                console.log(`✅ Datei gespeichert: Music/${filename}`);
+                // console.log(`✅ Datei gespeichert: Music/${filename}`);
             };
 
         } catch (error) {
@@ -224,7 +224,7 @@ const PlaylistImportExport = {
      * Playlist als M3U exportieren
      */
     async exportAsM3U() {
-        console.log('📤 Exportiere als M3U...');
+        // console.log('📤 Exportiere als M3U...');
 
         try {
             const playlist = this.getCurrentPlaylist();
@@ -248,7 +248,7 @@ const PlaylistImportExport = {
             this.downloadFile(blob, 'playlist.m3u');
 
             alert(`M3U Playlist exportiert! ${playlist.length} Songs`);
-            console.log('✅ M3U exportiert');
+            // console.log('✅ M3U exportiert');
 
         } catch (error) {
             console.error('❌ M3U Export-Fehler:', error);
@@ -260,7 +260,7 @@ const PlaylistImportExport = {
      * Alle Playlists exportieren
      */
     async exportAllPlaylists() {
-        console.log('📤 Exportiere alle Playlists...');
+        // console.log('📤 Exportiere alle Playlists...');
 
         try {
             const allPlaylists = this.getAllPlaylists();
@@ -282,7 +282,7 @@ const PlaylistImportExport = {
             this.downloadFile(blob, 'all-playlists.json');
 
             alert(`Alle Playlists exportiert! ${allPlaylists.length} Playlists`);
-            console.log('✅ Alle Playlists exportiert');
+            // console.log('✅ Alle Playlists exportiert');
 
         } catch (error) {
             console.error('❌ Export-Fehler:', error);
@@ -306,7 +306,7 @@ const PlaylistImportExport = {
      * Favoriten exportieren
      */
     async exportFavorites() {
-        console.log('📤 Exportiere Favoriten...');
+        // console.log('📤 Exportiere Favoriten...');
 
         try {
             const library = this.getCurrentPlaylist();
@@ -330,7 +330,7 @@ const PlaylistImportExport = {
             this.downloadFile(blob, 'favorites.json');
 
             alert(`Favoriten exportiert! ${favorites.length} Songs`);
-            console.log('✅ Favoriten exportiert');
+            // console.log('✅ Favoriten exportiert');
 
         } catch (error) {
             console.error('❌ Export-Fehler:', error);

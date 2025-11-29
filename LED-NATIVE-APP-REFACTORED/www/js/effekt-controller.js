@@ -1,4 +1,4 @@
-/**
+﻿/**
  * EFFEKT-CONTROLLER.JS - VOLLSTÄNDIGE VERSION
  * Alle Effekt-Funktionen für LED-Steuerung - KEIN Inline-JS
  * 32 Effekte mit Hardware-Kommunikation
@@ -114,7 +114,7 @@ function initEffektController() {
                 const success = await controller.setBrightness(brightness);
 
                 if (success) {
-                    console.log(`Geschwindigkeit ${globalSpeed} an Hardware gesendet (als Helligkeit ${brightness}%)`);
+                    // console.log(`Geschwindigkeit ${globalSpeed} an Hardware gesendet (als Helligkeit ${brightness}%)`);
                     showNotification(`Geschwindigkeit ${globalSpeed} gesetzt`, "success");
                 } else {
                     console.warn("Fehler beim Senden der Geschwindigkeit");
@@ -184,7 +184,7 @@ function initEffektController() {
                     await new Promise(resolve => setTimeout(resolve, 500));
                     await controller.setPower(true);
                     await controller.setColorRGB(255, 255, 255);
-                    console.log("Hardware wurde zurückgesetzt");
+                    // console.log("Hardware wurde zurückgesetzt");
                 } catch (error) {
                     console.error("Fehler beim Hardware-Reset:", error);
                 }
@@ -204,7 +204,7 @@ function initEffektController() {
         sendEffectToBLE(activeEffect, globalSpeed);
     }
 
-    console.log("✅ Effekt-Controller vollständig initialisiert (32 Effekte)");
+    // console.log("✅ Effekt-Controller vollständig initialisiert (32 Effekte)");
 }
 
 /**
@@ -217,17 +217,17 @@ function toggleFavorite(effectName, event) {
 
     if (favoriten[effectName]) {
         delete favoriten[effectName];
-        console.log(`${effectName} aus Favoriten entfernt`);
+        // console.log(`${effectName} aus Favoriten entfernt`);
         showNotification(`${effectName} aus Favoriten entfernt`, "info");
     } else {
         favoriten[effectName] = true;
-        console.log(`${effectName} zu Favoriten hinzugefügt`);
+        // console.log(`${effectName} zu Favoriten hinzugefügt`);
         showNotification(`${effectName} zu Favoriten hinzugefügt`, "success");
     }
 
     try {
         localStorage.setItem("favoriten", JSON.stringify(favoriten));
-        console.log("Favoriten in localStorage gespeichert");
+        // console.log("Favoriten in localStorage gespeichert");
     } catch (error) {
         console.error("Fehler beim Speichern der Favoriten:", error);
         showNotification("Fehler beim Speichern der Favoriten", "error");
@@ -262,7 +262,7 @@ function updateAnimationSpeed(speed) {
 
     document.head.appendChild(style);
 
-    console.log(`Aktualisiere Animation-Speed auf ${speed} (Factor: ${speedFactor}s)`);
+    // console.log(`Aktualisiere Animation-Speed auf ${speed} (Factor: ${speedFactor}s)`);
     document.querySelectorAll(".effect-animation").forEach((el) => {
         el.style.animation = "none";
         setTimeout(() => {
@@ -321,7 +321,7 @@ function createEffektCard(effekt, isFavorite = false) {
     `;
 
     card.addEventListener("click", async () => {
-        console.log(`Effekt-Karte "${effekt.name}" geklickt!`);
+        // console.log(`Effekt-Karte "${effekt.name}" geklickt!`);
         await selectEffekt(effekt.name);
     });
 
@@ -344,7 +344,7 @@ async function selectEffekt(effectName) {
         activeTile.classList.add("active");
     }
 
-    console.log(`User klickt Effekt "${effectName}" - LED zeigt Effekt!`);
+    // console.log(`User klickt Effekt "${effectName}" - LED zeigt Effekt!`);
     const success = await sendEffectToBLE(effectName, globalSpeed);
 
     if (!success) {
@@ -411,10 +411,10 @@ async function sendEffectToBLE(effectName, speed) {
 
         if (window.parent && window.parent !== window) {
             controller = window.parent.bleController;
-            console.log("Effekt nutzt Parent bleController");
+            // console.log("Effekt nutzt Parent bleController");
         } else if (window.bleController) {
             controller = window.bleController;
-            console.log("Effekt nutzt lokalen bleController");
+            // console.log("Effekt nutzt lokalen bleController");
         }
 
         if (!controller) {
@@ -449,7 +449,7 @@ async function sendEffectToBLE(effectName, speed) {
             effectId = localEffectIds[effectName] || 1;
         }
 
-        console.log(`Sende Effekt "${effectName}" (ID: ${effectId}, Speed: ${speed}) an Hardware...`);
+        // console.log(`Sende Effekt "${effectName}" (ID: ${effectId}, Speed: ${speed}) an Hardware...`);
 
         const success = await controller.setEffect(effectId);
 
@@ -457,7 +457,7 @@ async function sendEffectToBLE(effectName, speed) {
             const brightness = Math.round((speed / 10) * 100);
             await controller.setBrightness(brightness);
 
-            console.log(`Effekt "${effectName}" erfolgreich an LED gesendet!`);
+            // console.log(`Effekt "${effectName}" erfolgreich an LED gesendet!`);
             showNotification(`Effekt "${effectName}" aktiviert!`, "success");
 
             localStorage.setItem("activeEffect", effectName);

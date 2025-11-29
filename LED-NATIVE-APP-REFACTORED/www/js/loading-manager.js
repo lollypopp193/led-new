@@ -1,4 +1,4 @@
-/**
+﻿/**
  * LOADING MANAGER v1.0
  * Zentrale Verwaltung aller Loading-States
  */
@@ -12,7 +12,7 @@ class LoadingManager {
 
     init() {
         this.createGlobalLoader();
-        console.log('✅ Loading Manager initialisiert');
+        // console.log('✅ Loading Manager initialisiert');
     }
 
     createGlobalLoader() {
@@ -338,4 +338,4 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = LoadingManager;
 }
 
-console.log('✅ Loading Manager geladen');
+// console.log('✅ Loading Manager geladen');

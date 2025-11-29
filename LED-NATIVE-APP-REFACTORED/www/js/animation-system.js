@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ANIMATION SYSTEM v1.0
  * Smooth Transitions & Animations für die gesamte App
  */
@@ -15,7 +15,7 @@ class AnimationSystem {
         this.setupModalAnimations();
         this.setupButtonAnimations();
         this.setupListAnimations();
-        console.log('✅ Animation System initialisiert');
+        // console.log('✅ Animation System initialisiert');
     }
 
     addGlobalStyles() {
@@ -472,4 +472,4 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = AnimationSystem;
 }
 
-console.log('✅ Animation System geladen');
+// console.log('✅ Animation System geladen');

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * TITLE-STYLE-UNIFIER.JS
  * Einheitliches Design für alle Titel (FarbWorld, EffektWorld, MusikWorld, TimerWorld, Einstellungen)
  * Alle Titel im Timer-Style (gleiche Farbe, Schriftart, Animation)
@@ -15,7 +15,7 @@ class TitleStyleUnifier {
      * Initialisiert den Title-Style-Unifier
      */
     init() {
-        console.log('🎨 Title-Style-Unifier initialisiert');
+        // console.log('🎨 Title-Style-Unifier initialisiert');
         this.extractTimerStyle();
         this.applyUnifiedStyles();
         this.observeDOM();
@@ -210,7 +210,7 @@ class TitleStyleUnifier {
         Object.assign(element.style, this.timerStyle);
         element.classList.add('app-title');
 
-        console.log(`🎨 Timer-Style angewendet auf: ${element.textContent}`);
+        // console.log(`🎨 Timer-Style angewendet auf: ${element.textContent}`);
     }
 
     /**
