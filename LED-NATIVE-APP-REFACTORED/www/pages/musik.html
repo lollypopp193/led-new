@@ -2587,6 +2587,24 @@
               <i class="fas fa-lightbulb"></i> Gefundene LED-Bänder
             </h3>
             <div id="foundLEDBandsList" style="color: #a0f0ff;">
+              <p style="color: #888; font-style: italic;">
+                <i class="fas fa-search"></i> Keine LED-Bänder gefunden. Bitte in Einstellungen scannen.
+              </p>
+            </div>
+          </div>
+
+          <!-- Frequenz-Visualizer -->
+          <div
+            style="
+              background: rgba(78, 205, 196, 0.1);
+              padding: 20px;
+              border-radius: 15px;
+              margin-bottom: 20px;
+            "
+          >
+            <h3 style="color: #4ecdc4; margin-bottom: 15px">
+              <i class="fas fa-chart-bar"></i> Frequenz-Analyse
+            </h3>
             <div
               id="ledFrequencyDisplay"
               style="
@@ -2614,11 +2632,17 @@
               <span>Mitten</span>
               <span>Höhen</span>
             </div>
-                border-radius: 15px;
-                padding: 25px;
-                margin-bottom: 20px;
-              "
-            >
+          </div>
+
+          <!-- Live-Status -->
+          <div
+            style="
+              background: rgba(78, 205, 196, 0.1);
+              border-radius: 15px;
+              padding: 25px;
+              margin-bottom: 20px;
+            "
+          >
               <h3 style="color: #4ecdc4; margin-bottom: 15px">
                 <i class="fas fa-info-circle"></i> Live-Status
               </h3>
@@ -11008,6 +11032,29 @@
         50% { opacity: 0.6; }
       }
     </style>
+    
+    <!-- TOGGLE-SWITCH FIX: Macht alle Toggles klickbar -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Alle Toggle-Switches klickbar machen
+        document.addEventListener('click', function(e) {
+          const toggle = e.target.closest('.toggle-switch');
+          if (!toggle) return;
+          
+          const slider = e.target.closest('.slider');
+          if (slider || e.target === toggle) {
+            const checkbox = toggle.querySelector('input[type="checkbox"]');
+            if (checkbox && e.target !== checkbox) {
+              checkbox.checked = !checkbox.checked;
+              checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+              console.log('Toggle:', checkbox.id || 'unknown', '→', checkbox.checked ? 'AN' : 'AUS');
+            }
+          }
+        });
+        
+        console.log('✅ Musik-Toggles aktiviert');
+      });
+    </script>
   </body>
 </html>
 

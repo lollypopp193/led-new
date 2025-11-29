@@ -1154,6 +1154,224 @@ function loadHiddenFeatureSettings() {
 // Bei DOMContentLoaded laden
 document.addEventListener('DOMContentLoaded', loadHiddenFeatureSettings);
 
+// ============================================================
+// ALLGEMEINE EINSTELLUNGEN - TOGGLES & SLIDER
+// ============================================================
+
+/**
+ * Auto-Connect Toggle
+ */
+function toggleAutoConnect() {
+    const switchEl = document.getElementById('autoConnectSwitch');
+    if (!switchEl) return;
+
+    const isActive = switchEl.classList.toggle('active');
+    autoConnect = isActive;
+    localStorage.setItem('autoConnect', isActive);
+
+    if (window.showNotification) {
+        window.showNotification(isActive ? 'Auto-Connect aktiviert' : 'Auto-Connect deaktiviert', 'info');
+    }
+    console.log('🔗 Auto-Connect:', isActive);
+}
+
+/**
+ * Benachrichtigungen Toggle
+ */
+function toggleNotifications() {
+    const switchEl = document.getElementById('notificationsSwitch');
+    if (!switchEl) return;
+
+    const isActive = switchEl.classList.toggle('active');
+    notifications = isActive;
+    localStorage.setItem('notificationsEnabled', isActive);
+
+    if (window.showNotification) {
+        window.showNotification(isActive ? 'Benachrichtigungen aktiviert' : 'Benachrichtigungen deaktiviert', 'info');
+    }
+    console.log('🔔 Benachrichtigungen:', isActive);
+}
+
+/**
+ * Dark Mode Toggle
+ */
+function toggleDarkMode() {
+    const switchEl = document.getElementById('darkModeSwitch');
+    if (!switchEl) return;
+
+    const isActive = switchEl.classList.toggle('active');
+    localStorage.setItem('darkMode', isActive);
+
+    // Dark Mode auf Body anwenden
+    if (isActive) {
+        document.body.classList.add('dark-mode');
+    } else {
+        document.body.classList.remove('dark-mode');
+    }
+
+    if (window.showNotification) {
+        window.showNotification(isActive ? 'Dark Mode aktiviert' : 'Dark Mode deaktiviert', 'info');
+    }
+    console.log('🌙 Dark Mode:', isActive);
+}
+
+/**
+ * Hierarchische Gruppen Toggle
+ */
+function toggleHierarchicalGroups() {
+    const switchEl = document.getElementById('hierarchicalGroupsSwitch');
+    if (!switchEl) return;
+
+    const isActive = switchEl.classList.toggle('active');
+    localStorage.setItem('hierarchicalGroups', isActive);
+
+    if (window.showNotification) {
+        window.showNotification(isActive ? 'Hierarchische Gruppen aktiviert' : 'Hierarchische Gruppen deaktiviert', 'info');
+    }
+    console.log('📁 Hierarchische Gruppen:', isActive);
+}
+
+/**
+ * Sprache ändern
+ */
+function changeLanguage(lang) {
+    localStorage.setItem('appLanguage', lang);
+
+    // Multi-Language Support aufrufen wenn vorhanden
+    if (window.MultiLanguageSupport) {
+        window.MultiLanguageSupport.setLanguage(lang);
+    }
+
+    if (window.showNotification) {
+        const names = { de: 'Deutsch', en: 'English', es: 'Español', fr: 'Français' };
+        window.showNotification(`Sprache: ${names[lang] || lang}`, 'success');
+    }
+
+    console.log('🌐 Sprache geändert:', lang);
+}
+
+/**
+ * Initialisiere alle Einstellungs-Event-Listener
+ */
+function initSettingsEventListeners() {
+    // Brightness Slider
+    const brightnessSlider = document.getElementById('brightnessSlider');
+    const brightnessValue = document.getElementById('brightnessValue');
+    if (brightnessSlider && brightnessValue) {
+        brightnessSlider.oninput = function () {
+            brightnessValue.textContent = this.value + '%';
+            brightness = parseInt(this.value);
+            localStorage.setItem('brightness', brightness);
+
+            // An BLE senden wenn verbunden
+            if (bleController && bleController.isConnected && bleController.isConnected()) {
+                bleController.setBrightness(brightness);
+            }
+        };
+    }
+
+    // FPS Slider
+    const fpsSlider = document.getElementById('fpsSlider');
+    const fpsValue = document.getElementById('fpsValue');
+    if (fpsSlider && fpsValue) {
+        fpsSlider.oninput = function () {
+            fpsValue.textContent = this.value + ' FPS';
+            localStorage.setItem('fps', this.value);
+        };
+    }
+
+    // Packet Size Slider
+    const packetSizeSlider = document.getElementById('packetSizeSlider');
+    const packetSizeValue = document.getElementById('packetSizeValue');
+    if (packetSizeSlider && packetSizeValue) {
+        packetSizeSlider.oninput = function () {
+            packetSizeValue.textContent = this.value + ' Bytes';
+            localStorage.setItem('packetSize', this.value);
+        };
+    }
+
+    // Mikrofon-Empfindlichkeit Slider
+    const micSlider = document.getElementById('micSensitivitySlider');
+    const micValue = document.getElementById('micSensitivityValue');
+    if (micSlider && micValue) {
+        micSlider.oninput = function () {
+            micValue.textContent = this.value + '%';
+            localStorage.setItem('micSensitivity', this.value);
+        };
+    }
+
+    // Language Select
+    const languageSelect = document.getElementById('languageSelect');
+    if (languageSelect) {
+        languageSelect.onchange = function () {
+            changeLanguage(this.value);
+        };
+
+        // Gespeicherte Sprache laden
+        const savedLang = localStorage.getItem('appLanguage') || 'de';
+        languageSelect.value = savedLang;
+    }
+
+    // Switches klickbar machen (für alle div.switch Elemente)
+    document.querySelectorAll('.switch').forEach(switchEl => {
+        if (!switchEl.onclick) {
+            switchEl.onclick = function () {
+                // Für Switches die noch keinen Handler haben
+                this.classList.toggle('active');
+            };
+        }
+    });
+
+    // Gespeicherte Werte laden
+    loadSavedSettingsValues();
+}
+
+/**
+ * Gespeicherte Einstellungswerte laden
+ */
+function loadSavedSettingsValues() {
+    // Auto-Connect
+    const savedAutoConnect = localStorage.getItem('autoConnect');
+    if (savedAutoConnect === 'true') {
+        const el = document.getElementById('autoConnectSwitch');
+        if (el) el.classList.add('active');
+    }
+
+    // Notifications
+    const savedNotifications = localStorage.getItem('notificationsEnabled');
+    if (savedNotifications !== 'false') {
+        const el = document.getElementById('notificationsSwitch');
+        if (el) el.classList.add('active');
+    }
+
+    // Dark Mode
+    const savedDarkMode = localStorage.getItem('darkMode');
+    if (savedDarkMode === 'true') {
+        const el = document.getElementById('darkModeSwitch');
+        if (el) el.classList.add('active');
+        document.body.classList.add('dark-mode');
+    }
+
+    // Hierarchische Gruppen
+    const savedGroups = localStorage.getItem('hierarchicalGroups');
+    if (savedGroups === 'true') {
+        const el = document.getElementById('hierarchicalGroupsSwitch');
+        if (el) el.classList.add('active');
+    }
+
+    // Brightness
+    const savedBrightness = localStorage.getItem('brightness');
+    if (savedBrightness) {
+        const slider = document.getElementById('brightnessSlider');
+        const value = document.getElementById('brightnessValue');
+        if (slider) slider.value = savedBrightness;
+        if (value) value.textContent = savedBrightness + '%';
+    }
+}
+
+// Event-Listener beim DOM-Load initialisieren
+document.addEventListener('DOMContentLoaded', initSettingsEventListeners);
+
 // GLOBAL EXPORTS
 window.scanForNewDevice = scanForNewDevice;
 window.toggleAutoReconnect = toggleAutoReconnect;
@@ -1195,5 +1413,13 @@ window.openScenesManager = openScenesManager;
 window.applySceneFromManager = applySceneFromManager;
 window.createNewScene = createNewScene;
 window.toggleVoiceControl = toggleVoiceControl;
+
+// ALLGEMEINE EINSTELLUNGEN EXPORTS
+window.toggleAutoConnect = toggleAutoConnect;
+window.toggleNotifications = toggleNotifications;
+window.toggleDarkMode = toggleDarkMode;
+window.toggleHierarchicalGroups = toggleHierarchicalGroups;
+window.changeLanguage = changeLanguage;
+window.initSettingsEventListeners = initSettingsEventListeners;
 
 // console.log('✅ Einstellungen-Controller geladen');
