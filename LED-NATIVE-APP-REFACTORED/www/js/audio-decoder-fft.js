@@ -1,4 +1,4 @@
-﻿/**
+/**
  * AUDIO DECODER + FFT ANALYZER - Musikanalyse ohne Mikrofon
  * Dekodiert Audio-Dateien direkt und führt FFT-Analyse durch
  * @version 1.0
@@ -103,9 +103,9 @@ class AudioDecoderFFT {
             this.frequencyData = new Uint8Array(bufferLength);
             this.timeDomainData = new Uint8Array(bufferLength);
 
-            // console.log('✅ Audio Decoder FFT initialisiert');
-            // console.log(`📊 FFT Size: ${this.fftSize}, Bins: ${bufferLength}`);
-            // console.log(`🎵 Sample Rate: ${this.audioContext.sampleRate} Hz`);
+            console.log('✅ Audio Decoder FFT initialisiert');
+            console.log(`📊 FFT Size: ${this.fftSize}, Bins: ${bufferLength}`);
+            console.log(`🎵 Sample Rate: ${this.audioContext.sampleRate} Hz`);
 
             return true;
         } catch (error) {
@@ -124,7 +124,7 @@ class AudioDecoderFFT {
         }
 
         try {
-            // console.log(`🎵 Lade Audio-Datei: ${file.name}`);
+            console.log(`🎵 Lade Audio-Datei: ${file.name}`);
 
             // FileReader oder direkt ArrayBuffer
             const arrayBuffer = await file.arrayBuffer();
@@ -132,7 +132,7 @@ class AudioDecoderFFT {
             // Audio dekodieren
             this.audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
 
-            // console.log(`✅ Audio dekodiert: ${this.audioBuffer.duration.toFixed(2)}s, ${this.audioBuffer.numberOfChannels} Kanäle`);
+            console.log(`✅ Audio dekodiert: ${this.audioBuffer.duration.toFixed(2)}s, ${this.audioBuffer.numberOfChannels} Kanäle`);
             return true;
         } catch (error) {
             console.error('❌ Audio Decode Fehler:', error);
@@ -150,13 +150,13 @@ class AudioDecoderFFT {
         }
 
         try {
-            // console.log(`🎵 Lade Audio von URL: ${url}`);
+            console.log(`🎵 Lade Audio von URL: ${url}`);
 
             const response = await fetch(url);
             const arrayBuffer = await response.arrayBuffer();
             this.audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
 
-            // console.log(`✅ Audio dekodiert: ${this.audioBuffer.duration.toFixed(2)}s`);
+            console.log(`✅ Audio dekodiert: ${this.audioBuffer.duration.toFixed(2)}s`);
             return true;
         } catch (error) {
             console.error('❌ Audio Load Fehler:', error);
@@ -199,11 +199,11 @@ class AudioDecoderFFT {
 
             // Ended Event
             this.source.onended = () => {
-                // console.log('🎵 Playback beendet');
+                console.log('🎵 Playback beendet');
                 this.stopAnalysis();
             };
 
-            // console.log('✅ Analyse gestartet');
+            console.log('✅ Analyse gestartet');
             return true;
         } catch (error) {
             console.error('❌ Analysis Start Fehler:', error);
@@ -445,7 +445,7 @@ class AudioDecoderFFT {
                 const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
                 this.features.bpm = Math.round(60000 / avgInterval);
 
-                // console.log(`🥁 BPM: ${this.features.bpm}`);
+                console.log(`🥁 BPM: ${this.features.bpm}`);
             }
         }
     }
@@ -483,7 +483,7 @@ class AudioDecoderFFT {
             }
 
             this.isAnalyzing = false;
-            // console.log('🛑 Analyse gestoppt');
+            console.log('🛑 Analyse gestoppt');
         } catch (error) {
             console.error('❌ Stop Analysis Fehler:', error);
         }
@@ -505,7 +505,7 @@ class AudioDecoderFFT {
             this.audioContext = null;
         }
 
-        // console.log('🗑️ Audio Decoder destroyed');
+        console.log('🗑️ Audio Decoder destroyed');
     }
 
     /**
@@ -513,22 +513,22 @@ class AudioDecoderFFT {
      */
     setSensitivity(value) {
         this.sensitivity = Math.max(0.1, Math.min(2.0, value));
-        // console.log(`🎚️ Sensitivity: ${this.sensitivity}`);
+        console.log(`🎚️ Sensitivity: ${this.sensitivity}`);
     }
 
     setSmoothing(value) {
         this.smoothing = Math.max(0.0, Math.min(1.0, value));
-        // console.log(`🎚️ Smoothing: ${this.smoothing}`);
+        console.log(`🎚️ Smoothing: ${this.smoothing}`);
     }
 
     setGain(value) {
         this.gain = Math.max(0.5, Math.min(3.0, value));
-        // console.log(`🎚️ Gain: ${this.gain}`);
+        console.log(`🎚️ Gain: ${this.gain}`);
     }
 
     setBeatThreshold(value) {
         this.beatDetection.threshold = Math.max(1.0, Math.min(2.0, value));
-        // console.log(`🥁 Beat Threshold: ${this.beatDetection.threshold}`);
+        console.log(`🥁 Beat Threshold: ${this.beatDetection.threshold}`);
     }
 
     /**
@@ -541,7 +541,7 @@ class AudioDecoderFFT {
 
 // Global verfügbar machen
 window.AudioDecoderFFT = AudioDecoderFFT;
-// console.log('✅ Audio Decoder FFT geladen');
+console.log('✅ Audio Decoder FFT geladen');
 
 // Export für Module
 if (typeof module !== 'undefined' && module.exports) {

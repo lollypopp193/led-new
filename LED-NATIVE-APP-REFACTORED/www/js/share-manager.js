@@ -1,4 +1,4 @@
-﻿/**
+/**
  * SHARE MANAGER v1.0
  * Teilen von Playlists, Einstellungen & Screenshots
  */
@@ -12,7 +12,7 @@ class ShareManager {
 
     init() {
         this.checkSupport();
-        // console.log('✅ Share Manager initialisiert');
+        console.log('✅ Share Manager initialisiert');
     }
 
     checkSupport() {
@@ -41,7 +41,7 @@ class ShareManager {
         try {
             if (this.isSupported) {
                 await navigator.share(shareData);
-                // console.log('✅ Playlist geteilt');
+                console.log('✅ Playlist geteilt');
             } else {
                 this.fallbackShare(shareData);
             }
@@ -70,7 +70,7 @@ class ShareManager {
         try {
             if (this.isSupported) {
                 await navigator.share(shareData);
-                // console.log('✅ Track geteilt');
+                console.log('✅ Track geteilt');
             } else {
                 this.fallbackShare(shareData);
             }
@@ -99,7 +99,7 @@ class ShareManager {
 
             if (navigator.canShare && navigator.canShare(shareData)) {
                 await navigator.share(shareData);
-                // console.log('✅ Screenshot geteilt');
+                console.log('✅ Screenshot geteilt');
             } else {
                 // Fallback: Download
                 this.downloadScreenshot(blob);
@@ -154,7 +154,7 @@ class ShareManager {
         a.click();
         URL.revokeObjectURL(url);
 
-        // console.log('💾 Screenshot heruntergeladen');
+        console.log('💾 Screenshot heruntergeladen');
 
         if (window.showGlobalNotification) {
             window.showGlobalNotification('💾 Screenshot gespeichert', 'success');
@@ -177,7 +177,7 @@ class ShareManager {
         try {
             if (this.isSupported) {
                 await navigator.share(shareData);
-                // console.log('✅ Einstellungen geteilt');
+                console.log('✅ Einstellungen geteilt');
             } else {
                 this.fallbackShare(shareData);
             }
@@ -214,7 +214,7 @@ class ShareManager {
         if (navigator.clipboard) {
             navigator.clipboard.writeText(text)
                 .then(() => {
-                    // console.log('📋 In Zwischenablage kopiert');
+                    console.log('📋 In Zwischenablage kopiert');
 
                     if (window.showGlobalNotification) {
                         window.showGlobalNotification('📋 Link kopiert', 'success');
@@ -320,7 +320,7 @@ class ShareManager {
      */
     generateQRCode(data) {
         // Simple QR Code generation (would use library in production)
-        // console.log('📱 QR Code für:', data);
+        console.log('📱 QR Code für:', data);
 
         if (window.showGlobalNotification) {
             window.showGlobalNotification('📱 QR Code Funktion in Entwicklung', 'info');
@@ -339,7 +339,7 @@ class ShareManager {
         a.click();
         URL.revokeObjectURL(url);
 
-        // console.log('💾 Datei exportiert:', filename);
+        console.log('💾 Datei exportiert:', filename);
 
         if (window.showGlobalNotification) {
             window.showGlobalNotification('💾 Exportiert', 'success');
@@ -361,7 +361,7 @@ class ShareManager {
 
         if (url) {
             window.open(url, '_blank', 'width=600,height=400');
-            // console.log(`📱 Geteilt auf ${platform}`);
+            console.log(`📱 Geteilt auf ${platform}`);
         }
     }
 }
@@ -374,5 +374,5 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = ShareManager;
 }
 
-// console.log('✅ Share Manager geladen');
-// console.log('📤 Web Share API:', window.shareManager.isSupported ? 'Verfügbar' : 'Nicht verfügbar');
+console.log('✅ Share Manager geladen');
+console.log('📤 Web Share API:', window.shareManager.isSupported ? 'Verfügbar' : 'Nicht verfügbar');

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * INPUT VALIDATOR v1.0
  * Umfassende Input-Validierung für alle Formulare
  */
@@ -13,7 +13,7 @@ class InputValidator {
     init() {
         this.setupDefaultRules();
         this.attachGlobalValidation();
-        // console.log('✅ Input Validator initialisiert');
+        console.log('✅ Input Validator initialisiert');
     }
 
     setupDefaultRules() {
@@ -393,7 +393,7 @@ class InputValidator {
      */
     addRule(name, rule) {
         this.rules.set(name, rule);
-        // console.log(`✅ Custom Rule hinzugefügt: ${name}`);
+        console.log(`✅ Custom Rule hinzugefügt: ${name}`);
     }
 }
 
@@ -405,4 +405,4 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = InputValidator;
 }
 
-// console.log('✅ Input Validator geladen');
+console.log('✅ Input Validator geladen');

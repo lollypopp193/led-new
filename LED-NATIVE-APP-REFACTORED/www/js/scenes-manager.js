@@ -1,4 +1,4 @@
-﻿/**
+/**
  * SCENES-MANAGER.JS v3.0 - ZERO TOLERANCE IMPLEMENTATION
  * Vollständige Szenen-Verwaltung mit Hardware-Integration
  */
@@ -11,7 +11,7 @@ class ScenesManager {
         this.storageKey = 'led-saved-scenes';
         this.categories = ['Entspannung', 'Party', 'Arbeit', 'Lesen', 'Schlafen', 'Romantisch', 'Gaming', 'Filme', 'Custom'];
         this.loadScenes();
-        // // console.log('✅ Szenen-Manager: ' + this.scenes.length + ' Szenen geladen');
+        // console.log('✅ Szenen-Manager: ' + this.scenes.length + ' Szenen geladen');
     }
 
     createScene(data, silent = true) {
@@ -37,7 +37,7 @@ class ScenesManager {
             this.save();
             if (!silent) {
                 // Keine grünen Balken mehr!
-                // // console.log('✅ Szene erstellt:', scene.name);
+                // console.log('✅ Szene erstellt:', scene.name);
                 // this.emit('scene-created', scene);
             }
             return scene;
@@ -62,7 +62,7 @@ class ScenesManager {
             if (updates.category) s.category = this.categories.includes(updates.category) ? updates.category : s.category;
             s.updatedAt = Date.now();
             this.save();
-            // // console.log('✅ Szene aktualisiert:', s.name);
+            // console.log('✅ Szene aktualisiert:', s.name);
             // this.emit('scene-updated', s);
             return s;
         } catch (e) {
@@ -79,7 +79,7 @@ class ScenesManager {
             this.scenes.splice(idx, 1);
             this.save();
             if (this.currentScene && this.currentScene.id === id) this.currentScene = null;
-            // // console.log('✅ Szene gelöscht:', s.name);
+            // console.log('✅ Szene gelöscht:', s.name);
             // this.emit('scene-deleted', { id: id, name: s.name });
             return true;
         } catch (e) {
@@ -95,7 +95,7 @@ class ScenesManager {
             const dup = { id: 'scene_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9), name: orig.name + ' (Kopie)', description: orig.description, color: { r: orig.color.r, g: orig.color.g, b: orig.color.b }, effect: orig.effect, brightness: orig.brightness, speed: orig.speed, devices: orig.devices.slice(), favorite: false, category: orig.category, tags: orig.tags.slice(), thumbnail: orig.thumbnail, createdAt: Date.now(), updatedAt: Date.now() };
             this.scenes.push(dup);
             this.save();
-            // // console.log('✅ Dupliziert:', dup.name);
+            // console.log('✅ Dupliziert:', dup.name);
             return dup;
         } catch (e) {
             console.error('❌ Duplizieren:', e);
@@ -107,7 +107,7 @@ class ScenesManager {
         try {
             const s = this.getScene(id);
             if (!s) throw new Error('Szene nicht gefunden');
-            // // console.log('🎬 Aktiviere:', s.name);
+            // console.log('🎬 Aktiviere:', s.name);
             let ok = false;
 
             if (window.ledController && window.ledController.isConnected) {
@@ -117,7 +117,7 @@ class ScenesManager {
                     await this.delay(100);
                     if (s.effect > 0) { await window.ledController.setEffect(s.effect); await this.delay(100); }
                     await window.ledController.setColorRGB(s.color.r, s.color.g, s.color.b);
-                    // console.log('✅ BLE: OK');
+                    console.log('✅ BLE: OK');
                 } catch (e) { console.error('❌ BLE:', e); ok = false; }
             }
 
@@ -130,7 +130,7 @@ class ScenesManager {
                     if (s.effect > 0) { const efCmd = new Uint8Array([0x7E, 0x00, 0x06 + s.effect, 0x05, 0x00, 0x00, 0x00, 0xEF]); await window.ledDevice.characteristic.writeValue(efCmd); await this.delay(100); }
                     const colCmd = new Uint8Array([0x7E, 0x00, 0x05, s.color.r, s.color.g, s.color.b, 0x00, 0xEF]);
                     await window.ledDevice.characteristic.writeValue(colCmd);
-                    // console.log('✅ Device: OK');
+                    console.log('✅ Device: OK');
                 } catch (e) { console.error('❌ Device:', e); ok = false; }
             }
 
@@ -140,18 +140,18 @@ class ScenesManager {
                     const url = 'http://' + window.wledDevice.ip + '/json/state';
                     const data = { on: true, bri: Math.round((s.brightness / 100) * 255), seg: [{ col: [[s.color.r, s.color.g, s.color.b]], fx: s.effect > 0 ? s.effect : 0 }] };
                     await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-                    // console.log('✅ WLED: OK');
+                    console.log('✅ WLED: OK');
                 } catch (e) { console.error('❌ WLED:', e); ok = false; }
             }
 
             if (!ok && typeof window.sendUniversalColor === 'function') {
-                try { ok = true; await window.sendUniversalColor(s.color.r, s.color.g, s.color.b); // console.log('✅ Universal: OK'); }
+                try { ok = true; await window.sendUniversalColor(s.color.r, s.color.g, s.color.b); console.log('✅ Universal: OK'); }
                 catch (e) { console.error('❌ Universal:', e); ok = false; }
             }
 
             if (!ok) throw new Error('Keine Hardware-Verbindung');
             this.currentScene = s;
-            // console.log('✅ Aktiviert:', s.name);
+            console.log('✅ Aktiviert:', s.name);
             this.emit('scene-activated', s);
             return true;
         } catch (e) {
@@ -170,7 +170,7 @@ class ScenesManager {
             s.favorite = !s.favorite;
             s.updatedAt = Date.now();
             this.save();
-            // console.log((s.favorite ? '⭐' : '☆') + ' ' + s.name);
+            console.log((s.favorite ? '⭐' : '☆') + ' ' + s.name);
             return s.favorite;
         } catch (e) { console.error('❌ Favorit:', e); return false; }
     }
@@ -193,9 +193,9 @@ class ScenesManager {
             { name: 'Wald', description: 'Natürliches Grün', color: { r: 50, g: 200, b: 80 }, effect: 0, brightness: 75, speed: 50, category: 'Entspannung', tags: ['grün', 'natur'] },
             { name: 'Disco', description: 'Stroboskop', color: { r: 255, g: 255, b: 255 }, effect: 20, brightness: 100, speed: 100, category: 'Party', tags: ['schnell', 'stroboskop'] }
         ];
-        // console.log('🎨 Erstelle ' + presets.length + ' Presets (silent)');
+        console.log('🎨 Erstelle ' + presets.length + ' Presets (silent)');
         for (var i = 0; i < presets.length; i++) { this.createScene(presets[i], true); }
-        // console.log('✅ Presets erstellt');
+        console.log('✅ Presets erstellt');
     }
 
     searchScenes(query) {
@@ -252,7 +252,7 @@ class ScenesManager {
                 count++;
             }
             this.save();
-            // console.log('✅ ' + count + ' Szenen importiert');
+            console.log('✅ ' + count + ' Szenen importiert');
             return count;
         } catch (e) {
             console.error('❌ Import:', e);
@@ -272,19 +272,19 @@ class ScenesManager {
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        // console.log('✅ Szenen exportiert');
+        console.log('✅ Szenen exportiert');
     }
 
     save() {
-        try { localStorage.setItem(this.storageKey, JSON.stringify(this.scenes)); // console.log('💾 Gespeichert: ' + this.scenes.length); }
+        try { localStorage.setItem(this.storageKey, JSON.stringify(this.scenes)); console.log('💾 Gespeichert: ' + this.scenes.length); }
         catch (e) { console.error('❌ Speichern:', e); this.notify('Speichern fehlgeschlagen', 'error'); }
     }
 
     loadScenes() {
         try {
             const saved = localStorage.getItem(this.storageKey);
-            if (saved) { this.scenes = JSON.parse(saved); // console.log('📂 Geladen: ' + this.scenes.length); }
-            else { // console.log('📂 Keine Szenen, erstelle Presets'); this.createDefaultPresets(); }
+            if (saved) { this.scenes = JSON.parse(saved); console.log('📂 Geladen: ' + this.scenes.length); }
+            else { console.log('📂 Keine Szenen, erstelle Presets'); this.createDefaultPresets(); }
         } catch (e) { console.error('❌ Laden:', e); this.scenes = []; }
     }
 
@@ -293,7 +293,7 @@ class ScenesManager {
         this.scenes = [];
         this.currentScene = null;
         this.save();
-        // console.log('🗑️ Alle gelöscht');
+        console.log('🗑️ Alle gelöscht');
         return true;
     }
 
@@ -330,8 +330,8 @@ class ScenesManager {
 
 window.ScenesManager = ScenesManager;
 window.scenesManager = new ScenesManager();
-// console.log('✅ Szenen-Manager global verfügbar als window.scenesManager');
+console.log('✅ Szenen-Manager global verfügbar als window.scenesManager');
 
-window.addEventListener('scene-activated', function (e) { // console.log('🎬 Event: Szene aktiviert -', e.detail.name); });
+window.addEventListener('scene-activated', function (e) { console.log('🎬 Event: Szene aktiviert -', e.detail.name); });
 
 if (typeof module !== 'undefined' && module.exports) module.exports = ScenesManager;

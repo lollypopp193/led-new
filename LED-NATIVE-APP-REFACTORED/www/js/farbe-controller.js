@@ -1,4 +1,4 @@
-﻿/**
+/**
  * FARBE-CONTROLLER.JS
  * Alle Farb-Steuerungs-Funktionen aus Farbe.html - KEIN Inline-JS
  */
@@ -11,11 +11,11 @@ let currentColor = { r: 255, g: 0, b: 0 };
 
 function getLEDController() {
     if (window.parent && window.parent !== window && window.parent.bleController) {
-        // console.log(' Verwende Parent bleController');
+        console.log(' Verwende Parent bleController');
         return window.parent.bleController;
     }
     if (window.bleController) {
-        // console.log(' Verwende lokalen bleController');
+        console.log(' Verwende lokalen bleController');
         return window.bleController;
     }
     console.error(' KRITISCH: Kein bleController gefunden!');
@@ -33,7 +33,7 @@ function isConnected() {
 async function initBLE() {
     const controller = getLEDController();
     if (controller) {
-        // console.log(' Zentrale BLE-Controller gefunden');
+        console.log(' Zentrale BLE-Controller gefunden');
     } else {
         console.warn(' BLE-Controller nicht verfügbar - bitte in Hauptseite verbinden');
     }
@@ -44,7 +44,7 @@ async function sendColorToBLE(r, g, b) {
         if (window.parent && window.parent.sendColorToLED) {
             const success = await window.parent.sendColorToLED(r, g, b);
             if (success) {
-                // console.log(`  ECHTE Hardware-Farbe gesendet: RGB(${r}, ${g}, ${b})`);
+                console.log(`  ECHTE Hardware-Farbe gesendet: RGB(${r}, ${g}, ${b})`);
                 if (window.showNotification) {
                     window.showNotification(`LED-Farbe gesetzt: RGB(${r}, ${g}, ${b})`, 'success');
                 }
@@ -61,7 +61,7 @@ async function sendColorToBLE(r, g, b) {
         if (window.bleController && window.bleController.isConnected) {
             const success = await window.bleController.setColorRGB(r, g, b);
             if (success) {
-                // console.log(`  Direkt: Hardware-Farbe gesendet: RGB(${r}, ${g}, ${b})`);
+                console.log(`  Direkt: Hardware-Farbe gesendet: RGB(${r}, ${g}, ${b})`);
                 if (window.showNotification) {
                     window.showNotification(`LED-Farbe gesetzt: RGB(${r}, ${g}, ${b})`, 'success');
                 }
@@ -184,7 +184,7 @@ function selectColorAtPosition(e) {
         const color = getColorFromPosition(x, y, distance, angle, currentMode);
         if (color) {
             currentColor = { r: color.r, g: color.g, b: color.b };
-            // console.log(' Farbkreis-Klick - currentColor gesetzt:', currentColor);
+            console.log(' Farbkreis-Klick - currentColor gesetzt:', currentColor);
 
             if (window.parent && window.parent.setGlobalCurrentColor) {
                 window.parent.setGlobalCurrentColor(currentColor);
@@ -734,7 +734,7 @@ function initFarbeController() {
     initPowerToggle();
     initBasicColors();
     initSidePanel();
-    // console.log('✅ Farbe-Controller vollständig initialisiert');
+    console.log('✅ Farbe-Controller vollständig initialisiert');
 }
 
 // Global Export
@@ -762,4 +762,4 @@ if (document.readyState === 'loading') {
     initFarbeController();
 }
 
-// // console.log(' Farbe-Controller geladen');
+// console.log(' Farbe-Controller geladen');

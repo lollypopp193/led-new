@@ -1,4 +1,4 @@
-﻿/**
+/**
  * PLAYLIST DRAG & DROP v1.0
  * Ermöglicht Sortierung von Songs in Playlists per Drag & Drop
  */
@@ -13,7 +13,7 @@ class PlaylistDragDrop {
     }
 
     init() {
-        // console.log('✅ Playlist Drag & Drop initialisiert');
+        console.log('✅ Playlist Drag & Drop initialisiert');
     }
 
     /**
@@ -42,7 +42,7 @@ class PlaylistDragDrop {
             this.makeDraggable(item, index);
         });
 
-        // console.log(`📋 Drag & Drop aktiviert für ${songItems.length} Songs`);
+        console.log(`📋 Drag & Drop aktiviert für ${songItems.length} Songs`);
     }
 
     makeDraggable(element, index) {
@@ -130,7 +130,7 @@ class PlaylistDragDrop {
         // Füge an neuer Position ein
         songs.splice(toIndex, 0, movedSong);
 
-        // console.log(`🔄 Song verschoben: ${fromIndex} → ${toIndex}`);
+        console.log(`🔄 Song verschoben: ${fromIndex} → ${toIndex}`);
 
         // Update UI
         this.updateUI(songs);
@@ -183,7 +183,7 @@ class PlaylistDragDrop {
         });
 
         this.currentPlaylist = null;
-        // console.log('🛑 Drag & Drop deaktiviert');
+        console.log('🛑 Drag & Drop deaktiviert');
     }
 
     /**
@@ -247,4 +247,4 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = PlaylistDragDrop;
 }
 
-// console.log('✅ Playlist Drag & Drop geladen');
+console.log('✅ Playlist Drag & Drop geladen');

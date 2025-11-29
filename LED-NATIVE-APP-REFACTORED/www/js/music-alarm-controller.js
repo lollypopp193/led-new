@@ -1,4 +1,4 @@
-﻿/**
+/**
  * MUSIKWECKER CONTROLLER - Vollständige Implementierung
  * @version 1.0.0
  */
@@ -12,7 +12,7 @@ const MusicAlarmController = {
     snoozeDuration: 5, // Minuten
 
     init() {
-        // console.log('⏰ Musikwecker Controller initialisiert');
+        console.log('⏰ Musikwecker Controller initialisiert');
         this.loadAlarms();
         this.attachEventListeners();
         this.startAlarmChecker();
@@ -61,7 +61,7 @@ const MusicAlarmController = {
 
     setAlarmEnabled(enabled) {
         localStorage.setItem('music-alarm-enabled', enabled);
-        // console.log(`⏰ Musikwecker: ${enabled ? 'aktiviert' : 'deaktiviert'}`);
+        console.log(`⏰ Musikwecker: ${enabled ? 'aktiviert' : 'deaktiviert'}`);
 
         if (enabled) {
             this.startAlarmChecker();
@@ -72,17 +72,17 @@ const MusicAlarmController = {
 
     setAlarmTime(time) {
         localStorage.setItem('music-alarm-time', time);
-        // console.log('⏰ Weckzeit gesetzt:', time);
+        console.log('⏰ Weckzeit gesetzt:', time);
     },
 
     setAlarmPlaylist(playlistId) {
         localStorage.setItem('music-alarm-playlist', playlistId);
-        // console.log('⏰ Alarm-Playlist:', playlistId);
+        console.log('⏰ Alarm-Playlist:', playlistId);
     },
 
     setFadeInEnabled(enabled) {
         localStorage.setItem('music-alarm-fadein', enabled);
-        // console.log('⏰ Fade-In:', enabled);
+        console.log('⏰ Fade-In:', enabled);
     },
 
     startAlarmChecker() {
@@ -97,7 +97,7 @@ const MusicAlarmController = {
 
         // Initiale Prüfung
         this.checkAlarms();
-        // console.log('✅ Alarm-Checker gestartet');
+        console.log('✅ Alarm-Checker gestartet');
     },
 
     stopAlarmChecker() {
@@ -105,7 +105,7 @@ const MusicAlarmController = {
             clearInterval(this.checkInterval);
             this.checkInterval = null;
         }
-        // console.log('🛑 Alarm-Checker gestoppt');
+        console.log('🛑 Alarm-Checker gestoppt');
     },
 
     checkAlarms() {
@@ -117,7 +117,7 @@ const MusicAlarmController = {
         // Check Snooze
         if (this.isSnoozing && this.snoozeEndTime) {
             if (now >= this.snoozeEndTime) {
-                // console.log('⏰ Snooze beendet - Wecker erneut ausgelöst');
+                console.log('⏰ Snooze beendet - Wecker erneut ausgelöst');
                 this.isSnoozing = false;
                 this.snoozeEndTime = null;
                 this.triggerAlarm();
@@ -137,7 +137,7 @@ const MusicAlarmController = {
     },
 
     async triggerAlarm() {
-        // console.log('⏰⏰ WECKER AUSGELÖST!');
+        console.log('⏰⏰ WECKER AUSGELÖST!');
 
         const playlistId = localStorage.getItem('music-alarm-playlist');
         const fadeIn = localStorage.getItem('music-alarm-fadein') === 'true';
@@ -239,7 +239,7 @@ const MusicAlarmController = {
     },
 
     snooze() {
-        // console.log(`😴 Snooze aktiviert (${this.snoozeDuration} Minuten)`);
+        console.log(`😴 Snooze aktiviert (${this.snoozeDuration} Minuten)`);
 
         this.isSnoozing = true;
         this.snoozeEndTime = new Date(Date.now() + this.snoozeDuration * 60 * 1000);
@@ -259,7 +259,7 @@ const MusicAlarmController = {
     },
 
     dismissAlarm() {
-        // console.log('✓ Alarm ausgeschaltet');
+        console.log('✓ Alarm ausgeschaltet');
 
         this.isSnoozing = false;
         this.snoozeEndTime = null;
@@ -300,7 +300,7 @@ const MusicAlarmController = {
                     await audioPlayer.play();
                 }
 
-                // console.log('🎵 Alarm-Musik gestartet:', firstTrack.title);
+                console.log('🎵 Alarm-Musik gestartet:', firstTrack.title);
             }
         } catch (error) {
             console.error('❌ Fehler beim Abspielen:', error);
@@ -308,7 +308,7 @@ const MusicAlarmController = {
     },
 
     async playDefaultAlarmSound(fadeIn) {
-        // console.log('🔔 Default Alarm-Sound');
+        console.log('🔔 Default Alarm-Sound');
 
         const audioPlayer = document.getElementById('audioPlayer');
         if (!audioPlayer) return;
@@ -332,7 +332,7 @@ const MusicAlarmController = {
                 audioElement.volume = Math.min(audioElement.volume + fadeStep, targetVolume);
             } else {
                 clearInterval(fadeIn);
-                // console.log('✅ Fade-In abgeschlossen');
+                console.log('✅ Fade-In abgeschlossen');
             }
         }, fadeInterval);
     },
@@ -402,4 +402,4 @@ if (document.readyState === 'loading') {
 }
 
 window.MusicAlarmController = MusicAlarmController;
-// console.log('✅ Musikwecker Controller geladen');
+console.log('✅ Musikwecker Controller geladen');

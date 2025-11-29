@@ -1,4 +1,4 @@
-﻿/**
+/**
  * LED-SIDEBAR.JS v1.0
  * Swipe-Sidebar von links für LED-Bänder Verwaltung & Gruppierung
  * - Alle gefundenen Bänder anzeigen
@@ -27,7 +27,7 @@ class LEDSidebar {
         this.loadBandsFromStorage();
         this.loadGroupsFromStorage();
         this.render();
-        // console.log('✅ LED-Sidebar initialisiert');
+        console.log('✅ LED-Sidebar initialisiert');
     }
 
     createSidebarHTML() {
@@ -166,7 +166,7 @@ class LEDSidebar {
     }
 
     async scanBands() {
-        // console.log('🔍 Scanne LED-Bänder...');
+        console.log('🔍 Scanne LED-Bänder...');
 
         try {
             // Verwende verschiedene Scanner-Quellen

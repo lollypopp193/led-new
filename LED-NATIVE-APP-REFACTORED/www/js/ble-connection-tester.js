@@ -1,4 +1,4 @@
-﻿/**
+/**
  * BLE CONNECTION TESTER v1.0
  * Testet BLE-Verbindungen und Auto-Reconnect
  */
@@ -23,7 +23,7 @@ class BLEConnectionTester {
         this.testResults = [];
 
         console.group('🧪 BLE Connection Test');
-        // console.log('Start:', new Date().toLocaleTimeString());
+        console.log('Start:', new Date().toLocaleTimeString());
 
         try {
             // Test 1: API Verfügbarkeit
@@ -44,7 +44,7 @@ class BLEConnectionTester {
             // Test 6: Multi-Device (falls vorhanden)
             await this.testMultiDevice();
 
-            // console.log('✅ Alle Tests abgeschlossen');
+            console.log('✅ Alle Tests abgeschlossen');
             this.showTestReport();
 
         } catch (error) {
@@ -57,7 +57,7 @@ class BLEConnectionTester {
     }
 
     async testAPIAvailability() {
-        // console.log('Test 1: API Verfügbarkeit...');
+        console.log('Test 1: API Verfügbarkeit...');
 
         try {
             if (!navigator.bluetooth) {
@@ -76,7 +76,7 @@ class BLEConnectionTester {
     }
 
     async testScan() {
-        // console.log('Test 2: Gerätescan...');
+        console.log('Test 2: Gerätescan...');
 
         try {
             if (!window.BLEControllerPro) {
@@ -84,7 +84,7 @@ class BLEConnectionTester {
             }
 
             // Zeige Benutzer-Dialog (muss manuell gemacht werden)
-            // console.log('⚠️ Bitte Gerät im Dialog auswählen...');
+            console.log('⚠️ Bitte Gerät im Dialog auswählen...');
 
             const device = await window.BLEControllerPro.scan();
 
@@ -105,7 +105,7 @@ class BLEConnectionTester {
     }
 
     async testConnect() {
-        // console.log('Test 3: Verbindung...');
+        console.log('Test 3: Verbindung...');
 
         try {
             if (!window.loadingManager) {
@@ -136,7 +136,7 @@ class BLEConnectionTester {
     }
 
     async testCommandSend() {
-        // console.log('Test 4: Befehle senden...');
+        console.log('Test 4: Befehle senden...');
 
         try {
             if (!window.BLEControllerPro || !window.BLEControllerPro.isConnected) {
@@ -164,7 +164,7 @@ class BLEConnectionTester {
     }
 
     async testReconnect() {
-        // console.log('Test 5: Disconnect & Reconnect...');
+        console.log('Test 5: Disconnect & Reconnect...');
 
         try {
             if (!window.BLEControllerPro || !window.BLEControllerPro.isConnected) {
@@ -172,7 +172,7 @@ class BLEConnectionTester {
             }
 
             // Disconnect
-            // console.log('Trenne Verbindung...');
+            console.log('Trenne Verbindung...');
             await window.BLEControllerPro.disconnect();
             await this.delay(1000);
 
@@ -180,10 +180,10 @@ class BLEConnectionTester {
                 throw new Error('Disconnect fehlgeschlagen');
             }
 
-            // console.log('✅ Disconnect erfolgreich');
+            console.log('✅ Disconnect erfolgreich');
 
             // Reconnect
-            // console.log('Reconnect...');
+            console.log('Reconnect...');
             const reconnected = await window.BLEControllerPro.reconnect();
 
             if (reconnected) {
@@ -199,21 +199,21 @@ class BLEConnectionTester {
     }
 
     async testMultiDevice() {
-        // console.log('Test 6: Multi-Device...');
+        console.log('Test 6: Multi-Device...');
 
         try {
             if (!window.BluetoothForegroundService) {
-                // console.log('⚠️ Foreground Service nicht verfügbar - überspringe');
+                console.log('⚠️ Foreground Service nicht verfügbar - überspringe');
                 return;
             }
 
             const devices = await window.BluetoothForegroundService.getAllDevices();
 
             if (devices.length > 1) {
-                // console.log(`📱 ${devices.length} Geräte gespeichert`);
+                console.log(`📱 ${devices.length} Geräte gespeichert`);
                 this.addResult('MULTI', `${devices.length} Geräte verwaltet`, true);
             } else {
-                // console.log('ℹ️ Nur 1 Gerät - Multi-Device Test übersprungen');
+                console.log('ℹ️ Nur 1 Gerät - Multi-Device Test übersprungen');
             }
 
         } catch (error) {
@@ -238,14 +238,14 @@ class BLEConnectionTester {
         const failed = this.testResults.filter(r => !r.success).length;
         const total = this.testResults.length;
 
-        // console.log(`Gesamt: ${total} | ✅ ${passed} | ❌ ${failed}`);
-        // console.log('');
+        console.log(`Gesamt: ${total} | ✅ ${passed} | ❌ ${failed}`);
+        console.log('');
 
         this.testResults.forEach(result => {
             const icon = result.success ? '✅' : '❌';
-            // console.log(`${icon} [${result.category}] ${result.test}`);
+            console.log(`${icon} [${result.category}] ${result.test}`);
             if (result.error) {
-                // console.log(`   └─ Fehler: ${result.error}`);
+                console.log(`   └─ Fehler: ${result.error}`);
             }
         });
 
@@ -265,7 +265,7 @@ class BLEConnectionTester {
      * Quick Test - nur Verbindung testen
      */
     async quickTest() {
-        // console.log('🚀 Quick Test: BLE Verbindung...');
+        console.log('🚀 Quick Test: BLE Verbindung...');
 
         try {
             if (!window.BLEControllerPro) {
@@ -275,17 +275,17 @@ class BLEConnectionTester {
             const isConnected = window.BLEControllerPro.isConnected;
 
             if (isConnected) {
-                // console.log('✅ Bereits verbunden');
+                console.log('✅ Bereits verbunden');
                 // Test mit einem Befehl
                 await window.BLEControllerPro.sendBrightness(100);
-                // console.log('✅ Befehl erfolgreich gesendet');
+                console.log('✅ Befehl erfolgreich gesendet');
                 return true;
             } else {
-                // console.log('⚠️ Nicht verbunden - versuche Reconnect...');
+                console.log('⚠️ Nicht verbunden - versuche Reconnect...');
                 const reconnected = await window.BLEControllerPro.reconnect();
 
                 if (reconnected) {
-                    // console.log('✅ Reconnect erfolgreich');
+                    console.log('✅ Reconnect erfolgreich');
                     return true;
                 } else {
                     console.error('❌ Reconnect fehlgeschlagen');
@@ -320,5 +320,5 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = BLEConnectionTester;
 }
 
-// console.log('✅ BLE Connection Tester geladen');
-// console.log('📝 Nutze: bleConnectionTester.runFullTest() oder bleConnectionTester.quickTest()');
+console.log('✅ BLE Connection Tester geladen');
+console.log('📝 Nutze: bleConnectionTester.runFullTest() oder bleConnectionTester.quickTest()');

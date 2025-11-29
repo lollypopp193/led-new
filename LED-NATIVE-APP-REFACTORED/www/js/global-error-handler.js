@@ -1,4 +1,4 @@
-﻿/**
+/**
  * GLOBAL ERROR HANDLER v1.0
  * Fängt alle unbehandelten Fehler und zeigt User-freundliche Meldungen
  */
@@ -29,7 +29,7 @@ class GlobalErrorHandler {
             event.preventDefault();
         });
 
-        // console.log('✅ Global Error Handler aktiv');
+        console.log('✅ Global Error Handler aktiv');
     }
 
     handleError(error, context = '') {
@@ -196,7 +196,7 @@ class GlobalErrorHandler {
 
     clearErrorLog() {
         this.errorLog = [];
-        // console.log('✅ Error log cleared');
+        console.log('✅ Error log cleared');
     }
 
     delay(ms) {
@@ -239,4 +239,4 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = GlobalErrorHandler;
 }
 
-// console.log('✅ Global Error Handler geladen');
+console.log('✅ Global Error Handler geladen');

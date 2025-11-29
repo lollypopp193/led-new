@@ -1,4 +1,4 @@
-﻿/**
+/**
  * PERMISSIONS-SEQUENCER.JS v1.0
  * Sequenzielle Berechtigungsabfrage - nacheinander wie bei professionellen Apps
  * User sieht für jede Permission einen eigenen Dialog
@@ -48,7 +48,7 @@ class PermissionsSequencer {
         this.currentIndex = 0;
         this.results = {};
 
-        // console.log('🔐 Starte sequenzielle Berechtigungsabfrage...');
+        console.log('🔐 Starte sequenzielle Berechtigungsabfrage...');
         await this.showNextPermission();
     }
 
@@ -59,7 +59,7 @@ class PermissionsSequencer {
         }
 
         const permission = this.permissions[this.currentIndex];
-        // console.log(`📋 Frage ${permission.title} an...`);
+        console.log(`📋 Frage ${permission.title} an...`);
 
         // DIREKT native Android Permission-Dialog anzeigen (ohne Vor-Dialog)
         // So wie bei normalen Android Apps
@@ -217,7 +217,7 @@ class PermissionsSequencer {
     }
 
     async requestPermission(permissionId) {
-        // console.log(`🔐 Fordere ${permissionId} an...`);
+        console.log(`🔐 Fordere ${permissionId} an...`);
 
         try {
             switch (permissionId) {
@@ -259,7 +259,7 @@ class PermissionsSequencer {
     }
 
     finish() {
-        // console.log('✅ Berechtigungen abgeschlossen:', this.results);
+        console.log('✅ Berechtigungen abgeschlossen:', this.results);
 
         // Alle erforderlichen Permissions prüfen
         const allRequired = this.permissions
@@ -281,7 +281,7 @@ class PermissionsSequencer {
 
     showSuccessMessage() {
         // Kein visuelles Feedback - App startet einfach (wie normale Android Apps)
-        // console.log('✅ Alle Berechtigungen erteilt - App startet...');
+        console.log('✅ Alle Berechtigungen erteilt - App startet...');
 
         // Optional: Dezente Toast-Benachrichtigung
         if (window.showNotification) {
@@ -291,7 +291,7 @@ class PermissionsSequencer {
 
     showWarningMessage() {
         // Dezente Warnung statt großes Popup
-        // console.log('⚠️ Einige Berechtigungen fehlen');
+        console.log('⚠️ Einige Berechtigungen fehlen');
 
         if (window.showNotification) {
             window.showNotification('Einige Funktionen eingeschränkt', 'warning');

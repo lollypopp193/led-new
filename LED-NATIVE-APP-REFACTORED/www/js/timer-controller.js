@@ -1,4 +1,4 @@
-﻿/**
+/**
  * TIMER-CONTROLLER.JS
  * Alle Timer-Funktionen aus Timer.html - KEIN Inline-JS
  */
@@ -214,15 +214,15 @@ async function executeLEDAction(action, timer) {
         switch (action) {
             case 'on':
                 await controller.turnOn();
-                // console.log('✅ Timer: LEDs eingeschaltet');
+                console.log('✅ Timer: LEDs eingeschaltet');
                 break;
             case 'off':
                 await controller.turnOff();
-                // console.log('✅ Timer: LEDs ausgeschaltet');
+                console.log('✅ Timer: LEDs ausgeschaltet');
                 break;
             case 'toggle':
                 await controller.toggle();
-                // console.log('✅ Timer: LEDs umgeschaltet');
+                console.log('✅ Timer: LEDs umgeschaltet');
                 break;
         }
 
@@ -303,7 +303,7 @@ function initTimerController() {
     renderTimerList();
     startTimerCheck();
 
-    // console.log('✅ Timer-Controller initialisiert');
+    console.log('✅ Timer-Controller initialisiert');
 }
 
 // Global Export
@@ -323,4 +323,4 @@ if (document.readyState === 'loading') {
     initTimerController();
 }
 
-// // console.log('✅ Timer-Controller geladen');
+// console.log('✅ Timer-Controller geladen');

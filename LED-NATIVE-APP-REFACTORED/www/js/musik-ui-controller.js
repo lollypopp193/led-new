@@ -1,4 +1,4 @@
-﻿/**
+/**
  * MUSIK-UI-CONTROLLER.JS
  * UI-Steuerung für musik.html - KEIN Inline-JS mehr
  */
@@ -180,7 +180,7 @@ Statistiken:
 }
 
 function activatePartyMode() {
-    // console.log('🎉 Party-Modus aktiviert');
+    console.log('🎉 Party-Modus aktiviert');
     showNotification('🎉 Party-Modus aktiviert!', 'success');
 }
 
@@ -230,4 +230,4 @@ window.resetTempoAndPitch = resetTempoAndPitch;
 // Auto-Init
 initTaskbarNavigation();
 
-// // console.log('✅ Musik-UI-Controller geladen');
+// console.log('✅ Musik-UI-Controller geladen');

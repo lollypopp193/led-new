@@ -1,4 +1,4 @@
-﻿/**
+/**
  * PERMISSIONS HANDLER - Berechtigungen beim App-Start abfragen
  * Integriert mit AndroidPermissionsManager für native Android Permissions
  * @version 3.0
@@ -27,16 +27,16 @@ const PermissionsHandler = {
             await window.AndroidPermissionsManager.init();
         }
 
-        // console.log('✅ PermissionsHandler initialisiert (Android:', this.isAndroid, ')');
+        console.log('✅ PermissionsHandler initialisiert (Android:', this.isAndroid, ')');
     },
 
     async requestAllPermissions() {
-        // console.log('📋 Fordere Berechtigungen an...');
+        console.log('📋 Fordere Berechtigungen an...');
 
         try {
             // Android Native Permissions über AndroidPermissionsManager
             if (this.isAndroid && window.AndroidPermissionsManager) {
-                // console.log('🤖 Nutze Android Permissions Manager');
+                console.log('🤖 Nutze Android Permissions Manager');
                 const results = await window.AndroidPermissionsManager.requestAllPermissions();
 
                 this.permissions.bluetooth = results.bluetooth?.granted || false;
@@ -44,12 +44,12 @@ const PermissionsHandler = {
                 this.permissions.storage = results.storage?.granted || false;
                 this.permissions.notifications = results.notifications?.granted || false;
 
-                // console.log('✅ Android Permissions abgefragt:', this.permissions);
+                console.log('✅ Android Permissions abgefragt:', this.permissions);
                 return this.permissions;
             }
 
             // Web Fallback
-            // console.log('🌐 Nutze Web Permissions');
+            console.log('🌐 Nutze Web Permissions');
 
             // Bluetooth Berechtigungen
             await this.requestBluetoothPermissions();
@@ -63,7 +63,7 @@ const PermissionsHandler = {
             // Benachrichtigungen
             await this.requestNotificationPermissions();
 
-            // console.log('✅ Alle Berechtigungen abgefragt');
+            console.log('✅ Alle Berechtigungen abgefragt');
             return this.permissions;
         } catch (error) {
             console.error('❌ Fehler bei Berechtigungen:', error);
@@ -77,11 +77,11 @@ const PermissionsHandler = {
                 // Capacitor Bluetooth LE Plugin
                 const result = await BluetoothLE.initialize({ request: true });
                 this.permissions.bluetooth = result.enabled;
-                // console.log('✅ Bluetooth Berechtigung:', result.enabled);
+                console.log('✅ Bluetooth Berechtigung:', result.enabled);
             } else if ('bluetooth' in navigator) {
                 // Web Bluetooth API
                 this.permissions.bluetooth = true;
-                // console.log('✅ Web Bluetooth verfügbar');
+                console.log('✅ Web Bluetooth verfügbar');
             }
         } catch (error) {
             console.warn('⚠️ Bluetooth Berechtigung fehlgeschlagen:', error);
@@ -93,12 +93,12 @@ const PermissionsHandler = {
             if (typeof Geolocation !== 'undefined') {
                 const position = await Geolocation.getCurrentPosition();
                 this.permissions.location = true;
-                // console.log('✅ Standort Berechtigung erteilt');
+                console.log('✅ Standort Berechtigung erteilt');
             } else if ('geolocation' in navigator) {
                 navigator.geolocation.getCurrentPosition(
                     () => {
                         this.permissions.location = true;
-                        // console.log('✅ Web Standort verfügbar');
+                        console.log('✅ Web Standort verfügbar');
                     },
                     (error) => {
                         console.warn('⚠️ Standort abgelehnt:', error);
@@ -116,11 +116,11 @@ const PermissionsHandler = {
                 // Capacitor Filesystem Plugin
                 const result = await Filesystem.requestPermissions();
                 this.permissions.storage = result.publicStorage === 'granted';
-                // console.log('✅ Speicher Berechtigung:', result.publicStorage);
+                console.log('✅ Speicher Berechtigung:', result.publicStorage);
             } else {
                 // Web Storage API ist immer verfügbar
                 this.permissions.storage = true;
-                // console.log('✅ Web Storage verfügbar');
+                console.log('✅ Web Storage verfügbar');
             }
         } catch (error) {
             console.warn('⚠️ Speicher Berechtigung fehlgeschlagen:', error);
@@ -133,7 +133,7 @@ const PermissionsHandler = {
                 if (Notification.permission === 'default') {
                     const result = await Notification.requestPermission();
                     this.permissions.notifications = result === 'granted';
-                    // console.log('✅ Benachrichtigungen:', result);
+                    console.log('✅ Benachrichtigungen:', result);
                 } else {
                     this.permissions.notifications = Notification.permission === 'granted';
                 }

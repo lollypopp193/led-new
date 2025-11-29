@@ -1,4 +1,4 @@
-﻿/**
+/**
  * UI-CLEANUP-MANAGER.JS
  * Entfernt überflüssige UI-Elemente automatisch
  * Scannen-Buttons, Starten-Buttons, Verarbeitet-Texte, etc.
@@ -16,7 +16,7 @@ class UICleanupManager {
      * Initialisiert den Cleanup-Manager
      */
     init() {
-        // console.log('🧹 UI-Cleanup-Manager gestartet');
+        console.log('🧹 UI-Cleanup-Manager gestartet');
         this.defineCleanupRules();
         this.performCleanup();
         this.observeDOM();
@@ -77,7 +77,7 @@ class UICleanupManager {
         this.removeSections();
         this.replaceTexts();
         this.fixVisualizationBlackScreen();
-        // console.log('✅ UI-Cleanup abgeschlossen');
+        console.log('✅ UI-Cleanup abgeschlossen');
     }
 
     /**
@@ -89,7 +89,7 @@ class UICleanupManager {
             const buttons = Array.from(document.querySelectorAll('button'));
             buttons.forEach(button => {
                 if (button.textContent.includes(buttonText) || button.id.includes(buttonText)) {
-                    // console.log(`🗑️ Entferne Button: ${buttonText}`);
+                    console.log(`🗑️ Entferne Button: ${buttonText}`);
                     button.style.display = 'none'; // Verstecken statt löschen (Rückwärtskompatibilität)
                 }
             });
@@ -107,7 +107,7 @@ class UICleanupManager {
         buttonIds.forEach(id => {
             const button = document.getElementById(id);
             if (button) {
-                // console.log(`🗑️ Entferne Button (ID): ${id}`);
+                console.log(`🗑️ Entferne Button (ID): ${id}`);
                 button.style.display = 'none';
             }
         });
@@ -132,7 +132,7 @@ class UICleanupManager {
                     // Verstecke Parent-Element
                     let parent = node.parentElement;
                     if (parent && !parent.classList.contains('ui-hidden')) {
-                        // console.log(`👻 Verstecke Text: "${hideText}"`);
+                        console.log(`👻 Verstecke Text: "${hideText}"`);
                         parent.classList.add('ui-hidden');
                         parent.style.display = 'none';
                     }
@@ -153,7 +153,7 @@ class UICleanupManager {
                     // Finde Parent-Section
                     const section = header.closest('section, .section, .settings-section');
                     if (section) {
-                        // console.log(`🗑️ Entferne Section: ${sectionName}`);
+                        console.log(`🗑️ Entferne Section: ${sectionName}`);
                         section.style.display = 'none';
                     } else {
                         // Kein Section-Container → Header selbst verstecken
@@ -179,7 +179,7 @@ class UICleanupManager {
             let node;
             while (node = walker.nextNode()) {
                 if (node.nodeValue && node.nodeValue.includes(from)) {
-                    // console.log(`✏️ Ersetze Text: "${from}" → "${to}"`);
+                    console.log(`✏️ Ersetze Text: "${from}" → "${to}"`);
                     node.nodeValue = node.nodeValue.replace(new RegExp(from, 'g'), to);
                 }
             }
@@ -196,7 +196,7 @@ class UICleanupManager {
         blackScreens.forEach(screen => {
             // Wenn Screen leer/schwarz ist und nicht gebraucht wird
             if (screen.children.length === 0 && !screen.textContent.trim()) {
-                // console.log('🖤 Entferne schwarzen Bildschirm in Visualisierung');
+                console.log('🖤 Entferne schwarzen Bildschirm in Visualisierung');
                 screen.style.display = 'none';
             }
         });
@@ -206,7 +206,7 @@ class UICleanupManager {
         vizSections.forEach(section => {
             const blackDiv = section.querySelector('div[style*="background: black"], div[style*="background:#000"]');
             if (blackDiv && blackDiv.children.length === 0) {
-                // console.log('🖤 Entferne schwarzen Bildschirm in Musik-Visualisierung');
+                console.log('🖤 Entferne schwarzen Bildschirm in Musik-Visualisierung');
                 blackDiv.style.display = 'none';
             }
         });

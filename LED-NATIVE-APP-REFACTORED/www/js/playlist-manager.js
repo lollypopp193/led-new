@@ -1,4 +1,4 @@
-﻿/**
+/**
  * PLAYLIST-MANAGER.JS
  * Playlisten erstellen, benennen, löschen, Lieder hinzufügen/entfernen
  */
@@ -19,7 +19,7 @@ class PlaylistManager {
             const saved = localStorage.getItem('userPlaylists');
             if (saved) {
                 this.playlists = JSON.parse(saved);
-                // console.log(`✅ ${this.playlists.length} Playlists geladen`);
+                console.log(`✅ ${this.playlists.length} Playlists geladen`);
             }
         } catch (error) {
             console.error('❌ Fehler beim Laden der Playlists:', error);
@@ -33,7 +33,7 @@ class PlaylistManager {
     savePlaylists() {
         try {
             localStorage.setItem('userPlaylists', JSON.stringify(this.playlists));
-            // console.log('💾 Playlists gespeichert');
+            console.log('💾 Playlists gespeichert');
         } catch (error) {
             console.error('❌ Fehler beim Speichern der Playlists:', error);
         }
@@ -60,7 +60,7 @@ class PlaylistManager {
         this.playlists.push(playlist);
         this.savePlaylists();
 
-        // console.log(`✅ Playlist erstellt: "${name}"`);
+        console.log(`✅ Playlist erstellt: "${name}"`);
         return playlist;
     }
 
@@ -80,7 +80,7 @@ class PlaylistManager {
         playlist.modified = new Date().toISOString();
         this.savePlaylists();
 
-        // console.log(`✏️ Playlist umbenannt: "${newName}"`);
+        console.log(`✏️ Playlist umbenannt: "${newName}"`);
         return true;
     }
 
@@ -98,7 +98,7 @@ class PlaylistManager {
         const deleted = this.playlists.splice(index, 1)[0];
         this.savePlaylists();
 
-        // console.log(`🗑️ Playlist gelöscht: "${deleted.name}"`);
+        console.log(`🗑️ Playlist gelöscht: "${deleted.name}"`);
         return true;
     }
 
@@ -124,7 +124,7 @@ class PlaylistManager {
         playlist.modified = new Date().toISOString();
         this.savePlaylists();
 
-        // console.log(`➕ Song zu Playlist hinzugefügt: "${song.title}" → "${playlist.name}"`);
+        console.log(`➕ Song zu Playlist hinzugefügt: "${song.title}" → "${playlist.name}"`);
         return true;
     }
 
@@ -150,7 +150,7 @@ class PlaylistManager {
         playlist.modified = new Date().toISOString();
         this.savePlaylists();
 
-        // console.log(`➖ Song aus Playlist entfernt: "${removed.title}"`);
+        console.log(`➖ Song aus Playlist entfernt: "${removed.title}"`);
         return true;
     }
 
@@ -211,7 +211,7 @@ class PlaylistManager {
             this.playlists.push(playlist);
             this.savePlaylists();
 
-            // console.log(`📥 Playlist importiert: "${playlist.name}" (${playlist.songs.length} Songs)`);
+            console.log(`📥 Playlist importiert: "${playlist.name}" (${playlist.songs.length} Songs)`);
             return playlist;
         } catch (error) {
             console.error('❌ Fehler beim Importieren:', error);

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * LED-SIDEBAR-SWIPE.JS
  * Von links nach rechts wischen → LED-Bänder Sidebar
  * Gruppen erstellen, LED-Bänder verwalten, verknüpfen
@@ -23,7 +23,7 @@ class LEDSidebarSwipe {
         this.createSidebar();
         this.setupSwipeGestures();
         this.loadDevices();
-        // console.log('✅ LED-Sidebar initialisiert');
+        console.log('✅ LED-Sidebar initialisiert');
     }
 
     /**
@@ -273,7 +273,7 @@ class LEDSidebarSwipe {
         this.sidebar.classList.add('open');
         this.isOpen = true;
         this.loadDevices();
-        // console.log('📂 LED-Sidebar geöffnet');
+        console.log('📂 LED-Sidebar geöffnet');
     }
 
     /**
@@ -282,7 +282,7 @@ class LEDSidebarSwipe {
     close() {
         this.sidebar.classList.remove('open');
         this.isOpen = false;
-        // console.log('📁 LED-Sidebar geschlossen');
+        console.log('📁 LED-Sidebar geschlossen');
     }
 
     /**
@@ -332,7 +332,7 @@ class LEDSidebarSwipe {
      * Device ein/ausschalten
      */
     toggleDevice(deviceId, enabled) {
-        // console.log(`🔘 LED-Band ${deviceId}:`, enabled ? 'EIN' : 'AUS');
+        console.log(`🔘 LED-Band ${deviceId}:`, enabled ? 'EIN' : 'AUS');
 
         if (window.deviceManager) {
             window.deviceManager.setDeviceEnabled(deviceId, enabled);
@@ -354,7 +354,7 @@ class LEDSidebarSwipe {
 
         this.groups.push(group);
         this.renderGroups();
-        // console.log(`✅ Gruppe erstellt: ${groupName}`);
+        console.log(`✅ Gruppe erstellt: ${groupName}`);
     }
 
     /**
@@ -376,7 +376,7 @@ class LEDSidebarSwipe {
      * Alle LED-Bänder verknüpfen
      */
     linkAll() {
-        // console.log('🔗 Alle LED-Bänder verknüpfen');
+        console.log('🔗 Alle LED-Bänder verknüpfen');
         this.devices.forEach(device => {
             device.linked = true;
         });
@@ -394,7 +394,7 @@ class LEDSidebarSwipe {
      * Alle LED-Bänder trennen
      */
     unlinkAll() {
-        // console.log('🔓 Alle LED-Bänder trennen');
+        console.log('🔓 Alle LED-Bänder trennen');
         this.devices.forEach(device => {
             device.linked = false;
         });
@@ -412,7 +412,7 @@ class LEDSidebarSwipe {
      * Alle LED-Bänder ein/ausschalten (Master-Toggle)
      */
     toggleAllDevices(enabled) {
-        // console.log(`🔘 Alle LED-Bänder: ${enabled ? 'EIN' : 'AUS'}`);
+        console.log(`🔘 Alle LED-Bänder: ${enabled ? 'EIN' : 'AUS'}`);
 
         this.devices.forEach(device => {
             device.enabled = enabled;
@@ -446,7 +446,7 @@ class LEDSidebarSwipe {
             device.linked = !device.linked;
             this.saveDevicesToStorage();
             this.renderDevices();
-            // console.log(`🔗 LED-Band ${deviceId}: ${device.linked ? 'verknüpft' : 'getrennt'}`);
+            console.log(`🔗 LED-Band ${deviceId}: ${device.linked ? 'verknüpft' : 'getrennt'}`);
         }
     }
 
@@ -454,7 +454,7 @@ class LEDSidebarSwipe {
      * LED-Bänder scannen
      */
     async scanDevices() {
-        // console.log('🔍 Scanne nach LED-Bändern...');
+        console.log('🔍 Scanne nach LED-Bändern...');
 
         const scanBtn = document.querySelector('.scan-btn');
         if (scanBtn) {
@@ -668,7 +668,7 @@ class LEDSidebarSwipe {
         if (window.showNotification) {
             window.showNotification(message, type);
         } else {
-            // console.log(`[${type.toUpperCase()}] ${message}`);
+            console.log(`[${type.toUpperCase()}] ${message}`);
         }
     }
 }

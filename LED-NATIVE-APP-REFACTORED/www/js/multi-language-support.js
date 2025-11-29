@@ -1,4 +1,4 @@
-﻿/**
+/**
  * MULTI-LANGUAGE-SUPPORT.JS
  * Vollständige Übersetzungen für DE, EN, ES, FR
  * Automatisches Umschalten der gesamten App-Sprache
@@ -19,7 +19,7 @@ class MultiLanguageSupport {
         this.loadTranslations();
         this.detectLanguage();
         this.applyLanguage(this.currentLanguage);
-        // console.log(`🌐 Multi-Language-Support initialisiert: ${this.currentLanguage}`);
+        console.log(`🌐 Multi-Language-Support initialisiert: ${this.currentLanguage}`);
     }
 
     /**
@@ -354,7 +354,7 @@ class MultiLanguageSupport {
             }
         });
 
-        // console.log(`🌐 Sprache angewendet: ${lang.toUpperCase()}`);
+        console.log(`🌐 Sprache angewendet: ${lang.toUpperCase()}`);
 
         // Event für andere Module
         document.dispatchEvent(new CustomEvent('languageChanged', {
@@ -376,7 +376,7 @@ class MultiLanguageSupport {
      * @param {string} lang - Neue Sprache
      */
     switchLanguage(lang) {
-        // console.log(`🌐 Wechsle Sprache zu: ${lang.toUpperCase()}`);
+        console.log(`🌐 Wechsle Sprache zu: ${lang.toUpperCase()}`);
         this.applyLanguage(lang);
 
         // Reload page um alle Texte neu zu laden

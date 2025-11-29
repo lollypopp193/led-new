@@ -1,4 +1,4 @@
-﻿/**
+/**
  * PERFORMANCE-OPTIMIZER.JS v3.0 - ZERO TOLERANCE IMPLEMENTATION
  * Performance-Monitoring & Optimierung für LED Native App
  */
@@ -16,13 +16,13 @@ class PerformanceOptimizer {
         this.lastFpsTime = performance.now();
         this.currentFPS = 0;
         this.init();
-        // console.log('✅ Performance-Optimizer initialisiert');
+        console.log('✅ Performance-Optimizer initialisiert');
     }
 
     init() {
         this.startMonitoring();
         this.setupOptimizations();
-        // console.log('🚀 Performance-Monitoring aktiv');
+        console.log('🚀 Performance-Monitoring aktiv');
     }
 
     startMonitoring() {
@@ -62,9 +62,9 @@ class PerformanceOptimizer {
 
     setupOptimizations() {
         if ('requestIdleCallback' in window) {
-            window.requestIdleCallback(function () { // console.log('💡 Idle Callback verfügbar'); });
+            window.requestIdleCallback(function () { console.log('💡 Idle Callback verfügbar'); });
         }
-        if ('IntersectionObserver' in window) { // console.log('💡 Intersection Observer verfügbar'); }
+        if ('IntersectionObserver' in window) { console.log('💡 Intersection Observer verfügbar'); }
         this.optimizeDOMOperations();
         this.optimizeEventListeners();
     }
@@ -127,7 +127,7 @@ class PerformanceOptimizer {
             }
         };
 
-        // console.log('✅ DOM-Optimierung aktiv');
+        console.log('✅ DOM-Optimierung aktiv');
     }
 
     optimizeEventListeners() {
@@ -153,7 +153,7 @@ class PerformanceOptimizer {
             };
         };
 
-        // console.log('✅ Event-Optimierung aktiv');
+        console.log('✅ Event-Optimierung aktiv');
     }
 
     calculateTrend(values) {
@@ -164,7 +164,7 @@ class PerformanceOptimizer {
     }
 
     performGarbageCollection() {
-        // console.log('🗑️ Garbage Collection...');
+        console.log('🗑️ Garbage Collection...');
         if (window.gc) window.gc();
         else {
             var arr = [];
@@ -193,11 +193,11 @@ class PerformanceOptimizer {
     }
 
     logPerformanceMetrics() {
-        // console.log('📊 Performance Metrics:');
-        // console.log('  FPS:', this.currentFPS, '(Avg:', this.getAverageFPS().toFixed(1) + ')');
-        // console.log('  Latency:', this.getAverageLatency().toFixed(2) + 'ms');
+        console.log('📊 Performance Metrics:');
+        console.log('  FPS:', this.currentFPS, '(Avg:', this.getAverageFPS().toFixed(1) + ')');
+        console.log('  Latency:', this.getAverageLatency().toFixed(2) + 'ms');
         const mem = this.getCurrentMemoryUsage();
-        if (mem) // console.log('  Memory:', (mem.used / 1048576).toFixed(2) + 'MB (' + mem.percent + '%)');
+        if (mem) console.log('  Memory:', (mem.used / 1048576).toFixed(2) + 'MB (' + mem.percent + '%)');
     }
 
     getPerformanceReport() {
@@ -238,14 +238,14 @@ class PerformanceOptimizer {
     }
 
     enableLowPowerMode() {
-        // console.log('🔋 Low Power Mode aktiviert');
+        console.log('🔋 Low Power Mode aktiviert');
         this.throttleTime = 50;
         this.batchSize = 5;
         if (window.ledController) window.ledController.commandDelay = 100;
     }
 
     enableHighPerformanceMode() {
-        // console.log('⚡ High Performance Mode aktiviert');
+        console.log('⚡ High Performance Mode aktiviert');
         this.throttleTime = 8;
         this.batchSize = 20;
         if (window.ledController) window.ledController.commandDelay = 20;
@@ -255,12 +255,12 @@ class PerformanceOptimizer {
         this.metrics = { commandLatency: [], frameRate: [], memoryUsage: [], bluetoothLatency: [] };
         this.commandQueue = [];
         this.lastCommandTime = 0;
-        // console.log('🔄 Performance-Optimizer zurückgesetzt');
+        console.log('🔄 Performance-Optimizer zurückgesetzt');
     }
 }
 
 window.PerformanceOptimizer = PerformanceOptimizer;
 window.performanceOptimizer = new PerformanceOptimizer();
-// console.log('✅ Performance-Optimizer global verfügbar als window.performanceOptimizer');
+console.log('✅ Performance-Optimizer global verfügbar als window.performanceOptimizer');
 
 if (typeof module !== 'undefined' && module.exports) module.exports = PerformanceOptimizer;

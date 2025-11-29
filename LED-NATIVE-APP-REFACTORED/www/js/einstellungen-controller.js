@@ -1,4 +1,4 @@
-﻿/**
+/**
  * EINSTELLUNGEN-CONTROLLER.JS
  * Alle Einstellungs-Funktionen aus Einstellungen.html - KEIN Inline-JS
  */
@@ -17,17 +17,17 @@ async function initBLE() {
         // Priorität 1: Globaler BLEControllerPro verwenden
         if (window.BLEControllerPro || window.bleControllerPro) {
             bleController = window.BLEControllerPro || window.bleControllerPro;
-            // console.log('✅ BLEControllerPro verwendet');
+            console.log('✅ BLEControllerPro verwendet');
         }
         // Priorität 2: Globaler ledController
         else if (window.ledController) {
             bleController = window.ledController;
-            // console.log('✅ Globaler LED-Controller verwendet');
+            console.log('✅ Globaler LED-Controller verwendet');
         }
         // Priorität 3: BluetoothForegroundService
         else if (window.BluetoothForegroundService) {
             bleController = window.BluetoothForegroundService;
-            // console.log('✅ Bluetooth Foreground Service verwendet');
+            console.log('✅ Bluetooth Foreground Service verwendet');
         }
         // Fallback: Alte BLEController-Klasse
         else if (typeof BLEController !== 'undefined') {
@@ -35,7 +35,7 @@ async function initBLE() {
             if (bleController.init && typeof bleController.init === 'function') {
                 await bleController.init();
             }
-            // console.log('✅ Neuer BLE-Controller erstellt');
+            console.log('✅ Neuer BLE-Controller erstellt');
         } else {
             console.warn('⚠️ Kein BLE-Controller verfügbar - App läuft im Offline-Modus');
             bleController = null;
@@ -47,7 +47,7 @@ async function initBLE() {
         updateConnectionStatus();
     } catch (error) {
         console.error('❌ BLE-Initialisierung fehlgeschlagen:', error);
-        // console.log('ℹ️ App läuft im Offline-Modus');
+        console.log('ℹ️ App läuft im Offline-Modus');
         bleController = null;
         updateConnectionStatus('⚠️ Offline-Modus');
     }
@@ -270,7 +270,7 @@ function updateBrightness(value) {
     if (window.parent && window.parent.ledController && window.parent.ledController.isConnected) {
         try {
             window.parent.ledController.setBrightness(brightness);
-            // console.log(`🔆 Helligkeit auf ${brightness}% gesetzt`);
+            console.log(`🔆 Helligkeit auf ${brightness}% gesetzt`);
         } catch (error) {
             console.error('Fehler beim Setzen der Helligkeit:', error);
         }
@@ -352,13 +352,13 @@ function saveSettings() {
 // loadSavedDevices() ist weiter unten vollständig implementiert (Zeile 846+)
 
 async function autoConnectDevices() {
-    // console.log('🔄 Auto-Connect startet...');
+    console.log('🔄 Auto-Connect startet...');
     try {
         // Gespeicherte Geräte aus LocalStorage laden
         const savedDevices = JSON.parse(localStorage.getItem('savedBLEDevices') || '[]');
 
         if (savedDevices.length === 0) {
-            // console.log('ℹ️ Keine gespeicherten Geräte für Auto-Connect');
+            console.log('ℹ️ Keine gespeicherten Geräte für Auto-Connect');
             return;
         }
 
@@ -366,10 +366,10 @@ async function autoConnectDevices() {
         if (window.BluetoothForegroundService) {
             for (const device of savedDevices) {
                 if (device.autoConnect) {
-                    // console.log(`🔗 Verbinde automatisch mit: ${device.name || device.deviceId}`);
+                    console.log(`🔗 Verbinde automatisch mit: ${device.name || device.deviceId}`);
                     try {
                         await window.BluetoothForegroundService.connect(device.deviceId);
-                        // console.log(`✅ Verbunden mit: ${device.name}`);
+                        console.log(`✅ Verbunden mit: ${device.name}`);
                         if (window.showNotification) {
                             window.showNotification(`Verbunden mit ${device.name}`, 'success');
                         }
@@ -383,7 +383,7 @@ async function autoConnectDevices() {
         else if (bleController && bleController.connect) {
             const primaryDevice = savedDevices.find(d => d.isPrimary) || savedDevices[0];
             if (primaryDevice) {
-                // console.log(`🔗 Verbinde mit Hauptgerät: ${primaryDevice.name}`);
+                console.log(`🔗 Verbinde mit Hauptgerät: ${primaryDevice.name}`);
                 await bleController.connect(primaryDevice.deviceId);
             }
         }
@@ -511,7 +511,7 @@ function initEinstellungenController() {
             // Wenn i18n vorhanden, Sprache wechseln
             if (window.i18n && window.i18n.setLanguage) {
                 window.i18n.setLanguage(selectedLang);
-                // console.log('✅ Sprache gewechselt zu:', selectedLang);
+                console.log('✅ Sprache gewechselt zu:', selectedLang);
             }
 
             // Optional: Seite neu laden für vollständige Sprachumstellung
@@ -521,7 +521,7 @@ function initEinstellungenController() {
         });
     }
 
-    // console.log('✅ Einstellungen-Controller initialisiert');
+    console.log('✅ Einstellungen-Controller initialisiert');
 }
 
 // Global Export
@@ -551,7 +551,7 @@ if (document.readyState === 'loading') {
 async function scanForNewDevice() {
     try {
         if (window.BluetoothForegroundService) {
-            // console.log('🔍 Starte Geräte-Scan...');
+            console.log('🔍 Starte Geräte-Scan...');
             await startScan('smart');
         } else if (window.BLEControllerPro) {
             await window.BLEControllerPro.scanForDevices();
@@ -565,7 +565,7 @@ async function scanForNewDevice() {
 }
 
 function toggleAutoReconnect(enabled) {
-    // console.log('🔄 Auto-Reconnect:', enabled ? 'AN' : 'AUS');
+    console.log('🔄 Auto-Reconnect:', enabled ? 'AN' : 'AUS');
     localStorage.setItem('autoReconnect', enabled);
     if (window.BluetoothForegroundService) {
         window.BluetoothForegroundService.setAutoReconnect(enabled);
@@ -573,7 +573,7 @@ function toggleAutoReconnect(enabled) {
 }
 
 function toggleForegroundService(enabled) {
-    // console.log('🔔 Foreground Service:', enabled ? 'AN' : 'AUS');
+    console.log('🔔 Foreground Service:', enabled ? 'AN' : 'AUS');
     if (window.BluetoothForegroundService) {
         if (enabled) {
             window.BluetoothForegroundService.startForegroundService();
@@ -584,7 +584,7 @@ function toggleForegroundService(enabled) {
 }
 
 function editDevice(deviceId) {
-    // console.log('✏️ Bearbeite Gerät:', deviceId);
+    console.log('✏️ Bearbeite Gerät:', deviceId);
     alert('Geräte-Bearbeitung - Coming Soon');
 }
 
@@ -606,7 +606,7 @@ async function connectDevice(deviceId) {
 // MUSIKBIBLIOTHEK
 async function scanMediaStore() {
     try {
-        // console.log('📱 Scanne MediaStore...');
+        console.log('📱 Scanne MediaStore...');
         document.getElementById('scanProgress').style.display = 'block';
 
         if (window.AndroidMusicScanner) {
@@ -626,7 +626,7 @@ async function scanMediaStore() {
 
 async function requestSAFAccess() {
     try {
-        // console.log('📂 SAF Zugriff anfordern...');
+        console.log('📂 SAF Zugriff anfordern...');
         if (window.AndroidMusicScanner) {
             await window.AndroidMusicScanner.requestSAFAccess();
             await window.AndroidMusicScanner.scanSAFFolder();
@@ -640,18 +640,18 @@ async function requestSAFAccess() {
 }
 
 function cancelScan() {
-    // console.log('⏹️ Scan abbrechen');
+    console.log('⏹️ Scan abbrechen');
     document.getElementById('scanProgress').style.display = 'none';
 }
 
 function toggleAutoScan(enabled) {
-    // console.log('🔄 Auto-Scan:', enabled ? 'AN' : 'AUS');
+    console.log('🔄 Auto-Scan:', enabled ? 'AN' : 'AUS');
     localStorage.setItem('autoScanMusic', enabled);
 }
 
 // MUSIK-REAKTION
 function loadReactionPreset(preset) {
-    // console.log('🎵 Lade Preset:', preset);
+    console.log('🎵 Lade Preset:', preset);
     const presets = {
         balanced: { sensitivity: 1.0, smoothing: 0.7, speed: 1.0 },
         'bass-heavy': { sensitivity: 1.5, smoothing: 0.5, speed: 1.2 },
@@ -690,7 +690,7 @@ function updateSpeed(value) {
 }
 
 function toggleBeatDetection(enabled) {
-    // console.log('💓 Beat-Detection:', enabled ? 'AN' : 'AUS');
+    console.log('💓 Beat-Detection:', enabled ? 'AN' : 'AUS');
     localStorage.setItem('beatDetection', enabled);
 }
 
@@ -1196,4 +1196,4 @@ window.applySceneFromManager = applySceneFromManager;
 window.createNewScene = createNewScene;
 window.toggleVoiceControl = toggleVoiceControl;
 
-// // console.log('✅ Einstellungen-Controller geladen');
+// console.log('✅ Einstellungen-Controller geladen');

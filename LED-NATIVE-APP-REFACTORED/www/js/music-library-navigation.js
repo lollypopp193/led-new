@@ -1,4 +1,4 @@
-﻿/**
+/**
  * MUSIC-LIBRARY-NAVIGATION.JS
  * Interpreten → Lieder, Alben → Lieder Navigation
  * Breadcrumb-Navigation, Zurück-Button, Suche, Sortierung
@@ -23,7 +23,7 @@ class MusicLibraryNavigation {
      */
     init() {
         this.loadAllSongs();
-        // console.log('✅ Musik-Bibliothek-Navigation initialisiert');
+        console.log('✅ Musik-Bibliothek-Navigation initialisiert');
     }
 
     /**
@@ -32,7 +32,7 @@ class MusicLibraryNavigation {
     async loadAllSongs() {
         if (window.MusicLibraryManager) {
             this.allSongs = await window.MusicLibraryManager.getAllSongs();
-            // console.log(`📚 ${this.allSongs.length} Lieder geladen`);
+            console.log(`📚 ${this.allSongs.length} Lieder geladen`);
         }
     }
 
@@ -220,7 +220,7 @@ class MusicLibraryNavigation {
      * Sortier-Menü anzeigen
      */
     showSortMenu() {
-        // console.log('📊 Sortier-Menü');
+        console.log('📊 Sortier-Menü');
 
         // Sortier-Optionen
         const sortOptions = [
@@ -337,7 +337,7 @@ class MusicLibraryNavigation {
      * Lied abspielen
      */
     playSong(index) {
-        // console.log('▶️ Spiele Lied ab:', index);
+        console.log('▶️ Spiele Lied ab:', index);
         if (window.musikPlayer) {
             window.musikPlayer.playSongAtIndex(index);
         }
@@ -348,7 +348,7 @@ class MusicLibraryNavigation {
      */
     toggleFavorite(songId, event) {
         event.stopPropagation();
-        // console.log('⭐ Favorit umschalten:', songId);
+        console.log('⭐ Favorit umschalten:', songId);
 
         if (window.MusicLibraryManager) {
             window.MusicLibraryManager.toggleFavorite(songId);

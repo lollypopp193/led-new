@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Crossfade Controller
  * Nahtlose Übergänge zwischen Tracks mit verschiedenen Fade-Kurven
  */
@@ -39,7 +39,7 @@ class CrossfadeController {
         this.gainNodes.current.gain.value = 1.0;
         this.gainNodes.next.gain.value = 0.0;
 
-        // console.log('✅ Crossfade-System initialisiert');
+        console.log('✅ Crossfade-System initialisiert');
     }
 
     /**
@@ -66,7 +66,7 @@ class CrossfadeController {
                 this.nextAudio = audio;
             }
 
-            // console.log(`🔊 Audio verbunden: ${channel}`);
+            console.log(`🔊 Audio verbunden: ${channel}`);
         } catch (err) {
             console.error(`❌ Fehler beim Verbinden von ${channel}:`, err);
         }
@@ -87,7 +87,7 @@ class CrossfadeController {
         }
 
         this.isFading = true;
-        // console.log(`🎚️ Crossfade startet: ${this.duration}s (${this.type})`);
+        console.log(`🎚️ Crossfade startet: ${this.duration}s (${this.type})`);
 
         const startTime = Date.now();
         const duration = this.duration * 1000; // ms
@@ -170,7 +170,7 @@ class CrossfadeController {
         this.gainNodes.next.gain.value = 0.0;
 
         this.isFading = false;
-        // console.log('✅ Crossfade beendet');
+        console.log('✅ Crossfade beendet');
 
         if (window.showGlobalNotification) {
             window.showGlobalNotification('Track-Wechsel abgeschlossen', 'success');
@@ -187,7 +187,7 @@ class CrossfadeController {
         if (this.nextAudio) {
             this.nextAudio.src = url;
             this.nextAudio.load();
-            // console.log('📥 Next-Track vorgeladen:', url);
+            console.log('📥 Next-Track vorgeladen:', url);
         }
     }
 
@@ -290,7 +290,7 @@ class CrossfadeController {
             if (saved) {
                 const state = JSON.parse(saved);
                 Object.assign(this, state);
-                // console.log('📥 Crossfade-State geladen:', state);
+                console.log('📥 Crossfade-State geladen:', state);
             }
         } catch (err) {
             console.error('❌ Fehler beim Laden von Crossfade:', err);
@@ -352,7 +352,7 @@ class CrossfadeController {
         }
 
         this.updateUI();
-        // console.log('🎛️ Crossfade UI gebunden');
+        console.log('🎛️ Crossfade UI gebunden');
     }
 }
 
@@ -369,4 +369,4 @@ if (document.readyState === 'loading') {
 // Export
 window.crossfadeController = crossfadeController;
 
-// console.log('✅ Crossfade-Controller geladen');
+console.log('✅ Crossfade-Controller geladen');

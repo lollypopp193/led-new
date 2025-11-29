@@ -1,4 +1,4 @@
-﻿/**
+/**
  * QUICK ACTIONS v1.0
  * Schnellzugriff & Shortcuts für häufige Aktionen
  */
@@ -15,7 +15,7 @@ class QuickActions {
         this.setupKeyboardShortcuts();
         // Quick Access Menu deaktiviert für native App
         // this.createQuickAccessMenu();
-        // console.log('✅ Quick Actions initialisiert (Keyboard Shortcuts only)');
+        console.log('✅ Quick Actions initialisiert (Keyboard Shortcuts only)');
     }
 
     registerDefaultActions() {
@@ -143,7 +143,7 @@ class QuickActions {
             }
         });
 
-        // console.log(`✅ ${this.actions.size} Quick Actions registriert`);
+        console.log(`✅ ${this.actions.size} Quick Actions registriert`);
     }
 
     registerAction(id, action) {
@@ -179,7 +179,7 @@ class QuickActions {
             });
         });
 
-        // console.log('⌨️ Keyboard Shortcuts aktiviert');
+        console.log('⌨️ Keyboard Shortcuts aktiviert');
     }
 
     matchShortcut(event, shortcut) {
@@ -212,7 +212,7 @@ class QuickActions {
             return;
         }
 
-        // console.log(`⚡ Execute: ${action.name}`);
+        console.log(`⚡ Execute: ${action.name}`);
 
         try {
             await action.handler();
@@ -262,7 +262,7 @@ class QuickActions {
         });
 
         document.body.appendChild(fab);
-        // console.log('✅ Quick Actions FAB erstellt');
+        console.log('✅ Quick Actions FAB erstellt');
     }
 
     showQuickActionsMenu() {
@@ -412,6 +412,6 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = QuickActions;
 }
 
-// console.log('✅ Quick Actions geladen');
-// console.log('💡 Klicke ⚡ Button unten rechts für Quick Actions');
-// console.log('⌨️ Keyboard Shortcuts: Ctrl+B (Connect), Ctrl+L (LED On), Space (Play/Pause)');
+console.log('✅ Quick Actions geladen');
+console.log('💡 Klicke ⚡ Button unten rechts für Quick Actions');
+console.log('⌨️ Keyboard Shortcuts: Ctrl+B (Connect), Ctrl+L (LED On), Space (Play/Pause)');

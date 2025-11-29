@@ -1,4 +1,4 @@
-﻿/**
+/**
  * SLIDER-LIVE-VALUES.JS v3.0 - ZERO TOLERANCE
  * Zeigt Live-Werte bei ALLEN Slidern + Spezial-Formate
  */
@@ -17,14 +17,14 @@ class SliderLiveValueManager {
         } else {
             this.setupSliders();
         }
-        // console.log('✅ Slider Live Value Manager v3.0');
+        console.log('✅ Slider Live Value Manager v3.0');
     }
 
     setupSliders() {
         const sliders = document.querySelectorAll('input[type="range"]');
         sliders.forEach(slider => this.attachLiveValue(slider));
         this.observeDOM();
-        // console.log(`✅ ${sliders.length} Slider mit Live-Werten`);
+        console.log(`✅ ${sliders.length} Slider mit Live-Werten`);
     }
 
     attachLiveValue(slider) {
@@ -148,4 +148,4 @@ class SliderLiveValueManager {
 window.SliderLiveValueManager = SliderLiveValueManager;
 window.sliderLiveValueManager = new SliderLiveValueManager();
 
-// console.log('✅ Slider Live Values v3.0 geladen');
+console.log('✅ Slider Live Values v3.0 geladen');

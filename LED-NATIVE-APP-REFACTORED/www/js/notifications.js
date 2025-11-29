@@ -1,4 +1,4 @@
-﻿/**
+/**
  * NOTIFICATIONS.JS - Zentrale Notification-Verwaltung
  * @version 1.0.0
  * Eliminiert Duplikate über alle HTML-Seiten
@@ -190,4 +190,4 @@ window.showInfo = showInfo;
 // Alias für Kompatibilität
 window.showGlobalNotification = showNotification;
 
-// console.log('✅ Notification-System geladen');
+console.log('✅ Notification-System geladen');

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * i18n - Internationalisierung für LED Native App v3.0
  * Unterstützt Deutsch, Englisch, Spanisch, Französisch
  * AUTO-AKTIVIERT beim App-Start
@@ -13,7 +13,7 @@ const i18n = {
         const browserLang = (navigator.language || navigator.userLanguage || 'de').split('-')[0];
         const savedLang = localStorage.getItem('app-language');
         this.currentLanguage = savedLang || (this.translations[browserLang] ? browserLang : this.fallbackLanguage);
-        // console.log(`🌍 i18n aktiviert: ${this.currentLanguage}`);
+        console.log(`🌍 i18n aktiviert: ${this.currentLanguage}`);
     },
 
     setLanguage(lang) {
@@ -21,7 +21,7 @@ const i18n = {
             this.currentLanguage = lang;
             localStorage.setItem('app-language', lang);
             this.updateDOM();
-            // console.log(`🌍 Sprache geändert: ${lang}`);
+            console.log(`🌍 Sprache geändert: ${lang}`);
         }
     },
 
@@ -620,4 +620,4 @@ window.i18n = i18n;
 window.__ = (key) => i18n.t(key); // Shortcut-Funktion
 window.setLanguage = (lang) => i18n.setLanguage(lang); // Helper für UI
 
-// console.log('✅ i18n-System v3.0 geladen - Sprache:', i18n.currentLanguage);
+console.log('✅ i18n-System v3.0 geladen - Sprache:', i18n.currentLanguage);

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * VOICE COMMANDS v1.0
  * Sprachsteuerung für Hände-frei Bedienung
  */
@@ -19,7 +19,7 @@ class VoiceCommands {
             this.setupRecognition();
             this.registerDefaultCommands();
         }
-        // console.log('✅ Voice Commands initialisiert');
+        console.log('✅ Voice Commands initialisiert');
     }
 
     checkSupport() {
@@ -44,7 +44,7 @@ class VoiceCommands {
 
         this.recognition.onresult = (event) => {
             const transcript = event.results[0][0].transcript.toLowerCase();
-            // console.log('🎤 Erkannt:', transcript);
+            console.log('🎤 Erkannt:', transcript);
             this.processCommand(transcript);
         };
 
@@ -55,7 +55,7 @@ class VoiceCommands {
 
         this.recognition.onend = () => {
             this.isListening = false;
-            // console.log('🎤 Listening gestoppt');
+            console.log('🎤 Listening gestoppt');
         };
     }
 
@@ -180,7 +180,7 @@ class VoiceCommands {
             }
         });
 
-        // console.log(`✅ ${this.commands.size} Voice Commands registriert`);
+        console.log(`✅ ${this.commands.size} Voice Commands registriert`);
     }
 
     registerCommand(triggers, command) {
@@ -199,7 +199,7 @@ class VoiceCommands {
         // Check for exact matches first
         for (const [trigger, command] of this.commands.entries()) {
             if (transcript.includes(trigger)) {
-                // console.log(`✅ Command gefunden: ${command.name}`);
+                console.log(`✅ Command gefunden: ${command.name}`);
                 command.handler();
                 commandFound = true;
                 break;
@@ -207,7 +207,7 @@ class VoiceCommands {
         }
 
         if (!commandFound) {
-            // console.log('❌ Kein Command gefunden für:', transcript);
+            console.log('❌ Kein Command gefunden für:', transcript);
             this.speak('Befehl nicht erkannt');
         }
     }
@@ -235,7 +235,7 @@ class VoiceCommands {
         try {
             this.recognition.start();
             this.isListening = true;
-            // console.log('🎤 Listening gestartet');
+            console.log('🎤 Listening gestartet');
 
             this.showListeningIndicator();
 
@@ -253,7 +253,7 @@ class VoiceCommands {
         this.recognition.stop();
         this.isListening = false;
         this.hideListeningIndicator();
-        // console.log('🎤 Listening gestoppt');
+        console.log('🎤 Listening gestoppt');
     }
 
     showListeningIndicator() {
@@ -332,9 +332,9 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = VoiceCommands;
 }
 
-// console.log('✅ Voice Commands geladen');
+console.log('✅ Voice Commands geladen');
 if (window.voiceCommands.isAvailable()) {
-    // console.log('🎤 Nutze: voiceCommands.startListening()');
+    console.log('🎤 Nutze: voiceCommands.startListening()');
 } else {
-    // console.log('⚠️ Speech Recognition nicht verfügbar in diesem Browser');
+    console.log('⚠️ Speech Recognition nicht verfügbar in diesem Browser');
 }

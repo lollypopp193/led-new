@@ -1,4 +1,4 @@
-﻿/**
+/**
  * PRESET-MANAGER.JS - Vollständiges Preset-System
  * Speichert/Lädt komplette Konfigurationen: Farbe + Effekt + LED-Mapping + Audio-Settings
  * @version 1.0
@@ -26,8 +26,8 @@ class PresetManager {
     init() {
         this.loadPresets();
         this.loadActivePreset();
-        // console.log('✅ Preset Manager initialisiert');
-        // console.log(`📋 ${Object.keys(this.presets).length} Presets geladen`);
+        console.log('✅ Preset Manager initialisiert');
+        console.log(`📋 ${Object.keys(this.presets).length} Presets geladen`);
     }
 
     /**
@@ -389,7 +389,7 @@ class PresetManager {
         this.presets[sanitizedName] = preset;
         this.savePresets();
 
-        // console.log(`✅ Preset erstellt: ${sanitizedName}`);
+        console.log(`✅ Preset erstellt: ${sanitizedName}`);
         return preset;
     }
 
@@ -493,7 +493,7 @@ class PresetManager {
             return false;
         }
 
-        // console.log(`🎨 Wende Preset an: ${name}`);
+        console.log(`🎨 Wende Preset an: ${name}`);
 
         // Farbe anwenden
         if (preset.color) {
@@ -527,7 +527,7 @@ class PresetManager {
         // Event dispatchen
         window.dispatchEvent(new CustomEvent('presetApplied', { detail: preset }));
 
-        // console.log(`✅ Preset angewendet: ${name}`);
+        console.log(`✅ Preset angewendet: ${name}`);
         return true;
     }
 
@@ -690,7 +690,7 @@ class PresetManager {
         this.presets[name].updatedAt = Date.now();
         this.savePresets();
 
-        // console.log(`✅ Preset aktualisiert: ${name}`);
+        console.log(`✅ Preset aktualisiert: ${name}`);
         return true;
     }
 
@@ -711,7 +711,7 @@ class PresetManager {
         delete this.presets[name];
         this.savePresets();
 
-        // console.log(`✅ Preset gelöscht: ${name}`);
+        console.log(`✅ Preset gelöscht: ${name}`);
         return true;
     }
 
@@ -743,7 +743,7 @@ class PresetManager {
 
         this.savePresets();
 
-        // console.log(`✅ Preset umbenannt: ${oldName} → ${newName}`);
+        console.log(`✅ Preset umbenannt: ${oldName} → ${newName}`);
         return true;
     }
 
@@ -814,7 +814,7 @@ class PresetManager {
             this.presets[name] = preset;
             this.savePresets();
 
-            // console.log(`✅ Preset importiert: ${name}`);
+            console.log(`✅ Preset importiert: ${name}`);
             return preset;
         } catch (error) {
             console.error('❌ Import-Fehler:', error);
@@ -855,7 +855,7 @@ class PresetManager {
                 }
             }
 
-            // console.log(`✅ ${imported} Presets importiert`);
+            console.log(`✅ ${imported} Presets importiert`);
             return imported;
         } catch (error) {
             console.error('❌ Import-Fehler:', error);
@@ -891,14 +891,14 @@ class PresetManager {
         this.presets = { ...this.defaultPresets };
         this.savePresets();
         this.loadActivePreset();
-        // console.log('🔄 Presets auf Werkseinstellungen zurückgesetzt');
+        console.log('🔄 Presets auf Werkseinstellungen zurückgesetzt');
     }
 }
 
 // Global verfügbar machen
 window.PresetManager = PresetManager;
 window.presetManager = new PresetManager();
-// console.log('✅ Preset Manager global verfügbar als window.presetManager');
+console.log('✅ Preset Manager global verfügbar als window.presetManager');
 
 // Export für Module
 if (typeof module !== 'undefined' && module.exports) {

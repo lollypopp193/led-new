@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ADVANCED VISUALIZER v1.0
  * Erweiterte Audio-Visualisierung mit Canvas
  */
@@ -22,7 +22,7 @@ class AdvancedVisualizer {
     init() {
         this.createCanvas();
         this.setupAudioContext();
-        // console.log('✅ Advanced Visualizer initialisiert');
+        console.log('✅ Advanced Visualizer initialisiert');
     }
 
     createCanvas() {
@@ -72,7 +72,7 @@ class AdvancedVisualizer {
             const source = this.audioContext.createMediaElementSource(audioElement);
             source.connect(this.analyser);
             this.analyser.connect(this.audioContext.destination);
-            // console.log('✅ Audio Element verbunden');
+            console.log('✅ Audio Element verbunden');
         } catch (error) {
             console.warn('⚠️ Audio bereits verbunden oder Fehler:', error);
         }
@@ -95,7 +95,7 @@ class AdvancedVisualizer {
         }
 
         this.animate();
-        // console.log(`🎨 Visualizer gestartet (${mode})`);
+        console.log(`🎨 Visualizer gestartet (${mode})`);
     }
 
     stop() {
@@ -111,7 +111,7 @@ class AdvancedVisualizer {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         }
 
-        // console.log('⏹️ Visualizer gestoppt');
+        console.log('⏹️ Visualizer gestoppt');
     }
 
     animate() {
@@ -279,7 +279,7 @@ class AdvancedVisualizer {
 
     setMode(mode) {
         this.mode = mode;
-        // console.log(`🎨 Visualizer Mode: ${mode}`);
+        console.log(`🎨 Visualizer Mode: ${mode}`);
     }
 
     setOpacity(opacity) {
@@ -311,5 +311,5 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = AdvancedVisualizer;
 }
 
-// console.log('✅ Advanced Visualizer geladen');
-// console.log('🎨 Modes: bars, circle, wave, particles');
+console.log('✅ Advanced Visualizer geladen');
+console.log('🎨 Modes: bars, circle, wave, particles');

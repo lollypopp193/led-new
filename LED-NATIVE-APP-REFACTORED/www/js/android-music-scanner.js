@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ANDROID MUSIC SCANNER - MediaStore + Storage Access Framework Integration
  * Native Android Musikzugriff über Capacitor Filesystem Plugin
  * @version 1.0
@@ -38,14 +38,14 @@ const AndroidMusicScanner = {
      * Initialisierung
      */
     async init() {
-        // console.log('🎵 Android Music Scanner initialisieren...');
+        console.log('🎵 Android Music Scanner initialisieren...');
 
         // Prüfen ob Android Environment
         if (typeof Capacitor !== 'undefined' && Capacitor.getPlatform() === 'android') {
-            // console.log('✅ Android Environment erkannt');
+            console.log('✅ Android Environment erkannt');
             return true;
         } else {
-            // console.log('🌐 Web Environment - SAF nicht verfügbar');
+            console.log('🌐 Web Environment - SAF nicht verfügbar');
             return false;
         }
     },
@@ -55,7 +55,7 @@ const AndroidMusicScanner = {
      * Verwendet Capacitor Filesystem Plugin
      */
     async scanMediaStore() {
-        // console.log('📂 Scanne MediaStore...');
+        console.log('📂 Scanne MediaStore...');
 
         if (typeof Capacitor === 'undefined' || Capacitor.getPlatform() !== 'android') {
             console.warn('⚠️ MediaStore nur auf Android verfügbar');
@@ -89,7 +89,7 @@ const AndroidMusicScanner = {
                 await this.scanDirectory(dir);
             }
 
-            // console.log(`✅ MediaStore Scan abgeschlossen: ${this.foundTracks.length} Tracks gefunden`);
+            console.log(`✅ MediaStore Scan abgeschlossen: ${this.foundTracks.length} Tracks gefunden`);
 
             // In MusicLibraryManager speichern
             await this.saveTracks();
@@ -178,7 +178,7 @@ const AndroidMusicScanner = {
             // UI Update
             this.updateScanProgress();
 
-            // console.log(`📄 Gefunden: ${track.title}`);
+            console.log(`📄 Gefunden: ${track.title}`);
         } catch (error) {
             console.warn(`⚠️ Fehler bei ${filename}:`, error);
         }
@@ -206,7 +206,7 @@ const AndroidMusicScanner = {
      * Storage Access Framework (SAF) - User wählt Ordner
      */
     async requestSAFAccess() {
-        // console.log('📂 Fordere SAF Ordner-Zugriff an...');
+        console.log('📂 Fordere SAF Ordner-Zugriff an...');
 
         try {
             // Web File System Access API (Chrome/Edge)
@@ -216,13 +216,13 @@ const AndroidMusicScanner = {
                     startIn: 'music'
                 });
 
-                // console.log('✅ SAF Ordner-Zugriff erteilt:', this.safDirectoryHandle.name);
+                console.log('✅ SAF Ordner-Zugriff erteilt:', this.safDirectoryHandle.name);
                 return true;
             }
             // Capacitor SAF (via Custom Plugin - falls implementiert)
             else if (typeof Capacitor !== 'undefined') {
                 console.warn('⚠️ SAF über Capacitor nicht direkt unterstützt');
-                // console.log('💡 Fallback: Nutze File System Access API (nur in Browser verfügbar)');
+                console.log('💡 Fallback: Nutze File System Access API (nur in Browser verfügbar)');
                 return false;
             }
 
@@ -245,7 +245,7 @@ const AndroidMusicScanner = {
             return false;
         }
 
-        // console.log('📂 Scanne SAF Ordner...');
+        console.log('📂 Scanne SAF Ordner...');
 
         try {
             this.isScanning = true;
@@ -254,7 +254,7 @@ const AndroidMusicScanner = {
 
             await this.scanSAFDirectory(this.safDirectoryHandle);
 
-            // console.log(`✅ SAF Scan abgeschlossen: ${this.foundTracks.length} Tracks gefunden`);
+            console.log(`✅ SAF Scan abgeschlossen: ${this.foundTracks.length} Tracks gefunden`);
 
             // In MusicLibraryManager speichern
             await this.saveTracks();
@@ -314,7 +314,7 @@ const AndroidMusicScanner = {
             // UI Update
             this.updateScanProgress();
 
-            // console.log(`📄 SAF Gefunden: ${track.title}`);
+            console.log(`📄 SAF Gefunden: ${track.title}`);
         } catch (error) {
             console.warn(`⚠️ SAF Datei Fehler:`, error);
         }
@@ -329,7 +329,7 @@ const AndroidMusicScanner = {
             return false;
         }
 
-        // console.log(`💾 Speichere ${this.foundTracks.length} Tracks...`);
+        console.log(`💾 Speichere ${this.foundTracks.length} Tracks...`);
 
         let added = 0;
         let duplicates = 0;
@@ -347,7 +347,7 @@ const AndroidMusicScanner = {
             }
         }
 
-        // console.log(`✅ ${added} Tracks hinzugefügt, ${duplicates} Duplikate übersprungen`);
+        console.log(`✅ ${added} Tracks hinzugefügt, ${duplicates} Duplikate übersprungen`);
 
         // UI Notification
         if (window.showGlobalNotification) {
@@ -554,13 +554,13 @@ const AndroidMusicScanner = {
      */
     stopScanning() {
         this.isScanning = false;
-        // console.log('🛑 Scanning gestoppt');
+        console.log('🛑 Scanning gestoppt');
     }
 };
 
 // Global verfügbar machen
 window.AndroidMusicScanner = AndroidMusicScanner;
-// console.log('✅ Android Music Scanner geladen');
+console.log('✅ Android Music Scanner geladen');
 
 // Export für Module
 if (typeof module !== 'undefined' && module.exports) {

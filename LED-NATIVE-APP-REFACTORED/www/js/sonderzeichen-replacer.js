@@ -1,4 +1,4 @@
-﻿/**
+/**
  * SONDERZEICHEN REPLACER - Automatisches Ersetzen aller Umlaute beim Laden
  */
 'use strict';
@@ -76,7 +76,7 @@ const SonderzeichenReplacer = {
     },
 
     replaceInDocument() {
-        // console.log(' Ersetze Sonderzeichen im gesamten Dokument...');
+        console.log(' Ersetze Sonderzeichen im gesamten Dokument...');
 
         let count = 0;
         const startTime = Date.now();
@@ -84,7 +84,7 @@ const SonderzeichenReplacer = {
         this.replaceInElement(document.body);
 
         const duration = Date.now() - startTime;
-        // console.log(` Sonderzeichen ersetzt in ${duration}ms`);
+        console.log(` Sonderzeichen ersetzt in ${duration}ms`);
     },
 
     /**

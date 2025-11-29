@@ -1,4 +1,4 @@
-﻿/**
+/**
  * GESTURE CONTROLS v1.0
  * Touch-Gesten für intuitive Steuerung
  */
@@ -21,7 +21,7 @@ class GestureControls {
     init() {
         this.setupTouchListeners();
         this.registerDefaultGestures();
-        // console.log('✅ Gesture Controls initialisiert');
+        console.log('✅ Gesture Controls initialisiert');
     }
 
     setupTouchListeners() {
@@ -117,7 +117,7 @@ class GestureControls {
         this.registerGesture('swipe-left', {
             name: 'Next Track',
             handler: () => {
-                // console.log('👆 Gesture: Swipe Left → Next Track');
+                console.log('👆 Gesture: Swipe Left → Next Track');
                 if (window.musikIntegration && window.musikIntegration.nextTrack) {
                     window.musikIntegration.nextTrack();
                 }
@@ -129,7 +129,7 @@ class GestureControls {
         this.registerGesture('swipe-right', {
             name: 'Previous Track',
             handler: () => {
-                // console.log('👆 Gesture: Swipe Right → Previous Track');
+                console.log('👆 Gesture: Swipe Right → Previous Track');
                 if (window.musikIntegration && window.musikIntegration.previousTrack) {
                     window.musikIntegration.previousTrack();
                 }
@@ -141,7 +141,7 @@ class GestureControls {
         this.registerGesture('swipe-up', {
             name: 'Volume Up',
             handler: () => {
-                // console.log('👆 Gesture: Swipe Up → Volume Up');
+                console.log('👆 Gesture: Swipe Up → Volume Up');
                 const audioPlayer = document.getElementById('audioPlayer');
                 if (audioPlayer) {
                     audioPlayer.volume = Math.min(1, audioPlayer.volume + 0.1);
@@ -154,7 +154,7 @@ class GestureControls {
         this.registerGesture('swipe-down', {
             name: 'Volume Down',
             handler: () => {
-                // console.log('👆 Gesture: Swipe Down → Volume Down');
+                console.log('👆 Gesture: Swipe Down → Volume Down');
                 const audioPlayer = document.getElementById('audioPlayer');
                 if (audioPlayer) {
                     audioPlayer.volume = Math.max(0, audioPlayer.volume - 0.1);
@@ -167,7 +167,7 @@ class GestureControls {
         this.registerGesture('double-tap', {
             name: 'Play/Pause',
             handler: () => {
-                // console.log('👆 Gesture: Double Tap → Play/Pause');
+                console.log('👆 Gesture: Double Tap → Play/Pause');
                 const audioPlayer = document.getElementById('audioPlayer');
                 if (audioPlayer) {
                     if (audioPlayer.paused) {
@@ -181,7 +181,7 @@ class GestureControls {
             }
         });
 
-        // console.log(`✅ ${this.gestures.size} Standard-Gesten registriert`);
+        console.log(`✅ ${this.gestures.size} Standard-Gesten registriert`);
     }
 
     registerGesture(type, gesture) {
@@ -262,12 +262,12 @@ class GestureControls {
 
     enable() {
         this.isEnabled = true;
-        // console.log('✅ Gesture Controls aktiviert');
+        console.log('✅ Gesture Controls aktiviert');
     }
 
     disable() {
         this.isEnabled = false;
-        // console.log('⛔ Gesture Controls deaktiviert');
+        console.log('⛔ Gesture Controls deaktiviert');
     }
 
     getAllGestures() {
@@ -287,5 +287,5 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = GestureControls;
 }
 
-// console.log('✅ Gesture Controls geladen');
-// console.log('👆 Gestures: Swipe Left/Right (Track), Up/Down (Volume), Double-Tap (Play/Pause)');
+console.log('✅ Gesture Controls geladen');
+console.log('👆 Gestures: Swipe Left/Right (Track), Up/Down (Volume), Double-Tap (Play/Pause)');
