@@ -1,0 +1,467 @@
+-- Merging decision tree log ---
+provider#androidx.core.content.FileProvider
+INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:53:9-55:20
+	android:grantUriPermissions
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:53:146-180
+	android:authorities
+		INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:53:69-120
+	android:exported
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:53:121-145
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:53:19-68
+manifest
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:2:1-97:12
+INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:2:1-97:12
+INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:2:1-97:12
+INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:2:1-97:12
+MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-27:12
+MERGED from [:capacitor-app] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\app\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-7:12
+MERGED from [:capacitor-filesystem] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\filesystem\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-7:12
+MERGED from [:capacitor-haptics] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\haptics\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-9:12
+MERGED from [:capacitor-keyboard] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\keyboard\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-7:12
+MERGED from [:capacitor-splash-screen] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\splash-screen\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-7:12
+MERGED from [:capacitor-status-bar] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\status-bar\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-7:12
+MERGED from [:capacitor-android] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\android\capacitor\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-7:12
+MERGED from [:capacitor-cordova-android-plugins] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\capacitor-cordova-android-plugins\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-11:12
+MERGED from [androidx.appcompat:appcompat-resources:1.7.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\5ba2c613706baae93378e86734b6c34b\transformed\appcompat-resources-1.7.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.appcompat:appcompat:1.7.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\071109cc2ed0a34038101aebd18364c6\transformed\appcompat-1.7.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.2.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\0d0854db72e3eb8d1a1a7d7e9678b4d4\transformed\coordinatorlayout-1.2.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.core:core-splashscreen:1.0.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\f518f9b82857a1c92ed10c552936e6fa\transformed\core-splashscreen-1.0.1\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.fragment:fragment:1.8.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\7d372b23aae87b6a69ea2a1ebd053b50\transformed\fragment-1.8.0\AndroidManifest.xml:2:1-7:12
+MERGED from [io.ionic.libs:ionfilesystem-android:1.0.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cf8fde59a9bf2c6412a6e90e68c0207f\transformed\ionfilesystem-android-1.0.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.activity:activity-ktx:1.9.3] C:\Users\braun\.gradle\caches\8.11.1\transforms\f5159e3f0dc780784ce31dda9882d144\transformed\activity-ktx-1.9.3\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.activity:activity:1.9.3] C:\Users\braun\.gradle\caches\8.11.1\transforms\ba2b963279f833595e2b675ede5ffea1\transformed\activity-1.9.3\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\b4d9fc28f0e42f5c5f8b7f93fb142a9a\transformed\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\16c9afe1e92cd24f48d69d02834c3a1f\transformed\drawerlayout-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.emoji2:emoji2-views-helper:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\28f5e407a8b36ab4f4b6c1eb656881fa\transformed\emoji2-views-helper-1.3.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\1e99110b2ec685cf303574037ed8fbbd\transformed\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\6d39727c3130b0656d06d22084ab14b9\transformed\customview-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.webkit:webkit:1.11.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\989718be06fada0ac29faf1cec6f91bb\transformed\webkit-1.11.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\d18b181b698c34143e4ca1026248f7fb\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ef818f80a0c1099c661af1745b354e0a\transformed\vectordrawable-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\d6e747193a15b2256f82a3f1783d0c78\transformed\savedstate-ktx-1.2.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\d43cac164e6669e614c8f54ac38665f0\transformed\savedstate-1.2.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\0c8af2e4ae03e7c661a29cc2b13a9a87\transformed\loader-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\414f45313b60c240f763d65975a94333\transformed\lifecycle-viewmodel-ktx-2.6.2\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\a0c3228e8e05b518a512b6134a63117b\transformed\lifecycle-runtime-ktx-2.6.2\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\beaab0c1284b39d4c62673a2d4398693\transformed\lifecycle-livedata-2.6.2\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\88b66a9fdbd7d1e0f97f8f593826092b\transformed\lifecycle-viewmodel-2.6.2\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\c05c2abe164e84925f789d2b3c6a31c1\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\9039c733731579c0b7e261de4fc0bf62\transformed\lifecycle-livedata-core-2.6.2\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\70a043353715968ab6b896bea494f0c6\transformed\lifecycle-viewmodel-savedstate-2.6.2\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core-ktx:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\5dc2f5424b347ad8547337d7aa916eba\transformed\core-ktx-1.15.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:17:1-30:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\972bcfd772e683deba6ffb4e34f3157e\transformed\lifecycle-runtime-2.6.2\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:17:1-55:12
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\69c35f7b17c2a4bfdf019c09b28d6605\transformed\startup-runtime-1.1.1\AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\9e4c3c78ce8cdb11645e87019e67d678\transformed\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.tracing:tracing:1.2.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\58f9612a28a78523973b2a98746fca3e\transformed\tracing-1.2.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\18498989ad8a644b2a070eaee383d571\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\36ae75bef90ae25e1f7f76a3d98a7109\transformed\core-runtime-2.2.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\984e099bc822c9407092adc2e6ca782f\transformed\annotation-experimental-1.4.1\AndroidManifest.xml:2:1-7:12
+MERGED from [org.apache.cordova:framework:10.1.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\e657e54a10a3723f2b8b42b13ce80b23\transformed\framework-10.1.1\AndroidManifest.xml:20:1-27:12
+	package
+		INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:2:11-69
+application
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:4:5-56:19
+INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:4:5-56:19
+MERGED from [:capacitor-cordova-android-plugins] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\capacitor-cordova-android-plugins\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:5-9:19
+MERGED from [:capacitor-cordova-android-plugins] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\capacitor-cordova-android-plugins\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:5-9:19
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\c05c2abe164e84925f789d2b3c6a31c1\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\c05c2abe164e84925f789d2b3c6a31c1\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:28:5-89
+MERGED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:28:5-89
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\69c35f7b17c2a4bfdf019c09b28d6605\transformed\startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\69c35f7b17c2a4bfdf019c09b28d6605\transformed\startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\18498989ad8a644b2a070eaee383d571\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\18498989ad8a644b2a070eaee383d571\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+	android:extractNativeLibs
+		INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:28:18-86
+	android:supportsRtl
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:9:9-35
+	android:label
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:7:9-41
+	android:roundIcon
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:8:9-54
+	android:icon
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:6:9-43
+	android:allowBackup
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:5:9-35
+	android:theme
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:10:9-40
+	android:usesCleartextTraffic
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:11:9-44
+activity#com.ledcontrol.app.refactored.MainActivity
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:14:9-27:20
+	android:label
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:17:13-56
+	android:launchMode
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:19:13-44
+	android:exported
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:20:13-36
+	android:configChanges
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:15:13-129
+	android:theme
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:18:13-62
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:16:13-41
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:22:13-25:29
+action#android.intent.action.MAIN
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:17-69
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:25-66
+category#android.intent.category.LAUNCHER
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:24:17-77
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:24:27-74
+service#com.ledcontrol.app.refactored.BluetoothForegroundService
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:30:9-35:19
+	android:enabled
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:32:13-35
+	android:exported
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:33:13-37
+	android:foregroundServiceType
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:34:13-60
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:31:13-55
+receiver#com.ledcontrol.app.refactored.BootReceiver
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:38:9-46:20
+	android:enabled
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:40:13-35
+	android:exported
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:41:13-37
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:39:13-41
+intent-filter#action:name:android.intent.action.BOOT_COMPLETED+action:name:android.intent.action.QUICKBOOT_POWERON
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:42:13-45:29
+action#android.intent.action.BOOT_COMPLETED
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:43:17-79
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:43:25-76
+action#android.intent.action.QUICKBOOT_POWERON
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:44:17-82
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:44:25-79
+meta-data#com.google.firebase.messaging.default_notification_channel_id
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:49:9-51:43
+	android:value
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:51:13-40
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:50:13-89
+uses-permission#android.permission.INTERNET
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:59:5-67
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:59:22-64
+uses-permission#android.permission.BLUETOOTH
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:62:5-95
+MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:10:5-12:38
+MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:10:5-12:38
+	android:maxSdkVersion
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:62:66-92
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:62:22-65
+uses-permission#android.permission.BLUETOOTH_ADMIN
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:63:5-101
+MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:13:5-15:38
+MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:13:5-15:38
+	android:maxSdkVersion
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:63:72-98
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:63:22-71
+uses-permission#android.permission.BLUETOOTH_SCAN
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:64:5-120
+MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:16:5-18:31
+MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:16:5-18:31
+	android:usesPermissionFlags
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:64:71-117
+	tools:targetApi
+		ADDED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:18:9-28
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:64:22-70
+uses-permission#android.permission.BLUETOOTH_CONNECT
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:65:5-76
+MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:19:5-21:31
+MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:19:5-21:31
+	tools:targetApi
+		ADDED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:21:9-28
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:65:22-73
+uses-permission#android.permission.ACCESS_FINE_LOCATION
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:68:5-79
+MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:9:5-79
+MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:9:5-79
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:68:22-76
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:69:5-81
+MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:5-81
+MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:5-81
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:69:22-78
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:72:5-107
+	android:maxSdkVersion
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:72:78-104
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:72:22-77
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:73:5-108
+	android:maxSdkVersion
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:73:79-105
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:73:22-78
+uses-permission#android.permission.READ_MEDIA_AUDIO
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:76:5-75
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:76:22-72
+uses-permission#android.permission.READ_MEDIA_IMAGES
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:77:5-76
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:77:22-73
+uses-permission#android.permission.POST_NOTIFICATIONS
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:80:5-77
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:80:22-74
+uses-permission#android.permission.FOREGROUND_SERVICE
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:83:5-77
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:83:22-74
+uses-permission#android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:84:5-94
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:84:22-91
+uses-permission#android.permission.VIBRATE
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:87:5-66
+MERGED from [:capacitor-haptics] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\haptics\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:7:5-66
+MERGED from [:capacitor-haptics] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\haptics\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:7:5-66
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:87:22-63
+uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:90:5-81
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:90:22-78
+uses-permission#android.permission.WAKE_LOCK
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:93:5-68
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:93:22-65
+uses-feature#android.hardware.bluetooth_le
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:96:5-90
+MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:23:5-25:36
+MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:23:5-25:36
+	android:required
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:96:64-87
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:96:19-63
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:54:13-122
+	android:resource
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:54:75-109
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:54:24-74
+uses-sdk
+INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml
+INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml
+MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:6:5-44
+MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:6:5-44
+MERGED from [:capacitor-app] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\app\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-app] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\app\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-filesystem] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\filesystem\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-filesystem] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\filesystem\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-haptics] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\haptics\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-haptics] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\haptics\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-keyboard] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\keyboard\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-keyboard] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\keyboard\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-splash-screen] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\splash-screen\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-splash-screen] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\splash-screen\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-status-bar] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\status-bar\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-status-bar] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\status-bar\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-android] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\android\capacitor\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-android] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\android\capacitor\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
+MERGED from [:capacitor-cordova-android-plugins] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\capacitor-cordova-android-plugins\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:6:5-44
+MERGED from [:capacitor-cordova-android-plugins] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\capacitor-cordova-android-plugins\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:6:5-44
+MERGED from [androidx.appcompat:appcompat-resources:1.7.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\5ba2c613706baae93378e86734b6c34b\transformed\appcompat-resources-1.7.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.appcompat:appcompat-resources:1.7.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\5ba2c613706baae93378e86734b6c34b\transformed\appcompat-resources-1.7.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.appcompat:appcompat:1.7.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\071109cc2ed0a34038101aebd18364c6\transformed\appcompat-1.7.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.appcompat:appcompat:1.7.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\071109cc2ed0a34038101aebd18364c6\transformed\appcompat-1.7.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.2.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\0d0854db72e3eb8d1a1a7d7e9678b4d4\transformed\coordinatorlayout-1.2.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.2.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\0d0854db72e3eb8d1a1a7d7e9678b4d4\transformed\coordinatorlayout-1.2.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core-splashscreen:1.0.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\f518f9b82857a1c92ed10c552936e6fa\transformed\core-splashscreen-1.0.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core-splashscreen:1.0.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\f518f9b82857a1c92ed10c552936e6fa\transformed\core-splashscreen-1.0.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.8.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\7d372b23aae87b6a69ea2a1ebd053b50\transformed\fragment-1.8.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.fragment:fragment:1.8.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\7d372b23aae87b6a69ea2a1ebd053b50\transformed\fragment-1.8.0\AndroidManifest.xml:5:5-44
+MERGED from [io.ionic.libs:ionfilesystem-android:1.0.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cf8fde59a9bf2c6412a6e90e68c0207f\transformed\ionfilesystem-android-1.0.0\AndroidManifest.xml:5:5-44
+MERGED from [io.ionic.libs:ionfilesystem-android:1.0.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cf8fde59a9bf2c6412a6e90e68c0207f\transformed\ionfilesystem-android-1.0.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-ktx:1.9.3] C:\Users\braun\.gradle\caches\8.11.1\transforms\f5159e3f0dc780784ce31dda9882d144\transformed\activity-ktx-1.9.3\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-ktx:1.9.3] C:\Users\braun\.gradle\caches\8.11.1\transforms\f5159e3f0dc780784ce31dda9882d144\transformed\activity-ktx-1.9.3\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity:1.9.3] C:\Users\braun\.gradle\caches\8.11.1\transforms\ba2b963279f833595e2b675ede5ffea1\transformed\activity-1.9.3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.9.3] C:\Users\braun\.gradle\caches\8.11.1\transforms\ba2b963279f833595e2b675ede5ffea1\transformed\activity-1.9.3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\b4d9fc28f0e42f5c5f8b7f93fb142a9a\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\b4d9fc28f0e42f5c5f8b7f93fb142a9a\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\16c9afe1e92cd24f48d69d02834c3a1f\transformed\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\16c9afe1e92cd24f48d69d02834c3a1f\transformed\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.emoji2:emoji2-views-helper:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\28f5e407a8b36ab4f4b6c1eb656881fa\transformed\emoji2-views-helper-1.3.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2-views-helper:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\28f5e407a8b36ab4f4b6c1eb656881fa\transformed\emoji2-views-helper-1.3.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\1e99110b2ec685cf303574037ed8fbbd\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\1e99110b2ec685cf303574037ed8fbbd\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\6d39727c3130b0656d06d22084ab14b9\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\6d39727c3130b0656d06d22084ab14b9\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.webkit:webkit:1.11.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\989718be06fada0ac29faf1cec6f91bb\transformed\webkit-1.11.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.webkit:webkit:1.11.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\989718be06fada0ac29faf1cec6f91bb\transformed\webkit-1.11.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\d18b181b698c34143e4ca1026248f7fb\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\d18b181b698c34143e4ca1026248f7fb\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ef818f80a0c1099c661af1745b354e0a\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ef818f80a0c1099c661af1745b354e0a\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\d6e747193a15b2256f82a3f1783d0c78\transformed\savedstate-ktx-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\d6e747193a15b2256f82a3f1783d0c78\transformed\savedstate-ktx-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\d43cac164e6669e614c8f54ac38665f0\transformed\savedstate-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\d43cac164e6669e614c8f54ac38665f0\transformed\savedstate-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\0c8af2e4ae03e7c661a29cc2b13a9a87\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\0c8af2e4ae03e7c661a29cc2b13a9a87\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\414f45313b60c240f763d65975a94333\transformed\lifecycle-viewmodel-ktx-2.6.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\414f45313b60c240f763d65975a94333\transformed\lifecycle-viewmodel-ktx-2.6.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\a0c3228e8e05b518a512b6134a63117b\transformed\lifecycle-runtime-ktx-2.6.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\a0c3228e8e05b518a512b6134a63117b\transformed\lifecycle-runtime-ktx-2.6.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\beaab0c1284b39d4c62673a2d4398693\transformed\lifecycle-livedata-2.6.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\beaab0c1284b39d4c62673a2d4398693\transformed\lifecycle-livedata-2.6.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\88b66a9fdbd7d1e0f97f8f593826092b\transformed\lifecycle-viewmodel-2.6.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\88b66a9fdbd7d1e0f97f8f593826092b\transformed\lifecycle-viewmodel-2.6.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\c05c2abe164e84925f789d2b3c6a31c1\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\c05c2abe164e84925f789d2b3c6a31c1\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\9039c733731579c0b7e261de4fc0bf62\transformed\lifecycle-livedata-core-2.6.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\9039c733731579c0b7e261de4fc0bf62\transformed\lifecycle-livedata-core-2.6.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\70a043353715968ab6b896bea494f0c6\transformed\lifecycle-viewmodel-savedstate-2.6.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\70a043353715968ab6b896bea494f0c6\transformed\lifecycle-viewmodel-savedstate-2.6.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core-ktx:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\5dc2f5424b347ad8547337d7aa916eba\transformed\core-ktx-1.15.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-ktx:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\5dc2f5424b347ad8547337d7aa916eba\transformed\core-ktx-1.15.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\972bcfd772e683deba6ffb4e34f3157e\transformed\lifecycle-runtime-2.6.2\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\972bcfd772e683deba6ffb4e34f3157e\transformed\lifecycle-runtime-2.6.2\AndroidManifest.xml:5:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:21:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:21:5-44
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\69c35f7b17c2a4bfdf019c09b28d6605\transformed\startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\69c35f7b17c2a4bfdf019c09b28d6605\transformed\startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\9e4c3c78ce8cdb11645e87019e67d678\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\9e4c3c78ce8cdb11645e87019e67d678\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.tracing:tracing:1.2.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\58f9612a28a78523973b2a98746fca3e\transformed\tracing-1.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.tracing:tracing:1.2.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\58f9612a28a78523973b2a98746fca3e\transformed\tracing-1.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\18498989ad8a644b2a070eaee383d571\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\18498989ad8a644b2a070eaee383d571\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\36ae75bef90ae25e1f7f76a3d98a7109\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\36ae75bef90ae25e1f7f76a3d98a7109\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\984e099bc822c9407092adc2e6ca782f\transformed\annotation-experimental-1.4.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\984e099bc822c9407092adc2e6ca782f\transformed\annotation-experimental-1.4.1\AndroidManifest.xml:5:5-44
+MERGED from [org.apache.cordova:framework:10.1.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\e657e54a10a3723f2b8b42b13ce80b23\transformed\framework-10.1.1\AndroidManifest.xml:25:5-44
+MERGED from [org.apache.cordova:framework:10.1.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\e657e54a10a3723f2b8b42b13ce80b23\transformed\framework-10.1.1\AndroidManifest.xml:25:5-44
+	android:targetSdkVersion
+		INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml
+provider#androidx.startup.InitializationProvider
+ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\c05c2abe164e84925f789d2b3c6a31c1\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\c05c2abe164e84925f789d2b3c6a31c1\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\69c35f7b17c2a4bfdf019c09b28d6605\transformed\startup-runtime-1.1.1\AndroidManifest.xml:26:9-30:34
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\69c35f7b17c2a4bfdf019c09b28d6605\transformed\startup-runtime-1.1.1\AndroidManifest.xml:26:9-30:34
+	tools:node
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:28:13-31
+	android:authorities
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:26:13-68
+	android:exported
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:27:13-37
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:25:13-67
+meta-data#androidx.emoji2.text.EmojiCompatInitializer
+ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:30:17-75
+meta-data#androidx.lifecycle.ProcessLifecycleInitializer
+ADDED from [androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\c05c2abe164e84925f789d2b3c6a31c1\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\c05c2abe164e84925f789d2b3c6a31c1\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\c05c2abe164e84925f789d2b3c6a31c1\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:30:17-78
+permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:23:9-81
+permission#com.ledcontrol.app.refactored.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:23:9-81
+uses-permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:26:22-94
+uses-permission#com.ledcontrol.app.refactored.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:26:22-94
+meta-data#androidx.profileinstaller.ProfileInstallerInitializer
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+receiver#androidx.profileinstaller.ProfileInstallReceiver
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+	android:enabled
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+	android:exported
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+	android:permission
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+	android:directBootAware
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+intent-filter#action:name:androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+action#androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+intent-filter#action:name:androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+action#androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+intent-filter#action:name:androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+action#androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+intent-filter#action:name:androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+action#androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:25-92

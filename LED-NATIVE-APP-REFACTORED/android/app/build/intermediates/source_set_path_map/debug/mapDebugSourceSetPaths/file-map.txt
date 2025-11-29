@@ -1,0 +1,43 @@
+com.ledcontrol.app.refactored.app-appcompat-1.7.0-0 C:\Users\braun\.gradle\caches\8.11.1\transforms\071109cc2ed0a34038101aebd18364c6\transformed\appcompat-1.7.0\res
+com.ledcontrol.app.refactored.app-coordinatorlayout-1.2.0-1 C:\Users\braun\.gradle\caches\8.11.1\transforms\0d0854db72e3eb8d1a1a7d7e9678b4d4\transformed\coordinatorlayout-1.2.0\res
+com.ledcontrol.app.refactored.app-emoji2-views-helper-1.3.0-2 C:\Users\braun\.gradle\caches\8.11.1\transforms\28f5e407a8b36ab4f4b6c1eb656881fa\transformed\emoji2-views-helper-1.3.0\res
+com.ledcontrol.app.refactored.app-core-runtime-2.2.0-3 C:\Users\braun\.gradle\caches\8.11.1\transforms\36ae75bef90ae25e1f7f76a3d98a7109\transformed\core-runtime-2.2.0\res
+com.ledcontrol.app.refactored.app-lifecycle-viewmodel-ktx-2.6.2-4 C:\Users\braun\.gradle\caches\8.11.1\transforms\414f45313b60c240f763d65975a94333\transformed\lifecycle-viewmodel-ktx-2.6.2\res
+com.ledcontrol.app.refactored.app-tracing-1.2.0-5 C:\Users\braun\.gradle\caches\8.11.1\transforms\58f9612a28a78523973b2a98746fca3e\transformed\tracing-1.2.0\res
+com.ledcontrol.app.refactored.app-appcompat-resources-1.7.0-6 C:\Users\braun\.gradle\caches\8.11.1\transforms\5ba2c613706baae93378e86734b6c34b\transformed\appcompat-resources-1.7.0\res
+com.ledcontrol.app.refactored.app-core-ktx-1.15.0-7 C:\Users\braun\.gradle\caches\8.11.1\transforms\5dc2f5424b347ad8547337d7aa916eba\transformed\core-ktx-1.15.0\res
+com.ledcontrol.app.refactored.app-startup-runtime-1.1.1-8 C:\Users\braun\.gradle\caches\8.11.1\transforms\69c35f7b17c2a4bfdf019c09b28d6605\transformed\startup-runtime-1.1.1\res
+com.ledcontrol.app.refactored.app-lifecycle-viewmodel-savedstate-2.6.2-9 C:\Users\braun\.gradle\caches\8.11.1\transforms\70a043353715968ab6b896bea494f0c6\transformed\lifecycle-viewmodel-savedstate-2.6.2\res
+com.ledcontrol.app.refactored.app-fragment-1.8.0-10 C:\Users\braun\.gradle\caches\8.11.1\transforms\7d372b23aae87b6a69ea2a1ebd053b50\transformed\fragment-1.8.0\res
+com.ledcontrol.app.refactored.app-lifecycle-viewmodel-2.6.2-11 C:\Users\braun\.gradle\caches\8.11.1\transforms\88b66a9fdbd7d1e0f97f8f593826092b\transformed\lifecycle-viewmodel-2.6.2\res
+com.ledcontrol.app.refactored.app-lifecycle-livedata-core-2.6.2-12 C:\Users\braun\.gradle\caches\8.11.1\transforms\9039c733731579c0b7e261de4fc0bf62\transformed\lifecycle-livedata-core-2.6.2\res
+com.ledcontrol.app.refactored.app-lifecycle-runtime-2.6.2-13 C:\Users\braun\.gradle\caches\8.11.1\transforms\972bcfd772e683deba6ffb4e34f3157e\transformed\lifecycle-runtime-2.6.2\res
+com.ledcontrol.app.refactored.app-annotation-experimental-1.4.1-14 C:\Users\braun\.gradle\caches\8.11.1\transforms\984e099bc822c9407092adc2e6ca782f\transformed\annotation-experimental-1.4.1\res
+com.ledcontrol.app.refactored.app-webkit-1.11.0-15 C:\Users\braun\.gradle\caches\8.11.1\transforms\989718be06fada0ac29faf1cec6f91bb\transformed\webkit-1.11.0\res
+com.ledcontrol.app.refactored.app-lifecycle-runtime-ktx-2.6.2-16 C:\Users\braun\.gradle\caches\8.11.1\transforms\a0c3228e8e05b518a512b6134a63117b\transformed\lifecycle-runtime-ktx-2.6.2\res
+com.ledcontrol.app.refactored.app-emoji2-1.3.0-17 C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\res
+com.ledcontrol.app.refactored.app-activity-1.9.3-18 C:\Users\braun\.gradle\caches\8.11.1\transforms\ba2b963279f833595e2b675ede5ffea1\transformed\activity-1.9.3\res
+com.ledcontrol.app.refactored.app-lifecycle-livedata-2.6.2-19 C:\Users\braun\.gradle\caches\8.11.1\transforms\beaab0c1284b39d4c62673a2d4398693\transformed\lifecycle-livedata-2.6.2\res
+com.ledcontrol.app.refactored.app-profileinstaller-1.3.1-20 C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\res
+com.ledcontrol.app.refactored.app-lifecycle-process-2.6.2-21 C:\Users\braun\.gradle\caches\8.11.1\transforms\c05c2abe164e84925f789d2b3c6a31c1\transformed\lifecycle-process-2.6.2\res
+com.ledcontrol.app.refactored.app-core-1.15.0-22 C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\res
+com.ledcontrol.app.refactored.app-savedstate-1.2.1-23 C:\Users\braun\.gradle\caches\8.11.1\transforms\d43cac164e6669e614c8f54ac38665f0\transformed\savedstate-1.2.1\res
+com.ledcontrol.app.refactored.app-savedstate-ktx-1.2.1-24 C:\Users\braun\.gradle\caches\8.11.1\transforms\d6e747193a15b2256f82a3f1783d0c78\transformed\savedstate-ktx-1.2.1\res
+com.ledcontrol.app.refactored.app-activity-ktx-1.9.3-25 C:\Users\braun\.gradle\caches\8.11.1\transforms\f5159e3f0dc780784ce31dda9882d144\transformed\activity-ktx-1.9.3\res
+com.ledcontrol.app.refactored.app-core-splashscreen-1.0.1-26 C:\Users\braun\.gradle\caches\8.11.1\transforms\f518f9b82857a1c92ed10c552936e6fa\transformed\core-splashscreen-1.0.1\res
+com.ledcontrol.app.refactored.app-pngs-27 D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\build\generated\res\pngs\debug
+com.ledcontrol.app.refactored.app-resValues-28 D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\build\generated\res\resValues\debug
+com.ledcontrol.app.refactored.app-packageDebugResources-29 D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+com.ledcontrol.app.refactored.app-packageDebugResources-30 D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+com.ledcontrol.app.refactored.app-debug-31 D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\build\intermediates\merged_res\debug\mergeDebugResources
+com.ledcontrol.app.refactored.app-debug-32 D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\debug\res
+com.ledcontrol.app.refactored.app-main-33 D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\res
+com.ledcontrol.app.refactored.app-debug-34 D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\capacitor-cordova-android-plugins\build\intermediates\packaged_res\debug\packageDebugResources
+com.ledcontrol.app.refactored.app-debug-35 D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\packaged_res\debug\packageDebugResources
+com.ledcontrol.app.refactored.app-debug-36 D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\android\capacitor\build\intermediates\packaged_res\debug\packageDebugResources
+com.ledcontrol.app.refactored.app-debug-37 D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\app\android\build\intermediates\packaged_res\debug\packageDebugResources
+com.ledcontrol.app.refactored.app-debug-38 D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\filesystem\android\build\intermediates\packaged_res\debug\packageDebugResources
+com.ledcontrol.app.refactored.app-debug-39 D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\haptics\android\build\intermediates\packaged_res\debug\packageDebugResources
+com.ledcontrol.app.refactored.app-debug-40 D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\keyboard\android\build\intermediates\packaged_res\debug\packageDebugResources
+com.ledcontrol.app.refactored.app-debug-41 D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\splash-screen\android\build\intermediates\packaged_res\debug\packageDebugResources
+com.ledcontrol.app.refactored.app-debug-42 D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\status-bar\android\build\intermediates\packaged_res\debug\packageDebugResources

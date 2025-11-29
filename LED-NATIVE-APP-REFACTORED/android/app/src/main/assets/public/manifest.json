@@ -1,0 +1,21 @@
+{
+    "name": "LED Control Pro",
+    "short_name": "LED Pro",
+    "description": "Professional LED control application with Bluetooth connectivity",
+    "version": "3.0.0",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "orientation": "portrait",
+    "theme_color": "#0a0a0a",
+    "background_color": "#0a0a0a",
+    "scope": "/",
+    "icons": [],
+    "categories": [
+        "utilities",
+        "productivity",
+        "lifestyle"
+    ],
+    "screenshots": [],
+    "prefer_related_applications": false,
+    "related_applications": []
+}
