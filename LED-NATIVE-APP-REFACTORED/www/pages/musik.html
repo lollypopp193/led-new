@@ -1689,28 +1689,48 @@
   <body>
     <!-- Taskbar -->
     <div class="taskbar">
-      <button type="button" class="taskbar-btn active" data-content="player">
+      <button type="button" class="taskbar-btn active" data-content="player" onclick="showPanel('player', this)">
         <i class="fas fa-play"></i> Player
       </button>
-      <button type="button" class="taskbar-btn" data-content="equalizer">
+      <button type="button" class="taskbar-btn" data-content="equalizer" onclick="showPanel('equalizer', this)">
         <i class="fas fa-sliders-h"></i> Equalizer
       </button>
-      <button type="button" class="taskbar-btn" data-content="visualizer">
+      <button type="button" class="taskbar-btn" data-content="visualizer" onclick="showPanel('visualizer', this)">
         <i class="fas fa-wave-square"></i> Visualisierung
       </button>
-      <button type="button" class="taskbar-btn" data-content="led">
+      <button type="button" class="taskbar-btn" data-content="led" onclick="showPanel('led', this)">
         <i class="fas fa-music"></i> LED-Musik
       </button>
-      <button type="button" class="taskbar-btn" data-content="party">
+      <button type="button" class="taskbar-btn" data-content="party" onclick="showPanel('party', this)">
         <i class="fas fa-glass-cheers"></i> Party-Modus
       </button>
-      <button type="button" class="taskbar-btn" data-content="library">
+      <button type="button" class="taskbar-btn" data-content="library" onclick="showPanel('library', this)">
         <i class="fas fa-book"></i> Bibliothek
       </button>
-      <button type="button" class="taskbar-btn" data-content="settings">
+      <button type="button" class="taskbar-btn" data-content="settings" onclick="showPanel('settings', this)">
         <i class="fas fa-cog"></i> Einstellungen
       </button>
     </div>
+    
+    <script>
+      // Einfache Panel-Wechsel Funktion - DIREKT im HTML für maximale Zuverlässigkeit
+      function showPanel(panelId, clickedBtn) {
+        // Alle Buttons deaktivieren
+        document.querySelectorAll('.taskbar-btn').forEach(btn => btn.classList.remove('active'));
+        // Geklickten Button aktivieren
+        if (clickedBtn) clickedBtn.classList.add('active');
+        
+        // Alle Panels verstecken
+        document.querySelectorAll('.content-panel').forEach(panel => panel.classList.remove('active'));
+        
+        // Gewähltes Panel zeigen
+        const panel = document.getElementById(panelId);
+        if (panel) {
+          panel.classList.add('active');
+          console.log('Panel aktiv:', panelId);
+        }
+      }
+    </script>
 
     <!-- Content Area -->
     <div class="content-area">
@@ -9763,7 +9783,6 @@
       
       <!-- Master-Fixes: ALLE UI-Probleme beheben (v2.0) -->
       <script src="/js/musik-complete-fixes.js"></script>
-      <script src="/js/led-sidebar-swipe.js"></script>
 
       <!-- LED-Musik-Control Funktionen (Basic - AudioReactiveEngine in audio-reactive-engine.js) -->
       <!-- showNotification wird aus notifications.js geladen (ZERO Duplicate Code Policy) -->
@@ -11226,6 +11245,92 @@
         };
 
         console.log('✅ Audio-Analyse Controls v3.0.1 geladen');
+      })();
+    </script>
+
+    <!-- Taskbar Panel Navigation Script - WICHTIG: Muss vor Voice Command Indicator sein -->
+    <script>
+      (function() {
+        'use strict';
+        
+        // Globale Funktion für Panel-Wechsel (auch von außen aufrufbar)
+        window.switchToPanel = function(panelId) {
+          const taskbarBtns = document.querySelectorAll('.taskbar-btn');
+          const panels = document.querySelectorAll('.content-panel');
+          
+          // Alle Buttons deaktivieren
+          taskbarBtns.forEach(b => b.classList.remove('active'));
+          
+          // Button für dieses Panel aktivieren
+          const targetBtn = document.querySelector(`.taskbar-btn[data-content="${panelId}"]`);
+          if (targetBtn) targetBtn.classList.add('active');
+          
+          // Alle Panels verstecken
+          panels.forEach(panel => panel.classList.remove('active'));
+          
+          // Ziel-Panel anzeigen
+          const panel = document.getElementById(panelId);
+          if (panel) {
+            panel.classList.add('active');
+            console.log(`✅ Panel gewechselt zu: ${panelId}`);
+          } else {
+            console.error(`❌ Panel nicht gefunden: ${panelId}`);
+          }
+        };
+        
+        // Panel-Navigation initialisieren
+        function initPanelNavigation() {
+          const taskbarBtns = document.querySelectorAll('.taskbar-btn');
+          const panels = document.querySelectorAll('.content-panel');
+          
+          console.log(`🔍 Gefunden: ${taskbarBtns.length} Buttons, ${panels.length} Panels`);
+          
+          if (taskbarBtns.length === 0) {
+            console.error('❌ Keine Taskbar-Buttons gefunden!');
+            return;
+          }
+          
+          if (panels.length === 0) {
+            console.error('❌ Keine Content-Panels gefunden!');
+            return;
+          }
+          
+          // Event-Delegation auf Taskbar (robuster)
+          const taskbar = document.querySelector('.taskbar');
+          if (taskbar) {
+            taskbar.addEventListener('click', function(e) {
+              const btn = e.target.closest('.taskbar-btn');
+              if (!btn) return;
+              
+              e.preventDefault();
+              e.stopPropagation();
+              
+              const targetPanel = btn.getAttribute('data-content');
+              if (targetPanel) {
+                window.switchToPanel(targetPanel);
+              }
+            });
+          }
+          
+          // Sicherstellen dass Player-Panel initial aktiv ist
+          const playerPanel = document.getElementById('player');
+          if (playerPanel && !playerPanel.classList.contains('active')) {
+            playerPanel.classList.add('active');
+          }
+          
+          console.log('✅ Panel-Navigation initialisiert (Event-Delegation)');
+        }
+        
+        // Beim Laden initialisieren - mehrere Fallbacks
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initPanelNavigation);
+        } else {
+          // Sofort ausführen wenn DOM schon bereit
+          initPanelNavigation();
+        }
+        
+        // Zusätzlicher Fallback nach 500ms
+        setTimeout(initPanelNavigation, 500);
       })();
     </script>
 

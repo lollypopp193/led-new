@@ -167,6 +167,120 @@
           inset 0 1px 0 rgba(255, 255, 255, 0.1);
       }
 
+      .setting-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        margin-bottom: 12px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        transition: all 0.3s ease;
+      }
+
+      .setting-item:hover {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(78, 205, 196, 0.3);
+      }
+
+      .setting-label {
+        flex: 1;
+      }
+
+      .setting-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 4px;
+      }
+
+      .setting-description {
+        font-size: 0.85rem;
+        color: #aaa;
+      }
+
+      .switch {
+        width: 50px;
+        height: 28px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 14px;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .switch.active {
+        background: linear-gradient(135deg, #4ecdc4, #44a08d);
+        border-color: #4ecdc4;
+      }
+
+      .switch-handle {
+        width: 22px;
+        height: 22px;
+        background: #fff;
+        border-radius: 50%;
+        position: absolute;
+        top: 2px;
+        left: 3px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      }
+
+      .switch.active .switch-handle {
+        left: 24px;
+      }
+
+      .slider-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .slider {
+        flex: 1;
+        -webkit-appearance: none;
+        appearance: none;
+        height: 6px;
+        border-radius: 3px;
+        background: rgba(255, 255, 255, 0.1);
+        outline: none;
+      }
+
+      .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #4ecdc4, #44a08d);
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(78, 205, 196, 0.5);
+      }
+
+      .slider-value {
+        min-width: 50px;
+        text-align: right;
+        color: #4ecdc4;
+        font-weight: 600;
+      }
+
+      .language-select {
+        padding: 10px 15px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+        font-size: 0.95rem;
+        cursor: pointer;
+        min-width: 150px;
+      }
+
+      .language-select option {
+        background: #1a1a2e;
+        color: #fff;
+      }
+
       .section-title {
         font-size: 1.4rem;
         margin-bottom: 15px;
@@ -563,20 +677,20 @@
       </div>
 
       <div class="status-bar">
-        <span id="connectionStatus">ðŸ” Bereit zum Scannen</span>
+        <span id="connectionStatus">🔍 Bereit zum Scannen</span>
       </div>
 
       <div class="content">
-        <!-- Bluetooth GerÃ¤te -->
+        <!-- Bluetooth Geräte -->
         <div class="section">
-          <h3 class="section-title">Bluetooth GerÃ¤te</h3>
+          <h3 class="section-title">Bluetooth Geräte</h3>
           <button type="button" class="scan-button" id="scanButton">
-            <span id="scanIcon">ðŸ”</span>
-            <span id="scanText">GerÃ¤te suchen</span>
+            <span id="scanIcon">🔍</span>
+            <span id="scanText">Geräte suchen</span>
           </button>
           <div class="device-list" id="deviceList">
             <div class="no-devices">
-              Keine GerÃ¤te gefunden. Tippe auf "GerÃ¤te suchen" um LED-BÃ¤nder zu
+              Keine Geräte gefunden. Tippe auf "Geräte suchen" um LED-Bänder zu
               finden.
             </div>
           </div>
@@ -584,12 +698,12 @@
 
         <!-- Erweiterte Protokolle (WLED, Pixel-Level, etc.) entfernt - nicht benoetigt -->
         <!-- <div class="section">
-          <h3 class="section-title">ðŸŒ Erweiterte Protokolle</h3>
+          <h3 class="section-title">🌐 Erweiterte Protokolle</h3>
           <div class="setting-item">
             <div class="setting-label">
               <div class="setting-title">WLED-Integration (WiFi-LEDs)</div>
               <div class="setting-description">
-                UnterstÃ¼tzung fÃ¼r WLED-Controller Ã¼ber WiFi
+                Unterstützung für WLED-Controller über WiFi
               </div>
             </div>
             <div class="switch" id="wledSwitch">
@@ -599,7 +713,7 @@
           <!-- âœ… WLED-GERÃ„TE-SCANNER MIT ECHTER FUNKTIONALITÃ„T -->
           <div class="setting-item" id="wledScanSection" style="display: none">
             <div class="setting-label">
-              <div class="setting-title">WLED-GerÃ¤te scannen</div>
+              <div class="setting-title">WLED-Geräte scannen</div>
               <div class="setting-description">
                 Suche nach WLED-Controllern im lokalen Netzwerk
               </div>
@@ -613,15 +727,22 @@
               <i class="fas fa-search"></i> WLED scannen
             </button>
           </div>
-          <!-- âœ… GEFUNDENE WLED-GERÃ„TE -->
+          <!-- GEFUNDENE WLED-GERÄTE -->
           <div
             class="setting-item"
             id="wledDevicesSection"
             style="display: none"
           >
             <div class="setting-label">
-              <div class="setting-title">Gefundene WLED-GerÃ¤te</div>
+              <div class="setting-title">Gefundene WLED-Geräte</div>
               <div class="setting-description">WLED-Controller im Netzwerk</div>
+            </div>
+            <div id="wledDevicesList" class="wled-devices-list">
+              <!-- WLED-Geräte werden hier dynamisch eingefügt -->
+            </div>
+          </div>
+        </div>
+
         <!-- Allgemeine Einstellungen -->
         <div class="section">
           <h3 class="section-title">Allgemein</h3>
@@ -629,7 +750,7 @@
             <div class="setting-label">
               <div class="setting-title">Automatisch verbinden</div>
               <div class="setting-description">
-                Beim App-Start automatisch mit gespeicherten GerÃ¤ten verbinden
+                Beim App-Start automatisch mit gespeicherten Geräten verbinden
               </div>
             </div>
             <div class="switch active" id="autoConnectSwitch">
@@ -640,7 +761,7 @@
             <div class="setting-label">
               <div class="setting-title">Helligkeit</div>
               <div class="setting-description">
-                Standard-Helligkeit fÃ¼r neue Verbindungen
+                Standard-Helligkeit für neue Verbindungen
               </div>
             </div>
             <div class="slider-container">
@@ -655,16 +776,56 @@
               <span class="slider-value" id="brightnessValue">80%</span>
             </div>
           </div>
+          
+          <!-- Benachrichtigungen -->
+          <div class="setting-item">
+            <div class="setting-label">
+              <div class="setting-title">Benachrichtigungen</div>
+              <div class="setting-description">
+                App-Benachrichtigungen aktivieren
+              </div>
+            </div>
+            <div class="switch active" id="notificationsSwitch" onclick="toggleNotifications()">
+              <div class="switch-handle"></div>
+            </div>
+          </div>
+          
+          <!-- Dark Mode -->
+          <div class="setting-item">
+            <div class="setting-label">
+              <div class="setting-title">Dark Mode</div>
+              <div class="setting-description">
+                Dunkles Design für die App
+              </div>
+            </div>
+            <div class="switch active" id="darkModeSwitch" onclick="toggleDarkMode()">
+              <div class="switch-handle"></div>
+            </div>
+          </div>
+          
+          <!-- Hierarchische Gruppen -->
+          <div class="setting-item">
+            <div class="setting-label">
+              <div class="setting-title">Hierarchische Gruppen</div>
+              <div class="setting-description">
+                LED-Geräte in Gruppen organisieren
+              </div>
+            </div>
+            <div class="switch" id="hierarchicalGroupsSwitch" onclick="toggleHierarchicalGroups()">
+              <div class="switch-handle"></div>
+            </div>
+          </div>
+          
           <div class="setting-item">
             <div class="setting-label">
               <div class="setting-title">Sprache</div>
-              <div class="setting-description">App-Sprache auswÃ¤hlen</div>
+              <div class="setting-description">App-Sprache auswählen</div>
             </div>
             <select id="languageSelect" class="language-select">
               <option value="de">Deutsch</option>
               <option value="en">English</option>
-              <option value="es">EspaÃ±ol</option>
-              <option value="fr">FranÃ§ais</option>
+              <option value="es">Español</option>
+              <option value="fr">Français</option>
             </select>
           </div>
         </div>
@@ -713,15 +874,15 @@
         <div class="section settings-section">
           <div class="section-header">
             <i class="fas fa-bluetooth-b"></i>
-            <h2>Bluetooth-GerÃ¤te</h2>
+            <h2>Bluetooth-Geräte</h2>
           </div>
 
           <div id="saved-devices" class="device-list">
-            <!-- GerÃ¤te werden hier dynamisch eingefÃ¼gt -->
+            <!-- Geräte werden hier dynamisch eingefügt -->
           </div>
 
           <button class="btn-primary btn-full" onclick="scanForNewDevice()">
-            <i class="fas fa-search"></i> Neues GerÃ¤t suchen
+            <i class="fas fa-search"></i> Neues Gerät suchen
           </button>
 
           <div class="setting-row">
@@ -729,7 +890,7 @@
               <i class="fas fa-sync"></i>
               <div>
                 <h4>Automatisch verbinden</h4>
-                <p class="description">Beim App-Start gespeicherte GerÃ¤te verbinden</p>
+                <p class="description">Beim App-Start gespeicherte Geräte verbinden</p>
               </div>
             </div>
             <label class="toggle-switch">
@@ -789,7 +950,7 @@
               <i class="fas fa-mobile-alt"></i> System-Musik scannen
             </button>
             <button class="btn-secondary" onclick="requestSAFAccess()">
-              <i class="fas fa-sd-card"></i> SD-Karte Ordner hinzufÃ¼gen
+              <i class="fas fa-sd-card"></i> SD-Karte Ordner hinzufügen
             </button>
           </div>
 
@@ -807,7 +968,7 @@
           <div class="scanned-folders" id="scannedFolders" style="display: none;">
             <h4>Gescannte Ordner:</h4>
             <div class="folder-list" id="folderList">
-              <!-- Ordner werden hier dynamisch eingefÃ¼gt -->
+              <!-- Ordner werden hier dynamisch eingefügt -->
             </div>
           </div>
 
@@ -838,7 +999,7 @@
             <select id="reactionPreset" onchange="loadReactionPreset(this.value)" style="width: 100%;">
               <option value="balanced">Ausgewogen</option>
               <option value="bass-heavy">Bass betont</option>
-              <option value="treble-focus">HÃ¶hen betont</option>
+              <option value="treble-focus">Höhen betont</option>
               <option value="party">Party-Modus</option>
               <option value="chill">Entspannt</option>
               <option value="custom">Benutzerdefiniert</option>
@@ -860,7 +1021,7 @@
 
           <div class="slider-control">
             <div class="slider-header">
-              <label><i class="fas fa-wave-square"></i> GlÃ¤ttung</label>
+              <label><i class="fas fa-wave-square"></i> Glättung</label>
               <span id="smoothingValue" class="slider-value">0.7</span>
             </div>
             <input type="range" id="smoothing" min="0" max="1" step="0.1" value="0.7" oninput="updateSmoothing(this.value)">
@@ -903,7 +1064,7 @@
               <i class="fas fa-save"></i> Als Preset speichern
             </button>
             <button class="btn-text" onclick="resetToDefault()">
-              <i class="fas fa-undo"></i> ZurÃ¼cksetzen
+              <i class="fas fa-undo"></i> Zurücksetzen
             </button>
           </div>
         </div>
@@ -916,7 +1077,7 @@
           </div>
 
           <div class="preset-list" id="presetList">
-            <!-- Presets werden hier dynamisch eingefÃ¼gt -->
+            <!-- Presets werden hier dynamisch eingefügt -->
           </div>
 
           <div class="preset-buttons">
@@ -930,12 +1091,12 @@
 
           <div class="device-sync" id="deviceSync" style="margin-top: 20px;">
             <h4>Presets synchronisieren:</h4>
-            <p class="description" style="margin-bottom: 15px;">Aktuelles Preset auf andere GerÃ¤te Ã¼bertragen</p>
+            <p class="description" style="margin-bottom: 15px;">Aktuelles Preset auf andere Geräte übertragen</p>
             <div class="device-sync-list" id="syncDeviceList">
-              <!-- Devices fÃ¼r Sync werden hier dynamisch eingefÃ¼gt -->
+              <!-- Devices für Sync werden hier dynamisch eingefügt -->
             </div>
             <button class="btn-primary btn-full" onclick="syncPresetsToDevices()" style="margin-top: 15px;">
-              <i class="fas fa-sync"></i> Auf ausgewÃ¤hlte GerÃ¤te Ã¼bertragen
+              <i class="fas fa-sync"></i> Auf ausgewählte Geräte übertragen
             </button>
           </div>
         </div>
@@ -969,7 +1130,7 @@
               <i class="fas fa-upload"></i> Backup wiederherstellen
             </button>
             <p class="description" style="margin-top: 10px; text-align: center; font-size: 12px;">
-              Sichert: GerÃ¤te, Presets, Einstellungen, Musik-Index
+              Sichert: Geräte, Presets, Einstellungen, Musik-Index
             </p>
           </div>
 

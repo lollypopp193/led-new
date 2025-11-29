@@ -624,6 +624,107 @@ function initBasicColors() {
     });
 }
 
+/**
+ * Side-Panel öffnen (Erweiterte Einstellungen)
+ */
+function openSidePanel() {
+    const panel = document.getElementById('sidePanel');
+    if (panel) {
+        panel.classList.add('active');
+    }
+}
+
+/**
+ * Side-Panel schließen
+ */
+function closeSidePanel() {
+    const panel = document.getElementById('sidePanel');
+    if (panel) {
+        panel.classList.remove('active');
+    }
+}
+
+/**
+ * Side-Panel toggle
+ */
+function toggleSidePanel() {
+    const panel = document.getElementById('sidePanel');
+    if (panel) {
+        panel.classList.toggle('active');
+    }
+}
+
+/**
+ * Side-Panel initialisieren
+ */
+function initSidePanel() {
+    // Close-Button
+    const closeBtn = document.getElementById('closePanelBtn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeSidePanel);
+    }
+
+    // Einstellungen-Button (falls vorhanden)
+    const settingsBtn = document.getElementById('settingsBtn');
+    if (settingsBtn) {
+        settingsBtn.addEventListener('click', openSidePanel);
+    }
+
+    // Preset-Farben im Side-Panel aktivieren
+    const panelPresets = document.querySelectorAll('.side-panel .preset-color');
+    panelPresets.forEach(preset => {
+        preset.addEventListener('click', () => {
+            const bgColor = getComputedStyle(preset).backgroundColor;
+            const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+            if (match) {
+                const r = parseInt(match[1]);
+                const g = parseInt(match[2]);
+                const b = parseInt(match[3]);
+                applyColor(r, g, b);
+            }
+        });
+    });
+
+    // Temperatur-Slider
+    const tempSlider = document.getElementById('temperatureSlider');
+    if (tempSlider) {
+        tempSlider.addEventListener('input', (e) => {
+            const kelvin = parseInt(e.target.value);
+            const rgb = kelvinToRgb(kelvin);
+            applyColor(rgb.r, rgb.g, rgb.b);
+
+            const tempValue = document.getElementById('temperatureValue');
+            if (tempValue) tempValue.textContent = kelvin + 'K';
+        });
+    }
+}
+
+/**
+ * Kelvin zu RGB konvertieren
+ */
+function kelvinToRgb(kelvin) {
+    const temp = kelvin / 100;
+    let r, g, b;
+
+    if (temp <= 66) {
+        r = 255;
+        g = Math.min(255, Math.max(0, 99.4708025861 * Math.log(temp) - 161.1195681661));
+    } else {
+        r = Math.min(255, Math.max(0, 329.698727446 * Math.pow(temp - 60, -0.1332047592)));
+        g = Math.min(255, Math.max(0, 288.1221695283 * Math.pow(temp - 60, -0.0755148492)));
+    }
+
+    if (temp >= 66) {
+        b = 255;
+    } else if (temp <= 19) {
+        b = 0;
+    } else {
+        b = Math.min(255, Math.max(0, 138.5177312231 * Math.log(temp - 10) - 305.0447927307));
+    }
+
+    return { r: Math.round(r), g: Math.round(g), b: Math.round(b) };
+}
+
 function initFarbeController() {
     initBLE();
     initColorWheel();
@@ -632,6 +733,7 @@ function initFarbeController() {
     initBrightnessSlider();
     initPowerToggle();
     initBasicColors();
+    initSidePanel();
     console.log('✅ Farbe-Controller vollständig initialisiert');
 }
 
@@ -642,6 +744,10 @@ window.isConnected = isConnected;
 window.initBLE = initBLE;
 window.sendColorToBLE = sendColorToBLE;
 window.applyColor = applyColor;
+window.openSidePanel = openSidePanel;
+window.closeSidePanel = closeSidePanel;
+window.toggleSidePanel = toggleSidePanel;
+window.kelvinToRgb = kelvinToRgb;
 window.getColorFromPosition = getColorFromPosition;
 window.hsvToRgb = hsvToRgb;
 window.currentColor = currentColor;
