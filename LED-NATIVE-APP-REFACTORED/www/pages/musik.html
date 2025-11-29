@@ -1821,7 +1821,7 @@
       // Custom EQ Preset speichern
       function saveCustomEQPreset() {
         const name = prompt('Name für dein Preset:');
-        if (!name) return;
+        if (!name || name.trim() === '') return;
         
         const values = [];
         document.querySelectorAll('.eq-slider').forEach(slider => {
@@ -1832,21 +1832,71 @@
         let customPresets = JSON.parse(localStorage.getItem('customEQPresets') || '{}');
         customPresets[name] = values;
         localStorage.setItem('customEQPresets', JSON.stringify(customPresets));
+        eqPresetValues[name] = values;
         
-        // Button erstellen
-        const container = document.getElementById('customPresetsContainer');
-        const newBtn = document.createElement('button');
-        newBtn.type = 'button';
-        newBtn.className = 'preset-btn';
-        newBtn.textContent = name;
-        newBtn.onclick = function() {
-          selectEQPreset(this, name);
-          eqPresetValues[name] = values;
-        };
-        container.appendChild(newBtn);
-        
+        // Button erstellen mit Lösch-Option
+        createCustomPresetButton(name, values);
         alert('Preset "' + name + '" gespeichert!');
       }
+      
+      // Custom Preset Button erstellen (mit Long-Press zum Löschen)
+      function createCustomPresetButton(name, values) {
+        const container = document.getElementById('customPresetsContainer');
+        
+        // Prüfen ob Button schon existiert
+        if (document.querySelector(`[data-custom-preset="${name}"]`)) return;
+        
+        const wrapper = document.createElement('div');
+        wrapper.style.cssText = 'position: relative; display: inline-block;';
+        wrapper.dataset.customPreset = name;
+        
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'preset-btn';
+        btn.textContent = name;
+        btn.onclick = function() {
+          selectEQPreset(this, name);
+        };
+        
+        // Löschen-Button
+        const deleteBtn = document.createElement('span');
+        deleteBtn.innerHTML = '×';
+        deleteBtn.style.cssText = 'position: absolute; top: -5px; right: -5px; background: #ff4444; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1;';
+        deleteBtn.onclick = function(e) {
+          e.stopPropagation();
+          if (confirm('Preset "' + name + '" löschen?')) {
+            deleteCustomEQPreset(name);
+          }
+        };
+        
+        wrapper.appendChild(btn);
+        wrapper.appendChild(deleteBtn);
+        container.appendChild(wrapper);
+      }
+      
+      // Custom Preset löschen
+      function deleteCustomEQPreset(name) {
+        let customPresets = JSON.parse(localStorage.getItem('customEQPresets') || '{}');
+        delete customPresets[name];
+        delete eqPresetValues[name];
+        localStorage.setItem('customEQPresets', JSON.stringify(customPresets));
+        
+        // Button entfernen
+        const wrapper = document.querySelector(`[data-custom-preset="${name}"]`);
+        if (wrapper) wrapper.remove();
+      }
+      
+      // Gespeicherte Custom Presets laden beim Start
+      function loadCustomEQPresets() {
+        const customPresets = JSON.parse(localStorage.getItem('customEQPresets') || '{}');
+        for (const [name, values] of Object.entries(customPresets)) {
+          eqPresetValues[name] = values;
+          createCustomPresetButton(name, values);
+        }
+      }
+      
+      // Beim Laden ausführen
+      document.addEventListener('DOMContentLoaded', loadCustomEQPresets);
     </script>
 
     <!-- Content Area -->
@@ -2361,8 +2411,7 @@
                 max="12"
                 value="0"
                 style="flex: 1"
-                disabled
-                oninput="document.getElementById('bassBoostValue').textContent = this.value + 'dB'"
+                oninput="document.getElementById('bassBoostValue').textContent = this.value + 'dB'; window.BassBoostController?.setIntensity(this.value);"
               />
               <span
                 id="bassBoostValue"
@@ -3459,7 +3508,7 @@
                     <i class="fas fa-exchange-alt"></i> Crossfade
                   </h3>
                   <div class="toggle-switch">
-                    <input type="checkbox" id="crossfadeToggle">
+                    <input type="checkbox" id="crossfadeToggle" onchange="const settings = document.getElementById('crossfadeSettings'); settings.style.opacity = this.checked ? '1' : '0.5'; settings.style.pointerEvents = this.checked ? 'auto' : 'none';">
                     <span class="slider"></span>
                   </div>
                 </div>
