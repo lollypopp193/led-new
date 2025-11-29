@@ -237,6 +237,29 @@ function toggleNotifications() {
     saveSettings();
 }
 
+let darkMode = true;
+function toggleDarkMode() {
+    darkMode = !darkMode;
+    const switchEl = document.getElementById('darkModeSwitch');
+    if (switchEl) {
+        switchEl.classList.toggle('active', darkMode);
+    }
+    document.body.classList.toggle('light-mode', !darkMode);
+    localStorage.setItem('darkMode', darkMode);
+    saveSettings();
+}
+
+let hierarchicalGroups = false;
+function toggleHierarchicalGroups() {
+    hierarchicalGroups = !hierarchicalGroups;
+    const switchEl = document.getElementById('hierarchicalGroupsSwitch');
+    if (switchEl) {
+        switchEl.classList.toggle('active', hierarchicalGroups);
+    }
+    localStorage.setItem('hierarchicalGroups', hierarchicalGroups);
+    saveSettings();
+}
+
 function updateBrightness(value) {
     brightness = parseInt(value);
     const brightnessValue = document.getElementById('brightnessValue');
@@ -292,7 +315,20 @@ function loadSettings() {
             autoConnect = settings.autoConnect !== undefined ? settings.autoConnect : true;
             brightness = settings.brightness || 80;
             notifications = settings.notifications !== undefined ? settings.notifications : true;
+            darkMode = settings.darkMode !== undefined ? settings.darkMode : true;
+            hierarchicalGroups = settings.hierarchicalGroups !== undefined ? settings.hierarchicalGroups : false;
         }
+
+        // UI-Status aktualisieren
+        const darkModeSwitch = document.getElementById('darkModeSwitch');
+        if (darkModeSwitch) darkModeSwitch.classList.toggle('active', darkMode);
+
+        const hierarchicalSwitch = document.getElementById('hierarchicalGroupsSwitch');
+        if (hierarchicalSwitch) hierarchicalSwitch.classList.toggle('active', hierarchicalGroups);
+
+        const notificationsSwitch = document.getElementById('notificationsSwitch');
+        if (notificationsSwitch) notificationsSwitch.classList.toggle('active', notifications);
+
     } catch (error) {
         console.error('Fehler beim Laden der Einstellungen:', error);
     }
@@ -303,7 +339,9 @@ function saveSettings() {
         const settings = {
             autoConnect,
             brightness,
-            notifications
+            notifications,
+            darkMode,
+            hierarchicalGroups
         };
         localStorage.setItem('led-settings', JSON.stringify(settings));
     } catch (error) {

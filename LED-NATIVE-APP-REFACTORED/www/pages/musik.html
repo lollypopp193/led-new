@@ -9194,22 +9194,13 @@
                       </select>
                     </div>
 
-                    <label
-                      style="
-                        display: flex;
-                        align-items: center;
-                        gap: 8px;
-                        cursor: pointer;
-                      "
-                    >
-                      <input
-                        type="checkbox"
-                        id="musicAlarmFadeIn"
-                        checked
-                        style="transform: scale(1.1)"
-                      />
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 6px;">
                       <span style="font-size: 0.9em">Sanft einblenden</span>
-                    </label>
+                      <div class="toggle-switch small">
+                        <input type="checkbox" id="musicAlarmFadeIn" checked>
+                        <span class="slider"></span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -9234,70 +9225,37 @@
 
                 <!-- ✅ BEHALTEN: Notification & Lockscreen Player (nützlich für LED-App) -->
 
-                <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    cursor: pointer;
-                    margin-bottom: 12px;
-                  "
-                >
-                  <input
-                    type="checkbox"
-                    id="notificationPlayer"
-                    checked
-                    style="transform: scale(1.2)"
-                  />
-                  <span style="font-weight: bold">
-                    Mini-Player in Benachrichtigungen</span
-                  >
-                </label>
-                <div style="font-size: 0.9em; color: #888; margin-bottom: 15px">
-                  Steuerung über Notification Bar
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 12px;">
+                  <div>
+                    <span style="font-weight: bold; display: block;">Mini-Player in Benachrichtigungen</span>
+                    <span style="font-size: 0.85em; color: #888;">Steuerung über Notification Bar</span>
+                  </div>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="notificationPlayer" checked>
+                    <span class="slider"></span>
+                  </div>
                 </div>
 
-                <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    cursor: pointer;
-                    margin-bottom: 12px;
-                  "
-                >
-                  <input
-                    type="checkbox"
-                    id="lockscreenControl"
-                    checked
-                    style="transform: scale(1.2)"
-                  />
-                  <span style="font-weight: bold"
-                    >Sperrbildschirm-Steuerung</span
-                  >
-                </label>
-                <div style="font-size: 0.9em; color: #888; margin-bottom: 15px">
-                  Musiksteuerung ohne Entsperren
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 12px;">
+                  <div>
+                    <span style="font-weight: bold; display: block;">Sperrbildschirm-Steuerung</span>
+                    <span style="font-size: 0.85em; color: #888;">Musiksteuerung ohne Entsperren</span>
+                  </div>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="lockscreenControl" checked>
+                    <span class="slider"></span>
+                  </div>
                 </div>
 
-                <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    cursor: pointer;
-                    margin-bottom: 12px;
-                  "
-                >
-                  <input
-                    type="checkbox"
-                    id="autoConnect"
-                    style="transform: scale(1.2)"
-                  />
-                  <span style="font-weight: bold"> Auto-Connect Bluetooth</span>
-                </label>
-                <div style="font-size: 0.9em; color: #888">
-                  Automatisch mit bekannten Geraeten verbinden
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 12px;">
+                  <div>
+                    <span style="font-weight: bold; display: block;">Auto-Connect Bluetooth</span>
+                    <span style="font-size: 0.85em; color: #888;">Automatisch mit bekannten Geräten verbinden</span>
+                  </div>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="autoConnect">
+                    <span class="slider"></span>
+                  </div>
                 </div>
               </div>
 
@@ -9315,70 +9273,37 @@
                   Erweiterte Benachrichtigungen
                 </h4>
 
-                <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    cursor: pointer;
-                    margin-bottom: 12px;
-                  "
-                >
-                  <input
-                    type="checkbox"
-                    id="richNotifications"
-                    checked
-                    style="transform: scale(1.2)"
-                  />
-                  <span style="font-weight: bold"
-                    >­ƒû╝´©Å Rich Notifications</span
-                  >
-                </label>
-                <div style="font-size: 0.9em; color: #888; margin-bottom: 15px">
-                  Albumcover und erweiterte Steuerung
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 12px;">
+                  <div>
+                    <span style="font-weight: bold; display: block;">Rich Notifications</span>
+                    <span style="font-size: 0.85em; color: #888;">Albumcover und erweiterte Steuerung</span>
+                  </div>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="richNotifications" checked>
+                    <span class="slider"></span>
+                  </div>
                 </div>
 
-                <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    cursor: pointer;
-                    margin-bottom: 12px;
-                  "
-                >
-                  <input
-                    type="checkbox"
-                    id="persistentNotification"
-                    checked
-                    style="transform: scale(1.2)"
-                  />
-                  <span style="font-weight: bold"
-                    >­ƒôî Dauerhafte Benachrichtigung</span
-                  >
-                </label>
-                <div style="font-size: 0.9em; color: #888; margin-bottom: 15px">
-                  Bleibt auch bei Pause sichtbar
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 12px;">
+                  <div>
+                    <span style="font-weight: bold; display: block;">Dauerhafte Benachrichtigung</span>
+                    <span style="font-size: 0.85em; color: #888;">Bleibt auch bei Pause sichtbar</span>
+                  </div>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="persistentNotification" checked>
+                    <span class="slider"></span>
+                  </div>
                 </div>
 
-                <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    cursor: pointer;
-                    margin-bottom: 12px;
-                  "
-                >
-                  <input
-                    type="checkbox"
-                    id="compactNotification"
-                    style="transform: scale(1.2)"
-                  />
-                  <span>Kompakte Ansicht</span>
-                </label>
-                <div style="font-size: 0.9em; color: #888; margin-bottom: 15px">
-                  Weniger Platz in der Notification Bar
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 12px;">
+                  <div>
+                    <span style="font-weight: bold; display: block;">Kompakte Ansicht</span>
+                    <span style="font-size: 0.85em; color: #888;">Weniger Platz in der Notification Bar</span>
+                  </div>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="compactNotification">
+                    <span class="slider"></span>
+                  </div>
                 </div>
 
                 <div style="margin-top: 15px">
@@ -9415,47 +9340,29 @@
                 <h4
                   style="color: #4ecdc4; margin-bottom: 10px; font-size: 1.1em"
                 >
-                  ­ƒÅá Home-Screen Widgets
+                  Home-Screen Widgets
                 </h4>
 
-                <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    cursor: pointer;
-                    margin-bottom: 12px;
-                  "
-                >
-                  <input
-                    type="checkbox"
-                    id="smallWidget"
-                    style="transform: scale(1.2)"
-                  />
-                  <span style="font-weight: bold"> Kleines Widget</span>
-                </label>
-                <div style="font-size: 0.9em; color: #888; margin-bottom: 15px">
-                  Aktueller Track + Play/Pause
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 12px;">
+                  <div>
+                    <span style="font-weight: bold; display: block;">Kleines Widget</span>
+                    <span style="font-size: 0.85em; color: #888;">Aktueller Track + Play/Pause</span>
+                  </div>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="smallWidget">
+                    <span class="slider"></span>
+                  </div>
                 </div>
 
-                <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    cursor: pointer;
-                    margin-bottom: 12px;
-                  "
-                >
-                  <input
-                    type="checkbox"
-                    id="largeWidget"
-                    style="transform: scale(1.2)"
-                  />
-                  <span style="font-weight: bold">Grosses Widget</span>
-                </label>
-                <div style="font-size: 0.9em; color: #888; margin-bottom: 15px">
-                  Playlist + Cover + Vollsteuerung
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 12px;">
+                  <div>
+                    <span style="font-weight: bold; display: block;">Großes Widget</span>
+                    <span style="font-size: 0.85em; color: #888;">Playlist + Cover + Vollsteuerung</span>
+                  </div>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="largeWidget">
+                    <span class="slider"></span>
+                  </div>
                 </div>
 
                 <div style="margin-top: 15px">
@@ -9578,7 +9485,7 @@
                 <h4
                   style="color: #4ecdc4; margin-bottom: 10px; font-size: 1.1em"
                 >
-                  ­ƒºá RAM & CPU Optimierung
+                  RAM & CPU Optimierung
                 </h4>
 
                 <div style="margin-bottom: 15px">

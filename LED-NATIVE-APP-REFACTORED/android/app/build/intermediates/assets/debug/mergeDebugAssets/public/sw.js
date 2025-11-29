@@ -18,11 +18,11 @@ const PRECACHE_URLS = [
     '/js/device-manager.js',
     '/js/native-bridge.js',
     '/js/capacitor-adapter.js',
-    '/pages/Farbe.html',
-    '/pages/Effekt.html',
+    '/pages/farbe.html',
+    '/pages/effekt.html',
     '/pages/musik.html',
-    '/pages/Timer.html',
-    '/pages/Einstellungen.html',
+    '/pages/timer.html',
+    '/pages/einstellungen.html',
     '/manifest.json'
 ];
 
