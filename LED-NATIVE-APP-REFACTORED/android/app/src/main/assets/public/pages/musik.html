@@ -1771,6 +1771,82 @@
           console.log('Panel aktiv:', panelId);
         }
       }
+      
+      // EQ Presets - Direkt clickbar
+      const eqPresetValues = {
+        'flat': [0, 0, 0, 0, 0],
+        'pop': [2, 4, 5, 3, 1],
+        'rock': [5, 3, -1, 2, 5],
+        'bassboost': [8, 6, 0, 0, 0],
+        'classic': [-1, 2, 3, 2, -1],
+        'jazz': [4, 2, -1, 2, 4]
+      };
+      
+      function selectEQPreset(btn, preset) {
+        // Alle Buttons deaktivieren
+        document.querySelectorAll('#eqPresetsContainer .preset-btn').forEach(b => b.classList.remove('active'));
+        // Geklickten Button aktivieren
+        btn.classList.add('active');
+        
+        // Slider-Werte setzen
+        const values = eqPresetValues[preset];
+        if (values) {
+          const sliders = document.querySelectorAll('.eq-slider');
+          sliders.forEach((slider, i) => {
+            if (values[i] !== undefined) {
+              slider.value = values[i];
+            }
+          });
+        }
+        console.log('EQ Preset:', preset);
+      }
+      
+      // Visualisierungs-Effekte clickbar
+      function selectVisualEffect(btn, effect) {
+        document.querySelectorAll('.visual-preset').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        console.log('Visual Effekt:', effect);
+      }
+      
+      // EQ Zurücksetzen
+      function resetEQ() {
+        document.querySelectorAll('.eq-slider').forEach(slider => {
+          slider.value = 0;
+        });
+        document.querySelectorAll('#eqPresetsContainer .preset-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector('[data-preset="flat"]')?.classList.add('active');
+        console.log('EQ zurückgesetzt');
+      }
+      
+      // Custom EQ Preset speichern
+      function saveCustomEQPreset() {
+        const name = prompt('Name für dein Preset:');
+        if (!name) return;
+        
+        const values = [];
+        document.querySelectorAll('.eq-slider').forEach(slider => {
+          values.push(parseInt(slider.value));
+        });
+        
+        // Speichern in LocalStorage
+        let customPresets = JSON.parse(localStorage.getItem('customEQPresets') || '{}');
+        customPresets[name] = values;
+        localStorage.setItem('customEQPresets', JSON.stringify(customPresets));
+        
+        // Button erstellen
+        const container = document.getElementById('customPresetsContainer');
+        const newBtn = document.createElement('button');
+        newBtn.type = 'button';
+        newBtn.className = 'preset-btn';
+        newBtn.textContent = name;
+        newBtn.onclick = function() {
+          selectEQPreset(this, name);
+          eqPresetValues[name] = values;
+        };
+        container.appendChild(newBtn);
+        
+        alert('Preset "' + name + '" gespeichert!');
+      }
     </script>
 
     <!-- Content Area -->
@@ -2153,22 +2229,22 @@
         </div>
 
         <div class="presets" id="eqPresetsContainer">
-          <button type="button" class="preset-btn active" data-preset="flat">
+          <button type="button" class="preset-btn active" data-preset="flat" onclick="selectEQPreset(this, 'flat')">
             Flat
           </button>
-          <button type="button" class="preset-btn" data-preset="pop">
+          <button type="button" class="preset-btn" data-preset="pop" onclick="selectEQPreset(this, 'pop')">
             Pop
           </button>
-          <button type="button" class="preset-btn" data-preset="rock">
+          <button type="button" class="preset-btn" data-preset="rock" onclick="selectEQPreset(this, 'rock')">
             Rock
           </button>
-          <button type="button" class="preset-btn" data-preset="bassboost">
+          <button type="button" class="preset-btn" data-preset="bassboost" onclick="selectEQPreset(this, 'bassboost')">
             Bass Boost
           </button>
-          <button type="button" class="preset-btn" data-preset="classic">
+          <button type="button" class="preset-btn" data-preset="classic" onclick="selectEQPreset(this, 'classic')">
             Klassik
           </button>
-          <button type="button" class="preset-btn" data-preset="jazz">
+          <button type="button" class="preset-btn" data-preset="jazz" onclick="selectEQPreset(this, 'jazz')">
             Jazz
           </button>
         </div>
@@ -2245,10 +2321,7 @@
         </div>
 
         <div style="margin-top: 20px; display: flex; gap: 15px">
-          <button type="button" class="preset-btn" id="eqSaveBtn">
-            Speichern
-          </button>
-          <button type="button" class="preset-btn" id="eqResetBtn">
+          <button type="button" class="preset-btn" id="eqResetBtn" onclick="resetEQ()">
             Zurücksetzen
           </button>
         </div>
@@ -2310,38 +2383,42 @@
         <div class="panel-header">
           <i class="fas fa-wave-square"></i>
           <h2 class="panel-title">Visualisierungseffekte</h2>
+          <div class="toggle-switch" style="margin-left: auto;">
+            <input type="checkbox" id="visualizerToggle" checked>
+            <span class="slider"></span>
+          </div>
         </div>
 
         <div class="visual-presets">
-          <div class="visual-preset active">
+          <div class="visual-preset active" onclick="selectVisualEffect(this, 'balken')">
             <i class="fas fa-chart-bar"></i>
             Balken
           </div>
-          <div class="visual-preset">
+          <div class="visual-preset" onclick="selectVisualEffect(this, 'wellen')">
             <i class="fas fa-water"></i>
             Wellen
           </div>
-          <div class="visual-preset">
+          <div class="visual-preset" onclick="selectVisualEffect(this, 'partikel')">
             <i class="fas fa-atom"></i>
             Partikel
           </div>
-          <div class="visual-preset">
+          <div class="visual-preset" onclick="selectVisualEffect(this, 'kreise')">
             <i class="fas fa-circle"></i>
             Kreise
           </div>
-          <div class="visual-preset">
+          <div class="visual-preset" onclick="selectVisualEffect(this, 'spirale')">
             <i class="fas fa-infinity"></i>
             Spirale
           </div>
-          <div class="visual-preset">
+          <div class="visual-preset" onclick="selectVisualEffect(this, 'linien')">
             <i class="fas fa-grip-lines"></i>
             Linien
           </div>
-          <div class="visual-preset">
+          <div class="visual-preset" onclick="selectVisualEffect(this, 'spektrum')">
             <i class="fas fa-chart-area"></i>
             Spektrum
           </div>
-          <div class="visual-preset">
+          <div class="visual-preset" onclick="selectVisualEffect(this, 'feuer')">
             <i class="fas fa-fire"></i>
             Feuer
           </div>
