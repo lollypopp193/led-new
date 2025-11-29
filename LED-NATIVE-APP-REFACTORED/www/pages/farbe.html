@@ -1451,5 +1451,52 @@
     <script src="/js/preset-manager.js"></script>
     <script src="/js/ble-controller-pro.js"></script>
     <script src="/js/device-manager.js"></script>
+
+    <!-- FARB-PRESETS KLICKBAR MACHEN -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Alle Preset-Colors klickbar machen
+        document.querySelectorAll(".preset-color").forEach(function (preset) {
+          preset.style.cursor = "pointer";
+          preset.addEventListener("click", function () {
+            // Hole die Background-Color aus dem style
+            const bgColor = this.style.backgroundColor;
+            console.log("🎨 Preset angeklickt:", bgColor);
+
+            // Parse RGB aus "rgb(r, g, b)" oder "rgba(r, g, b, a)"
+            const match = bgColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+            if (match) {
+              const r = parseInt(match[1]);
+              const g = parseInt(match[2]);
+              const b = parseInt(match[3]);
+
+              console.log("🎨 Farbe gewählt: R=" + r + ", G=" + g + ", B=" + b);
+
+              // Farbe anwenden
+              if (window.applyColor) {
+                window.applyColor(r, g, b);
+              } else if (
+                window.FarbeController &&
+                window.FarbeController.applyColor
+              ) {
+                window.FarbeController.applyColor(r, g, b);
+              }
+
+              // Visuelles Feedback
+              this.style.transform = "scale(1.2)";
+              setTimeout(() => {
+                this.style.transform = "";
+              }, 200);
+            }
+          });
+        });
+
+        console.log(
+          "✅ " +
+            document.querySelectorAll(".preset-color").length +
+            " Farb-Presets aktiviert"
+        );
+      });
+    </script>
   </body>
 </html>
