@@ -8939,7 +8939,7 @@
                       <i class="fas fa-moon"></i> Sleep-Timer
                     </h4>
                     <div class="toggle-switch">
-                      <input type="checkbox" id="sleepTimerEnabled" onchange="window.SleepTimerController?.toggle(this.checked)">
+                      <input type="checkbox" id="sleepTimerEnabled" onchange="toggleSleepTimerSettings(this.checked)">
                       <span class="slider"></span>
                     </div>
                   </div>
@@ -9032,37 +9032,10 @@
                     <h4 style="color: #4ecdc4; margin: 0; font-size: 1.1em;">
                       <i class="fas fa-alarm-clock"></i> Musik-Wecker
                     </h4>
-                    <label
-                      class="toggle-switch"
-                      style="
-                        position: relative;
-                        display: inline-block;
-                        width: 60px;
-                        height: 30px;
-                      "
-                    >
-                      <input
-                        type="checkbox"
-                        id="musicAlarmEnabled"
-                        style="opacity: 0; width: 0; height: 0"
-                      />
-                      <span
-                        class="toggle-slider"
-                        style="
-                          position: absolute;
-                          cursor: pointer;
-                          top: 0;
-                          left: 0;
-                          right: 0;
-                          bottom: 0;
-                          background-color: #333;
-                          transition: 0.4s;
-                          border-radius: 30px;
-                        "
-                      >
-                        <span></span>
-                      </span>
-                    </label>
+                    <div class="toggle-switch">
+                      <input type="checkbox" id="musicAlarmEnabled" onchange="toggleMusicAlarmSettings(this.checked)">
+                      <span class="slider"></span>
+                    </div>
                   </div>
 
                   <div
@@ -11053,6 +11026,71 @@
         });
         
         console.log('✅ Musik-Toggles aktiviert');
+        
+        // Sleep-Timer aktivieren/deaktivieren
+        window.toggleSleepTimerSettings = function(enabled) {
+          const settings = document.getElementById('sleepTimerSettings');
+          if (settings) {
+            if (enabled) {
+              settings.style.opacity = '1';
+              settings.style.pointerEvents = 'auto';
+              if (window.SleepTimerController) {
+                window.SleepTimerController.toggle(true);
+              }
+              console.log('Sleep-Timer aktiviert');
+            } else {
+              settings.style.opacity = '0.5';
+              settings.style.pointerEvents = 'none';
+              if (window.SleepTimerController) {
+                window.SleepTimerController.toggle(false);
+              }
+              console.log('Sleep-Timer deaktiviert');
+            }
+          }
+        };
+        
+        // Musik-Wecker aktivieren/deaktivieren
+        window.toggleMusicAlarmSettings = function(enabled) {
+          const settings = document.getElementById('musicAlarmSettings');
+          if (settings) {
+            if (enabled) {
+              settings.style.opacity = '1';
+              settings.style.pointerEvents = 'auto';
+              if (window.MusicAlarmController) {
+                window.MusicAlarmController.toggle(true);
+              }
+              console.log('Musik-Wecker aktiviert');
+            } else {
+              settings.style.opacity = '0.5';
+              settings.style.pointerEvents = 'none';
+              if (window.MusicAlarmController) {
+                window.MusicAlarmController.toggle(false);
+              }
+              console.log('Musik-Wecker deaktiviert');
+            }
+          }
+        };
+        
+        // Party-Modus Toggle
+        window.togglePartyMode = function(enabled) {
+          console.log('Party-Modus:', enabled ? 'AN' : 'AUS');
+          if (enabled) {
+            // Aktiviere alle Party-Features
+            document.querySelectorAll('#party .toggle-switch input[type="checkbox"]').forEach(cb => {
+              if (cb.id !== 'partyToggle') {
+                cb.disabled = false;
+              }
+            });
+            if (window.showNotification) {
+              window.showNotification('Party-Modus aktiviert!', 'success');
+            }
+          } else {
+            // Deaktiviere Party-Features
+            if (window.showNotification) {
+              window.showNotification('Party-Modus deaktiviert', 'info');
+            }
+          }
+        };
       });
     </script>
   </body>
