@@ -1672,12 +1672,6 @@
         flex-shrink: 0;
       }
       
-      .toggle-switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-      }
-      
       .toggle-switch .slider {
         position: absolute;
         cursor: pointer;
@@ -1688,6 +1682,20 @@
         background-color: #333;
         transition: 0.4s;
         border-radius: 30px;
+        z-index: 1;
+      }
+      
+      /* WICHTIG: Input muss klickbar sein */
+      .toggle-switch input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        z-index: 2;
+        cursor: pointer;
+        margin: 0;
       }
       
       .toggle-switch .slider:before {
@@ -7041,7 +7049,7 @@
                                                           }
                                                       });
 
-                                                      showNotification(`EQ-Preset: ${presetName}`, 'success');
+                                                      // Keine Benachrichtigung bei EQ-Auswahl
                                                   });
                                               });
 
@@ -7095,7 +7103,7 @@
                                                                   }
                                                               }
                                                           });
-                                                          showNotification(`EQ-Preset: ${presetName.trim()}`, 'success');
+                                                          // Keine Benachrichtigung
                                                       });
 
                                                       container.appendChild(newBtn);
@@ -7148,7 +7156,7 @@
                                                                       }
                                                                   }
                                                               });
-                                                              showNotification(`EQ-Preset: ${presetName}`, 'success');
+                                                              // Keine Benachrichtigung bei EQ-Auswahl
                                                           });
 
                                                           container.appendChild(newBtn);
@@ -9991,11 +9999,9 @@
             if (this.checked) {
               crossfadeSettings.style.opacity = "1";
               crossfadeSettings.style.pointerEvents = "auto";
-              showNotification("Crossfade aktiviert", "success");
             } else {
               crossfadeSettings.style.opacity = "0.5";
               crossfadeSettings.style.pointerEvents = "none";
-              showNotification("Crossfade deaktiviert", "info");
             }
           });
         }
@@ -11090,14 +11096,12 @@
             });
           }
           
-          // Party-Modus Toggle
+          // Party-Modus Toggle - KEINE Benachrichtigung
           const partyToggle = document.getElementById('partyToggle');
           if (partyToggle) {
             partyToggle.addEventListener('change', function() {
               console.log('Party-Modus:', this.checked ? 'AN' : 'AUS');
-              if (window.showNotification) {
-                window.showNotification(this.checked ? '🎉 Party-Modus aktiviert!' : 'Party-Modus deaktiviert', this.checked ? 'success' : 'info');
-              }
+              // Keine Benachrichtigung - User will das nicht
             });
           }
           

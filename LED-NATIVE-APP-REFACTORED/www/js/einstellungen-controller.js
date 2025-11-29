@@ -1169,9 +1169,7 @@ function toggleAutoConnect() {
     autoConnect = isActive;
     localStorage.setItem('autoConnect', isActive);
 
-    if (window.showNotification) {
-        window.showNotification(isActive ? 'Auto-Connect aktiviert' : 'Auto-Connect deaktiviert', 'info');
-    }
+    // Keine Benachrichtigung
     console.log('🔗 Auto-Connect:', isActive);
 }
 
@@ -1186,9 +1184,7 @@ function toggleNotifications() {
     notifications = isActive;
     localStorage.setItem('notificationsEnabled', isActive);
 
-    if (window.showNotification) {
-        window.showNotification(isActive ? 'Benachrichtigungen aktiviert' : 'Benachrichtigungen deaktiviert', 'info');
-    }
+    // Keine Benachrichtigung
     console.log('🔔 Benachrichtigungen:', isActive);
 }
 
@@ -1209,9 +1205,7 @@ function toggleDarkMode() {
         document.body.classList.remove('dark-mode');
     }
 
-    if (window.showNotification) {
-        window.showNotification(isActive ? 'Dark Mode aktiviert' : 'Dark Mode deaktiviert', 'info');
-    }
+    // Keine Benachrichtigung
     console.log('🌙 Dark Mode:', isActive);
 }
 
@@ -1225,9 +1219,7 @@ function toggleHierarchicalGroups() {
     const isActive = switchEl.classList.toggle('active');
     localStorage.setItem('hierarchicalGroups', isActive);
 
-    if (window.showNotification) {
-        window.showNotification(isActive ? 'Hierarchische Gruppen aktiviert' : 'Hierarchische Gruppen deaktiviert', 'info');
-    }
+    // Keine Benachrichtigung
     console.log('📁 Hierarchische Gruppen:', isActive);
 }
 
