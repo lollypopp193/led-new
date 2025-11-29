@@ -3390,23 +3390,13 @@
         <div class="panel-header">
           <i class="fas fa-glass-cheers"></i>
           <h2 class="panel-title">Party-Modus</h2>
+          <div class="toggle-switch" style="margin-left: auto;">
+            <input type="checkbox" id="partyToggle" onchange="togglePartyMode(this.checked)">
+            <span class="slider"></span>
+          </div>
         </div>
 
         <div style="padding: 20px">
-          <!-- USER REQUEST: Party-Modus vereinfacht - kein großes Fenster mehr -->
-          <div style="margin-bottom: 30px; text-align: center;">
-            <h3 style="color: #4ecdc4; margin-bottom: 20px">
-              <i class="fas fa-glass-cheers"></i> Party-Modus
-            </h3>
-            <div style="display: flex; align-items: center; justify-content: center; gap: 20px; max-width: 400px; margin: 0 auto; background: rgba(78, 205, 196, 0.1); padding: 20px; border-radius: 15px;">
-              <span style="font-weight: bold; font-size: 1.1em;">Party-Modus</span>
-              <div class="toggle-switch">
-                <input type="checkbox" id="partyToggle" onchange="togglePartyMode()">
-                <span class="slider"></span>
-              </div>
-            </div>
-            <p style="color: #888; margin-top: 15px; font-size: 0.9em;">Automatische LED-Synchronisation zur Musik</p>
-          </div>
           
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
 
@@ -3691,20 +3681,6 @@
                     <span style="font-size: 0.9em;">Song-Ende erkennen</span>
                     <div class="toggle-switch small">
                       <input type="checkbox" id="crossfadeAutoDetect" checked>
-                      <span class="slider"></span>
-                    </div>
-                  </div>
-                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 6px;">
-                    <span style="font-size: 0.9em;">Beat-Matching</span>
-                    <div class="toggle-switch small">
-                      <input type="checkbox" id="crossfadeBeatMatch">
-                      <span class="slider"></span>
-                    </div>
-                  </div>
-                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 6px;">
-                    <span style="font-size: 0.9em;">Track vorladen</span>
-                    <div class="toggle-switch small">
-                      <input type="checkbox" id="crossfadePreLoad" checked>
                       <span class="slider"></span>
                     </div>
                   </div>
