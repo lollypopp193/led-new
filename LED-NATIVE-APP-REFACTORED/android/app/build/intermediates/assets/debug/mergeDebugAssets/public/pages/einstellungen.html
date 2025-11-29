@@ -665,6 +665,51 @@
           width: 100%;
         }
       }
+
+      /* Android Small Screen Fixes */
+      @media (max-width: 480px) {
+        .settings-container {
+          padding: 8px;
+        }
+        .settings-header {
+          padding: 12px;
+        }
+        .settings-title {
+          font-size: 1.3rem;
+        }
+        .section {
+          padding: 12px;
+          margin-bottom: 12px;
+        }
+        .section-title {
+          font-size: 0.95rem;
+        }
+        .scan-button {
+          padding: 10px 16px;
+          font-size: 0.85rem;
+        }
+        .setting-item {
+          padding: 10px;
+          gap: 8px;
+        }
+        .setting-title {
+          font-size: 0.9rem;
+        }
+        .setting-description {
+          font-size: 0.75rem;
+        }
+        .toggle-switch {
+          width: 50px;
+          height: 26px;
+        }
+        .toggle-switch .slider:before {
+          height: 18px;
+          width: 18px;
+        }
+        .slider-container input[type="range"] {
+          height: 6px;
+        }
+      }
     </style>
   </head>
 

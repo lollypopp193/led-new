@@ -1663,6 +1663,61 @@
         }
       }
 
+      /* Android Small Screens - Extra Fixes */
+      @media (max-width: 480px) {
+        body {
+          padding-top: 55px;
+        }
+        .taskbar {
+          height: 50px;
+          padding: 8px 10px;
+          gap: 4px;
+        }
+        .taskbar-btn {
+          padding: 6px 10px;
+          font-size: 0.75em;
+          height: 32px;
+        }
+        .taskbar-btn i {
+          margin-right: 4px;
+        }
+        .content-area {
+          padding: 10px 8px;
+        }
+        .settings-section {
+          margin: 10px 8px;
+          border-radius: 6px;
+        }
+        .section-content {
+          padding: 12px;
+        }
+        .panel-header {
+          padding: 12px 16px;
+        }
+        .button-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 8px;
+        }
+        .action-btn {
+          padding: 10px 8px;
+          font-size: 0.78em;
+        }
+        .slider-control {
+          padding: 10px;
+        }
+        .toggle-switch {
+          width: 50px;
+          height: 26px;
+        }
+        .toggle-switch .slider:before {
+          height: 18px;
+          width: 18px;
+        }
+        .toggle-switch input:checked + .slider:before {
+          transform: translateX(24px);
+        }
+      }
+
       /* Toggle Switch Styles - Komplett */
       .toggle-switch {
         position: relative;
@@ -11194,9 +11249,7 @@
               }
             });
           }
-          if (enabled && window.showNotification) {
-            window.showNotification('🎉 Party-Modus aktiviert!', 'success');
-          }
+          // Keine Benachrichtigung - User will das nicht
         };
         
         // ========== BIBLIOTHEKS-NAVIGATION ==========
