@@ -1728,8 +1728,12 @@
   </head>
 
   <body>
+    <!-- DEBUG BANNER - Zeigt ob neue Version geladen wurde -->
+    <div id="versionBanner" style="position:fixed;top:0;left:0;right:0;background:#ff6b35;color:white;text-align:center;padding:5px;font-weight:bold;z-index:99999;">
+      VERSION 3.0.1 - AKTUALISIERT 29.11.2025 15:50
+    </div>
     <!-- Taskbar -->
-    <div class="taskbar">
+    <div class="taskbar" style="margin-top:30px;">
       <button type="button" class="taskbar-btn active" data-content="player" onclick="showPanel('player', this)">
         <i class="fas fa-play"></i> Player
       </button>
