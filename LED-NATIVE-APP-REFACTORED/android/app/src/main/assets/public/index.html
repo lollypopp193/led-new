@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
@@ -95,131 +95,131 @@
     <script src="https://unpkg.com/@capacitor/core@7.4.4/dist/capacitor.js"></script>
 
     <!-- Notification System (load first) -->
-    <script src="js/notifications.js"></script>
+    <script src="js/core/notifications.js"></script>
 
     <!-- Permissions Handler -->
-    <script src="js/permissions-handler.js"></script>
-    <script src="js/android-permissions-manager.js"></script>
-    <script src="js/permissions-sequencer.js"></script>
+    <script src="js/utils/permissions-handler.js"></script>
+    <script src="js/utils/android-permissions-manager.js"></script>
+    <script src="js/utils/permissions-sequencer.js"></script>
 
     <!-- i18n System (load early) -->
-    <script src="js/i18n.js"></script>
+    <script src="js/core/i18n.js"></script>
 
     <!-- Umlaut-Fixer (korrigiert UE→Ü, AE→Ä, OE→Ö automatisch) -->
-    <script src="js/umlaut-fixer.js"></script>
+    <script src="js/ui/umlaut-fixer.js"></script>
 
     <!-- Toggle-Switch-Manager (Gelb=An, Schwarz=Aus) -->
-    <script src="js/toggle-switch-manager.js"></script>
+    <script src="js/ui/toggle-switch-manager.js"></script>
 
     <!-- Startup-Permissions (Berechtigungen beim App-Start) -->
-    <script src="js/startup-permissions.js"></script>
+    <script src="js/utils/startup-permissions.js"></script>
 
     <!-- LED-Sidebar-Swipe (von links wischen) -->
-    <script src="js/led-sidebar-swipe.js"></script>
+    <script src="js/led/led-sidebar-swipe.js"></script>
 
     <!-- Musik-Bibliothek-Navigation (Interpreten→Lieder) -->
-    <script src="js/music-library-navigation.js"></script>
+    <script src="js/musik/music-library-navigation.js"></script>
 
     <!-- Playlist-Manager (Erstellen, Löschen, Import/Export) -->
-    <script src="js/playlist-manager.js"></script>
+    <script src="js/musik/playlist-manager.js"></script>
 
     <!-- Slider-Live-Values (Werte bewegen sich mit Slider) -->
-    <script src="js/slider-live-values.js"></script>
+    <script src="js/ui/slider-live-values.js"></script>
 
     <!-- UI-Cleanup-Manager (entfernt überflüssige Buttons/Texte) -->
-    <script src="js/ui-cleanup-manager.js"></script>
+    <script src="js/ui/ui-cleanup-manager.js"></script>
 
     <!-- Multi-Language-Support (DE, EN, ES, FR) -->
-    <script src="js/multi-language-support.js"></script>
+    <script src="js/ui/multi-language-support.js"></script>
 
     <!-- BLE-Error-Fixer (behebt BLE-Init Fehler) -->
-    <script src="js/ble-error-fixer.js"></script>
+    <script src="js/bluetooth/ble-error-fixer.js"></script>
 
     <!-- Visualization-Manager (Musik-Visualisierung ohne schwarzen Bildschirm) -->
-    <script src="js/visualization-manager.js"></script>
+    <script src="js/musik/visualization-manager.js"></script>
 
     <!-- Title-Style-Unifier (alle Titel im Timer-Design) -->
-    <script src="js/title-style-unifier.js"></script>
+    <script src="js/ui/title-style-unifier.js"></script>
 
     <!-- Auto-Start Manager -->
-    <script src="js/auto-start-manager.js"></script>
+    <script src="js/utils/auto-start-manager.js"></script>
 
     <!-- Bluetooth & Audio Core -->
-    <script src="js/bluetooth-foreground-service.js"></script>
-    <script src="js/audio-decoder-fft.js"></script>
-    <script src="js/android-music-scanner.js"></script>
+    <script src="js/bluetooth/bluetooth-foreground-service.js"></script>
+    <script src="js/musik/audio-decoder-fft.js"></script>
+    <script src="js/musik/android-music-scanner.js"></script>
 
     <!-- Preset-System & MediaStore -->
-    <script src="js/preset-manager.js"></script>
-    <script src="js/mediastore-bridge.js"></script>
-    <script src="js/musik-master-fixes.js"></script>
+    <script src="js/led/preset-manager.js"></script>
+    <script src="js/musik/mediastore-bridge.js"></script>
+    <script src="js/musik/musik-master-fixes.js"></script>
 
     <!-- Core Modules (load before app.js) -->
-    <script src="js/ble-controller-pro.js"></script>
-    <script src="js/led-auto-scanner.js"></script>
-    <script src="js/event-manager.js"></script>
-    <script src="js/performance-optimizer.js"></script>
-    <script src="js/led-abstraction-layer.js"></script>
-    <script src="js/scenes-manager.js"></script>
-    <script src="js/audio-reactive-engine.js"></script>
-    <script src="js/device-manager.js"></script>
-    <script src="js/music-library-manager.js"></script>
-    <script src="js/musik-integration.js"></script>
-    <script src="js/equalizer-engine.js"></script>
-    <script src="js/equalizer-ui-integration.js"></script>
-    <script src="js/bassboost-controller.js"></script>
-    <script src="js/crossfade-controller.js"></script>
-    <script src="js/bpm-analyzer.js"></script>
-    <script src="js/sleep-timer-controller.js"></script>
-    <script src="js/sleep-timer-ui-controller.js"></script>
-    <script src="js/music-alarm-controller.js"></script>
-    <script src="js/crossfade-slider-fix.js"></script>
-    <script src="js/library-auto-scanner.js"></script>
-    <script src="js/library-search-filter.js"></script>
-    <script src="js/playlist-import-export.js"></script>
-    <script src="js/sonderzeichen-replacer.js"></script>
-    <script src="js/led-sidebar.js"></script>
+    <script src="js/bluetooth/ble-controller-pro.js"></script>
+    <script src="js/led/led-auto-scanner.js"></script>
+    <script src="js/core/event-manager.js"></script>
+    <script src="js/utils/performance-optimizer.js"></script>
+    <script src="js/led/led-abstraction-layer.js"></script>
+    <script src="js/led/scenes-manager.js"></script>
+    <script src="js/musik/audio-reactive-engine.js"></script>
+    <script src="js/bluetooth/device-manager.js"></script>
+    <script src="js/musik/music-library-manager.js"></script>
+    <script src="js/musik/musik-integration.js"></script>
+    <script src="js/musik/equalizer-engine.js"></script>
+    <script src="js/musik/equalizer-ui-integration.js"></script>
+    <script src="js/musik/bassboost-controller.js"></script>
+    <script src="js/musik/crossfade-controller.js"></script>
+    <script src="js/musik/bpm-analyzer.js"></script>
+    <script src="js/controllers/sleep-timer-controller.js"></script>
+    <script src="js/controllers/sleep-timer-ui-controller.js"></script>
+    <script src="js/musik/music-alarm-controller.js"></script>
+    <script src="js/musik/crossfade-slider-fix.js"></script>
+    <script src="js/musik/library-auto-scanner.js"></script>
+    <script src="js/musik/library-search-filter.js"></script>
+    <script src="js/musik/playlist-import-export.js"></script>
+    <script src="js/ui/sonderzeichen-replacer.js"></script>
+    <script src="js/led/led-sidebar.js"></script>
 
     <!-- Global Error Handler & Loading Manager -->
-    <script src="js/global-error-handler.js"></script>
-    <script src="js/loading-manager.js"></script>
+    <script src="js/core/global-error-handler.js"></script>
+    <script src="js/core/loading-manager.js"></script>
 
     <!-- SESSION 2: New Features -->
-    <script src="js/playlist-drag-drop.js"></script>
-    <script src="js/led-custom-names.js"></script>
-    <script src="js/input-validator.js"></script>
+    <script src="js/musik/playlist-drag-drop.js"></script>
+    <script src="js/led/led-custom-names.js"></script>
+    <script src="js/ui/input-validator.js"></script>
 
     <!-- SESSION 3: Animations & Polish -->
-    <script src="js/animation-system.js"></script>
+    <script src="js/core/animation-system.js"></script>
 
     <!-- SESSION 4: Native Features & Performance -->
-    <script src="js/media-session-controller.js"></script>
-    <script src="js/quick-actions.js"></script>
-    <script src="js/performance-monitor.js"></script>
+    <script src="js/musik/media-session-controller.js"></script>
+    <script src="js/led/quick-actions.js"></script>
+    <script src="js/utils/performance-monitor.js"></script>
 
     <!-- SESSION 5: Final Features -->
-    <script src="js/cloud-sync.js"></script>
-    <script src="js/advanced-visualizer.js"></script>
-    <script src="js/gesture-controls.js"></script>
-    <script src="js/voice-commands.js"></script>
-    <script src="js/share-manager.js"></script>
+    <script src="js/utils/cloud-sync.js"></script>
+    <script src="js/musik/advanced-visualizer.js"></script>
+    <script src="js/ui/gesture-controls.js"></script>
+    <script src="js/musik/voice-commands.js"></script>
+    <script src="js/musik/share-manager.js"></script>
 
     <!-- App JavaScript (Main) -->
-    <script src="js/app.js"></script>
+    <script src="js/core/app.js"></script>
 
     <!-- Globale Module (für alle Seiten) -->
     <!-- global-error-handler.js - bereits geladen -->
     <!-- loading-manager.js - bereits geladen -->
     <!-- startup-permissions.js - bereits geladen -->
     <!-- notifications.js - bereits geladen -->
-    <script src="js/capacitor-adapter.js"></script>
-    <script src="js/native-bridge.js"></script>
+    <script src="js/core/capacitor-adapter.js"></script>
+    <script src="js/core/native-bridge.js"></script>
     <!-- event-manager.js - bereits geladen -->
     <!-- animation-system.js - bereits geladen -->
     <!-- performance-optimizer.js - bereits geladen -->
     <!-- i18n.js - bereits geladen -->
     <!-- auto-start-manager.js - bereits geladen -->
-    <script src="js/edge-case-tester.js"></script>
+    <script src="js/utils/edge-case-tester.js"></script>
 
     <!-- Service Worker Registration -->
     <script>
