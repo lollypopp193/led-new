@@ -1,12 +1,12 @@
 /**
  * Service Worker - Offline support and caching strategy
- * @version 3.0.0
+ * @version 3.0.1
  */
 
 'use strict';
 
-const CACHE_NAME = 'led-control-pro-v3.0.0';
-const RUNTIME_CACHE = 'led-control-runtime-v3.0.0';
+const CACHE_NAME = 'led-control-pro-v3.0.1';
+const RUNTIME_CACHE = 'led-control-runtime-v3.0.1';
 
 // Files to cache immediately on install
 const PRECACHE_URLS = [
