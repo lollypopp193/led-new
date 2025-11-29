@@ -18,6 +18,7 @@ class ToggleSwitchManager {
     init() {
         console.log('🔘 Toggle-Switch-Manager initialisiert');
         this.setupStyles();
+        this.setupClickHandlers();
         this.observeDOM();
         this.convertAllSwitches();
     }
@@ -190,6 +191,28 @@ class ToggleSwitchManager {
         if (converted > 0) {
             console.log(`✅ ${converted} Checkboxen zu Toggle-Switches konvertiert`);
         }
+    }
+
+    /**
+     * Macht alle Toggle-Switches klickbar (auch div-basierte)
+     */
+    setupClickHandlers() {
+        document.addEventListener('click', (e) => {
+            const toggleContainer = e.target.closest('.toggle-switch');
+            if (!toggleContainer) return;
+
+            // Wenn auf den Slider geklickt wurde
+            const slider = e.target.closest('.slider, .toggle-slider');
+            if (slider || e.target === toggleContainer) {
+                const checkbox = toggleContainer.querySelector('input[type="checkbox"]');
+                if (checkbox && e.target !== checkbox) {
+                    checkbox.checked = !checkbox.checked;
+                    checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+                    console.log(`🔘 Toggle ${checkbox.id || 'unknown'} geklickt:`, checkbox.checked ? 'AN' : 'AUS');
+                }
+            }
+        });
+        console.log('✅ Toggle-Click-Handler installiert');
     }
 
     /**
