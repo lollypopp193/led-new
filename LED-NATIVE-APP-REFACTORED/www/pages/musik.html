@@ -1663,16 +1663,34 @@
         }
       }
 
-      /* Toggle Switch Styles */
-      .toggle-switch input:checked + .toggle-slider {
-        background-color: #4ecdc4;
+      /* Toggle Switch Styles - Komplett */
+      .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 30px;
+        flex-shrink: 0;
       }
       
-      .toggle-switch input:checked + .toggle-slider span {
-        transform: translateX(30px);
+      .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
       }
       
-      .toggle-slider span {
+      .toggle-switch .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #333;
+        transition: 0.4s;
+        border-radius: 30px;
+      }
+      
+      .toggle-switch .slider:before {
         position: absolute;
         content: '';
         height: 22px;
@@ -1682,6 +1700,29 @@
         background-color: white;
         transition: 0.4s;
         border-radius: 50%;
+      }
+      
+      .toggle-switch input:checked + .slider {
+        background-color: #ff6b35;
+      }
+      
+      .toggle-switch input:checked + .slider:before {
+        transform: translateX(30px);
+      }
+      
+      /* Small Toggle Switch */
+      .toggle-switch.small {
+        width: 50px;
+        height: 26px;
+      }
+      
+      .toggle-switch.small .slider:before {
+        height: 18px;
+        width: 18px;
+      }
+      
+      .toggle-switch.small input:checked + .slider:before {
+        transform: translateX(24px);
       }
     </style>
   </head>
@@ -6811,7 +6852,7 @@
                                               }
 
                                           } catch (error) {
-                                              // Fehler still ignorieren um Performance nicht zu beeintr├ñchtigen
+                                              // Fehler still ignorieren um Performance nicht zu beeinträchtigen
                                               console.error('LED-Musik-Sync Fehler:', error);
                                           }
                                       }
@@ -6969,7 +7010,7 @@
                                               loadPlaylist();
                                           }
 
-                                          console.log(' Musik-App vollst├ñndig initialisiert - Persistente Wiedergabe aktiviert');
+                                          console.log(' Musik-App vollständig initialisiert - Persistente Wiedergabe aktiviert');
 
                                           // Equalizer Toggle - Echte Audio-Filterung
                                           const eqToggle = document.getElementById('eqToggle');
@@ -7038,7 +7079,7 @@
                                                   const gainValue = parseFloat(this.value);
                                                   document.getElementById('bassBoostValue').textContent = gainValue + 'dB';
 
-                                                  // Bass Boost Intensit├ñt in Echtzeit anpassen
+                                                  // Bass Boost Intensität in Echtzeit anpassen
                                                   if (bassBoostFilter) {
                                                       bassBoostFilter.gain.value = gainValue;
                                                   }
@@ -7640,7 +7681,7 @@
                                               // Erweiterte LED Sync Controls
                                               document.getElementById('sensitivity').addEventListener('input', function() {
                                                   document.getElementById('sensitivityValue').textContent = this.value;
-                                                  console.log(` LED Sensitivit├ñt: ${this.value}/10`);
+                                                  console.log(` LED Sensitivität: ${this.value}/10`);
                                               });
 
                                               document.getElementById('responseSpeed').addEventListener('input', function() {
@@ -8487,7 +8528,7 @@
                                                   if (track.playCount > 0) {
                                                       const playCount = document.createElement('span');
                                                       playCount.style.cssText = 'font-size: 0.8em; color: #888;';
-                                                      playCount.textContent = `${track.playCount}├ù`;
+                                                      playCount.textContent = `${track.playCount}×`;
                                                       songActions.appendChild(playCount);
                                                   }
 
@@ -9210,7 +9251,7 @@
                       >
                         <option value="current">Aktuelle Playlist</option>
                         <option value="favorites">Favoriten</option>
-                        <option value="random">Zuf├ñllig</option>
+                        <option value="random">Zufällig</option>
                         <option value="custom">Benutzerdefiniert</option>
                       </select>
                     </div>
@@ -9623,7 +9664,7 @@
 
                 <div style="margin-bottom: 15px">
                   <label style="display: block; margin-bottom: 8px"
-                    >CPU-Priorit├ñt:</label
+                    >CPU-Priorität:</label
                   >
                   <select
                     id="cpuPriority"
@@ -10576,7 +10617,7 @@
           });
 
           if (!directoryHandle) {
-            showNotification(" Kein Ordner ausgew├ñhlt", "error");
+            showNotification(" Kein Ordner ausgewählt", "error");
             return;
           }
 
