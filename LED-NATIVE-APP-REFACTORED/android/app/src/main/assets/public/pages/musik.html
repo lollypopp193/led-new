@@ -2513,74 +2513,14 @@
           </div>
         </div>
 
-        <!-- LED-Musik-Control VOLLSTAENDIGER INHALT -->
+        <!-- LED-Musik-Control INHALT -->
         <div class="led-music-control-content" style="padding: 20px">
-          <!-- Global Controls -->
-          <div
-            style="
-              display: flex;
-              justify-content: center;
-              gap: 30px;
-              margin-bottom: 30px;
-              padding: 20px;
-              background: rgba(0, 0, 0, 0.3);
-              border-radius: 15px;
-              flex-wrap: wrap;
-            "
-          >
-            <div style="display: flex; align-items: center; gap: 15px">
-              <span style="font-weight: bold">Automatik-Modus:</span>
-              <div style="display: flex; align-items: center; justify-content: space-between;">
-                <span style="font-weight: bold">Automatischer Modus</span>
-                <div class="toggle-switch">
-                  <input type="checkbox" id="ledMusicAutomaticMode" checked>
-                  <span class="slider"></span>
-                </div>
-              </div>
-              <p style="color: #888; font-size: 0.9em; margin-top: 5px;">Passt LED automatisch an Musikstimmung an</p>
-                    right: 0;
-                    bottom: 0;
-                    background-color: #333;
-                    transition: 0.4s;
-                    border-radius: 30px;
-                  "
-                >
-                  <span></span>
-                </span>
-              </label>
-            </div>
-            <div style="display: flex; align-items: center; gap: 15px">
-              <span style="font-weight: bold">Sync alle Bänder:</span>
-              <label
-                class="toggle-switch"
-                style="
-                  position: relative;
-                  display: inline-block;
-                  width: 60px;
-                  height: 30px;
-                "
-              >
-                <input
-                  type="checkbox"
-                  id="ledMusicSyncAll"
-                  style="opacity: 0; width: 0; height: 0"
-                />
-                <span class="toggle-slider"
-                  style="
-                    position: absolute;
-                    cursor: pointer;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background-color: #333;
-                    transition: 0.4s;
-                    border-radius: 30px;
-                  "
-                >
-                  <span></span>
-                </span>
-              </label>
+          <!-- Automatik-Modus -->
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 15px; background: rgba(0, 0, 0, 0.3); border-radius: 10px; margin-bottom: 20px;">
+            <span style="font-weight: bold">Automatischer Modus</span>
+            <div class="toggle-switch">
+              <input type="checkbox" id="ledMusicAutomaticMode" checked>
+              <span class="slider"></span>
             </div>
           </div>
 
@@ -2603,111 +2543,7 @@
             </div>
           </div>
 
-          <!-- Band Tabs -->
-          <div
-            id="ledBandTabs"
-            style="
-              display: flex;
-              flex-wrap: wrap;
-              gap: 10px;
-              margin-bottom: 20px;
-              background: rgba(0, 0, 0, 0.3);
-              padding: 15px;
-              border-radius: 15px;
-            "
-          >
-            <button
-              type="button"
-              class="led-band-tab active"
-              data-band="audio-reactive"
-              style="
-                padding: 12px 20px;
-                background: rgba(78, 205, 196, 0.2);
-                border: 1px solid #4ecdc4;
-                color: white;
-                border-radius: 8px;
-                cursor: pointer;
-              "
-            >
-              <i class="fas fa-waveform-lines"></i> Audio-Reactive Engine
-            </button>
-            <button
-              type="button"
-              class="led-band-tab"
-              data-band="0"
-              style="
-                padding: 12px 20px;
-                background: rgba(58, 134, 255, 0.2);
-                border: 1px solid #3a86ff;
-                color: white;
-                border-radius: 8px;
-                cursor: pointer;
-              "
-            >
-              <span
-                style="
-                  display: inline-block;
-                  width: 12px;
-                  height: 12px;
-                  background: #3a86ff;
-                  border-radius: 50%;
-                  margin-right: 8px;
-                "
-              ></span>
-              LED-Band 1
-            </button>
-            <button
-              type="button"
-              class="led-band-tab"
-              data-band="1"
-              style="
-                padding: 12px 20px;
-                background: rgba(255, 0, 110, 0.2);
-                border: 1px solid #ff006e;
-                color: white;
-                border-radius: 8px;
-                cursor: pointer;
-              "
-            >
-              <span
-                style="
-                  display: inline-block;
-                  width: 12px;
-                  height: 12px;
-                  background: #ff006e;
-                  border-radius: 50%;
-                  margin-right: 8px;
-                "
-              ></span>
-              LED-Band 2
-            </button>
-            <button
-              type="button"
-              class="led-band-tab"
-              data-band="2"
-              style="
-                padding: 12px 20px;
-                background: rgba(255, 190, 11, 0.2);
-                border: 1px solid #ffbe0b;
-                color: white;
-                border-radius: 8px;
-                cursor: pointer;
-              "
-            >
-              <span
-                style="
-                  display: inline-block;
-                  width: 12px;
-                  height: 12px;
-                  background: #ffbe0b;
-                  border-radius: 50%;
-                  margin-right: 8px;
-                "
-              ></span>
-              LED-Band 3
-            </button>
-            <!-- Weitere Bänder 4-10 werden per JS hinzugefuegt -->
-          </div>
+          <!-- Die gefundenen LED-Bänder werden dynamisch via JavaScript angezeigt -->
 
           <!-- Audio-Reactive Engine Content -->
           <div
