@@ -12,7 +12,7 @@ let autoScanInterval = null;
 
 async function autoScanLEDBands() {
     if (!window.bleController && !window.parent?.bleController) {
-        console.log('BLE-Controller nicht verfuegbar - Auto-Scan uebersprungen');
+        console.log('BLE-Controller nicht verfügbar - Auto-Scan übersprungen');
         return;
     }
 
@@ -24,7 +24,7 @@ async function autoScanLEDBands() {
             discoveredBands = devices.filter(d => d.name && (d.name.includes('LED') || d.name.includes('BLE') || d.name.includes('Strip')));
 
             if (discoveredBands.length > 0) {
-                console.log('Auto-Scan: ' + discoveredBands.length + ' LED-Baender gefunden');
+                console.log('Auto-Scan: ' + discoveredBands.length + ' LED-Bänder gefunden');
 
                 const bandCount = Math.min(discoveredBands.length, 10);
                 const ledBandCountSlider = document.getElementById('ledBandCount');
@@ -43,7 +43,7 @@ async function autoScanLEDBands() {
                 });
 
                 if (window.showGlobalNotification) {
-                    window.showGlobalNotification(bandCount + ' LED-Baender automatisch erkannt', 'success');
+                    window.showGlobalNotification(bandCount + ' LED-Bänder automatisch erkannt', 'success');
                 }
             }
         }
