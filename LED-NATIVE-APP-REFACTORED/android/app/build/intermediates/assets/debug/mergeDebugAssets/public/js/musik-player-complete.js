@@ -157,6 +157,22 @@ class LibraryManager {
 
 // Player Controls
 function playTrack(track, index) {
+    // Wenn Crossfade aktiv ist, nutze CrossfadeController
+    if (window.crossfadeController && window.crossfadeController.enabled) {
+        const nextAudio = window.crossfadeController.nextAudio;
+        if (nextAudio) {
+            nextAudio.src = track.url;
+            window.crossfadeController.startCrossfade().then(() => {
+                window.currentTrack = track;
+                window.currentTrackIndex = index;
+                updateMediaSession();
+                savePlayerState();
+            });
+            return;
+        }
+    }
+
+    // Standard-Verhalten ohne Crossfade
     window.currentTrack = track;
     window.currentTrackIndex = index;
 
@@ -164,6 +180,26 @@ function playTrack(track, index) {
         window.audioPlayer.src = track.url;
         window.audioPlayer.play();
         window.isPlaying = true;
+
+        // Verbinde mit Crossfade-Controller falls vorhanden
+        if (window.crossfadeController && !window.crossfadeController.audioContext) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            const ctx = new AudioContext();
+            window.crossfadeController.init(ctx);
+            window.crossfadeController.connectAudio(window.audioPlayer, 'current');
+
+            // Zweites Audio-Element für Next-Track erstellen
+            const nextAudio = new Audio();
+            nextAudio.crossOrigin = "anonymous";
+            window.crossfadeController.connectAudio(nextAudio, 'next');
+
+            // Verbinde auch BPM-Analyzer
+            if (window.bpmAnalyzer) {
+                window.bpmAnalyzer.init(ctx);
+                window.bpmAnalyzer.connectSource(window.crossfadeController.gainNodes.current);
+                window.bpmAnalyzer.startAnalysis();
+            }
+        }
     }
 
     updateMediaSession();
