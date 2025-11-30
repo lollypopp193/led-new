@@ -5,8 +5,8 @@
 
 'use strict';
 
-const CACHE_NAME = 'led-control-pro-v4.8.0';
-const RUNTIME_CACHE = 'led-control-runtime-v4.8.0';
+const CACHE_NAME = 'led-control-pro-v5.0.0-GM';
+const RUNTIME_CACHE = 'led-control-runtime-v5.0.0-GM';
 
 // Files to cache immediately on install
 const PRECACHE_URLS = [
