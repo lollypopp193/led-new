@@ -327,6 +327,19 @@ class VoiceCommands {
 // Initialize global voice commands
 window.voiceCommands = new VoiceCommands();
 
+// Auto-Bind UI Button
+document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('voiceControlBtn');
+    if (btn && window.voiceCommands) {
+        btn.addEventListener('click', () => {
+            window.voiceCommands.toggle();
+            // Visuelles Feedback
+            btn.classList.toggle('active');
+        });
+        console.log('🎤 Voice-Button gebunden');
+    }
+});
+
 // Export
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = VoiceCommands;
