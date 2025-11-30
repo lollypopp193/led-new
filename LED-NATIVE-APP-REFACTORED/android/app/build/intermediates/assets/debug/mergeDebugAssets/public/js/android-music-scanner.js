@@ -95,7 +95,7 @@ const AndroidMusicScanner = {
             await this.saveTracks();
 
             this.isScanning = false;
-            return true;
+            return this.foundTracks;
         } catch (error) {
             console.error('❌ MediaStore Scan Fehler:', error);
             this.isScanning = false;

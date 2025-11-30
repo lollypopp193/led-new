@@ -289,12 +289,10 @@ class StartupPermissions {
             }, 1000);
         }
 
-        // Auto-Scan Musik-Bibliothek (im Hintergrund)
-        if (this.permissionsGranted.storage) {
-            setTimeout(() => {
-                this.autoScanMusicLibrary();
-            }, 2000);
-        }
+        // Auto-Scan Musik-Bibliothek - IMMER starten (nicht nur wenn permission granted)
+        setTimeout(() => {
+            this.autoScanMusicLibrary();
+        }, 2000);
     }
 
     /**
@@ -343,23 +341,32 @@ class StartupPermissions {
         console.log('🎵 Musik Auto-Scan (Hintergrund) gestartet');
 
         try {
-            // Prüfe ob schon Tracks vorhanden
-            if (window.musicLibraryManager) {
-                const tracks = await window.musicLibraryManager.getAllTracks();
+            // Android Music Scanner (Native) - ZUERST versuchen
+            if (window.Capacitor && window.Capacitor.isNativePlatform()) {
+                console.log('📱 Android erkannt - starte MediaStore Scan...');
 
-                if (tracks.length === 0) {
-                    console.log('📂 Keine Tracks gefunden - warte auf User-Aktion');
-                    // User muss Ordner auswählen - kein automatischer Scan möglich
-                } else {
-                    console.log(`✅ ${tracks.length} Tracks in Bibliothek`);
+                if (window.AndroidMusicScanner) {
+                    await window.AndroidMusicScanner.init();
+                    const tracks = await window.AndroidMusicScanner.scanMediaStore();
+                    console.log(`✅ Android MediaStore: ${tracks ? tracks.length : 0} Tracks gefunden`);
+
+                    // Tracks an Library Manager übergeben
+                    if (tracks && tracks.length > 0 && window.musicLibraryManager) {
+                        for (const track of tracks) {
+                            window.musicLibraryManager.addTrack(track);
+                        }
+                    }
                 }
             }
 
-            // Android Music Scanner (Native)
-            if (window.Capacitor && window.Capacitor.isNativePlatform()) {
-                if (window.AndroidMusicScanner && window.AndroidMusicScanner.scanMediaStore) {
-                    console.log('📱 Android MediaStore Scan gestartet');
-                    await window.AndroidMusicScanner.scanMediaStore();
+            // Prüfe ob schon Tracks vorhanden
+            if (window.musicLibraryManager) {
+                const tracks = await window.musicLibraryManager.getAllTracks();
+                console.log(`📚 Bibliothek enthält: ${tracks.length} Tracks`);
+
+                // UI aktualisieren
+                if (window.updateMusicLibraryUI) {
+                    window.updateMusicLibraryUI(tracks);
                 }
             }
         } catch (error) {
