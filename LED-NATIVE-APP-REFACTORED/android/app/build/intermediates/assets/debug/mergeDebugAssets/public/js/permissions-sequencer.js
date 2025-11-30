@@ -280,41 +280,8 @@ class PermissionsSequencer {
     }
 
     showSuccessMessage() {
-        // GRÜNES KÄSTCHEN (User Request)
-        // "Wenn ich dann die Berechtigung zulasse, dann kommt dann so ein grünes Kästchen bereit zum Starten."
-        const box = document.createElement('div');
-        box.style.cssText = `
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #28a745;
-            color: white;
-            padding: 20px 40px;
-            border-radius: 10px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-            z-index: 99999;
-            text-align: center;
-            animation: fadeIn 0.5s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        `;
-        box.innerHTML = `
-            <i class="fas fa-check-circle" style="font-size: 2rem;"></i>
-            <span>Bereit zum Starten</span>
-        `;
-        document.body.appendChild(box);
-
-        // Entfernen nach kurzer Zeit
-        setTimeout(() => {
-            box.style.animation = 'fadeOut 0.5s ease forwards';
-            setTimeout(() => box.remove(), 500);
-        }, 1500);
-
+        // ENTFERNT: Grünes Kärtchen "Bereit zum Starten" (User Request: nicht mehr anzeigen)
+        // App startet direkt ohne Bestätigungsmeldung
         console.log('✅ Alle Berechtigungen erteilt - App startet...');
     }
 

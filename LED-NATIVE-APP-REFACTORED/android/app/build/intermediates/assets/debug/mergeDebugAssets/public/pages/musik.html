@@ -1854,17 +1854,18 @@
         /* Toggle Switch für kleine Bildschirme - siehe unten */
       }
 
-      /* ========== TOGGLE SWITCH - KOMPLETT NEU & FUNKTIONAL ========== */
+      /* ========== TOGGLE SWITCH - KREIS BLEIBT INNERHALB ========== */
       .toggle-switch {
         position: relative;
         display: inline-flex;
         align-items: center;
-        width: 56px;
-        height: 28px;
+        width: 52px;
+        height: 26px;
         flex-shrink: 0;
         cursor: pointer;
         user-select: none;
         -webkit-tap-highlight-color: transparent;
+        box-sizing: border-box;
       }
       
       /* Input MUSS klickbar sein - volle Größe */
@@ -1881,7 +1882,7 @@
         padding: 0;
       }
       
-      /* Slider Hintergrund */
+      /* Slider Hintergrund - KEIN Border overflow */
       .toggle-switch .slider {
         position: absolute;
         top: 0;
@@ -1891,33 +1892,34 @@
         background-color: #1a1a1a;
         border: 2px solid #444;
         transition: all 0.3s ease;
-        border-radius: 28px;
+        border-radius: 26px;
         pointer-events: none;
+        box-sizing: border-box;
       }
       
-      /* Slider Kreis - INNERHALB des Containers */
+      /* Slider Kreis - IMMER INNERHALB */
       .toggle-switch .slider:before {
         position: absolute;
         content: '';
-        height: 20px;
-        width: 20px;
+        height: 18px;
+        width: 18px;
         left: 2px;
-        top: 50%;
-        transform: translateY(-50%);
+        top: 2px;
         background-color: #888;
         transition: all 0.3s ease;
         border-radius: 50%;
         box-shadow: 0 2px 4px rgba(0,0,0,0.3);
       }
       
-      /* EINGESCHALTET = Gelb/Orange */
+      /* EINGESCHALTET = Orange */
       .toggle-switch input:checked + .slider {
         background-color: #ff6b35;
         border-color: #ff6b35;
       }
       
+      /* Kreis nach rechts - INNERHALB bleiben */
       .toggle-switch input:checked + .slider:before {
-        left: calc(100% - 22px);
+        left: 28px;
         background-color: #fff;
       }
       
@@ -1932,18 +1934,23 @@
       
       /* Small Toggle Switch */
       .toggle-switch.small {
-        width: 48px;
-        height: 24px;
+        width: 44px;
+        height: 22px;
+      }
+      
+      .toggle-switch.small .slider {
+        border-radius: 22px;
       }
       
       .toggle-switch.small .slider:before {
-        height: 16px;
-        width: 16px;
+        height: 14px;
+        width: 14px;
         left: 2px;
+        top: 2px;
       }
       
       .toggle-switch.small input:checked + .slider:before {
-        left: calc(100% - 18px);
+        left: 24px;
       }
     </style>
   </head>
@@ -9594,6 +9601,7 @@
       </div>
 
       <!-- Core Scripts (von index.html synchronisiert) -->
+      <script src="/js/complete-ui-fix.js"></script>
       <script src="/js/notifications.js"></script>
       <script src="/js/umlaut-fixer.js"></script>
       <script src="/js/toggle-switch-manager.js"></script>

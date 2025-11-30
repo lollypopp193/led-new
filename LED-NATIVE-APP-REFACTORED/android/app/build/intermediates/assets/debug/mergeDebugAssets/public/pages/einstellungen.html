@@ -493,41 +493,40 @@
         margin-top: 2px;
       }
 
+      /* ========== SWITCH - KREIS BLEIBT INNERHALB ========== */
       .switch {
         position: relative;
-        width: 50px;
-        height: 24px;
-        background: rgba(85, 85, 85, 0.8);
-        backdrop-filter: blur(5px);
-        border-radius: 12px;
+        width: 52px;
+        height: 26px;
+        background: #1a1a1a;
+        border-radius: 26px;
         cursor: pointer;
         transition: all 0.3s ease;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2),
-          inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        border: 2px solid #444;
+        box-sizing: border-box;
+        flex-shrink: 0;
       }
 
       .switch.active {
-        background: linear-gradient(45deg, #4ecdc4, #44a08d);
-        box-shadow: 0 2px 15px rgba(78, 205, 196, 0.4),
-          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        background: #ff6b35;
+        border-color: #ff6b35;
       }
 
       .switch-handle {
         position: absolute;
         top: 2px;
         left: 2px;
-        width: 20px;
-        height: 20px;
-        background: linear-gradient(145deg, #ffffff, #f0f0f0);
+        width: 18px;
+        height: 18px;
+        background: #888;
         border-radius: 50%;
         transition: all 0.3s ease;
-        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3),
-          inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
       }
 
       .switch.active .switch-handle {
         left: 28px;
+        background: #fff;
       }
 
       .slider-container {
@@ -733,7 +732,7 @@
         <!-- Bluetooth Geräte -->
         <div class="section">
           <h3 class="section-title">Bluetooth Geräte</h3>
-          <button type="button" class="scan-button" id="scanButton">
+          <button type="button" class="scan-button" id="scanButton" onclick="startScan()">
             <span id="scanIcon">🔍</span>
             <span id="scanText">Geräte suchen</span>
           </button>
@@ -821,6 +820,7 @@
                 min="0"
                 max="100"
                 value="80"
+                oninput="document.getElementById('brightnessValue').textContent = this.value + '%'; localStorage.setItem('brightness', this.value);"
               />
               <span class="slider-value" id="brightnessValue">80%</span>
             </div>
@@ -857,7 +857,7 @@
               <div class="setting-title">Sprache</div>
               <div class="setting-description">App-Sprache auswählen</div>
             </div>
-            <select id="languageSelect" class="language-select">
+            <select id="languageSelect" class="language-select" onchange="changeLanguage(this.value)">
               <option value="de">Deutsch</option>
               <option value="en">English</option>
               <option value="es">Español</option>
@@ -997,6 +997,7 @@
     </div>
 
     <!-- Core Scripts (von index.html synchronisiert) -->
+    <script src="/js/complete-ui-fix.js"></script>
     <script src="/js/notifications.js"></script>
     <script src="/js/umlaut-fixer.js"></script>
     <script src="/js/toggle-switch-manager.js"></script>
