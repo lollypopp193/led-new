@@ -322,3 +322,103 @@ if (document.readyState === 'loading') {
 }
 
 // console.log('✅ LED-Musik-Controller geladen');
+
+// ========== HARDWARE-INTEGRATION (aus Inline-JS übernommen) ==========
+let ledMusicAudioContext = null;
+let ledMusicAnalyser = null;
+let ledMusicDataArray = null;
+let ledMusicAnimationFrame = null;
+let ledMusicMode = "spectrum";
+let ledMusicActive = false;
+
+/**
+ * Startet die LED-Musik-Analyse mit AudioContext
+ */
+async function startLEDMusicAnalysis() {
+    try {
+        // Audio Context erstellen falls noch nicht vorhanden
+        if (!ledMusicAudioContext) {
+            ledMusicAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        // Analyser erstellen
+        if (!ledMusicAnalyser) {
+            ledMusicAnalyser = ledMusicAudioContext.createAnalyser();
+            ledMusicAnalyser.fftSize = 128;
+            const bufferLength = ledMusicAnalyser.frequencyBinCount;
+            ledMusicDataArray = new Uint8Array(bufferLength);
+        }
+
+        // Mit Audio-Element verbinden falls vorhanden
+        const audioElement = document.querySelector("audio");
+        if (audioElement && ledMusicAudioContext.state !== "running") {
+            const source = ledMusicAudioContext.createMediaElementSource(audioElement);
+            source.connect(ledMusicAnalyser);
+            ledMusicAnalyser.connect(ledMusicAudioContext.destination);
+        }
+
+        ledMusicActive = true;
+        ledMusicVisualize();
+        console.log("LED-Musik-Analyse gestartet");
+    } catch (error) {
+        console.error("LED-Musik-Analyse Fehler:", error);
+    }
+}
+
+/**
+ * Visualisierungs-Loop
+ */
+async function ledMusicVisualize() {
+    if (!ledMusicActive || !ledMusicAnalyser) return;
+
+    ledMusicAnimationFrame = requestAnimationFrame(ledMusicVisualize);
+    ledMusicAnalyser.getByteFrequencyData(ledMusicDataArray);
+
+    // Frequenzbänder berechnen (Bass, Mid, Treble)
+    const bass = ledMusicDataArray.slice(0, 80).reduce((a, b) => a + b, 0) / 80;
+    const mid = ledMusicDataArray.slice(80, 160).reduce((a, b) => a + b, 0) / 80;
+    const treble = ledMusicDataArray.slice(160, 256).reduce((a, b) => a + b, 0) / 96;
+
+    // Echte Hardware LED-Steuern basierend auf Audio
+    // Nutzt window.ledDevice oder window.bleController
+    const device = window.ledDevice || (window.parent && window.parent.ledDevice);
+
+    if (device && device.isConnected) {
+        try {
+            // Konvertiere Audio-Frequenzen zu RGB
+            const r = Math.floor((bass / 255) * 255);
+            const g = Math.floor((mid / 255) * 255);
+            const b = Math.floor((treble / 255) * 255);
+
+            // Sende echte Hardware-Befehle (Hex: 7E 00 05 R G B 00 EF)
+            const cmd = new Uint8Array([0x7E, 0x00, 0x05, r, g, b, 0x00, 0xEF]);
+
+            if (device.characteristic) {
+                await device.characteristic.writeValue(cmd);
+            }
+        } catch (err) {
+            // Silent fail bei schnellen Updates
+        }
+    }
+}
+
+/**
+ * Setzt den LED-Musik-Modus
+ */
+function setLEDMusicMode(mode) {
+    ledMusicMode = mode;
+    console.log("LED-Musik-Modus:", mode);
+
+    // Visuelles Feedback
+    const buttons = document.querySelectorAll(".led-music-control-content .preset-btn");
+    buttons.forEach((btn) => {
+        if (btn.textContent.toLowerCase().includes(mode)) {
+            btn.style.transform = "scale(1.05)";
+            setTimeout(() => (btn.style.transform = "scale(1)"), 200);
+        }
+    });
+}
+
+// Exportiere Funktionen
+window.startLEDMusicAnalysis = startLEDMusicAnalysis;
+window.setLEDMusicMode = setLEDMusicMode;
