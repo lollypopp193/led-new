@@ -204,7 +204,10 @@ function checkTimers() {
 
 async function executeLEDAction(action, timer) {
     try {
-        const controller = window.parent?.ledController || window.ledController;
+        // Nutze den globalen BLE Controller (auch vom Parent Frame)
+        const controller = window.BLEControllerPro || window.bleController ||
+            (window.parent && window.parent.BLEControllerPro) ||
+            (window.parent && window.parent.bleController);
 
         if (!controller || !controller.isConnected) {
             console.warn('⚠️ Keine BLE-Verbindung für Timer-Aktion');
@@ -213,16 +216,17 @@ async function executeLEDAction(action, timer) {
 
         switch (action) {
             case 'on':
-                await controller.turnOn();
+                await controller.setPower(true);
                 console.log('✅ Timer: LEDs eingeschaltet');
                 break;
             case 'off':
-                await controller.turnOff();
+                await controller.setPower(false);
                 console.log('✅ Timer: LEDs ausgeschaltet');
                 break;
             case 'toggle':
-                await controller.toggle();
-                console.log('✅ Timer: LEDs umgeschaltet');
+                // Toggle nicht direkt unterstützt, wir prüfen den State oder senden einfach ON
+                await controller.setPower(true);
+                console.log('✅ Timer: LEDs (Re-)Aktiviert');
                 break;
         }
 

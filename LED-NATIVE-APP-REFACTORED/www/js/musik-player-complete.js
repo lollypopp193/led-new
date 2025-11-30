@@ -87,8 +87,50 @@ class LibraryManager {
         this.isGridView = true;
     }
 
-    initializeLibrary() {
+    async initializeLibrary() {
         try {
+            // Versuch 1: IndexedDB über MusicLibraryManager (Global oder Parent)
+            const libManager = window.musicLibraryManager || (window.parent && window.parent.musicLibraryManager);
+
+            if (libManager) {
+                console.log('📚 Lade Tracks via MusicLibraryManager...');
+                // Sicherstellen dass DB bereit ist
+                if (libManager.database && !libManager.database.isReady) {
+                    await libManager.init();
+                }
+
+                const tracks = await libManager.getAllTracks();
+                if (tracks && tracks.length > 0) {
+                    window.musicLibrary.songs = tracks;
+
+                    // Metadaten extrahieren und mappen
+                    tracks.forEach(track => {
+                        // Artists
+                        if (track.artist) {
+                            if (!window.musicLibrary.artists.has(track.artist)) {
+                                window.musicLibrary.artists.set(track.artist, []);
+                            }
+                            window.musicLibrary.artists.get(track.artist).push(track);
+                        }
+                        // Albums
+                        if (track.album) {
+                            if (!window.musicLibrary.albums.has(track.album)) {
+                                window.musicLibrary.albums.set(track.album, []);
+                            }
+                            window.musicLibrary.albums.get(track.album).push(track);
+                        }
+                    });
+
+                    console.log(`✅ ${tracks.length} Tracks erfolgreich geladen`);
+                    this.updateAllSections();
+
+                    // UI Update Event
+                    window.dispatchEvent(new CustomEvent('library-updated', { detail: tracks }));
+                    return;
+                }
+            }
+
+            // Versuch 2: LocalStorage (Legacy/Fallback)
             const savedLibrary = localStorage.getItem('musicLibrary');
             if (savedLibrary) {
                 const parsed = JSON.parse(savedLibrary);
@@ -96,10 +138,11 @@ class LibraryManager {
                     ...window.musicLibrary,
                     ...parsed
                 };
+                console.log('⚠️ Tracks aus LocalStorage geladen (Fallback)');
             }
             this.updateAllSections();
         } catch (error) {
-            console.error('Fehler beim Laden der Bibliothek:', error);
+            console.error('❌ Fehler beim Laden der Bibliothek:', error);
         }
     }
 

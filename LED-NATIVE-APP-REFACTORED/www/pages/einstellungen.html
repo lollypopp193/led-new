@@ -733,61 +733,13 @@
         <!-- Bluetooth Geräte -->
         <div class="section">
           <h3 class="section-title">Bluetooth Geräte</h3>
-          <button type="button" class="scan-button" id="scanButton" onclick="startScan()">
+          <button type="button" class="scan-button" id="scanButton" onclick="if(window.BLEControllerPro) window.BLEControllerPro.scan(); else if(window.bleController) window.bleController.scan();">
             <span id="scanIcon">🔍</span>
             <span id="scanText">Geräte suchen</span>
           </button>
           <div class="device-list" id="deviceList">
             <div class="no-devices">
-              Keine Geräte gefunden. Tippe auf "Geräte suchen" um LED-Bänder zu
-              finden.
-            </div>
-          </div>
-        </div>
-
-        <!-- Erweiterte Protokolle (WLED, Pixel-Level, etc.) entfernt - nicht benoetigt -->
-        <!-- <div class="section">
-          <h3 class="section-title">🌐 Erweiterte Protokolle</h3>
-          <div class="setting-item">
-            <div class="setting-label">
-              <div class="setting-title">WLED-Integration (WiFi-LEDs)</div>
-              <div class="setting-description">
-                Unterstützung für WLED-Controller über WiFi
-              </div>
-            </div>
-            <div class="switch" id="wledSwitch">
-              <div class="switch-handle"></div>
-            </div>
-          </div>
-          <!-- âœ… WLED-GERÃ„TE-SCANNER MIT ECHTER FUNKTIONALITÃ„T -->
-          <div class="setting-item" id="wledScanSection" style="display: none">
-            <div class="setting-label">
-              <div class="setting-title">WLED-Geräte scannen</div>
-              <div class="setting-description">
-                Suche nach WLED-Controllern im lokalen Netzwerk
-              </div>
-            </div>
-            <button
-              type="button"
-              id="wledScanBtn"
-              class="wled-scan-btn"
-              onclick="scanForWLEDDevices()"
-            >
-              <i class="fas fa-search"></i> WLED scannen
-            </button>
-          </div>
-          <!-- GEFUNDENE WLED-GERÄTE -->
-          <div
-            class="setting-item"
-            id="wledDevicesSection"
-            style="display: none"
-          >
-            <div class="setting-label">
-              <div class="setting-title">Gefundene WLED-Geräte</div>
-              <div class="setting-description">WLED-Controller im Netzwerk</div>
-            </div>
-            <div id="wledDevicesList" class="wled-devices-list">
-              <!-- WLED-Geräte werden hier dynamisch eingefügt -->
+              Keine Geräte gefunden. Tippe auf "Geräte suchen" um LED-Bänder zu finden.
             </div>
           </div>
         </div>
@@ -799,11 +751,12 @@
             <div class="setting-label">
               <div class="setting-title">Automatisch verbinden</div>
               <div class="setting-description">
-                Beim App-Start automatisch mit gespeicherten Geräten verbinden
+                Beim App-Start automatisch verbinden
               </div>
             </div>
-            <div class="switch active" id="autoConnectSwitch" onclick="toggleAutoConnect()">
-              <div class="switch-handle"></div>
+            <div class="toggle-switch" id="autoConnectSwitch" onclick="toggleAutoConnect()">
+              <input type="checkbox" id="autoConnectInput">
+              <span class="slider"></span>
             </div>
           </div>
           <div class="setting-item">

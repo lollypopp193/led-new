@@ -240,5 +240,6 @@ if (document.readyState === 'loading') {
 
 // Globaler Export
 window.bassBoostController = bassBoostController;
+window.BassBoostController = bassBoostController; // Alias für HTML-Zugriff
 
 console.log('✅ Bassboost-Controller geladen');
