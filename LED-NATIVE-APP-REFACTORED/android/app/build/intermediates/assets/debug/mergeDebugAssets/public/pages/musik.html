@@ -1299,21 +1299,30 @@
         cursor: pointer;
       }
 
-      /* Equalizer Styles */
+      /* ========== EQUALIZER - MODERNES DESIGN ========== */
       .equalizer {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
-        gap: 20px;
-        margin: 20px 0;
+        gap: 15px;
+        margin: 25px 0;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 20px;
+        border: 1px solid rgba(78, 205, 196, 0.2);
       }
 
       .eq-band {
-        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
       }
 
       .eq-label {
-        font-size: 0.9em;
-        margin-bottom: 10px;
+        font-size: 0.85em;
+        color: #4ecdc4;
+        font-weight: 600;
+        text-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
       }
 
       .eq-slider {
@@ -1321,39 +1330,176 @@
         -webkit-appearance: slider-vertical;
         -moz-appearance: slider-vertical;
         appearance: slider-vertical;
-        width: 30px;
-        height: 150px;
-        background: rgba(255, 255, 255, 0.1);
+        width: 40px;
+        height: 120px;
+        background: linear-gradient(to top, #1a1a2e, #0f3460);
         outline: none;
-        border-radius: 15px;
-        padding: 5px;
+        border-radius: 20px;
+        border: 2px solid rgba(78, 205, 196, 0.3);
+        cursor: pointer;
       }
 
+      .eq-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #4ecdc4, #44a08d);
+        cursor: pointer;
+        box-shadow: 0 0 15px rgba(78, 205, 196, 0.6);
+      }
+
+      /* ========== PRESETS - MODERNE BUTTONS ========== */
       .presets {
         display: flex;
         gap: 10px;
         flex-wrap: wrap;
         margin: 20px 0;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 15px;
       }
 
       .preset-btn {
-        background: rgba(255, 255, 255, 0.1);
-        border: none;
-        color: white;
-        padding: 8px 16px;
-        border-radius: 20px;
+        background: linear-gradient(135deg, rgba(78, 205, 196, 0.1), rgba(68, 160, 141, 0.1));
+        border: 1px solid rgba(78, 205, 196, 0.3);
+        color: #4ecdc4;
+        padding: 10px 20px;
+        border-radius: 25px;
         cursor: pointer;
         transition: all 0.3s ease;
         font-size: 0.9em;
+        font-weight: 500;
       }
 
       .preset-btn:hover {
-        background: rgba(255, 255, 255, 0.2);
+        background: linear-gradient(135deg, rgba(78, 205, 196, 0.2), rgba(68, 160, 141, 0.2));
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(78, 205, 196, 0.3);
       }
 
       .preset-btn.active {
-        background: #4ecdc4;
-        color: #16213e;
+        background: linear-gradient(135deg, #4ecdc4, #44a08d);
+        color: #1a1a2e;
+        font-weight: 600;
+        box-shadow: 0 5px 20px rgba(78, 205, 196, 0.5);
+      }
+
+      /* ========== PANEL SECTIONS - EINHEITLICH ========== */
+      .panel-section {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      .panel-section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(78, 205, 196, 0.2);
+      }
+
+      .panel-section-title {
+        color: #4ecdc4;
+        font-size: 1.1em;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      /* ========== LED-MUSIK PANEL ========== */
+      .led-music-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+      }
+
+      .led-music-stat {
+        background: linear-gradient(135deg, rgba(78, 205, 196, 0.1), rgba(0, 0, 0, 0.3));
+        border: 1px solid rgba(78, 205, 196, 0.2);
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+
+      .led-music-stat:hover {
+        transform: scale(1.02);
+        border-color: #4ecdc4;
+      }
+
+      .led-music-stat-label {
+        font-size: 0.85em;
+        color: #888;
+        margin-bottom: 8px;
+      }
+
+      .led-music-stat-value {
+        font-size: 1.6em;
+        font-weight: bold;
+        color: #4ecdc4;
+        text-shadow: 0 0 15px rgba(78, 205, 196, 0.5);
+      }
+
+      /* ========== PARTY MODUS PANEL ========== */
+      .party-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      @media (max-width: 768px) {
+        .party-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .party-card {
+        background: linear-gradient(135deg, rgba(255, 107, 53, 0.05), rgba(255, 0, 128, 0.05));
+        border: 1px solid rgba(255, 107, 53, 0.2);
+        border-radius: 20px;
+        padding: 25px;
+        transition: all 0.3s ease;
+      }
+
+      .party-card:hover {
+        border-color: #ff6b35;
+        box-shadow: 0 10px 30px rgba(255, 107, 53, 0.2);
+      }
+
+      .party-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+
+      .party-card-title {
+        color: #ff6b35;
+        font-size: 1.1em;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .party-option {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 15px;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 12px;
+        margin-bottom: 10px;
+      }
+
+      .party-option:last-child {
+        margin-bottom: 0;
       }
 
       /* Visualizer Styles */
