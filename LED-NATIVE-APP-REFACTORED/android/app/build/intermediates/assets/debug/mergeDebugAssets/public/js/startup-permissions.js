@@ -1,7 +1,8 @@
 /**
  * STARTUP-PERMISSIONS.JS
- * Berechtigungen beim App-Start wie LED-Apps
- * Nacheinander: Bluetooth → Standort → Speicher → Benachrichtigungen
+ * Berechtigungen beim App-Start - wie normale Android-Apps
+ * Zeigt native Android-Dialoge nacheinander an
+ * @version 2.0.0
  */
 'use strict';
 
@@ -14,30 +15,72 @@ class StartupPermissions {
             notifications: false,
             audio: false
         };
-        this.permissionQueue = [];
+        this.hasRequestedPermissions = false;
+    }
+
+    /**
+     * Prüft ob Berechtigungen bereits erteilt wurden
+     */
+    async checkExistingPermissions() {
+        const saved = localStorage.getItem('permissions_granted');
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                // Wenn alle wichtigen Berechtigungen erteilt, nicht erneut fragen
+                if (parsed.bluetooth && parsed.location && parsed.storage) {
+                    this.permissionsGranted = parsed;
+                    console.log('✅ Berechtigungen bereits erteilt (gespeichert)');
+                    return true;
+                }
+            } catch (e) { }
+        }
+        return false;
     }
 
     /**
      * Startet den Berechtigungsdialog beim App-Start
+     * SOFORT - ohne Verzögerung, wie normale Apps
      */
     async requestAllPermissions() {
-        console.log('📱 Starte Berechtigungsanfragen...');
+        if (this.hasRequestedPermissions) return this.permissionsGranted;
+        this.hasRequestedPermissions = true;
+
+        console.log('📱 Starte Berechtigungsanfragen (sofort)...');
+
+        // Prüfe ob schon erteilt
+        const alreadyGranted = await this.checkExistingPermissions();
+        if (alreadyGranted) {
+            this.startAutoScans();
+            return this.permissionsGranted;
+        }
 
         try {
-            // 1. Bluetooth-Berechtigungen
-            await this.requestBluetooth();
+            // Native Android: Zeige alle Dialoge nacheinander
+            if (window.Capacitor && window.Capacitor.isNativePlatform()) {
+                console.log('📱 Native Android - Zeige Berechtigungs-Dialoge...');
 
-            // 2. Standort-Berechtigung (für Bluetooth-Scan)
-            await this.requestLocation();
+                // 1. Bluetooth ZUERST (wichtigste für LED-App)
+                await this.requestBluetoothNative();
 
-            // 3. Speicher-Berechtigungen (für Musik)
-            await this.requestStorage();
+                // 2. Standort (für BLE-Scan erforderlich)
+                await this.requestLocationNative();
 
-            // 4. Audio-Berechtigung
+                // 3. Speicher (für Musik-Dateien)
+                await this.requestStorageNative();
+
+            } else {
+                // Web-Fallback
+                await this.requestBluetooth();
+                await this.requestLocation();
+                await this.requestStorage();
+            }
+
+            // Optional: Audio & Benachrichtigungen
             await this.requestAudio();
+            // Keine Benachrichtigungen - User will das nicht
 
-            // 5. Benachrichtigungen (optional)
-            await this.requestNotifications();
+            // Speichere Status
+            localStorage.setItem('permissions_granted', JSON.stringify(this.permissionsGranted));
 
             console.log('✅ Alle Berechtigungen abgefragt:', this.permissionsGranted);
 
@@ -48,6 +91,69 @@ class StartupPermissions {
         } catch (error) {
             console.error('❌ Fehler bei Berechtigungsanfragen:', error);
             return this.permissionsGranted;
+        }
+    }
+
+    /**
+     * Native Android Bluetooth-Berechtigung
+     */
+    async requestBluetoothNative() {
+        console.log('🔵 Android: Bluetooth-Berechtigung...');
+        try {
+            // BLE-Plugin fragt automatisch Bluetooth-Berechtigung an
+            if (window.CapacitorCommunityBluetoothLe) {
+                const { BleClient } = window.CapacitorCommunityBluetoothLe;
+                if (BleClient) {
+                    await BleClient.initialize({ androidNeverForLocation: false });
+                    this.permissionsGranted.bluetooth = true;
+                    console.log('✅ Bluetooth-Berechtigung erteilt');
+                }
+            }
+        } catch (error) {
+            console.warn('⚠️ Bluetooth-Init:', error.message);
+            // Trotzdem als OK markieren wenn BLE nicht verfügbar
+            this.permissionsGranted.bluetooth = true;
+        }
+    }
+
+    /**
+     * Native Android Standort-Berechtigung
+     */
+    async requestLocationNative() {
+        console.log('📍 Android: Standort-Berechtigung...');
+        try {
+            if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Geolocation) {
+                const { Geolocation } = window.Capacitor.Plugins;
+                const permission = await Geolocation.requestPermissions();
+                this.permissionsGranted.location = permission.location === 'granted';
+                console.log('✅ Standort:', permission.location);
+            } else {
+                // Kein Geolocation-Plugin - Android fragt automatisch bei BLE-Scan
+                this.permissionsGranted.location = true;
+            }
+        } catch (error) {
+            console.warn('⚠️ Standort-Permission:', error.message);
+            this.permissionsGranted.location = true;
+        }
+    }
+
+    /**
+     * Native Android Speicher-Berechtigung
+     */
+    async requestStorageNative() {
+        console.log('💾 Android: Speicher-Berechtigung...');
+        try {
+            if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Filesystem) {
+                const { Filesystem } = window.Capacitor.Plugins;
+                const permission = await Filesystem.requestPermissions();
+                this.permissionsGranted.storage = permission.publicStorage === 'granted';
+                console.log('✅ Speicher:', permission.publicStorage);
+            } else {
+                this.permissionsGranted.storage = true;
+            }
+        } catch (error) {
+            console.warn('⚠️ Speicher-Permission:', error.message);
+            this.permissionsGranted.storage = true;
         }
     }
 
@@ -266,16 +372,25 @@ class StartupPermissions {
 const startupPermissions = new StartupPermissions();
 window.startupPermissions = startupPermissions;
 
-// Beim App-Start ausführen
+// Beim App-Start SOFORT ausführen - wie normale Android-Apps
+// Berechtigungen werden angezeigt sobald App startet
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-        // Verzögert starten damit Intro sichtbar ist
+        // SOFORT starten - wie normale Apps
+        // Kurze Verzögerung nur damit Capacitor initialisiert ist
         setTimeout(() => {
             startupPermissions.requestAllPermissions();
-        }, 2000);
+        }, 500);
     });
 } else {
+    // DOM schon bereit - sofort starten
     setTimeout(() => {
         startupPermissions.requestAllPermissions();
-    }, 2000);
+    }, 500);
 }
+
+// Auch bei Capacitor deviceready Event
+document.addEventListener('deviceready', () => {
+    console.log('📱 Capacitor deviceready - Berechtigungen anfragen');
+    startupPermissions.requestAllPermissions();
+}, { once: true });
