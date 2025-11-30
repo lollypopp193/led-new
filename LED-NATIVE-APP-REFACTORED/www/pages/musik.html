@@ -4810,7 +4810,113 @@
         </div>
       </div>
 
-      <!-- Audio Element (versteckt) -->
+            <!-- Equalizer & Party Mode Section (NEU) -->
+            <div class="section-container" style="margin-top: 30px; margin-bottom: 100px;">
+                
+                <!-- Party Mode -->
+                <button id="partyModeBtn" onclick="togglePartyMode()" class="action-btn" style="width: 100%; padding: 15px; margin-bottom: 25px; font-size: 1.1em; background: linear-gradient(45deg, #ff00cc, #3333ff); border: none; box-shadow: 0 0 15px rgba(255, 0, 204, 0.4); color: white; font-weight: bold; border-radius: 12px; cursor: pointer;">
+                    <i class="fas fa-glass-cheers"></i> Party-Modus <span id="partyStatusText">(Aus)</span>
+                </button>
+
+                <!-- Equalizer Panel -->
+                <div class="equalizer-section" style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);">
+                    <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="margin: 0; color: #4ecdc4; font-size: 1.2em;"><i class="fas fa-sliders-h"></i> Equalizer</h3>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="eqToggle" checked>
+                            <span class="slider"></span>
+                        </div>
+                    </div>
+
+                    <div class="presets-container" style="display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; scrollbar-width: none;">
+                        <button class="preset-btn active">Flat</button>
+                        <button class="preset-btn">Bass</button>
+                        <button class="preset-btn">Rock</button>
+                        <button class="preset-btn">Pop</button>
+                        <button class="preset-btn">Jazz</button>
+                        <button class="preset-btn">Classic</button>
+                        <button class="preset-btn">Dance</button>
+                    </div>
+
+                    <div class="equalizer-sliders" style="display: flex; justify-content: space-between; height: 150px; margin-bottom: 20px;">
+                        <!-- 5-Band EQ -->
+                        <div class="slider-wrapper" style="display: flex; flex-direction: column; align-items: center; flex: 1;">
+                            <input type="range" class="eq-slider" min="-12" max="12" value="0" step="0.1" orient="vertical" style="writing-mode: bt-lr; -webkit-appearance: slider-vertical; height: 100%; width: 8px; background: #333; border-radius: 4px;">
+                            <span style="font-size: 0.7em; color: #888; margin-top: 10px;">60Hz</span>
+                        </div>
+                        <div class="slider-wrapper" style="display: flex; flex-direction: column; align-items: center; flex: 1;">
+                            <input type="range" class="eq-slider" min="-12" max="12" value="0" step="0.1" orient="vertical" style="writing-mode: bt-lr; -webkit-appearance: slider-vertical; height: 100%; width: 8px; background: #333; border-radius: 4px;">
+                            <span style="font-size: 0.7em; color: #888; margin-top: 10px;">230Hz</span>
+                        </div>
+                        <div class="slider-wrapper" style="display: flex; flex-direction: column; align-items: center; flex: 1;">
+                            <input type="range" class="eq-slider" min="-12" max="12" value="0" step="0.1" orient="vertical" style="writing-mode: bt-lr; -webkit-appearance: slider-vertical; height: 100%; width: 8px; background: #333; border-radius: 4px;">
+                            <span style="font-size: 0.7em; color: #888; margin-top: 10px;">910Hz</span>
+                        </div>
+                        <div class="slider-wrapper" style="display: flex; flex-direction: column; align-items: center; flex: 1;">
+                            <input type="range" class="eq-slider" min="-12" max="12" value="0" step="0.1" orient="vertical" style="writing-mode: bt-lr; -webkit-appearance: slider-vertical; height: 100%; width: 8px; background: #333; border-radius: 4px;">
+                            <span style="font-size: 0.7em; color: #888; margin-top: 10px;">3.6kHz</span>
+                        </div>
+                        <div class="slider-wrapper" style="display: flex; flex-direction: column; align-items: center; flex: 1;">
+                            <input type="range" class="eq-slider" min="-12" max="12" value="0" step="0.1" orient="vertical" style="writing-mode: bt-lr; -webkit-appearance: slider-vertical; height: 100%; width: 8px; background: #333; border-radius: 4px;">
+                            <span style="font-size: 0.7em; color: #888; margin-top: 10px;">14kHz</span>
+                        </div>
+                    </div>
+
+                    <div class="bass-boost-control" style="display: flex; align-items: center; gap: 15px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; margin-bottom: 15px;">
+                        <span style="font-weight: bold; color: #ff6b35; min-width: 100px;">BASS BOOST</span>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="bassBoostToggle">
+                            <span class="slider"></span>
+                        </div>
+                        <input type="range" id="bassBoostIntensity" min="0" max="20" value="0" disabled style="flex: 1; height: 6px; border-radius: 3px; outline: none;">
+                        <span id="bassBoostValue" style="min-width: 40px; text-align: right; color: #888;">0dB</span>
+                    </div>
+                    
+                    <div id="customPresetsContainer" style="margin-top: 15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                    
+                    <div style="margin-top: 20px; display: flex; gap: 10px;">
+                        <button class="preset-btn" style="flex: 1; background: #2a2a2a; border: 1px solid #444; color: #ccc;">Speichern</button>
+                        <button class="preset-btn" style="flex: 1; background: #2a2a2a; border: 1px solid #444; color: #ccc;">Zurücksetzen</button>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .preset-btn {
+                    background: transparent;
+                    border: 1px solid #444;
+                    color: #888;
+                    padding: 8px 16px;
+                    border-radius: 20px;
+                    cursor: pointer;
+                    white-space: nowrap;
+                    transition: all 0.2s;
+                }
+                .preset-btn.active, .preset-btn:hover {
+                    background: #4ecdc4;
+                    color: #1a1a2e;
+                    border-color: #4ecdc4;
+                    font-weight: bold;
+                }
+                input[type=range]::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    height: 16px;
+                    width: 16px;
+                    border-radius: 50%;
+                    background: #4ecdc4;
+                    cursor: pointer;
+                    margin-top: -5px;
+                }
+                input[type=range]::-webkit-slider-runnable-track {
+                    width: 100%;
+                    height: 6px;
+                    cursor: pointer;
+                    background: #444;
+                    border-radius: 3px;
+                }
+            </style>
+
+            <!-- Audio Element (versteckt) -->
     <audio id="audioPlayer" preload="auto" crossorigin="anonymous"></audio>
 
     <!-- Core Scripts (von index.html synchronisiert) -->
