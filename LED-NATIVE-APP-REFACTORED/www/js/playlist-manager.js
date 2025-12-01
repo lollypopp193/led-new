@@ -317,3 +317,18 @@ class PlaylistManager {
 const playlistManager = new PlaylistManager();
 window.playlistManager = playlistManager;
 window.PlaylistManager = PlaylistManager;
+
+// Globale UI-Update Funktion
+window.updatePlaylistUI = function () {
+    if (window.playlistManager) {
+        // Aktualisiere Playlist-Anzeige
+        const container = document.querySelector('.playlists-container, #playlists-grid, #playlistsGrid');
+        if (container && window.playlistManager.playlists) {
+            console.log('🔄 Playlist-UI aktualisiert');
+            // Trigger event für andere Module
+            window.dispatchEvent(new CustomEvent('playlists-updated', {
+                detail: { playlists: window.playlistManager.playlists }
+            }));
+        }
+    }
+};

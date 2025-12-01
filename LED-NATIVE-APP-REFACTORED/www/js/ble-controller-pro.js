@@ -789,6 +789,24 @@ class BLEController {
 // Global exposure for compatibility
 window.BLEController = BLEController;
 
+// Globale BLE-Status Update Funktion
+window.updateGlobalBLEStatus = function (connected, deviceName) {
+    const statusElements = document.querySelectorAll('.ble-status, #ble-status, #connection-status');
+    statusElements.forEach(el => {
+        if (el) {
+            el.textContent = connected ? `Verbunden: ${deviceName || 'LED'}` : 'Nicht verbunden';
+            el.className = connected ? 'ble-status connected' : 'ble-status disconnected';
+        }
+    });
+
+    // Event dispatchen für andere Module
+    window.dispatchEvent(new CustomEvent('ble-status-changed', {
+        detail: { connected, deviceName }
+    }));
+
+    console.log(`📡 BLE Status: ${connected ? 'Verbunden' : 'Getrennt'}`);
+};
+
 // Auto-initialize global instance
 if (typeof window !== 'undefined') {
     window.bleController = new BLEController();

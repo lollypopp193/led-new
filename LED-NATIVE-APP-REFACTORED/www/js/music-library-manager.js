@@ -50,4 +50,21 @@ window.MusicLibraryManager = MusicLibraryManager;
 window.musicLibraryManager = new MusicLibraryManager();
 console.log('\u2705 Music Library Manager global verfügbar als window.musicLibraryManager');
 
+// Globale UI-Update Funktion für Musikbibliothek
+window.updateMusicLibraryUI = async function () {
+    try {
+        if (window.musicLibraryManager && window.musicLibraryManager.database && window.musicLibraryManager.database.isReady) {
+            const tracks = await window.musicLibraryManager.getAllTracks();
+            console.log(`🎵 Musikbibliothek UI aktualisiert: ${tracks.length} Tracks`);
+
+            // Event für andere Module
+            window.dispatchEvent(new CustomEvent('music-library-updated', {
+                detail: { trackCount: tracks.length, tracks: tracks }
+            }));
+        }
+    } catch (error) {
+        console.error('Fehler beim Aktualisieren der Musikbibliothek-UI:', error);
+    }
+};
+
 if (typeof module !== 'undefined' && module.exports) module.exports = { MusicDatabase, MusicLibraryManager, MUSIC_CONFIG };
