@@ -217,4 +217,48 @@ window.EqualizerEngine = EqualizerEngine;
 window.equalizerEngine = new EqualizerEngine();
 console.log('✅ Equalizer Engine global verfügbar als window.equalizerEngine');
 
+// Globale Wrapper-Funktionen für onclick Handler
+function saveCustomEQPreset() {
+    const name = prompt('Name für das Preset:', 'Mein Preset');
+    if (name && name.trim()) {
+        const values = window.equalizerEngine.filters.map(f => f.gain.value);
+        window.equalizerEngine.saveCustomPreset(name.trim(), values);
+        if (window.showNotification) {
+            window.showNotification(`Preset "${name}" gespeichert`, 'success');
+        }
+    }
+}
+
+function deleteCustomEQPreset() {
+    const presets = Object.keys(window.equalizerEngine.customPresets);
+    if (presets.length === 0) {
+        if (window.showNotification) {
+            window.showNotification('Keine Custom-Presets vorhanden', 'info');
+        }
+        return;
+    }
+    const name = prompt('Welches Preset löschen?\n' + presets.join(', '));
+    if (name && window.equalizerEngine.customPresets[name]) {
+        delete window.equalizerEngine.customPresets[name];
+        localStorage.setItem('eq-custom-presets', JSON.stringify(window.equalizerEngine.customPresets));
+        if (window.showNotification) {
+            window.showNotification(`Preset "${name}" gelöscht`, 'info');
+        }
+    }
+}
+
+function resetEQ() {
+    if (window.equalizerEngine) {
+        window.equalizerEngine.reset();
+        if (window.showNotification) {
+            window.showNotification('Equalizer zurückgesetzt', 'info');
+        }
+    }
+}
+
+// Global exports
+window.saveCustomEQPreset = saveCustomEQPreset;
+window.deleteCustomEQPreset = deleteCustomEQPreset;
+window.resetEQ = resetEQ;
+
 if (typeof module !== 'undefined' && module.exports) module.exports = EqualizerEngine;
