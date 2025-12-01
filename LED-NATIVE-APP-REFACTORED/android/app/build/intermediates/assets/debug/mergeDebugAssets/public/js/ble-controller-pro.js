@@ -45,7 +45,10 @@ class BLEController {
                 POWER_OFF: [0x7e, 0x04, 0x04, 0x00, 0xff, 0xff, 0xff, 0x00, 0xef],
                 COLOR: (r, g, b) => [0x7e, 0x07, 0x05, 0x03, r, g, b, 0x00, 0xef],
                 BRIGHTNESS: (level) => [0x7e, 0x04, 0x01, level, 0xff, 0xff, 0xff, 0x00, 0xef],
-                EFFECT: (id) => [0x7e, 0x05, 0x03, id, 0x03, 0xff, 0xff, 0x00, 0xef]
+                EFFECT: (id) => [0x7e, 0x05, 0x03, id, 0x03, 0xff, 0xff, 0x00, 0xef],
+                // Weißton: 0=Warmweiß, 100=Kaltweiß (für RGBW/RGBWW Strips)
+                WHITE_TEMP: (temp) => [0x7e, 0x04, 0x0f, Math.round(temp * 2.55), 0xff, 0xff, 0xff, 0x00, 0xef],
+                WHITE_BRIGHTNESS: (level) => [0x7e, 0x04, 0x0e, level, 0xff, 0xff, 0xff, 0x00, 0xef]
             },
             GENERIC: {
                 POWER_ON: [0x7e, 0x00, 0x04, 0xf0, 0x00, 0x01, 0xff, 0x00, 0xef],
@@ -55,7 +58,9 @@ class BLEController {
                     return [0x7e, 0x00, 0x05, 0x03, r, g, b, 0x00, checksum, 0xef];
                 },
                 BRIGHTNESS: (level) => [0x7e, 0x00, 0x01, level, 0xff, 0xff, 0xff, 0x00, 0xef],
-                EFFECT: (id) => [0x7e, 0x00, 0x03, id, 0x03, 0xff, 0xff, 0x00, 0xef]
+                EFFECT: (id) => [0x7e, 0x00, 0x03, id, 0x03, 0xff, 0xff, 0x00, 0xef],
+                WHITE_TEMP: (temp) => [0x7e, 0x00, 0x0f, Math.round(temp * 2.55), 0xff, 0xff, 0xff, 0x00, 0xef],
+                WHITE_BRIGHTNESS: (level) => [0x7e, 0x00, 0x0e, level, 0xff, 0xff, 0xff, 0x00, 0xef]
             }
         };
 
@@ -386,6 +391,43 @@ class BLEController {
 
         if (result) {
             console.log(`Power ${state ? 'ON' : 'OFF'}`);
+        }
+
+        return result;
+    }
+
+    /**
+     * Set white temperature (for RGBW/RGBWW strips)
+     * @param {number} temp - Temperature (0=Warmweiß, 100=Kaltweiß)
+     * @returns {Promise<boolean>}
+     */
+    async setWhiteTemperature(temp) {
+        temp = Math.max(0, Math.min(100, parseInt(temp) || 50));
+
+        const command = this.COMMANDS[this.protocol].WHITE_TEMP(temp);
+        const result = await this.sendCommand(command);
+
+        if (result) {
+            console.log(`White temperature: ${temp}% (${temp < 50 ? 'warm' : 'cold'})`);
+        }
+
+        return result;
+    }
+
+    /**
+     * Set white brightness (for RGBW/RGBWW strips)
+     * @param {number} level - Brightness level (0-100)
+     * @returns {Promise<boolean>}
+     */
+    async setWhiteBrightness(level) {
+        level = Math.max(0, Math.min(100, parseInt(level) || 0));
+        const brightnessValue = Math.round((level / 100) * 255);
+
+        const command = this.COMMANDS[this.protocol].WHITE_BRIGHTNESS(brightnessValue);
+        const result = await this.sendCommand(command);
+
+        if (result) {
+            console.log(`White brightness: ${level}%`);
         }
 
         return result;

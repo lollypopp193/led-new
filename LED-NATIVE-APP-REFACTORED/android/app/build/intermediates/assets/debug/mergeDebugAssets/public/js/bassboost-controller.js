@@ -210,6 +210,14 @@ class BassBoostController {
     }
 
     /**
+     * Toggle-Alias (wird von HTML verwendet)
+     * @param {boolean} enabled
+     */
+    toggle(enabled) {
+        this.setEnabled(enabled);
+    }
+
+    /**
      * Cleanup / Disconnect
      */
     dispose() {

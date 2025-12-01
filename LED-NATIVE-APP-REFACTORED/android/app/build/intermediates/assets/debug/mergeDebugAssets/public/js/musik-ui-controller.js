@@ -1,4 +1,4 @@
-/**
+﻿/**
  * MUSIK-UI-CONTROLLER.JS
  * UI-Steuerung für musik.html - KEIN Inline-JS mehr
  */
@@ -137,15 +137,20 @@ function importPlaylist() {
     input.click();
 }
 
-function clearCache() {
-    if (confirm('Möchten Sie wirklich den gesamten Cache leeren?')) {
-        try {
-            localStorage.clear();
-            showNotification('✅ Cache geleert!', 'success');
-            setTimeout(() => location.reload(), 1000);
-        } catch (error) {
-            console.error('Cache-Fehler:', error);
-            showNotification('❌ Fehler beim Leeren', 'error');
+// Nutze globale clearCache aus einstellungen-controller.js falls vorhanden
+function clearMusicCache() {
+    if (window.clearCache) {
+        window.clearCache();
+    } else {
+        if (confirm('Möchten Sie wirklich den gesamten Cache leeren?')) {
+            try {
+                localStorage.clear();
+                showNotification('✅ Cache geleert!', 'success');
+                setTimeout(() => location.reload(), 1000);
+            } catch (error) {
+                console.error('Cache-Fehler:', error);
+                showNotification('❌ Fehler beim Leeren', 'error');
+            }
         }
     }
 }
@@ -209,15 +214,10 @@ function resetTempoAndPitch() {
     showNotification('✅ Tempo & Tonhöhe zurückgesetzt!', 'success');
 }
 
-// Global Export
-window.showNotification = showNotification;
+// Global Export (showNotification bereits in notifications.js)
 window.initTaskbarNavigation = initTaskbarNavigation;
-window.updateBandTabs = updateBandTabs;
 window.backupSettings = backupSettings;
 window.restoreSettings = restoreSettings;
-window.exportPlaylist = exportPlaylist;
-window.importPlaylist = importPlaylist;
-window.clearCache = clearCache;
 window.resetToDefaults = resetToDefaults;
 window.showStats = showStats;
 window.activatePartyMode = activatePartyMode;

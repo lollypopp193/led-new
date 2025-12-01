@@ -364,6 +364,83 @@ function initMusicPlayer() {
     console.log('✅ Musik-Player initialisiert');
 }
 
+// === FEHLENDE FUNKTIONEN ===
+
+// Panel-Navigation
+function showPanel(panelId) {
+    document.querySelectorAll('.panel, .content-panel').forEach(p => p.classList.remove('active'));
+    const panel = document.getElementById(panelId);
+    if (panel) {
+        panel.classList.add('active');
+        console.log('📱 Panel gewechselt:', panelId);
+    }
+}
+
+// Bibliothek anzeigen
+function viewLibrary(section) {
+    console.log('📚 Bibliothek:', section);
+    if (window.libraryManager) {
+        window.libraryManager.currentSection = section;
+        window.libraryManager.renderCurrentSection();
+    }
+    showPanel('library-panel');
+}
+
+// Scan-Modal schließen
+function closeScanModal() {
+    const modal = document.getElementById('scanModal');
+    if (modal) modal.style.display = 'none';
+}
+
+// Playlist erstellen
+function createNewPlaylist() {
+    const name = prompt('Playlist-Name:');
+    if (name && name.trim()) {
+        const playlists = JSON.parse(localStorage.getItem('playlists') || '[]');
+        playlists.push({ id: Date.now(), name: name.trim(), tracks: [] });
+        localStorage.setItem('playlists', JSON.stringify(playlists));
+        if (window.showNotification) window.showNotification('Playlist erstellt: ' + name, 'success');
+    }
+}
+
+// EQ-Preset auswählen
+function selectEQPreset(presetName) {
+    console.log('🎛️ EQ-Preset:', presetName);
+    if (window.equalizerEngine) {
+        window.equalizerEngine.applyPreset(presetName);
+    }
+}
+
+// Custom EQ-Preset löschen (mit Name-Parameter für programmatische Nutzung)
+// Nutze window.deleteCustomEQPreset() für onclick ohne Parameter
+function deleteEQPresetByName(name) {
+    if (confirm('Preset "' + name + '" löschen?')) {
+        if (window.equalizerEngine) {
+            window.equalizerEngine.deleteCustomPreset(name);
+        }
+    }
+}
+
+// Visualizer-Effekt auswählen
+function selectVisualEffect(effectName) {
+    console.log('🎨 Visual-Effekt:', effectName);
+    if (window.visualizationManager) {
+        window.visualizationManager.setEffect(effectName);
+    }
+}
+
+// Sleep-Timer Einstellungen
+function toggleSleepTimerSettings() {
+    const panel = document.getElementById('sleepTimerSettings');
+    if (panel) panel.classList.toggle('expanded');
+}
+
+// Musik-Alarm Einstellungen
+function toggleMusicAlarmSettings() {
+    const panel = document.getElementById('musicAlarmSettings');
+    if (panel) panel.classList.toggle('expanded');
+}
+
 // Global Export
 window.loadPlayerState = loadPlayerState;
 window.savePlayerState = savePlayerState;
@@ -377,6 +454,15 @@ window.togglePlayPause = togglePlayPause;
 window.toggleShuffle = toggleShuffle;
 window.toggleRepeat = toggleRepeat;
 window.initMusicPlayer = initMusicPlayer;
+window.showPanel = showPanel;
+window.viewLibrary = viewLibrary;
+window.closeScanModal = closeScanModal;
+window.createNewPlaylist = createNewPlaylist;
+window.selectEQPreset = selectEQPreset;
+window.deleteCustomEQPreset = deleteCustomEQPreset;
+window.selectVisualEffect = selectVisualEffect;
+window.toggleSleepTimerSettings = toggleSleepTimerSettings;
+window.toggleMusicAlarmSettings = toggleMusicAlarmSettings;
 
 // Auto-Init
 if (document.readyState === 'loading') {

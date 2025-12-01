@@ -82,11 +82,116 @@ const App = {
         } catch (err) { console.error('\u274c Fortsetzung fehlgeschlagen:', err); }
     },
     async initializeModules() { try { console.log('\ud83d\udce6 Lade Module...'); if (window.eventManager) { this.eventManager = window.eventManager; console.log('\u2705 EventManager geladen'); } if (window.performanceOptimizer) { this.performanceOptimizer = window.performanceOptimizer; this.performanceOptimizer.init(); console.log('\u2705 PerformanceOptimizer geladen'); } if (window.ledAbstraction) { this.ledAbstraction = window.ledAbstraction; await this.ledAbstraction.detectLEDType(); console.log('\u2705 LED-Abstraction geladen'); } if (window.scenesManager) { this.scenesManager = window.scenesManager; console.log('\u2705 ScenesManager geladen'); } if (window.deviceManager) { this.deviceManager = window.deviceManager; console.log('\u2705 DeviceManager geladen'); } if (window.audioReactiveEngine) { this.audioReactiveEngine = window.audioReactiveEngine; console.log('\u2705 AudioReactiveEngine geladen'); } if (window.musikIntegration) { this.musikIntegration = window.musikIntegration; console.log('\u2705 MusikIntegration geladen'); } if (window.musicLibraryManager) { this.musicLibraryManager = window.musicLibraryManager; await this.musicLibraryManager.init(); console.log('\u2705 MusicLibraryManager geladen'); } if (typeof Capacitor !== 'undefined') { await this.initCapacitor(); } console.log('\u2705 Alle Module geladen'); } catch (err) { console.error('\u274c Modul-Initialisierung fehlgeschlagen:', err); throw err; } },
-    async initCapacitor() { try { console.log('\ud83d\udce6 Initialisiere Capacitor...'); if (typeof SplashScreen !== 'undefined') { setTimeout(function () { SplashScreen.hide(); console.log('\u2705 SplashScreen verborgen'); }, 2000); } if (typeof StatusBar !== 'undefined') { StatusBar.setBackgroundColor({ color: '#1a1a2e' }); console.log('\u2705 StatusBar konfiguriert'); } if (typeof App !== 'undefined' && App.addListener) { App.addListener('backButton', function () { if (this.state.currentApp === 'farbe') { navigator.app.exitApp(); } else { this.openApp('farbe'); } }.bind(this)); console.log('\u2705 Back-Button Handler registriert'); } console.log('\u2705 Capacitor initialisiert'); } catch (err) { console.warn('\u26a0\ufe0f Capacitor-Initialisierung mit Fehlern:', err); } },
+    async initCapacitor() {
+        try {
+            console.log('📦 Initialisiere Capacitor...');
+
+            // Splash Screen
+            if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SplashScreen) {
+                try {
+                    await window.Capacitor.Plugins.SplashScreen.hide();
+                    console.log('✅ SplashScreen verborgen');
+                } catch (e) { console.warn('SplashScreen Fehler:', e); }
+            }
+
+            // Status Bar
+            if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.StatusBar) {
+                try {
+                    await window.Capacitor.Plugins.StatusBar.setBackgroundColor({ color: '#1a1a2e' });
+                    await window.Capacitor.Plugins.StatusBar.setStyle({ style: 'DARK' });
+                    console.log('✅ StatusBar konfiguriert');
+                } catch (e) { console.warn('StatusBar Fehler:', e); }
+            }
+
+            // Back Button Handling
+            if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
+                window.Capacitor.Plugins.App.addListener('backButton', ({ canGoBack }) => {
+                    if (canGoBack) {
+                        window.history.back();
+                    } else {
+                        // Wenn auf Startseite ('farbe'), dann App minimieren/schließen
+                        if (this.state.currentApp === 'farbe' || !this.state.currentApp) {
+                            window.Capacitor.Plugins.App.exitApp();
+                        } else {
+                            // Sonst zur Startseite navigieren
+                            this.openApp('farbe');
+                        }
+                    }
+                });
+                console.log('✅ Back-Button Handler registriert');
+            }
+
+            console.log('✅ Capacitor initialisiert');
+        } catch (err) {
+            console.warn('⚠️ Capacitor-Initialisierung mit Fehlern:', err);
+        }
+    },
     cacheDOMElements() { this.elements.startScreen = document.getElementById('startscreen'); this.elements.appScreen = document.getElementById('appscreen'); this.elements.navBar = document.querySelector('.nav-bar'); this.elements.appIframe = document.getElementById('app-iframe'); this.elements.particleCanvas = document.getElementById('background-canvas'); this.elements.connectionStatus = document.getElementById('connection-status'); this.elements.notificationContainer = document.getElementById('notification-container'); console.log('\u2705 DOM-Elemente gecached'); },
     initStartupSequence() { setTimeout(function () { if (this.elements.startScreen) this.elements.startScreen.style.display = 'none'; if (this.elements.appScreen) this.elements.appScreen.style.display = 'flex'; const lastApp = localStorage.getItem('last-app') || 'farbe'; this.openApp(lastApp); console.log('\u2705 Startup-Sequenz abgeschlossen'); }.bind(this), this.config.startup_delay); },
     initNavigation() { if (!this.elements.navBar) return; this.elements.navBar.addEventListener('click', function (e) { const navItem = e.target.closest('.nav-item'); if (navItem) { const appName = navItem.dataset.app; this.openApp(appName); } }.bind(this)); console.log('\u2705 Navigation initialisiert'); },
-    initGlobalEventListeners() { window.addEventListener('online', function () { this.showNotification('Verbindung hergestellt', 'success'); console.log('\u2705 Online'); }.bind(this)); window.addEventListener('offline', function () { this.showNotification('Keine Verbindung', 'warning'); console.log('\u26a0\ufe0f Offline'); }.bind(this)); window.addEventListener('beforeunload', function () { this.saveSettings(); this.saveState(); }.bind(this)); document.addEventListener('visibilitychange', function () { if (document.hidden) { this.handleAppPause(); } else { this.handleAppResume(); } }.bind(this)); if (this.eventManager) { this.eventManager.on('ble-connected', function (e) { this.handleBLEConnected(e.data); }.bind(this)); this.eventManager.on('ble-disconnected', function (e) { this.handleBLEDisconnected(e.data); }.bind(this)); this.eventManager.on('scene-activated', function (e) { this.handleSceneActivated(e.data); }.bind(this)); } console.log('\u2705 Global Event Listeners initialisiert'); },
+    initGlobalEventListeners() {
+        // 1. Override Native Dialogs with UI Overlays (Monkey Patching)
+        this.overrideNativeDialogs();
+
+        // 2. Message-Listener für Iframe-Kommunikation
+        window.addEventListener('message', (event) => {
+            // Sicherheits-Check: Nur eigene Origin erlauben
+            if (event.origin !== window.location.origin && event.origin !== 'null') return;
+
+            const data = event.data;
+            if (!data || !data.type) return;
+
+            // console.log('📨 Message empfangen:', data.type);
+
+            switch (data.type) {
+                case 'ledMusicControlReady':
+                    console.log('🎵 LED-Musik-Steuerung bereit (Iframe)');
+                    // Optional: Benachrichtigung an User
+                    break;
+
+                case 'requestBLE':
+                    if (this.state.isConnected && this.state.currentDevice) {
+                        // Sende Status zurück an Iframe
+                        const iframe = document.getElementById('app-iframe');
+                        if (iframe && iframe.contentWindow) {
+                            iframe.contentWindow.postMessage({
+                                type: 'bleStatus',
+                                connected: true,
+                                device: this.state.currentDevice
+                            }, '*');
+                        }
+                    }
+                    break;
+
+                case 'toggleMenu':
+                    if (window.LEDSidebar && window.ledSidebar) {
+                        window.ledSidebar.toggle();
+                    }
+                    break;
+            }
+        });
+
+        // 3. Standard Event Listeners
+        window.addEventListener('online', function () { this.showNotification('Verbindung hergestellt', 'success'); console.log('\u2705 Online'); }.bind(this)); window.addEventListener('offline', function () { this.showNotification('Keine Verbindung', 'warning'); console.log('\u26a0\ufe0f Offline'); }.bind(this)); window.addEventListener('beforeunload', function () { this.saveSettings(); this.saveState(); }.bind(this)); document.addEventListener('visibilitychange', function () { if (document.hidden) { this.handleAppPause(); } else { this.handleAppResume(); } }.bind(this)); if (this.eventManager) { this.eventManager.on('ble-connected', function (e) { this.handleBLEConnected(e.data); }.bind(this)); this.eventManager.on('ble-disconnected', function (e) { this.handleBLEDisconnected(e.data); }.bind(this)); this.eventManager.on('scene-activated', function (e) { this.handleSceneActivated(e.data); }.bind(this)); } console.log('\u2705 Global Event Listeners initialisiert');
+    },
+
+    // Hilfsfunktion für Custom Dialoge
+    overrideNativeDialogs() {
+        // alert
+        const originalAlert = window.alert;
+        window.alert = (msg) => {
+            if (window.showNotification) {
+                window.showNotification(msg, 'info');
+            } else {
+                originalAlert(msg);
+            }
+        };
+
+        // confirm - kann nicht einfach ersetzt werden da synchron,
+        // aber wir können es stylen oder Wrapper nutzen wo möglich.
+        // Da confirm blockierend ist, lassen wir es vorerst, aber
+        // wir könnten später eine asynchrone Alternative anbieten.
+    },
     openApp(appName) { if (!appName) return; if (this.elements.appIframe) { this.elements.appIframe.src = 'pages/' + appName + '.html'; this.state.currentApp = appName; localStorage.setItem('last-app', appName); document.querySelectorAll('.nav-item').forEach(function (item) { item.classList.remove('active'); }); const activeItem = document.querySelector('[data-app="' + appName + '"]'); if (activeItem) activeItem.classList.add('active'); console.log('\ud83d\udcdd App geöffnet:', appName); if (this.eventManager) this.eventManager.emit('app-changed', { app: appName, timestamp: Date.now() }); } },
     async connectBLE() { try { if (this.deviceManager) { this.showNotification('Suche nach Geräten...', 'info'); const device = await this.deviceManager.scanForDevices(); if (device) { const success = await this.deviceManager.connectToDevice(device.id); if (success) { this.state.isConnected = true; this.state.currentDevice = device; this.updateConnectionStatus(true); this.showNotification('Verbunden mit ' + device.name, 'success'); if (this.eventManager) this.eventManager.emit('ble-connected', { device: device }); return true; } } } return false; } catch (err) { console.error('\u274c BLE-Verbindung fehlgeschlagen:', err); this.showNotification('Verbindung fehlgeschlagen', 'error'); return false; } },
     disconnectBLE() { if (this.deviceManager) { this.deviceManager.disconnectDevice(); this.state.isConnected = false; this.state.currentDevice = null; this.updateConnectionStatus(false); this.showNotification('Verbindung getrennt', 'info'); if (this.eventManager) this.eventManager.emit('ble-disconnected', {}); } },

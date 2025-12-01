@@ -541,11 +541,12 @@ class PresetManager {
         window.currentGradient = color.gradient;
 
         // BLE-Controller benachrichtigen
-        if (window.bleController && window.bleController.isConnected) {
+        const bleCtrl = window.bleController || (window.parent && window.parent.bleController) || (window.top && window.top.bleController);
+        if (bleCtrl && bleCtrl.isConnected) {
             const r = parseInt(color.primary.slice(1, 3), 16);
             const g = parseInt(color.primary.slice(3, 5), 16);
             const b = parseInt(color.primary.slice(5, 7), 16);
-            window.bleController.setColorRGB(r, g, b);
+            bleCtrl.setColorRGB(r, g, b);
         }
 
         // UI updaten
@@ -564,7 +565,8 @@ class PresetManager {
         this.setSliderValue('effectIntensity', effect.intensity);
 
         // BLE-Controller benachrichtigen
-        if (window.bleController && window.bleController.isConnected) {
+        const bleCtrl = window.bleController || (window.parent && window.parent.bleController) || (window.top && window.top.bleController);
+        if (bleCtrl && bleCtrl.isConnected) {
             // Effect ID mapping
             const effectMap = {
                 'solid': 0,
@@ -575,7 +577,7 @@ class PresetManager {
                 'spectrum': 5
             };
             const effectId = effectMap[effect.type] || 0;
-            window.bleController.setEffect(effectId, effect.speed);
+            bleCtrl.setEffect(effectId, effect.speed);
         }
     }
 
@@ -589,8 +591,9 @@ class PresetManager {
         this.setSliderValue('maxBrightness', brightness.maxLevel);
 
         // BLE-Controller benachrichtigen
-        if (window.bleController && window.bleController.isConnected) {
-            window.bleController.setBrightness(brightness.level);
+        const bleCtrl = window.bleController || (window.parent && window.parent.bleController) || (window.top && window.top.bleController);
+        if (bleCtrl && bleCtrl.isConnected) {
+            bleCtrl.setBrightness(brightness.level);
         }
     }
 

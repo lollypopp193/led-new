@@ -78,8 +78,116 @@ class AudioReactiveEngine {
     renderAllStripControls() { const cont = document.getElementById('ledStripsGrid'); if (!cont) return; cont.innerHTML = ''; this.ledStrips.forEach(function (strip) { const div = document.createElement('div'); div.className = 'strip-control'; div.style.cssText = 'background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 10px;'; div.innerHTML = '<div style="font-weight: bold; color: #4ecdc4; margin-bottom: 10px;">' + strip.name + '</div><div style="font-size: 0.9rem; color: #ccc;">Frequenz: ' + strip.frequencyBand + '</div><div style="font-size: 0.9rem; color: #ccc;">Sensitivity: ' + strip.sensitivity + '%</div>'; cont.appendChild(div); }); }
     setupEventListeners() { const scanBtn = document.getElementById('scanLEDStrips'); if (scanBtn) scanBtn.addEventListener('click', function () { this.scanAndConnectDevices(); }.bind(this)); window.addEventListener('bandSettingsChanged', function () { this.syncWithBandSettings(); }.bind(this)); }
     setupMusicPlayerIntegration() { window.addEventListener('message', function (e) { const allowed = ['http://localhost', 'https://localhost', window.location.origin]; if (!allowed.some(function (o) { return e.origin.startsWith(o); })) return; if (e.data.type === 'musicPlayerAudioData') this.processMusicPlayerData(e.data.audioData); else if (e.data.type === 'musicPlayerConnected') this.musicPlayerConnected = true; else if (e.data.type === 'musicPlayerDisconnected') { this.musicPlayerConnected = false; if (this.audioSourceType === 'music-player') this.stopAudioCapture(); } }.bind(this)); if (window.parent && window.parent !== window) { window.parent.postMessage({ type: 'ledMusicControlReady' }, window.location.origin); } }
-    async scanAndConnectDevices() { if (typeof window.bleController !== 'undefined' && window.bleController) { try { await window.bleController.scanForDevices(); const devices = window.bleController.getAvailableDevices(); devices.forEach(function (d, i) { if (this.ledStrips[i]) { this.ledStrips[i].connected = true; this.ledStrips[i].deviceInfo = d; } }.bind(this)); this.renderAllStripControls(); console.log('\u2705 ' + devices.length + ' Ger\u00e4te gefunden'); } catch (e) { console.error('\u274c BLE-Scan:', e); } } else { this.ledStrips.forEach(function (s) { s.connected = true; }); this.renderAllStripControls(); console.log('\u2705 LED-B\u00e4nder simuliert verbunden'); } }
+    async scanAndConnectDevices() { const bleCtrl = window.bleController || (window.parent && window.parent.bleController) || (window.top && window.top.bleController); if (bleCtrl) { try { await bleCtrl.scanForDevices(); const devices = bleCtrl.getAvailableDevices ? bleCtrl.getAvailableDevices() : []; devices.forEach(function (d, i) { if (this.ledStrips[i]) { this.ledStrips[i].connected = true; this.ledStrips[i].deviceInfo = d; } }.bind(this)); this.renderAllStripControls(); console.log('\u2705 ' + devices.length + ' Ger\u00e4te gefunden'); } catch (e) { console.error('\u274c BLE-Scan:', e); } } else { this.ledStrips.forEach(function (s) { s.connected = true; }); this.renderAllStripControls(); console.log('\u2705 LED-B\u00e4nder simuliert verbunden'); } }
     async startFileAnalysis(file) { try { console.log('\ud83c\udfb5 Starte Datei-Analyse mit AudioDecoderFFT'); if (!window.AudioDecoderFFT) { console.error('\u274c AudioDecoderFFT nicht verf\u00fcgbar'); return false; } await this.stopAudioCapture(); const decoder = new window.AudioDecoderFFT(); await decoder.init(); const success = await decoder.loadAudioFile(file); if (!success) return false; this.audioSourceType = 'file'; this.isRunning = true; decoder.startAnalysis(function (features) { this.updateStatusDisplay(features.bass, features.mid, features.treble, features.beat); this.updateLEDStrips(features.bass, features.mid, features.treble, features.beat); }.bind(this)); console.log('\u2705 Datei-Analyse gestartet'); return true; } catch (e) { console.error('\u274c Datei-Analyse Fehler:', e); return false; } }
+
+    // === FEHLENDE METHODEN WIEDERHERGESTELLT ===
+
+    stopAudioCapture() {
+        this.isRunning = false;
+        if (this.source) { this.source.disconnect(); this.source = null; }
+        if (this.microphone) { this.microphone.disconnect(); this.microphone = null; }
+        if (this.audioContext) { this.audioContext.close(); this.audioContext = null; }
+        console.log('🛑 Audio-Analyse gestoppt');
+    }
+
+    analyzeLoop() {
+        if (!this.isRunning || !this.analyser) return;
+        requestAnimationFrame(() => this.analyzeLoop());
+        this.analyser.getByteFrequencyData(this.dataArray);
+
+        let bassSum = 0, midSum = 0, trebleSum = 0;
+        let bassCount = 0, midCount = 0, trebleCount = 0;
+
+        for (let i = 0; i < this.dataArray.length; i++) {
+            const val = this.dataArray[i];
+            if (i < 5) { bassSum += val; bassCount++; }
+            else if (i < 20) { midSum += val; midCount++; }
+            else { trebleSum += val; trebleCount++; }
+        }
+
+        const rawBass = bassCount > 0 ? bassSum / bassCount : 0;
+        const rawMid = midCount > 0 ? midSum / midCount : 0;
+        const rawTreble = trebleCount > 0 ? trebleSum / trebleCount : 0;
+
+        this.lastBass = this.lastBass * this.smoothingFactor + rawBass * (1 - this.smoothingFactor);
+        this.lastMid = this.lastMid * this.smoothingFactor + rawMid * (1 - this.smoothingFactor);
+        this.lastTreble = this.lastTreble * this.smoothingFactor + rawTreble * (1 - this.smoothingFactor);
+
+        const isBeat = this.beatDetector.detect(rawBass / 255);
+        this.updateStatusDisplay(this.lastBass, this.lastMid, this.lastTreble, isBeat);
+
+        const now = Date.now();
+        if (now - this.lastUpdate > this.updateInterval) {
+            this.updateLEDStrips(this.lastBass, this.lastMid, this.lastTreble, isBeat);
+            this.lastUpdate = now;
+        }
+    }
+
+    updateStatusDisplay(bass, mid, treble, isBeat) {
+        const bassBar = document.getElementById('bassBar');
+        const midBar = document.getElementById('midBar');
+        const trebleBar = document.getElementById('trebleBar');
+        const beatInd = document.getElementById('beatIndicator');
+        if (bassBar) bassBar.style.height = (bass / 255 * 100) + '%';
+        if (midBar) midBar.style.height = (mid / 255 * 100) + '%';
+        if (trebleBar) trebleBar.style.height = (treble / 255 * 100) + '%';
+        if (beatInd) {
+            beatInd.style.opacity = isBeat ? 1 : 0.2;
+            beatInd.style.transform = isBeat ? 'scale(1.2)' : 'scale(1)';
+        }
+    }
+
+    updateLEDStrips(bass, mid, treble, isBeat) {
+        const bleCtrl = window.bleController || (window.parent && window.parent.bleController) || (window.top && window.top.bleController);
+        if (!bleCtrl || !bleCtrl.isConnected) return;
+
+        let r = 0, g = 0, b = 0;
+        if (this.mode === 'party') {
+            if (isBeat) { r = 255; g = 255; b = 255; }
+            else { r = Math.round(bass); g = Math.round(mid); b = Math.round(treble); }
+        } else {
+            r = Math.round(bass); g = 0; b = Math.round(mid * 0.5 + treble * 0.5);
+        }
+
+        if (Math.max(r, g, b) < 10) { r = 0; g = 0; b = 0; }
+        bleCtrl.setColorRGB(r, g, b).catch(e => { /* BLE-Fehler ignoriert (normal wenn nicht verbunden) */ });
+    }
+
+    startAudioCapture(audioElement) {
+        try {
+            if (this.isRunning) return;
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            this.audioContext = new AudioContext();
+            this.analyser = this.audioContext.createAnalyser();
+            this.analyser.fftSize = 256;
+
+            if (audioElement) {
+                this.source = this.audioContext.createMediaElementSource(audioElement);
+                this.source.connect(this.analyser);
+                this.analyser.connect(this.audioContext.destination);
+                console.log('✅ Audio-Quelle: MediaElement');
+            } else {
+                navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
+                    this.microphone = this.audioContext.createMediaStreamSource(stream);
+                    this.microphone.connect(this.analyser);
+                    console.log('✅ Audio-Quelle: Mikrofon');
+                    this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
+                    this.isRunning = true;
+                    this.analyzeLoop();
+                }).catch(err => {
+                    console.error('❌ Mikrofon-Zugriff verweigert:', err);
+                });
+                return;
+            }
+
+            this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
+            this.isRunning = true;
+            this.analyzeLoop();
+        } catch (error) {
+            console.error('❌ Audio-Start Fehler:', error);
+        }
+    }
 }
 
 window.BeatDetector = BeatDetector;

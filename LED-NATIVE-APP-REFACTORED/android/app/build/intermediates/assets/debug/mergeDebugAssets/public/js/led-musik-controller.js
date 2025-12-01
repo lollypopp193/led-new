@@ -419,6 +419,30 @@ function setLEDMusicMode(mode) {
     });
 }
 
+// LED-Music-Controller Objekt für HTML-Zugriff
+const LEDMusicController = {
+    enabled: false,
+    toggle: function (enabled) {
+        this.enabled = enabled;
+        ledMusicEnabled = enabled;
+        console.log('🎵 LED-Musik-Steuerung:', enabled ? 'AN' : 'AUS');
+
+        if (enabled && window.audioReactiveEngine) {
+            const audio = document.querySelector('audio');
+            if (audio) {
+                window.audioReactiveEngine.startAudioCapture(audio);
+            }
+        } else if (!enabled && window.audioReactiveEngine) {
+            window.audioReactiveEngine.stopAudioCapture();
+        }
+
+        if (window.showGlobalNotification) {
+            window.showGlobalNotification('LED-Musik ' + (enabled ? 'aktiviert' : 'deaktiviert'), enabled ? 'success' : 'info');
+        }
+    }
+};
+
 // Exportiere Funktionen
+window.LEDMusicController = LEDMusicController;
 window.startLEDMusicAnalysis = startLEDMusicAnalysis;
 window.setLEDMusicMode = setLEDMusicMode;
