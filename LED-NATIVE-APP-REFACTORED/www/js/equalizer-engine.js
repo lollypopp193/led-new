@@ -205,6 +205,11 @@ class EqualizerEngine {
         this.currentPreset = 'flat';
         console.log('🔄 Equalizer zurückgesetzt');
     }
+
+    // Alias für toggle (wird von HTML verwendet)
+    toggle(enabled) {
+        this.toggleEnabled(enabled);
+    }
 }
 
 // Global verfügbar machen

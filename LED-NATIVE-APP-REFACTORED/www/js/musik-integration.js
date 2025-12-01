@@ -65,4 +65,29 @@ window.MusikIntegration = MusikIntegration;
 window.musikIntegration = new MusikIntegration();
 console.log('\u2705 Musik-Integration global verfügbar als window.musikIntegration');
 
+// Party-Modus Toggle (wird von HTML verwendet)
+let partyModeActive = false;
+function togglePartyMode(enabled) {
+    partyModeActive = enabled;
+    console.log('🎉 Party-Modus:', enabled ? 'AN' : 'AUS');
+
+    if (enabled) {
+        // Aktiviere alle Party-Features
+        if (window.audioReactiveEngine) {
+            window.audioReactiveEngine.setMode?.('party');
+        }
+        if (window.showGlobalNotification) {
+            window.showGlobalNotification('Party-Modus aktiviert!', 'success');
+        }
+    } else {
+        if (window.audioReactiveEngine) {
+            window.audioReactiveEngine.setMode?.('normal');
+        }
+        if (window.showGlobalNotification) {
+            window.showGlobalNotification('Party-Modus deaktiviert', 'info');
+        }
+    }
+}
+window.togglePartyMode = togglePartyMode;
+
 if (typeof module !== 'undefined' && module.exports) module.exports = { MusicPlayer, MusikIntegration, MUSIK_CONFIG };
