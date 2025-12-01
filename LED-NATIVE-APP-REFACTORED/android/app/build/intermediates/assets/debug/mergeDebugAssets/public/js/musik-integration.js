@@ -1,4 +1,4 @@
-/**
+﻿/**
  * MUSIK-INTEGRATION.JS v4.0 - ZERO TOLERANCE
  * Vollständige Musik-Player Integration mit LED-Synchronisation
  */
@@ -91,3 +91,13 @@ function togglePartyMode(enabled) {
 window.togglePartyMode = togglePartyMode;
 
 if (typeof module !== 'undefined' && module.exports) module.exports = { MusicPlayer, MusikIntegration, MUSIK_CONFIG };
+
+// AdvancedVisualizer mit Audio verbinden
+function connectVisualizer(audioContext, analyser) {
+    if (window.advancedVisualizer) {
+        window.advancedVisualizer.setAudioSource(audioContext, analyser);
+        window.advancedVisualizer.start();
+        console.log(' AdvancedVisualizer verbunden');
+    }
+}
+window.connectVisualizer = connectVisualizer;

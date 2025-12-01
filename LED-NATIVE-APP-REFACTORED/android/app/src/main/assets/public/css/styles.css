@@ -1,4 +1,4 @@
-/* =========================================
+ï»¿/* =========================================
    CORE LAYOUT & RESPONSIVENESS
    ========================================= */
 :root {
@@ -35,7 +35,7 @@ body, html {
     box-sizing: border-box;
     margin: 0 auto;
     overflow-y: auto;
-    padding-bottom: 80px; /* Platz für Navbar */
+    padding-bottom: 80px; /* Platz fï¿½r Navbar */
 }
 
 /* =========================================
@@ -126,7 +126,7 @@ input[type='range']::-webkit-slider-thumb {
 }
 
 /* =========================================
-   START SCREEN (Kein Grünes Kärtchen!)
+   START SCREEN (Kein Grï¿½nes Kï¿½rtchen!)
    ========================================= */
 #startscreen {
     position: fixed;

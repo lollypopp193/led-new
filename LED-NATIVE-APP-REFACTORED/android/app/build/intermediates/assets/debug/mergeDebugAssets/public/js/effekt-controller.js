@@ -490,6 +490,23 @@ async function sendEffectToBLE(effectName, speed) {
     }
 }
 
+// Stoppe aktuellen Effekt
+function stopCurrentEffect() {
+    try {
+        const controller = getLEDController();
+        if (controller && controller.isConnected) {
+            // Sende "Effekt aus" Befehl (meist Effekt 0 oder spezieller Stop-Befehl)
+            controller.sendCommand(new Uint8Array([0x7E, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0xEF]));
+            console.log('⏹️ Effekt gestoppt');
+            if (window.showNotification) {
+                window.showNotification('Effekt gestoppt', 'info');
+            }
+        }
+    } catch (error) {
+        console.error('Fehler beim Stoppen:', error);
+    }
+}
+
 // Global Exports
 window.getLEDController = getLEDController;
 window.toggleFavorite = toggleFavorite;
@@ -497,6 +514,7 @@ window.updateAnimationSpeed = updateAnimationSpeed;
 window.renderEffekte = renderEffekte;
 window.selectEffekt = selectEffekt;
 window.sendEffectToBLE = sendEffectToBLE;
+window.stopCurrentEffect = stopCurrentEffect;
 
 // showNotification() - wird aus notifications.js geladen (ZERO Duplicate Code Policy)
 

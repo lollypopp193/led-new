@@ -421,3 +421,10 @@ class MultiLanguageSupport {
 const multiLang = new MultiLanguageSupport();
 window.multiLang = multiLang;
 window.MultiLanguageSupport = MultiLanguageSupport;
+
+// Globale Aliase für Kompatibilität
+window.changeAppLanguage = function (langCode) {
+    if (window.multiLang) {
+        window.multiLang.switchLanguage(langCode);
+    }
+};
