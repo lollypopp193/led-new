@@ -6,20 +6,34 @@
 'use strict';
 
 /**
- * LED-Controller aus verschiedenen Kontexten abrufen
+ * LED-Controller aus verschiedenen Kontexten abrufen (zentrale Funktion)
+ * Prüft bleController UND ledController in allen Kontexten
  * @returns {Object|null} LED-Controller Instanz oder null
  */
 function getLEDController() {
-    if (window.parent && window.parent.ledController) {
-        return window.parent.ledController;
+    // Nutze globale Version falls vorhanden
+    if (window.getLEDController && window.getLEDController !== getLEDController) {
+        return window.getLEDController();
     }
-    if (window.ledController) {
-        return window.ledController;
-    }
-    if (window.top && window.top.ledController) {
-        return window.top.ledController;
+
+    // Prüfe bleController (primär) und ledController (legacy)
+    const contexts = [window, window.parent, window.top];
+    const names = ['bleController', 'BLEControllerPro', 'ledController'];
+
+    for (const ctx of contexts) {
+        if (!ctx || ctx === window.parent && ctx === window) continue;
+        for (const name of names) {
+            try {
+                if (ctx[name]) return ctx[name];
+            } catch (e) { /* Cross-origin */ }
+        }
     }
     return null;
+}
+
+// Globaler Export (nur wenn noch nicht definiert)
+if (!window.getLEDController) {
+    window.getLEDController = getLEDController;
 }
 
 // Alle 32 verfügbaren Effekte

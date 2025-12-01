@@ -1187,40 +1187,9 @@ function toggleNotifications() {
     console.log('🔔 Benachrichtigungen:', isActive);
 }
 
-/**
- * Dark Mode Toggle
- */
-function toggleDarkMode() {
-    const switchEl = document.getElementById('darkModeSwitch');
-    if (!switchEl) return;
+// toggleDarkMode ist bereits oben definiert (Zeile ~241)
 
-    const isActive = switchEl.classList.toggle('active');
-    localStorage.setItem('darkMode', isActive);
-
-    // Dark Mode auf Body anwenden
-    if (isActive) {
-        document.body.classList.add('dark-mode');
-    } else {
-        document.body.classList.remove('dark-mode');
-    }
-
-    // Keine Benachrichtigung
-    console.log('🌙 Dark Mode:', isActive);
-}
-
-/**
- * Hierarchische Gruppen Toggle
- */
-function toggleHierarchicalGroups() {
-    const switchEl = document.getElementById('hierarchicalGroupsSwitch');
-    if (!switchEl) return;
-
-    const isActive = switchEl.classList.toggle('active');
-    localStorage.setItem('hierarchicalGroups', isActive);
-
-    // Keine Benachrichtigung
-    console.log('📁 Hierarchische Gruppen:', isActive);
-}
+// toggleHierarchicalGroups ist bereits oben definiert (Zeile ~253)
 
 /**
  * Sprache ändern

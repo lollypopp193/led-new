@@ -411,8 +411,9 @@ function selectEQPreset(presetName) {
     }
 }
 
-// Custom EQ-Preset löschen
-function deleteCustomEQPreset(name) {
+// Custom EQ-Preset löschen (mit Name-Parameter für programmatische Nutzung)
+// Nutze window.deleteCustomEQPreset() für onclick ohne Parameter
+function deleteEQPresetByName(name) {
     if (confirm('Preset "' + name + '" löschen?')) {
         if (window.equalizerEngine) {
             window.equalizerEngine.deleteCustomPreset(name);

@@ -9,17 +9,27 @@
 let currentMode = 'rainbow';
 let currentColor = { r: 255, g: 0, b: 0 };
 
+// Nutze globale getLEDController falls verfügbar (aus effekt-controller.js)
+// Falls nicht, definiere lokale Version
+if (!window.getLEDController) {
+    window.getLEDController = function () {
+        const contexts = [window, window.parent, window.top];
+        const names = ['bleController', 'BLEControllerPro', 'ledController'];
+
+        for (const ctx of contexts) {
+            if (!ctx) continue;
+            for (const name of names) {
+                try {
+                    if (ctx[name]) return ctx[name];
+                } catch (e) { /* Cross-origin */ }
+            }
+        }
+        return null;
+    };
+}
+
 function getLEDController() {
-    if (window.parent && window.parent !== window && window.parent.bleController) {
-        console.log(' Verwende Parent bleController');
-        return window.parent.bleController;
-    }
-    if (window.bleController) {
-        console.log(' Verwende lokalen bleController');
-        return window.bleController;
-    }
-    console.error(' KRITISCH: Kein bleController gefunden!');
-    return null;
+    return window.getLEDController();
 }
 
 function isConnected() {
@@ -30,12 +40,16 @@ function isConnected() {
     return false;
 }
 
-async function initBLE() {
+// Nutze globale initBLE aus einstellungen-controller.js falls vorhanden
+// Diese lokale Funktion prüft nur die Verfügbarkeit
+async function checkBLEAvailability() {
     const controller = getLEDController();
     if (controller) {
-        console.log(' Zentrale BLE-Controller gefunden');
+        console.log('✅ BLE-Controller verfügbar');
+        return true;
     } else {
-        console.warn(' BLE-Controller nicht verfügbar - bitte in Hauptseite verbinden');
+        console.warn('⚠️ BLE-Controller nicht verfügbar - bitte in Einstellungen verbinden');
+        return false;
     }
 }
 
