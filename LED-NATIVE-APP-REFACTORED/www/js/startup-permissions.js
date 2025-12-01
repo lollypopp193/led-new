@@ -32,7 +32,7 @@ class StartupPermissions {
                     console.log('✅ Berechtigungen bereits erteilt (gespeichert)');
                     return true;
                 }
-            } catch (e) { }
+            } catch (e) { /* localStorage nicht verfügbar - ignorieren */ }
         }
         return false;
     }

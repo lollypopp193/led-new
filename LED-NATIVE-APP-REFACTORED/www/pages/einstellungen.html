@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
@@ -738,20 +738,20 @@
       </div>
 
       <div class="status-bar">
-        <span id="connectionStatus">🔍 Bereit zum Scannen</span>
+        <span id="connectionStatus">?? Bereit zum Scannen</span>
       </div>
 
       <div class="content">
-        <!-- Bluetooth Geräte -->
+        <!-- Bluetooth Ger�te -->
         <div class="section">
-          <h3 class="section-title">Bluetooth Geräte</h3>
+          <h3 class="section-title">Bluetooth Ger�te</h3>
           <button type="button" class="scan-button" id="scanButton" onclick="if(window.BLEControllerPro) window.BLEControllerPro.scan(); else if(window.bleController) window.bleController.scan();">
-            <span id="scanIcon">🔍</span>
-            <span id="scanText">Geräte suchen</span>
+            <span id="scanIcon">??</span>
+            <span id="scanText">Ger�te suchen</span>
           </button>
           <div class="device-list" id="deviceList">
             <div class="no-devices">
-              Keine Geräte gefunden. Tippe auf "Geräte suchen" um LED-Bänder zu finden.
+              Keine Ger�te gefunden. Tippe auf "Ger�te suchen" um LED-B�nder zu finden.
             </div>
           </div>
         </div>
@@ -775,7 +775,7 @@
             <div class="setting-label">
               <div class="setting-title">Helligkeit</div>
               <div class="setting-description">
-                Standard-Helligkeit für neue Verbindungen
+                Standard-Helligkeit f�r neue Verbindungen
               </div>
             </div>
             <div class="slider-container">
@@ -810,7 +810,7 @@
             <div class="setting-label">
               <div class="setting-title">Dark Mode</div>
               <div class="setting-description">
-                Dunkles Design für die App
+                Dunkles Design f�r die App
               </div>
             </div>
             <div class="switch active" id="darkModeSwitch" onclick="toggleDarkMode()">
@@ -821,13 +821,13 @@
           <div class="setting-item">
             <div class="setting-label">
               <div class="setting-title">Sprache</div>
-              <div class="setting-description">App-Sprache auswählen</div>
+              <div class="setting-description">App-Sprache ausw�hlen</div>
             </div>
             <select id="languageSelect" class="language-select" onchange="changeLanguage(this.value)">
               <option value="de">Deutsch</option>
               <option value="en">English</option>
-              <option value="es">Español</option>
-              <option value="fr">Français</option>
+              <option value="es">Espa�ol</option>
+              <option value="fr">Fran�ais</option>
             </select>
           </div>
         </div>
@@ -848,7 +848,7 @@
           <div class="faq-links">
             <a href="#" class="help-link" onclick="openFAQ('bluetooth'); return false;">
               <i class="fas fa-bluetooth-b"></i>
-              <span>Bluetooth-Probleme lösen</span>
+              <span>Bluetooth-Probleme l�sen</span>
               <i class="fas fa-chevron-right"></i>
             </a>
             <a href="#" class="help-link" onclick="openFAQ('music'); return false;">
@@ -870,31 +870,31 @@
 
           <div class="contact-section" style="margin-top: 20px;">
             <h4 style="margin-bottom: 15px;">Kontakt & Feedback:</h4>
-            <button class="btn-secondary btn-full" onclick="sendFeedback()" style="margin-bottom: 10px;">
+            <button type="button" class="btn-secondary btn-full" onclick="sendFeedback()" style="margin-bottom: 10px;">
               <i class="fas fa-envelope"></i> Feedback senden
             </button>
-            <button class="btn-secondary btn-full" onclick="reportBug()">
+            <button type="button" class="btn-secondary btn-full" onclick="reportBug()">
               <i class="fas fa-bug"></i> Bug melden
             </button>
           </div>
 
           <div class="legal-links">
-            <a href="#" onclick="openPrivacyPolicy(); return false;">Datenschutzerklärung</a>
-            <span>•</span>
+            <a href="#" onclick="openPrivacyPolicy(); return false;">Datenschutzerkl�rung</a>
+            <span>�</span>
             <a href="#" onclick="openTerms(); return false;">Nutzungsbedingungen</a>
-            <span>•</span>
+            <span>�</span>
             <a href="#" onclick="openLicenses(); return false;">Open-Source-Lizenzen</a>
           </div>
         </div>
 
-        <!-- Erweiterte Einstellungen (FPS, PaketgrÃ¶ÃŸe, HDR, Mikrofon) entfernt - nicht benÃ¶tigt -->
+        <!-- Erweiterte Einstellungen (FPS, Paketgröße, HDR, Mikrofon) entfernt - nicht benötigt -->
         <!-- <div class="section">
-          <h3 class="section-title">ðŸ”§ Erweiterte Einstellungen</h3>
+          <h3 class="section-title">🔧 Erweiterte Einstellungen</h3>
           <div class="setting-item">
             <div class="setting-label">
               <div class="setting-title">FPS (Bildrate)</div>
               <div class="setting-description">
-                Bildwiederholrate fÃ¼r Animationen
+                Bildwiederholrate für Animationen
               </div>
             </div>
             <div class="slider-container">
@@ -911,9 +911,9 @@
           </div>
           <div class="setting-item">
             <div class="setting-label">
-              <div class="setting-title">PaketgrÃ¶ÃŸe</div>
+              <div class="setting-title">Paketgröße</div>
               <div class="setting-description">
-                BLE-Datenpaket GrÃ¶ÃŸe (Bytes)
+                BLE-Datenpaket Größe (Bytes)
               </div>
             </div>
             <div class="slider-container">
@@ -932,7 +932,7 @@
             <div class="setting-label">
               <div class="setting-title">Hardware-Beschleunigung</div>
               <div class="setting-description">
-                GPU-Beschleunigung fÃ¼r bessere Performance
+                GPU-Beschleunigung für bessere Performance
               </div>
             </div>
             <div class="switch active" id="hwAccelSwitch">
@@ -943,7 +943,7 @@
             <div class="setting-label">
               <div class="setting-title">Mikrofon-Empfindlichkeit</div>
               <div class="setting-description">
-                Empfindlichkeit fÃ¼r Musik-Reaktion
+                Empfindlichkeit für Musik-Reaktion
               </div>
             </div>
             <div class="slider-container">
@@ -974,7 +974,7 @@
     <script src="/js/title-style-unifier.js"></script>
     <script src="/js/led-sidebar-swipe.js"></script>
     
-    <!-- BLE Controller mit absolutem Pfad für iframe-Kompatibilität -->
+    <!-- BLE Controller mit absolutem Pfad f�r iframe-Kompatibilit�t -->
     <script src="/js/ble-controller-pro.js"></script>
     <!-- Utils (gemeinsame Funktionen) -->
     <script src="/js/utils.js"></script>
@@ -1003,7 +1003,7 @@
             switchEl.addEventListener('click', function() {
               this.classList.toggle('active');
               const isActive = this.classList.contains('active');
-              console.log('🔘 Switch:', this.id || 'unknown', '→', isActive ? 'AN' : 'AUS');
+              console.log('?? Switch:', this.id || 'unknown', '?', isActive ? 'AN' : 'AUS');
               
               // Speichere Status
               if (this.id) {
@@ -1025,7 +1025,7 @@
           }
         });
         
-        console.log('✅ Alle Einstellungen-Switches aktiviert');
+        console.log('? Alle Einstellungen-Switches aktiviert');
       });
     </script>
   </body>

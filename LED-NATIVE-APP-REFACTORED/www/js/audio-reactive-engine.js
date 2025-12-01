@@ -151,7 +151,7 @@ class AudioReactiveEngine {
         }
 
         if (Math.max(r, g, b) < 10) { r = 0; g = 0; b = 0; }
-        bleCtrl.setColorRGB(r, g, b).catch(e => { });
+        bleCtrl.setColorRGB(r, g, b).catch(e => { /* BLE-Fehler ignoriert (normal wenn nicht verbunden) */ });
     }
 
     startAudioCapture(audioElement) {
