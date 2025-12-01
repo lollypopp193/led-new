@@ -568,6 +568,94 @@ class CloudSync {
 // Initialize global cloud sync
 window.cloudSync = new CloudSync();
 
+// === BACKUP-FUNKTIONEN FÜR backup.html ===
+
+function downloadBackup() {
+    const data = {
+        settings: JSON.parse(localStorage.getItem('app-settings') || '{}'),
+        playlists: JSON.parse(localStorage.getItem('playlists') || '[]'),
+        favorites: JSON.parse(localStorage.getItem('favorites') || '[]'),
+        customNames: JSON.parse(localStorage.getItem('led-custom-names') || '{}'),
+        timers: JSON.parse(localStorage.getItem('ledTimers') || '[]'),
+        exportedAt: new Date().toISOString()
+    };
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'led-app-backup-' + new Date().toISOString().split('T')[0] + '.json';
+    a.click();
+    URL.revokeObjectURL(url);
+
+    if (window.showGlobalNotification) window.showGlobalNotification('Backup heruntergeladen!', 'success');
+}
+
+function exportSettings() {
+    downloadBackup();
+}
+
+function selectFile() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const text = await file.text();
+            try {
+                const data = JSON.parse(text);
+                if (data.settings) localStorage.setItem('app-settings', JSON.stringify(data.settings));
+                if (data.playlists) localStorage.setItem('playlists', JSON.stringify(data.playlists));
+                if (data.favorites) localStorage.setItem('favorites', JSON.stringify(data.favorites));
+                if (data.customNames) localStorage.setItem('led-custom-names', JSON.stringify(data.customNames));
+                if (data.timers) localStorage.setItem('ledTimers', JSON.stringify(data.timers));
+                if (window.showGlobalNotification) window.showGlobalNotification('Backup wiederhergestellt!', 'success');
+            } catch (err) {
+                if (window.showGlobalNotification) window.showGlobalNotification('Ungültige Backup-Datei', 'error');
+            }
+        }
+    };
+    input.click();
+}
+
+function syncToCloud() {
+    if (window.cloudSync) {
+        window.cloudSync.syncNow();
+    }
+}
+
+function configureCloud() {
+    if (window.cloudSync) {
+        window.cloudSync.showSyncDialog();
+    }
+}
+
+function toggleAutoBackup() {
+    const enabled = !localStorage.getItem('autoBackupEnabled');
+    localStorage.setItem('autoBackupEnabled', enabled ? 'true' : '');
+    if (window.showGlobalNotification) {
+        window.showGlobalNotification('Auto-Backup ' + (enabled ? 'aktiviert' : 'deaktiviert'), 'info');
+    }
+}
+
+function configureAutoBackup() {
+    const interval = prompt('Backup-Intervall in Stunden:', '24');
+    if (interval && !isNaN(interval)) {
+        localStorage.setItem('autoBackupInterval', interval);
+        if (window.showGlobalNotification) window.showGlobalNotification('Backup alle ' + interval + ' Stunden', 'success');
+    }
+}
+
+// Global Export für backup.html
+window.downloadBackup = downloadBackup;
+window.exportSettings = exportSettings;
+window.selectFile = selectFile;
+window.syncToCloud = syncToCloud;
+window.configureCloud = configureCloud;
+window.toggleAutoBackup = toggleAutoBackup;
+window.configureAutoBackup = configureAutoBackup;
+
 // Export
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = CloudSync;
