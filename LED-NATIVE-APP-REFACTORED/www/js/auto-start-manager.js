@@ -96,10 +96,11 @@ class AutoStartManager {
                 console.log(`📱 ${devices.length} gespeicherte BLE-Geräte`);
 
                 // Auto-Connect zu jedem gespeicherten Gerät
+                const bleCtrl = window.bleController || (window.parent && window.parent.bleController) || (window.top && window.top.bleController);
                 for (const device of devices) {
                     try {
-                        if (window.bleController) {
-                            await window.bleController.connect(device.id);
+                        if (bleCtrl) {
+                            await bleCtrl.connect(device.id);
                             console.log(`✅ Verbunden: ${device.name || device.id}`);
                         }
                     } catch (error) {
@@ -109,9 +110,10 @@ class AutoStartManager {
             }
 
             // Starte Scan für neue Geräte (im Hintergrund)
-            if (window.bleController && window.bleController.scan) {
+            const bleCtrl = window.bleController || (window.parent && window.parent.bleController) || (window.top && window.top.bleController);
+            if (bleCtrl && bleCtrl.scan) {
                 console.log('🔍 BLE-Scan im Hintergrund...');
-                await window.bleController.scan({ timeout: 5000 });
+                await bleCtrl.scan({ timeout: 5000 });
             }
         } catch (error) {
             console.error('❌ BLE Auto-Connect Fehler:', error);
