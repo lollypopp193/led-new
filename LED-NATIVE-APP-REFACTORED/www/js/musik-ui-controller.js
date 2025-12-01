@@ -137,15 +137,20 @@ function importPlaylist() {
     input.click();
 }
 
-function clearCache() {
-    if (confirm('Möchten Sie wirklich den gesamten Cache leeren?')) {
-        try {
-            localStorage.clear();
-            showNotification('✅ Cache geleert!', 'success');
-            setTimeout(() => location.reload(), 1000);
-        } catch (error) {
-            console.error('Cache-Fehler:', error);
-            showNotification('❌ Fehler beim Leeren', 'error');
+// Nutze globale clearCache aus einstellungen-controller.js falls vorhanden
+function clearMusicCache() {
+    if (window.clearCache) {
+        window.clearCache();
+    } else {
+        if (confirm('Möchten Sie wirklich den gesamten Cache leeren?')) {
+            try {
+                localStorage.clear();
+                showNotification('✅ Cache geleert!', 'success');
+                setTimeout(() => location.reload(), 1000);
+            } catch (error) {
+                console.error('Cache-Fehler:', error);
+                showNotification('❌ Fehler beim Leeren', 'error');
+            }
         }
     }
 }
