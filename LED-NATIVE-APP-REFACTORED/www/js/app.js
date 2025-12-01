@@ -1,4 +1,4 @@
-/**
+﻿/**
  * APP.JS v4.0 - ZERO TOLERANCE - HAUPTANWENDUNGSLOGIK
  * Zentrale App-Steuerung mit vollständiger Integration aller Module
  */
@@ -281,6 +281,25 @@ function showPermissionsRequiredDialog() {
 }
 
 window.showPermissionsRequiredDialog = showPermissionsRequiredDialog;
+
+// GestureControls initialisieren
+if (window.gestureControls) {
+    window.gestureControls.init();
+    console.log('✅ GestureControls initialisiert');
+}
+
+// AnimationSystem initialisieren  
+if (window.animationSystem) {
+    window.animationSystem.init();
+    console.log(' AnimationSystem initialisiert');
+}
+
+// InputValidator initialisieren
+if (window.inputValidator) {
+    window.inputValidator.init();
+    console.log(' InputValidator initialisiert');
+}
+
 window.App = App;
 
 document.addEventListener('DOMContentLoaded', function () { App.initialize(); });
