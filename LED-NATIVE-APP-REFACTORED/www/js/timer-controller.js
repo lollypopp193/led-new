@@ -72,6 +72,40 @@ function deleteTimer(timerId) {
     }
 }
 
+/**
+ * Timer aktivieren/deaktivieren
+ * @param {string} timerId - Timer ID
+ * @param {boolean} enabled - Aktiviert oder nicht
+ */
+function toggleTimer(timerId, enabled) {
+    try {
+        const timers = getTimers();
+        const timer = timers.find(t => t.id === timerId);
+
+        if (timer) {
+            timer.enabled = enabled !== undefined ? enabled : !timer.enabled;
+            timerStorage = timers;
+
+            if (typeof Storage !== 'undefined') {
+                localStorage.setItem('ledTimers', JSON.stringify(timers));
+            }
+
+            renderTimerList();
+            if (window.showNotification) {
+                window.showNotification(
+                    timer.enabled ? 'Timer aktiviert' : 'Timer deaktiviert',
+                    'info'
+                );
+            }
+        }
+    } catch (error) {
+        console.error('Fehler beim Umschalten:', error);
+    }
+}
+
+// Global export
+window.toggleTimer = toggleTimer;
+
 function renderTimerList() {
     const timersList = document.getElementById('timers-list');
     const timers = getTimers();
