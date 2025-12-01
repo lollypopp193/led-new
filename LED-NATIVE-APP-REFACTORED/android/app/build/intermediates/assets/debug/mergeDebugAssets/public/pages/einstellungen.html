@@ -9,8 +9,6 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/css/responsive-fix.css" />
-    <link rel="stylesheet" href="/css/global-controls-fix.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
       * {
         margin: 0;
@@ -735,7 +733,7 @@
         <!-- Bluetooth Geräte -->
         <div class="section">
           <h3 class="section-title">Bluetooth Geräte</h3>
-          <button type="button" class="scan-button" id="scanButton" onclick="startBluetoothScan()">
+          <button type="button" class="scan-button" id="scanButton" onclick="if(window.BLEControllerPro) window.BLEControllerPro.scan(); else if(window.bleController) window.bleController.scan();">
             <span id="scanIcon">🔍</span>
             <span id="scanText">Geräte suchen</span>
           </button>
@@ -988,170 +986,6 @@
     <!-- Einstellungen-Fixes: Sonderzeichen, Toggles, Slider -->
     <script src="/js/einstellungen-fixes.js"></script>
     
-    <!-- Bluetooth Scan Funktion -->
-    <script>
-      /**
-       * Startet den Bluetooth Scan - funktioniert auch im iframe
-       */
-      async function startBluetoothScan() {
-        const scanBtn = document.getElementById('scanButton');
-        const scanIcon = document.getElementById('scanIcon');
-        const scanText = document.getElementById('scanText');
-        const deviceList = document.getElementById('deviceList');
-        const statusEl = document.getElementById('connectionStatus');
-        
-        // UI Update: Scanning...
-        if (scanIcon) scanIcon.textContent = '⏳';
-        if (scanText) scanText.textContent = 'Suche läuft...';
-        if (scanBtn) scanBtn.disabled = true;
-        if (statusEl) statusEl.textContent = '🔍 Suche nach LED-Bändern...';
-        
-        try {
-          // Versuche BLE Controller zu finden (auch im parent für iframe)
-          const bleCtrl = window.bleController || 
-                          window.BLEControllerPro || 
-                          (window.parent && window.parent.bleController) ||
-                          (window.parent && window.parent.BLEControllerPro);
-          
-          if (bleCtrl && typeof bleCtrl.scan === 'function') {
-            console.log('🔵 Starte Bluetooth Scan via BLEController...');
-            const device = await bleCtrl.scan();
-            
-            if (device) {
-              console.log('✅ Gerät gefunden:', device.name || device.id);
-              if (statusEl) statusEl.textContent = '✅ ' + (device.name || 'LED-Band') + ' gefunden';
-              
-              // Gerät zur Liste hinzufügen
-              if (deviceList) {
-                deviceList.innerHTML = `
-                  <div class="device-item connected" onclick="connectToDevice('${device.id}')">
-                    <span class="device-icon">💡</span>
-                    <span class="device-name">${device.name || 'LED-Band'}</span>
-                    <span class="device-status">Gefunden</span>
-                  </div>
-                `;
-              }
-            }
-          } else {
-            // Fallback: Web Bluetooth API direkt
-            console.log('🔵 Fallback: Web Bluetooth API...');
-            if (navigator.bluetooth) {
-              const device = await navigator.bluetooth.requestDevice({
-                filters: [
-                  { namePrefix: 'ELK' },
-                  { namePrefix: 'LED' },
-                  { namePrefix: 'BLE' },
-                  { namePrefix: 'LEDBLE' }
-                ],
-                optionalServices: ['0000fff0-0000-1000-8000-00805f9b34fb']
-              });
-              
-              if (device) {
-                console.log('✅ Gerät gefunden:', device.name);
-                if (statusEl) statusEl.textContent = '✅ ' + device.name + ' gefunden';
-                
-                if (deviceList) {
-                  deviceList.innerHTML = `
-                    <div class="device-item" onclick="connectToDevice('${device.id}')">
-                      <span class="device-icon">💡</span>
-                      <span class="device-name">${device.name || 'LED-Band'}</span>
-                      <span class="device-status">Tippen zum Verbinden</span>
-                    </div>
-                  `;
-                }
-              }
-            } else {
-              throw new Error('Bluetooth nicht verfügbar');
-            }
-          }
-        } catch (error) {
-          console.error('❌ Bluetooth Scan fehlgeschlagen:', error);
-          if (statusEl) statusEl.textContent = '❌ ' + (error.message || 'Scan fehlgeschlagen');
-          
-          // Benutzerfreundliche Fehlermeldung
-          if (error.message && error.message.includes('cancelled')) {
-            if (statusEl) statusEl.textContent = '🔍 Scan abgebrochen';
-          }
-        } finally {
-          // UI zurücksetzen
-          if (scanIcon) scanIcon.textContent = '🔍';
-          if (scanText) scanText.textContent = 'Geräte suchen';
-          if (scanBtn) scanBtn.disabled = false;
-        }
-      }
-      
-      /**
-       * Verbindet mit einem gefundenen Gerät
-       */
-      async function connectToDevice(deviceId) {
-        const statusEl = document.getElementById('connectionStatus');
-        if (statusEl) statusEl.textContent = '🔗 Verbinde...';
-        
-        try {
-          const bleCtrl = window.bleController || 
-                          window.BLEControllerPro || 
-                          (window.parent && window.parent.bleController);
-          
-          if (bleCtrl && typeof bleCtrl.connect === 'function') {
-            await bleCtrl.connect();
-            if (statusEl) statusEl.textContent = '✅ Verbunden';
-          }
-        } catch (error) {
-          console.error('❌ Verbindung fehlgeschlagen:', error);
-          if (statusEl) statusEl.textContent = '❌ Verbindung fehlgeschlagen';
-        }
-      }
-      
-      /**
-       * Wechselt die App-Sprache
-       */
-      function changeLanguage(lang) {
-        console.log('🌐 Sprache wechseln zu:', lang);
-        
-        // Speichere Spracheinstellung
-        localStorage.setItem('app-language', lang);
-        
-        // Verwende MultiLanguageSupport wenn verfügbar
-        const multiLang = window.multiLang || 
-                          window.MultiLanguageSupport ||
-                          (window.parent && window.parent.multiLang);
-        
-        if (multiLang && typeof multiLang.switchLanguage === 'function') {
-          multiLang.switchLanguage(lang);
-        } else if (multiLang && typeof multiLang.applyLanguage === 'function') {
-          multiLang.applyLanguage(lang);
-          // Benachrichtige User
-          alert(getLanguageMessage(lang));
-        } else {
-          // Fallback: Seite neu laden
-          alert(getLanguageMessage(lang));
-          window.location.reload();
-        }
-      }
-      
-      /**
-       * Gibt Bestätigungsnachricht für Sprachwechsel zurück
-       */
-      function getLanguageMessage(lang) {
-        const messages = {
-          'de': 'Sprache auf Deutsch geändert. App wird neu geladen.',
-          'en': 'Language changed to English. App will reload.',
-          'es': 'Idioma cambiado a Español. La app se recargará.',
-          'fr': 'Langue changée en Français. L\'app va se recharger.'
-        };
-        return messages[lang] || messages['de'];
-      }
-      
-      // Lade gespeicherte Sprache beim Start
-      document.addEventListener('DOMContentLoaded', function() {
-        const savedLang = localStorage.getItem('app-language') || 'de';
-        const langSelect = document.getElementById('languageSelect');
-        if (langSelect) {
-          langSelect.value = savedLang;
-        }
-      });
-    </script>
-    
     <!-- SWITCH-FIX: Macht alle Switches klickbar -->
     <script>
       document.addEventListener('DOMContentLoaded', function() {
@@ -1186,11 +1020,5 @@
         console.log('✅ Alle Einstellungen-Switches aktiviert');
       });
     </script>
-    
-    <!-- Master Controls Fix - ALLE Switches und Slider funktional -->
-    <script src="/js/master-controls-fix.js"></script>
-    
-    <!-- ULTIMATE APP FIX - Behebt ALLE Probleme -->
-    <script src="/js/ultimate-app-fix.js"></script>
   </body>
 </html>

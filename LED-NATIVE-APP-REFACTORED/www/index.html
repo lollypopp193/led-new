@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
@@ -32,7 +32,14 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/responsive-fix.css" />
-    <link rel="stylesheet" href="css/global-controls-fix.css" />
+
+    <!-- Google Fonts - Orbitron & Exo 2 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap"
+    />
 
     <!-- Font Awesome for icons -->
     <link
@@ -42,6 +49,9 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+
+    <!-- Global Controls Fix CSS -->
+    <link rel="stylesheet" href="css/global-controls-fix.css" />
   </head>
   <body>
     <canvas id="background-canvas"></canvas>
@@ -147,6 +157,7 @@
     <script src="js/bluetooth-foreground-service.js"></script>
     <script src="js/audio-decoder-fft.js"></script>
     <script src="js/android-music-scanner.js"></script>
+    <script src="js/library-auto-scanner.js"></script>
 
     <!-- Core Modules (load before app.js) -->
     <script src="js/utils.js"></script>
@@ -156,7 +167,7 @@
     <script src="js/performance-optimizer.js"></script>
     <script src="js/led-abstraction-layer.js"></script>
     <script src="js/device-manager.js"></script>
-    <!-- led-sidebar.js entfernt - led-sidebar-swipe.js wird verwendet -->
+    <script src="js/led-sidebar.js"></script>
 
     <!-- Global Error Handler & Loading Manager -->
     <script src="js/global-error-handler.js"></script>
@@ -168,12 +179,6 @@
     <!-- Globale Module (für alle Seiten) -->
     <script src="js/capacitor-adapter.js"></script>
     <script src="js/native-bridge.js"></script>
-
-    <!-- Master Controls Fix - ALLE Switches und Slider funktional machen -->
-    <script src="js/master-controls-fix.js"></script>
-
-    <!-- ULTIMATE APP FIX - Behebt ALLE Probleme (v1.0) -->
-    <script src="js/ultimate-app-fix.js"></script>
 
     <!-- Service Worker Registration -->
     <script>
@@ -190,5 +195,15 @@
         });
       }
     </script>
+    <script src="js/animation-system.js"></script>
+    <script src="js/gesture-controls.js"></script>
+    <script src="js/performance-monitor.js"></script>
+    <script src="js/input-validator.js"></script>
+    <script src="js/quick-actions.js"></script>
+    <script src="js/scenes-manager.js"></script>
+    <script src="js/voice-commands.js"></script>
+    <script src="js/preset-manager.js"></script>
+    <script src="js/led-custom-names.js"></script>
+    <script src="js/sonderzeichen-replacer.js"></script>
   </body>
 </html>

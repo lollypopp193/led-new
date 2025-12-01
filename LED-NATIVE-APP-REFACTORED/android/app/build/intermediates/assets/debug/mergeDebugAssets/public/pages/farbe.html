@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
@@ -14,7 +14,6 @@
     />
     <link rel="stylesheet" href="../css/styles.css" />
     <link rel="stylesheet" href="../css/responsive-fix.css" />
-    <link rel="stylesheet" href="/css/global-controls-fix.css" />
     <style>
       :root {
         --primary-color: #6a5af9;
@@ -1168,7 +1167,7 @@
         <div class="toggle-container">
           <span class="toggle-label" id="powerLabel">AUS</span>
           <label class="toggle-switch">
-            <input type="checkbox" id="powerToggle" checked />
+            <label class="toggle-switch"><input type="checkbox" id="powerToggle" checked /><span class="toggle-slider"></span></label>
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -1555,11 +1554,6 @@
         );
       });
     </script>
-
-    <!-- Master Controls Fix - ALLE Switches und Slider funktional -->
-    <script src="/js/master-controls-fix.js"></script>
-
-    <!-- ULTIMATE APP FIX - Behebt ALLE Probleme -->
-    <script src="/js/ultimate-app-fix.js"></script>
   </body>
 </html>
+

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
@@ -9,12 +9,19 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/css/responsive-fix.css" />
-    <link rel="stylesheet" href="/css/global-controls-fix.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
     <style>
+      /* TOGGLE-SWITCH STYLES */
+      .toggle-switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+      .toggle-switch input { opacity: 0; width: 0; height: 0; }
+      .toggle-switch .toggle-slider, .toggle-switch .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .3s; border-radius: 26px; }
+      .toggle-switch .toggle-slider:before, .toggle-switch .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
+      .toggle-switch input:checked + .toggle-slider, .toggle-switch input:checked + .slider { background-color: #ffd700; }
+      .toggle-switch input:checked + .toggle-slider:before, .toggle-switch input:checked + .slider:before { transform: translateX(24px); }
+      .switch { width: 50px; height: 26px; background: #333; border-radius: 26px; position: relative; cursor: pointer; transition: .3s; }
+      .switch:before { content: ""; position: absolute; height: 20px; width: 20px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: .3s; }
+      .switch.active { background: #ffd700; }
+      .switch.active:before { transform: translateX(24px); }
+
       :root {
         --dark-blue: #1f1a2f;
         --light-blue: #2c2b4a;
@@ -622,11 +629,6 @@
     <script src="/js/device-manager.js"></script>
     <script src="/js/bluetooth-foreground-service.js"></script>
     <script src="/js/preset-manager.js"></script>
-
-    <!-- Master Controls Fix - ALLE Switches und Slider funktional -->
-    <script src="/js/master-controls-fix.js"></script>
-
-    <!-- ULTIMATE APP FIX - Behebt ALLE Probleme -->
-    <script src="/js/ultimate-app-fix.js"></script>
   </body>
 </html>
+

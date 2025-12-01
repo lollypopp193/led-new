@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
@@ -9,7 +9,6 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <link rel="stylesheet" href="/css/responsive-fix.css" />
-    <link rel="stylesheet" href="/css/global-controls-fix.css" />
     <style>
       * {
         margin: 0;
@@ -2503,7 +2502,7 @@
           <i class="fas fa-sliders-h"></i>
           <h2 class="panel-title">Equalizer</h2>
           <div class="toggle-switch">
-            <input type="checkbox" id="eqToggle" checked onchange="window.EqualizerEngine?.toggle(this.checked)">
+            <label class="toggle-switch"><input type="checkbox" id="eqToggle" checked onchange="window.EqualizerEngine?.toggle(this.checked)"><span class="toggle-slider"></span></label>
             <span class="slider"></span>
           </div>
         </div>
@@ -2626,7 +2625,7 @@
           >
             <i class="fas fa-drum"></i> Bass Boost
             <div class="toggle-switch small" style="margin-left: auto;">
-              <input type="checkbox" id="bassBoostToggle" onchange="window.BassBoostController?.toggle(this.checked)">
+              <label class="toggle-switch"><input type="checkbox" id="bassBoostToggle" onchange="window.BassBoostController?.toggle(this.checked)"><span class="toggle-slider"></span></label>
               <span class="slider"></span>
             </div>
           </h4>
@@ -2663,7 +2662,7 @@
           <i class="fas fa-wave-square"></i>
           <h2 class="panel-title">Visualisierungseffekte</h2>
           <div class="toggle-switch" style="margin-left: auto;">
-            <input type="checkbox" id="visualizerToggle" checked>
+            <label class="toggle-switch"><input type="checkbox" id="visualizerToggle" checked><span class="toggle-slider"></span></label>
             <span class="slider"></span>
           </div>
         </div>
@@ -2787,7 +2786,7 @@
           <i class="fas fa-music"></i>
           <h2 class="panel-title">LED-Musik-Steuerung</h2>
           <div class="toggle-switch">
-            <input type="checkbox" id="ledMusicToggle" checked onchange="window.LEDMusicController?.toggle(this.checked)">
+            <label class="toggle-switch"><input type="checkbox" id="ledMusicToggle" checked onchange="window.LEDMusicController?.toggle(this.checked)"><span class="toggle-slider"></span></label>
             <span class="slider"></span>
           </div>
         </div>
@@ -2798,7 +2797,7 @@
           <div style="display: flex; align-items: center; justify-content: space-between; padding: 15px; background: rgba(0, 0, 0, 0.3); border-radius: 10px; margin-bottom: 20px;">
             <span style="font-weight: bold">Automatischer Modus</span>
             <div class="toggle-switch">
-              <input type="checkbox" id="ledMusicAutomaticMode" checked>
+              <label class="toggle-switch"><input type="checkbox" id="ledMusicAutomaticMode" checked><span class="toggle-slider"></span></label>
               <span class="slider"></span>
             </div>
           </div>
@@ -3090,12 +3089,11 @@
                       height: 30px;
                     "
                   >
-                    <input
-                      type="checkbox"
+                    <label class="toggle-switch"><input type="checkbox"
                       class="band-enabled"
                       checked
                       style="opacity: 0; width: 0; height: 0"
-                    />
+                    /><span class="toggle-slider"></span></label>
                     <span
                       style="
                         position: absolute;
@@ -3452,7 +3450,7 @@
           <i class="fas fa-glass-cheers"></i>
           <h2 class="panel-title">Party-Modus</h2>
           <div class="toggle-switch" style="margin-left: auto;">
-            <input type="checkbox" id="partyToggle" onchange="togglePartyMode(this.checked)">
+            <label class="toggle-switch"><input type="checkbox" id="partyToggle" onchange="togglePartyMode(this.checked)"><span class="toggle-slider"></span></label>
             <span class="slider"></span>
           </div>
         </div>
@@ -3474,7 +3472,7 @@
                   <i class="fas fa-headphones-alt"></i> DJ-Überblendung
                 </h4>
                 <div class="toggle-switch">
-                  <input type="checkbox" id="seamlessTransition" checked>
+                  <label class="toggle-switch"><input type="checkbox" id="seamlessTransition" checked><span class="toggle-slider"></span></label>
                   <span class="slider"></span>
                 </div>
               </div>
@@ -3538,14 +3536,14 @@
                 <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px;">
                   <span style="font-size: 0.9em;">Auto-Erkennung</span>
                   <div class="toggle-switch small">
-                    <input type="checkbox" id="autoDetect" checked>
+                    <label class="toggle-switch"><input type="checkbox" id="autoDetect" checked><span class="toggle-slider"></span></label>
                     <span class="slider"></span>
                   </div>
                 </div>
                 <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px;">
                   <span style="font-size: 0.9em;">Beat-Matching</span>
                   <div class="toggle-switch small">
-                    <input type="checkbox" id="beatMatching">
+                    <label class="toggle-switch"><input type="checkbox" id="beatMatching"><span class="toggle-slider"></span></label>
                     <span class="slider"></span>
                   </div>
                 </div>
@@ -3558,7 +3556,7 @@
                     <i class="fas fa-volume-up"></i> Pre-Cueing
                   </h5>
                   <div class="toggle-switch small">
-                    <input type="checkbox" id="preCue">
+                    <label class="toggle-switch"><input type="checkbox" id="preCue"><span class="toggle-slider"></span></label>
                     <span class="slider"></span>
                   </div>
                 </div>
@@ -3645,7 +3643,7 @@
                 <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px;">
                   <span style="font-size: 0.9em;">Tonhöhe beibehalten</span>
                   <div class="toggle-switch small">
-                    <input type="checkbox" id="preservePitch">
+                    <label class="toggle-switch"><input type="checkbox" id="preservePitch"><span class="toggle-slider"></span></label>
                     <span class="slider"></span>
                   </div>
                 </div>
@@ -3684,7 +3682,7 @@
                     <i class="fas fa-exchange-alt"></i> Crossfade
                   </h3>
                   <div class="toggle-switch">
-                    <input type="checkbox" id="crossfadeToggle" onchange="const settings = document.getElementById('crossfadeSettings'); settings.style.opacity = this.checked ? '1' : '0.5'; settings.style.pointerEvents = this.checked ? 'auto' : 'none';">
+                    <label class="toggle-switch"><input type="checkbox" id="crossfadeToggle" onchange="const settings = document.getElementById('crossfadeSettings'); settings.style.opacity = this.checked ? '1' : '0.5'; settings.style.pointerEvents = this.checked ? 'auto' : 'none';"><span class="toggle-slider"></span></label>
                     <span class="slider"></span>
                   </div>
                 </div>
@@ -3741,7 +3739,7 @@
                   <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 6px;">
                     <span style="font-size: 0.9em;">Song-Ende erkennen</span>
                     <div class="toggle-switch small">
-                      <input type="checkbox" id="crossfadeAutoDetect" checked>
+                      <label class="toggle-switch"><input type="checkbox" id="crossfadeAutoDetect" checked><span class="toggle-slider"></span></label>
                       <span class="slider"></span>
                     </div>
                   </div>
@@ -3755,7 +3753,7 @@
                     <span style="font-size: 0.85em; color: #888;">Ohne Pausen zwischen Tracks</span>
                   </div>
                   <div class="toggle-switch">
-                    <input type="checkbox" id="gaplessEnabled" checked>
+                    <label class="toggle-switch"><input type="checkbox" id="gaplessEnabled" checked><span class="toggle-slider"></span></label>
                     <span class="slider"></span>
                   </div>
                 </div>
@@ -3765,7 +3763,7 @@
                     <span style="font-size: 0.85em; color: #888;">Lädt nächsten Track im Hintergrund</span>
                   </div>
                   <div class="toggle-switch">
-                    <input type="checkbox" id="preloadNext" checked>
+                    <label class="toggle-switch"><input type="checkbox" id="preloadNext" checked><span class="toggle-slider"></span></label>
                     <span class="slider"></span>
                   </div>
                 </div>
@@ -3791,7 +3789,7 @@
                   <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
                     <span style="font-weight: bold">Fade-In</span>
                     <div class="toggle-switch small">
-                      <input type="checkbox" id="fadeInEnabled">
+                      <label class="toggle-switch"><input type="checkbox" id="fadeInEnabled"><span class="toggle-slider"></span></label>
                       <span class="slider"></span>
                     </div>
                   </div>
@@ -3828,7 +3826,7 @@
                   <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
                     <span style="font-weight: bold">Fade-Out</span>
                     <div class="toggle-switch small">
-                      <input type="checkbox" id="fadeOutEnabled">
+                      <label class="toggle-switch"><input type="checkbox" id="fadeOutEnabled"><span class="toggle-slider"></span></label>
                       <span class="slider"></span>
                     </div>
                   </div>
@@ -4378,7 +4376,7 @@
                       <i class="fas fa-moon"></i> Sleep-Timer
                     </h4>
                     <div class="toggle-switch">
-                      <input type="checkbox" id="sleepTimerEnabled" onchange="toggleSleepTimerSettings(this.checked)">
+                      <label class="toggle-switch"><input type="checkbox" id="sleepTimerEnabled" onchange="toggleSleepTimerSettings(this.checked)"><span class="toggle-slider"></span></label>
                       <span class="slider"></span>
                     </div>
                   </div>
@@ -4472,7 +4470,7 @@
                       <i class="fas fa-alarm-clock"></i> Musik-Wecker
                     </h4>
                     <div class="toggle-switch">
-                      <input type="checkbox" id="musicAlarmEnabled" onchange="toggleMusicAlarmSettings(this.checked)">
+                      <label class="toggle-switch"><input type="checkbox" id="musicAlarmEnabled" onchange="toggleMusicAlarmSettings(this.checked)"><span class="toggle-slider"></span></label>
                       <span class="slider"></span>
                     </div>
                   </div>
@@ -4535,7 +4533,7 @@
                     <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 6px;">
                       <span style="font-size: 0.9em">Sanft einblenden</span>
                       <div class="toggle-switch small">
-                        <input type="checkbox" id="musicAlarmFadeIn" checked>
+                        <label class="toggle-switch"><input type="checkbox" id="musicAlarmFadeIn" checked><span class="toggle-slider"></span></label>
                         <span class="slider"></span>
                       </div>
                     </div>
@@ -4569,7 +4567,7 @@
                     <span style="font-size: 0.85em; color: #888;">Steuerung über Notification Bar</span>
                   </div>
                   <div class="toggle-switch">
-                    <input type="checkbox" id="notificationPlayer" checked>
+                    <label class="toggle-switch"><input type="checkbox" id="notificationPlayer" checked><span class="toggle-slider"></span></label>
                     <span class="slider"></span>
                   </div>
                 </div>
@@ -4580,7 +4578,7 @@
                     <span style="font-size: 0.85em; color: #888;">Musiksteuerung ohne Entsperren</span>
                   </div>
                   <div class="toggle-switch">
-                    <input type="checkbox" id="lockscreenControl" checked>
+                    <label class="toggle-switch"><input type="checkbox" id="lockscreenControl" checked><span class="toggle-slider"></span></label>
                     <span class="slider"></span>
                   </div>
                 </div>
@@ -4591,7 +4589,7 @@
                     <span style="font-size: 0.85em; color: #888;">Automatisch mit bekannten Geräten verbinden</span>
                   </div>
                   <div class="toggle-switch">
-                    <input type="checkbox" id="autoConnect">
+                    <label class="toggle-switch"><input type="checkbox" id="autoConnect"><span class="toggle-slider"></span></label>
                     <span class="slider"></span>
                   </div>
                 </div>
@@ -4617,7 +4615,7 @@
                     <span style="font-size: 0.85em; color: #888;">Albumcover und erweiterte Steuerung</span>
                   </div>
                   <div class="toggle-switch">
-                    <input type="checkbox" id="richNotifications" checked>
+                    <label class="toggle-switch"><input type="checkbox" id="richNotifications" checked><span class="toggle-slider"></span></label>
                     <span class="slider"></span>
                   </div>
                 </div>
@@ -4628,7 +4626,7 @@
                     <span style="font-size: 0.85em; color: #888;">Bleibt auch bei Pause sichtbar</span>
                   </div>
                   <div class="toggle-switch">
-                    <input type="checkbox" id="persistentNotification" checked>
+                    <label class="toggle-switch"><input type="checkbox" id="persistentNotification" checked><span class="toggle-slider"></span></label>
                     <span class="slider"></span>
                   </div>
                 </div>
@@ -4639,7 +4637,7 @@
                     <span style="font-size: 0.85em; color: #888;">Weniger Platz in der Notification Bar</span>
                   </div>
                   <div class="toggle-switch">
-                    <input type="checkbox" id="compactNotification">
+                    <label class="toggle-switch"><input type="checkbox" id="compactNotification"><span class="toggle-slider"></span></label>
                     <span class="slider"></span>
                   </div>
                 </div>
@@ -4687,7 +4685,7 @@
                     <span style="font-size: 0.85em; color: #888;">Aktueller Track + Play/Pause</span>
                   </div>
                   <div class="toggle-switch">
-                    <input type="checkbox" id="smallWidget">
+                    <label class="toggle-switch"><input type="checkbox" id="smallWidget"><span class="toggle-slider"></span></label>
                     <span class="slider"></span>
                   </div>
                 </div>
@@ -4698,7 +4696,7 @@
                     <span style="font-size: 0.85em; color: #888;">Playlist + Cover + Vollsteuerung</span>
                   </div>
                   <div class="toggle-switch">
-                    <input type="checkbox" id="largeWidget">
+                    <label class="toggle-switch"><input type="checkbox" id="largeWidget"><span class="toggle-slider"></span></label>
                     <span class="slider"></span>
                   </div>
                 </div>
@@ -4749,7 +4747,7 @@
                     <span style="font-size: 0.85em; color: #888;">Zeige Liedtexte wenn verfügbar</span>
                   </div>
                   <div class="toggle-switch">
-                    <input type="checkbox" id="lyricsDisplay" checked>
+                    <label class="toggle-switch"><input type="checkbox" id="lyricsDisplay" checked><span class="toggle-slider"></span></label>
                     <span class="slider"></span>
                   </div>
                 </div>
@@ -4799,7 +4797,7 @@
                 <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px;">
                   <span>Animationen</span>
                   <div class="toggle-switch">
-                    <input type="checkbox" id="animationsEnabled" checked>
+                    <label class="toggle-switch"><input type="checkbox" id="animationsEnabled" checked><span class="toggle-slider"></span></label>
                     <span class="slider"></span>
                   </div>
                 </div>
@@ -4811,113 +4809,7 @@
         </div>
       </div>
 
-            <!-- Equalizer & Party Mode Section (NEU) -->
-            <div class="section-container" style="margin-top: 30px; margin-bottom: 100px;">
-                
-                <!-- Party Mode -->
-                <button id="partyModeBtn" onclick="togglePartyMode()" class="action-btn" style="width: 100%; padding: 15px; margin-bottom: 25px; font-size: 1.1em; background: linear-gradient(45deg, #ff00cc, #3333ff); border: none; box-shadow: 0 0 15px rgba(255, 0, 204, 0.4); color: white; font-weight: bold; border-radius: 12px; cursor: pointer;">
-                    <i class="fas fa-glass-cheers"></i> Party-Modus <span id="partyStatusText">(Aus)</span>
-                </button>
-
-                <!-- Equalizer Panel -->
-                <div class="equalizer-section" style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);">
-                    <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <h3 style="margin: 0; color: #4ecdc4; font-size: 1.2em;"><i class="fas fa-sliders-h"></i> Equalizer</h3>
-                        <div class="toggle-switch">
-                            <input type="checkbox" id="eqToggle" checked>
-                            <span class="slider"></span>
-                        </div>
-                    </div>
-
-                    <div class="presets-container" style="display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; scrollbar-width: none;">
-                        <button class="preset-btn active">Flat</button>
-                        <button class="preset-btn">Bass</button>
-                        <button class="preset-btn">Rock</button>
-                        <button class="preset-btn">Pop</button>
-                        <button class="preset-btn">Jazz</button>
-                        <button class="preset-btn">Classic</button>
-                        <button class="preset-btn">Dance</button>
-                    </div>
-
-                    <div class="equalizer-sliders" style="display: flex; justify-content: space-between; height: 150px; margin-bottom: 20px;">
-                        <!-- 5-Band EQ -->
-                        <div class="slider-wrapper" style="display: flex; flex-direction: column; align-items: center; flex: 1;">
-                            <input type="range" class="eq-slider" min="-12" max="12" value="0" step="0.1" orient="vertical" style="writing-mode: bt-lr; -webkit-appearance: slider-vertical; height: 100%; width: 8px; background: #333; border-radius: 4px;">
-                            <span style="font-size: 0.7em; color: #888; margin-top: 10px;">60Hz</span>
-                        </div>
-                        <div class="slider-wrapper" style="display: flex; flex-direction: column; align-items: center; flex: 1;">
-                            <input type="range" class="eq-slider" min="-12" max="12" value="0" step="0.1" orient="vertical" style="writing-mode: bt-lr; -webkit-appearance: slider-vertical; height: 100%; width: 8px; background: #333; border-radius: 4px;">
-                            <span style="font-size: 0.7em; color: #888; margin-top: 10px;">230Hz</span>
-                        </div>
-                        <div class="slider-wrapper" style="display: flex; flex-direction: column; align-items: center; flex: 1;">
-                            <input type="range" class="eq-slider" min="-12" max="12" value="0" step="0.1" orient="vertical" style="writing-mode: bt-lr; -webkit-appearance: slider-vertical; height: 100%; width: 8px; background: #333; border-radius: 4px;">
-                            <span style="font-size: 0.7em; color: #888; margin-top: 10px;">910Hz</span>
-                        </div>
-                        <div class="slider-wrapper" style="display: flex; flex-direction: column; align-items: center; flex: 1;">
-                            <input type="range" class="eq-slider" min="-12" max="12" value="0" step="0.1" orient="vertical" style="writing-mode: bt-lr; -webkit-appearance: slider-vertical; height: 100%; width: 8px; background: #333; border-radius: 4px;">
-                            <span style="font-size: 0.7em; color: #888; margin-top: 10px;">3.6kHz</span>
-                        </div>
-                        <div class="slider-wrapper" style="display: flex; flex-direction: column; align-items: center; flex: 1;">
-                            <input type="range" class="eq-slider" min="-12" max="12" value="0" step="0.1" orient="vertical" style="writing-mode: bt-lr; -webkit-appearance: slider-vertical; height: 100%; width: 8px; background: #333; border-radius: 4px;">
-                            <span style="font-size: 0.7em; color: #888; margin-top: 10px;">14kHz</span>
-                        </div>
-                    </div>
-
-                    <div class="bass-boost-control" style="display: flex; align-items: center; gap: 15px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; margin-bottom: 15px;">
-                        <span style="font-weight: bold; color: #ff6b35; min-width: 100px;">BASS BOOST</span>
-                        <div class="toggle-switch">
-                            <input type="checkbox" id="bassBoostToggle">
-                            <span class="slider"></span>
-                        </div>
-                        <input type="range" id="bassBoostIntensity" min="0" max="20" value="0" disabled style="flex: 1; height: 6px; border-radius: 3px; outline: none;">
-                        <span id="bassBoostValue" style="min-width: 40px; text-align: right; color: #888;">0dB</span>
-                    </div>
-                    
-                    <div id="customPresetsContainer" style="margin-top: 15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
-                    
-                    <div style="margin-top: 20px; display: flex; gap: 10px;">
-                        <button class="preset-btn" style="flex: 1; background: #2a2a2a; border: 1px solid #444; color: #ccc;">Speichern</button>
-                        <button class="preset-btn" style="flex: 1; background: #2a2a2a; border: 1px solid #444; color: #ccc;">Zurücksetzen</button>
-                    </div>
-                </div>
-            </div>
-
-            <style>
-                .preset-btn {
-                    background: transparent;
-                    border: 1px solid #444;
-                    color: #888;
-                    padding: 8px 16px;
-                    border-radius: 20px;
-                    cursor: pointer;
-                    white-space: nowrap;
-                    transition: all 0.2s;
-                }
-                .preset-btn.active, .preset-btn:hover {
-                    background: #4ecdc4;
-                    color: #1a1a2e;
-                    border-color: #4ecdc4;
-                    font-weight: bold;
-                }
-                input[type=range]::-webkit-slider-thumb {
-                    -webkit-appearance: none;
-                    height: 16px;
-                    width: 16px;
-                    border-radius: 50%;
-                    background: #4ecdc4;
-                    cursor: pointer;
-                    margin-top: -5px;
-                }
-                input[type=range]::-webkit-slider-runnable-track {
-                    width: 100%;
-                    height: 6px;
-                    cursor: pointer;
-                    background: #444;
-                    border-radius: 3px;
-                }
-            </style>
-
-            <!-- Audio Element (versteckt) -->
+      <!-- Audio Element (versteckt) -->
     <audio id="audioPlayer" preload="auto" crossorigin="anonymous"></audio>
 
     <!-- Core Scripts (von index.html synchronisiert) -->
@@ -4974,11 +4866,7 @@
       
       <!-- Master-Fixes: ALLE UI-Probleme beheben (v2.0) -->
       <script src="/js/musik-complete-fixes.js"></script>
-      
-      <!-- Master Controls Fix - ALLE Switches und Slider funktional -->
-      <script src="/js/master-controls-fix.js"></script>
-      
-      <!-- ULTIMATE APP FIX - Behebt ALLE Probleme -->
-      <script src="/js/ultimate-app-fix.js"></script>
     </body>
 </html>
+
+

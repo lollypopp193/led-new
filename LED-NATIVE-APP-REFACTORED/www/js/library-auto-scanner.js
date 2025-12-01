@@ -254,16 +254,3 @@ const LibraryAutoScanner = {
 };
 
 window.LibraryAutoScanner = LibraryAutoScanner;
-
-// Auto-Start beim Laden
-document.addEventListener('DOMContentLoaded', function () {
-    // Kurze Verzögerung damit andere Module geladen sind
-    setTimeout(() => {
-        LibraryAutoScanner.startAutoScan();
-    }, 1000);
-});
-
-// Auch bei Capacitor deviceready
-document.addEventListener('deviceready', function () {
-    LibraryAutoScanner.startAutoScan();
-}, { once: true });

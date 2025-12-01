@@ -364,67 +364,7 @@ function initMusicPlayer() {
     console.log('✅ Musik-Player initialisiert');
 }
 
-// Party-Modus Logik
-window.isPartyMode = false;
-
-function togglePartyMode() {
-    window.isPartyMode = !window.isPartyMode;
-
-    const btn = document.getElementById('partyModeBtn');
-    const statusText = document.getElementById('partyStatusText');
-
-    if (window.isPartyMode) {
-        // Party Modus AN
-        if (btn) {
-            btn.style.boxShadow = '0 0 30px rgba(255, 0, 204, 0.8)';
-            btn.style.transform = 'scale(1.02)';
-            btn.classList.add('active');
-        }
-        if (statusText) statusText.textContent = '(AN)';
-
-        // Crossfade aktivieren (falls Controller vorhanden)
-        if (window.crossfadeController) {
-            window.crossfadeController.enabled = true;
-            if (window.crossfadeController.setDuration) {
-                window.crossfadeController.setDuration(8); // 8s für Party
-            }
-        }
-
-        // LED-Musik-Sync aktivieren
-        if (window.ledMusikController) {
-            window.ledMusikController.startAnalysis();
-            // Setze aggressiven Party-Modus
-            if (window.ledMusikController.setSensitivity) {
-                window.ledMusikController.setSensitivity(0.8);
-            }
-        }
-
-        if (window.showNotification) {
-            window.showNotification('🎉 Party-Modus aktiviert!', 'success');
-        }
-
-    } else {
-        // Party Modus AUS
-        if (btn) {
-            btn.style.boxShadow = '0 0 15px rgba(255, 0, 204, 0.4)';
-            btn.style.transform = 'scale(1)';
-            btn.classList.remove('active');
-        }
-        if (statusText) statusText.textContent = '(Aus)';
-
-        // LED-Musik-Sync stoppen
-        if (window.ledMusikController) {
-            window.ledMusikController.stopAnalysis();
-        }
-
-        if (window.showNotification) {
-            window.showNotification('Party-Modus deaktiviert', 'info');
-        }
-    }
-}
-
 // Global Export
-window.togglePartyMode = togglePartyMode;
 window.loadPlayerState = loadPlayerState;
 window.savePlayerState = savePlayerState;
 window.updateMediaSession = updateMediaSession;
