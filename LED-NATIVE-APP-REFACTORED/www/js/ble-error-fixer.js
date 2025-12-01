@@ -86,8 +86,15 @@ class BLEErrorFixer {
 
     /**
      * Erstellt Dummy BLE-Controller falls echtes Init fehlschlägt
+     * WICHTIG: Überschreibt NIEMALS existierenden Controller!
      */
     createDummyBLEController() {
+        // Prüfe ob echter Controller existiert - dann NICHT überschreiben!
+        if (window.bleController && typeof window.bleController.scan === 'function') {
+            console.log('✅ Echter BLE-Controller bereits vorhanden - kein Dummy nötig');
+            return;
+        }
+
         window.bleController = {
             isInitialized: true,
             isAvailable: true,

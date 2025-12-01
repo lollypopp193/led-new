@@ -1,4 +1,4 @@
-/**
+﻿/**
  * MUSIK-UI-CONTROLLER.JS
  * UI-Steuerung für musik.html - KEIN Inline-JS mehr
  */
@@ -209,15 +209,10 @@ function resetTempoAndPitch() {
     showNotification('✅ Tempo & Tonhöhe zurückgesetzt!', 'success');
 }
 
-// Global Export
-window.showNotification = showNotification;
+// Global Export (showNotification bereits in notifications.js)
 window.initTaskbarNavigation = initTaskbarNavigation;
-window.updateBandTabs = updateBandTabs;
 window.backupSettings = backupSettings;
 window.restoreSettings = restoreSettings;
-window.exportPlaylist = exportPlaylist;
-window.importPlaylist = importPlaylist;
-window.clearCache = clearCache;
 window.resetToDefaults = resetToDefaults;
 window.showStats = showStats;
 window.activatePartyMode = activatePartyMode;

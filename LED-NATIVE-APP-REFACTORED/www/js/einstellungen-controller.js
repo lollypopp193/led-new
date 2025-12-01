@@ -524,8 +524,7 @@ function initEinstellungenController() {
     console.log('✅ Einstellungen-Controller initialisiert');
 }
 
-// Global Export
-window.escapeHtml = escapeHtml;
+// Global Export (escapeHtml bereits in utils.js)
 window.initBLE = initBLE;
 window.startScan = startScan;
 window.startSmartScan = startSmartScan;

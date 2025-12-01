@@ -772,8 +772,7 @@ function stopAllEffects() {
     }
 }
 
-// Global Export
-window.escapeHtml = escapeHtml;
+// Global Export (escapeHtml bereits in utils.js)
 window.getLEDController = getLEDController;
 window.isConnected = isConnected;
 window.initBLE = initBLE;

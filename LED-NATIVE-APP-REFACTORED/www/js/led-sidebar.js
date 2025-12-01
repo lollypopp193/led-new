@@ -528,14 +528,16 @@ class LEDSidebar {
     }
 }
 
-// Global initialisieren
+// Global initialisieren - nur wenn nicht bereits von led-sidebar-swipe.js
 window.LEDSidebar = LEDSidebar;
 
-// Auto-Init beim Laden
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
+// Auto-Init beim Laden - nur wenn nicht bereits initialisiert
+if (!window.ledSidebar) {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!window.ledSidebar) window.ledSidebar = new LEDSidebar();
+        });
+    } else {
         window.ledSidebar = new LEDSidebar();
-    });
-} else {
-    window.ledSidebar = new LEDSidebar();
+    }
 }
