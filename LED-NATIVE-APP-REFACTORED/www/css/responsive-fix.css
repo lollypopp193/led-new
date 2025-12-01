@@ -56,6 +56,7 @@ input[type="range"] {
   max-width: 100%;
   width: 100%;
   min-width: 0;
+  touch-action: none; /* WICHTIG: Verhindert Scrollen beim Sliden auf Touch-Screens */
 }
 
 .slider-container {

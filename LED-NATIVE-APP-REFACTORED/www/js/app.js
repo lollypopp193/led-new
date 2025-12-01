@@ -86,7 +86,47 @@ const App = {
     cacheDOMElements() { this.elements.startScreen = document.getElementById('startscreen'); this.elements.appScreen = document.getElementById('appscreen'); this.elements.navBar = document.querySelector('.nav-bar'); this.elements.appIframe = document.getElementById('app-iframe'); this.elements.particleCanvas = document.getElementById('background-canvas'); this.elements.connectionStatus = document.getElementById('connection-status'); this.elements.notificationContainer = document.getElementById('notification-container'); console.log('\u2705 DOM-Elemente gecached'); },
     initStartupSequence() { setTimeout(function () { if (this.elements.startScreen) this.elements.startScreen.style.display = 'none'; if (this.elements.appScreen) this.elements.appScreen.style.display = 'flex'; const lastApp = localStorage.getItem('last-app') || 'farbe'; this.openApp(lastApp); console.log('\u2705 Startup-Sequenz abgeschlossen'); }.bind(this), this.config.startup_delay); },
     initNavigation() { if (!this.elements.navBar) return; this.elements.navBar.addEventListener('click', function (e) { const navItem = e.target.closest('.nav-item'); if (navItem) { const appName = navItem.dataset.app; this.openApp(appName); } }.bind(this)); console.log('\u2705 Navigation initialisiert'); },
-    initGlobalEventListeners() { window.addEventListener('online', function () { this.showNotification('Verbindung hergestellt', 'success'); console.log('\u2705 Online'); }.bind(this)); window.addEventListener('offline', function () { this.showNotification('Keine Verbindung', 'warning'); console.log('\u26a0\ufe0f Offline'); }.bind(this)); window.addEventListener('beforeunload', function () { this.saveSettings(); this.saveState(); }.bind(this)); document.addEventListener('visibilitychange', function () { if (document.hidden) { this.handleAppPause(); } else { this.handleAppResume(); } }.bind(this)); if (this.eventManager) { this.eventManager.on('ble-connected', function (e) { this.handleBLEConnected(e.data); }.bind(this)); this.eventManager.on('ble-disconnected', function (e) { this.handleBLEDisconnected(e.data); }.bind(this)); this.eventManager.on('scene-activated', function (e) { this.handleSceneActivated(e.data); }.bind(this)); } console.log('\u2705 Global Event Listeners initialisiert'); },
+    initGlobalEventListeners() {
+        // Message-Listener für Iframe-Kommunikation
+        window.addEventListener('message', (event) => {
+            // Sicherheits-Check: Nur eigene Origin erlauben
+            if (event.origin !== window.location.origin && event.origin !== 'null') return;
+
+            const data = event.data;
+            if (!data || !data.type) return;
+
+            // console.log('📨 Message empfangen:', data.type);
+
+            switch (data.type) {
+                case 'ledMusicControlReady':
+                    console.log('🎵 LED-Musik-Steuerung bereit (Iframe)');
+                    // Optional: Benachrichtigung an User
+                    break;
+
+                case 'requestBLE':
+                    if (this.state.isConnected && this.state.currentDevice) {
+                        // Sende Status zurück an Iframe
+                        const iframe = document.getElementById('app-iframe');
+                        if (iframe && iframe.contentWindow) {
+                            iframe.contentWindow.postMessage({
+                                type: 'bleStatus',
+                                connected: true,
+                                device: this.state.currentDevice
+                            }, '*');
+                        }
+                    }
+                    break;
+
+                case 'toggleMenu':
+                    if (window.LEDSidebar && window.ledSidebar) {
+                        window.ledSidebar.toggle();
+                    }
+                    break;
+            }
+        });
+
+        window.addEventListener('online', function () { this.showNotification('Verbindung hergestellt', 'success'); console.log('\u2705 Online'); }.bind(this)); window.addEventListener('offline', function () { this.showNotification('Keine Verbindung', 'warning'); console.log('\u26a0\ufe0f Offline'); }.bind(this)); window.addEventListener('beforeunload', function () { this.saveSettings(); this.saveState(); }.bind(this)); document.addEventListener('visibilitychange', function () { if (document.hidden) { this.handleAppPause(); } else { this.handleAppResume(); } }.bind(this)); if (this.eventManager) { this.eventManager.on('ble-connected', function (e) { this.handleBLEConnected(e.data); }.bind(this)); this.eventManager.on('ble-disconnected', function (e) { this.handleBLEDisconnected(e.data); }.bind(this)); this.eventManager.on('scene-activated', function (e) { this.handleSceneActivated(e.data); }.bind(this)); } console.log('\u2705 Global Event Listeners initialisiert');
+    },
     openApp(appName) { if (!appName) return; if (this.elements.appIframe) { this.elements.appIframe.src = 'pages/' + appName + '.html'; this.state.currentApp = appName; localStorage.setItem('last-app', appName); document.querySelectorAll('.nav-item').forEach(function (item) { item.classList.remove('active'); }); const activeItem = document.querySelector('[data-app="' + appName + '"]'); if (activeItem) activeItem.classList.add('active'); console.log('\ud83d\udcdd App geöffnet:', appName); if (this.eventManager) this.eventManager.emit('app-changed', { app: appName, timestamp: Date.now() }); } },
     async connectBLE() { try { if (this.deviceManager) { this.showNotification('Suche nach Geräten...', 'info'); const device = await this.deviceManager.scanForDevices(); if (device) { const success = await this.deviceManager.connectToDevice(device.id); if (success) { this.state.isConnected = true; this.state.currentDevice = device; this.updateConnectionStatus(true); this.showNotification('Verbunden mit ' + device.name, 'success'); if (this.eventManager) this.eventManager.emit('ble-connected', { device: device }); return true; } } } return false; } catch (err) { console.error('\u274c BLE-Verbindung fehlgeschlagen:', err); this.showNotification('Verbindung fehlgeschlagen', 'error'); return false; } },
     disconnectBLE() { if (this.deviceManager) { this.deviceManager.disconnectDevice(); this.state.isConnected = false; this.state.currentDevice = null; this.updateConnectionStatus(false); this.showNotification('Verbindung getrennt', 'info'); if (this.eventManager) this.eventManager.emit('ble-disconnected', {}); } },
