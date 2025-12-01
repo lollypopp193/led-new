@@ -41,27 +41,15 @@ async function initBLE() {
 
 async function sendColorToBLE(r, g, b) {
     try {
-        if (window.parent && window.parent.sendColorToLED) {
-            const success = await window.parent.sendColorToLED(r, g, b);
-            if (success) {
-                console.log(`  ECHTE Hardware-Farbe gesendet: RGB(${r}, ${g}, ${b})`);
-                if (window.showNotification) {
-                    window.showNotification(`LED-Farbe gesetzt: RGB(${r}, ${g}, ${b})`, 'success');
-                }
-                return true;
-            } else {
-                console.warn(' Bluetooth nicht verbunden');
-                if (window.showNotification) {
-                    window.showNotification('Bitte erst Bluetooth in Einstellungen verbinden!', 'warning');
-                }
-                return false;
-            }
-        }
+        // Suche BLE-Controller in allen Kontexten
+        const controller = window.bleController ||
+            (window.parent && window.parent.bleController) ||
+            (window.top && window.top.bleController);
 
-        if (window.bleController && window.bleController.isConnected) {
-            const success = await window.bleController.setColorRGB(r, g, b);
+        if (controller && controller.isConnected) {
+            const success = await controller.setColorRGB(r, g, b);
             if (success) {
-                console.log(`  Direkt: Hardware-Farbe gesendet: RGB(${r}, ${g}, ${b})`);
+                console.log(`🎨 Hardware-Farbe gesendet: RGB(${r}, ${g}, ${b})`);
                 if (window.showNotification) {
                     window.showNotification(`LED-Farbe gesetzt: RGB(${r}, ${g}, ${b})`, 'success');
                 }
@@ -69,13 +57,14 @@ async function sendColorToBLE(r, g, b) {
             }
         }
 
-        console.error(' KRITISCH: Keine Bluetooth-Verbindung!');
+        // Kein Controller oder nicht verbunden
+        console.warn('⚠️ Bluetooth nicht verbunden');
         if (window.showNotification) {
-            window.showNotification('FEHLER: Bluetooth nicht verbunden! Bitte in Einstellungen verbinden.', 'error');
+            window.showNotification('Bitte erst Bluetooth in Einstellungen verbinden!', 'warning');
         }
         return false;
     } catch (error) {
-        console.error(' Hardware-Fehler:', error);
+        console.error('❌ Hardware-Fehler:', error);
         if (window.showNotification) {
             window.showNotification(`Fehler beim Senden: ${error.message}`, 'error');
         }
