@@ -693,7 +693,8 @@ function toggleBeatDetection(enabled) {
     localStorage.setItem('beatDetection', enabled);
 }
 
-function saveCustomPreset() {
+// Speichert LED-Reaktions-Preset (nicht EQ-Preset!)
+function saveLEDReactionPreset() {
     const name = prompt('Preset-Name:');
     if (name) {
         const preset = {
@@ -702,10 +703,12 @@ function saveCustomPreset() {
             speed: document.getElementById('speed').value
         };
         localStorage.setItem('preset_' + name, JSON.stringify(preset));
-        alert('✅ Preset "' + name + '" gespeichert!');
+        if (window.showNotification) window.showNotification('Preset "' + name + '" gespeichert!', 'success');
         loadPresetList();
     }
 }
+// Alias für Kompatibilität (falls noch irgendwo saveCustomPreset aufgerufen wird)
+window.saveCustomPreset = saveLEDReactionPreset;
 
 function resetToDefault() {
     loadReactionPreset('balanced');
@@ -738,7 +741,8 @@ function createNewPreset() {
     saveCustomPreset();
 }
 
-function applyPreset(presetId) {
+// Wendet LED-Reaktions-Preset an (nicht EQ-Preset!)
+function applyLEDReactionPreset(presetId) {
     const preset = localStorage.getItem('preset_' + presetId);
     if (preset) {
         const config = JSON.parse(preset);
@@ -750,6 +754,8 @@ function applyPreset(presetId) {
         updateSpeed(config.speed);
     }
 }
+// Alias für Kompatibilität
+window.applyPreset = applyLEDReactionPreset;
 
 function editPreset(presetId) {
     alert('Preset bearbeiten - Coming Soon');
@@ -1157,35 +1163,8 @@ document.addEventListener('DOMContentLoaded', loadHiddenFeatureSettings);
 // ALLGEMEINE EINSTELLUNGEN - TOGGLES & SLIDER
 // ============================================================
 
-/**
- * Auto-Connect Toggle
- */
-function toggleAutoConnect() {
-    const switchEl = document.getElementById('autoConnectSwitch');
-    if (!switchEl) return;
-
-    const isActive = switchEl.classList.toggle('active');
-    autoConnect = isActive;
-    localStorage.setItem('autoConnect', isActive);
-
-    // Keine Benachrichtigung
-    console.log('🔗 Auto-Connect:', isActive);
-}
-
-/**
- * Benachrichtigungen Toggle
- */
-function toggleNotifications() {
-    const switchEl = document.getElementById('notificationsSwitch');
-    if (!switchEl) return;
-
-    const isActive = switchEl.classList.toggle('active');
-    notifications = isActive;
-    localStorage.setItem('notificationsEnabled', isActive);
-
-    // Keine Benachrichtigung
-    console.log('🔔 Benachrichtigungen:', isActive);
-}
+// toggleAutoConnect ist bereits oben definiert (Zeile ~222)
+// toggleNotifications ist bereits oben definiert (Zeile ~231)
 
 // toggleDarkMode ist bereits oben definiert (Zeile ~241)
 
