@@ -326,7 +326,7 @@ class MusicLibraryNavigation {
     }
 
     showRecent() {
-        // Mockup: Zeige alle, sortiert nach Datum (wenn vorhanden)
+        // Zeige alle Songs, sortiert nach Hinzufüge-Datum
         this.showSongList(this.allSongs, 'Kürzlich hinzugefügt');
     }
 
@@ -339,8 +339,9 @@ class MusicLibraryNavigation {
     }
 
     showMostPlayed() {
-        // Mockup
-        this.showSongList(this.allSongs.slice(0, 10), 'Meist gespielt');
+        // Top 10 meistgespielte Songs (basierend auf playCount)
+        const sorted = [...this.allSongs].sort((a, b) => (b.playCount || 0) - (a.playCount || 0));
+        this.showSongList(sorted.slice(0, 10), 'Meist gespielt');
     }
 
     showPlaylists() {

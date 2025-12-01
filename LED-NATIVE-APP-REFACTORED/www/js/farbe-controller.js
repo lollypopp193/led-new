@@ -129,22 +129,22 @@ function initColorWheel() {
         e.preventDefault();
         isDragging = true;
         const touch = e.touches[0];
-        const mockEvent = {
+        const touchPosition = {
             clientX: touch.clientX,
             clientY: touch.clientY
         };
-        selectColorAtPosition(mockEvent);
+        selectColorAtPosition(touchPosition);
     });
 
     colorWheel.addEventListener('touchmove', function (e) {
         e.preventDefault();
         if (isDragging) {
             const touch = e.touches[0];
-            const mockEvent = {
+            const touchPosition = {
                 clientX: touch.clientX,
                 clientY: touch.clientY
             };
-            selectColorAtPosition(mockEvent);
+            selectColorAtPosition(touchPosition);
         }
     });
 
