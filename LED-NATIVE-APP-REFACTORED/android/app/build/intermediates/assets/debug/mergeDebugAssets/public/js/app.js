@@ -300,6 +300,39 @@ if (window.inputValidator) {
     console.log(' InputValidator initialisiert');
 }
 
+
+// === MODUL-AKTIVIERUNGEN (Auto-generiert) ===
+
+// BLE Error Fixer aktivieren
+if (window.BLEErrorFixer) {
+    window.BLEErrorFixer.init();
+    console.log('✅ BLEErrorFixer aktiviert');
+}
+
+// Equalizer UI aktivieren
+if (window.equalizerUI) {
+    window.equalizerUI.init();
+    console.log(' EqualizerUI aktiviert');
+}
+
+// Playlist Drag & Drop aktivieren
+if (window.playlistDragDrop) {
+    window.playlistDragDrop.init();
+    console.log(' PlaylistDragDrop aktiviert');
+}
+
+// Quick Actions aktivieren
+if (window.quickActions) {
+    window.quickActions.init();
+    console.log(' QuickActions aktiviert');
+}
+
+// Share Manager aktivieren
+if (window.shareManager) {
+    window.shareManager.init();
+    console.log(' ShareManager aktiviert');
+}
+
 window.App = App;
 
 document.addEventListener('DOMContentLoaded', function () { App.initialize(); });

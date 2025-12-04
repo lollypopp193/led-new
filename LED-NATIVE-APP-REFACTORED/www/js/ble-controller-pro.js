@@ -180,6 +180,27 @@ class BLEController {
                 window.updateGlobalBLEStatus();
             }
 
+            // Save device to localStorage
+            try {
+                const savedDevices = JSON.parse(localStorage.getItem('savedBLEDevices') || '[]');
+                const deviceInfo = {
+                    id: this.deviceId,
+                    name: this.deviceName,
+                    protocol: this.protocol,
+                    lastConnected: Date.now()
+                };
+
+                // Remove duplicates and add new device
+                const filtered = savedDevices.filter(d => d.id !== this.deviceId);
+                filtered.unshift(deviceInfo);
+
+                // Keep only last 10 devices
+                localStorage.setItem('savedBLEDevices', JSON.stringify(filtered.slice(0, 10)));
+                console.log('✅ Device saved to localStorage');
+            } catch (e) {
+                console.warn('⚠️ Failed to save device to localStorage:', e);
+            }
+
             // Save device to Foreground Service
             if (window.BluetoothForegroundService) {
                 await window.BluetoothForegroundService.saveDevice(this.device, true, {

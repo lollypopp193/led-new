@@ -1,4 +1,4 @@
-/**
+﻿/**
  * EINSTELLUNGEN-CONTROLLER.JS
  * Alle Einstellungs-Funktionen aus Einstellungen.html - KEIN Inline-JS
  */
@@ -1383,3 +1383,26 @@ window.changeLanguage = changeLanguage;
 window.initSettingsEventListeners = initSettingsEventListeners;
 
 // console.log('✅ Einstellungen-Controller geladen');
+
+// Device Settings speichern (wird beim Ändern von Einstellungen aufgerufen)
+function saveDeviceSettings() {
+    try {
+        const settings = {
+            autoConnect: localStorage.getItem('autoConnect') === 'true',
+            notifications: localStorage.getItem('notifications') !== 'false',
+            darkMode: localStorage.getItem('darkMode') === 'true',
+            language: localStorage.getItem('language') || 'de',
+            timestamp: Date.now()
+        };
+        localStorage.setItem('deviceSettings', JSON.stringify(settings));
+        console.log(' Device Settings gespeichert');
+    } catch (e) {
+        console.warn(' Konnte deviceSettings nicht speichern:', e);
+    }
+}
+window.saveDeviceSettings = saveDeviceSettings;
+
+// Rufe saveDeviceSettings beim Laden auf um initiale Werte zu setzen
+if (!localStorage.getItem('deviceSettings')) {
+    saveDeviceSettings();
+}

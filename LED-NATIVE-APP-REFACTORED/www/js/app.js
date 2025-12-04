@@ -330,7 +330,37 @@ if (window.quickActions) {
 // Share Manager aktivieren
 if (window.shareManager) {
     window.shareManager.init();
-    console.log(' ShareManager aktiviert');
+    console.log('✅ ShareManager aktiviert');
+}
+
+// Auto-Start Manager aktivieren
+if (window.autoStartManager) {
+    window.autoStartManager.init();
+    console.log('✅ AutoStartManager aktiviert');
+}
+
+// MediaStore Bridge aktivieren
+if (window.mediaStoreBridge) {
+    window.mediaStoreBridge.init();
+    console.log('✅ MediaStoreBridge aktiviert');
+}
+
+// Preset Manager aktivieren
+if (window.presetManager) {
+    window.presetManager.init();
+    console.log('✅ PresetManager aktiviert');
+}
+
+// Slider Live Value Manager aktivieren
+if (window.sliderLiveValueManager) {
+    window.sliderLiveValueManager.init();
+    console.log('✅ SliderLiveValueManager aktiviert');
+}
+
+// i18n aktivieren
+if (window.multiLang) {
+    window.multiLang.init();
+    console.log('✅ i18n aktiviert');
 }
 
 window.App = App;

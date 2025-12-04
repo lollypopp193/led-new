@@ -1,4 +1,4 @@
-/**
+﻿/**
  * FARBE-CONTROLLER.JS
  * Alle Farb-Steuerungs-Funktionen aus Farbe.html - KEIN Inline-JS
  */
@@ -801,3 +801,34 @@ if (document.readyState === 'loading') {
 }
 
 // console.log(' Farbe-Controller geladen');
+
+// Color Presets speichern
+function saveColorPresets() {
+    try {
+        const presets = [
+            { name: 'Rot', r: 255, g: 0, b: 0 },
+            { name: 'Grün', r: 0, g: 255, b: 0 },
+            { name: 'Blau', r: 0, g: 0, b: 255 },
+            { name: 'Gelb', r: 255, g: 255, b: 0 },
+            { name: 'Cyan', r: 0, g: 255, b: 255 },
+            { name: 'Magenta', r: 255, g: 0, b: 255 },
+            { name: 'Weiß', r: 255, g: 255, b: 255 },
+            { name: 'Orange', r: 255, g: 165, b: 0 }
+        ];
+        
+        // Lese custom presets falls vorhanden
+        const customPresets = JSON.parse(localStorage.getItem('customColorPresets') || '[]');
+        const allPresets = [...presets, ...customPresets];
+        
+        localStorage.setItem('colorPresets', JSON.stringify(allPresets));
+        console.log(' Color Presets gespeichert');
+    } catch (e) {
+        console.warn(' Konnte colorPresets nicht speichern:', e);
+    }
+}
+window.saveColorPresets = saveColorPresets;
+
+// Initiale Presets speichern
+if (!localStorage.getItem('colorPresets')) {
+    saveColorPresets();
+}
