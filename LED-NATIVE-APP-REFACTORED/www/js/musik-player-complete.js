@@ -219,6 +219,12 @@ function playTrack(track, index) {
     window.currentTrack = track;
     window.currentTrackIndex = index;
 
+    // Event: onTrackChange
+    if (window.onTrackChange && typeof window.onTrackChange === 'function') {
+        window.onTrackChange(track, index);
+    }
+    window.dispatchEvent(new CustomEvent('trackchange', { detail: { track, index } }));
+
     if (window.audioPlayer) {
         window.audioPlayer.src = track.url;
         window.audioPlayer.play();
@@ -241,6 +247,17 @@ function playTrack(track, index) {
                 console.log('🎛️ Equalizer Engine verbunden mit audioPlayer');
             } catch (e) {
                 console.warn('⚠️ Equalizer Engine konnte nicht verbunden werden:', e);
+            }
+        }
+
+        // Verbinde Advanced Visualizer mit audioPlayer
+        if (window.advancedVisualizer && window.advancedVisualizer.connectAudioElement) {
+            try {
+                window.advancedVisualizer.connectAudioElement(window.audioPlayer);
+                window.advancedVisualizer.start('bars');
+                console.log('🎨 Advanced Visualizer gestartet');
+            } catch (e) {
+                console.warn('⚠️ Advanced Visualizer konnte nicht gestartet werden:', e);
             }
         }
 
@@ -376,12 +393,26 @@ function initMusicPlayer() {
 
     if (window.audioPlayer) {
         window.audioPlayer.addEventListener('ended', () => {
+            // Event: onPlaybackEnd
+            if (window.onPlaybackEnd && typeof window.onPlaybackEnd === 'function') {
+                window.onPlaybackEnd(window.currentTrack);
+            }
+            window.dispatchEvent(new CustomEvent('playbackend', { detail: { track: window.currentTrack } }));
+
             if (window.isRepeatMode === 2) {
                 window.audioPlayer.currentTime = 0;
                 window.audioPlayer.play();
             } else {
                 playNext();
             }
+        });
+
+        window.audioPlayer.addEventListener('volumechange', () => {
+            // Event: onVolumeChange
+            if (window.onVolumeChange && typeof window.onVolumeChange === 'function') {
+                window.onVolumeChange(window.audioPlayer.volume);
+            }
+            window.dispatchEvent(new CustomEvent('volumechange', { detail: { volume: window.audioPlayer.volume } }));
         });
 
         window.audioPlayer.addEventListener('timeupdate', () => {
