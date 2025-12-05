@@ -224,6 +224,17 @@ function playTrack(track, index) {
         window.audioPlayer.play();
         window.isPlaying = true;
 
+        // Starte Audio Reactive Engine für LED-Musik-Reaktion
+        if (window.audioReactiveEngine && window.audioReactiveEngine.startAudioCapture) {
+            try {
+                window.audioReactiveEngine.setAudioSource(window.audioPlayer);
+                window.audioReactiveEngine.startAudioCapture();
+                console.log('🎵 Audio Reactive Engine gestartet');
+            } catch (e) {
+                console.warn('⚠️ Audio Reactive Engine konnte nicht gestartet werden:', e);
+            }
+        }
+
         // Verbinde mit Crossfade-Controller falls vorhanden
         if (window.crossfadeController && !window.crossfadeController.audioContext) {
             const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -286,9 +297,21 @@ function togglePlayPause() {
     if (window.isPlaying) {
         window.audioPlayer.pause();
         window.isPlaying = false;
+
+        // Stoppe Audio Reactive Engine
+        if (window.audioReactiveEngine && window.audioReactiveEngine.stopAudioCapture) {
+            window.audioReactiveEngine.stopAudioCapture();
+            console.log('⏸️ Audio Reactive Engine pausiert');
+        }
     } else {
         window.audioPlayer.play();
         window.isPlaying = true;
+
+        // Starte Audio Reactive Engine
+        if (window.audioReactiveEngine && window.audioReactiveEngine.startAudioCapture) {
+            window.audioReactiveEngine.startAudioCapture();
+            console.log('▶️ Audio Reactive Engine fortgesetzt');
+        }
     }
 
     updatePlaybackState(window.isPlaying ? 'playing' : 'paused');

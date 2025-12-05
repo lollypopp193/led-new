@@ -363,6 +363,66 @@ if (window.multiLang) {
     console.log('✅ i18n aktiviert');
 }
 
+// Advanced Visualizer aktivieren
+if (window.advancedVisualizer) {
+    window.advancedVisualizer.init();
+    console.log('✅ AdvancedVisualizer aktiviert');
+}
+
+// Audio Decoder FFT aktivieren
+if (window.audioDecoderFFT) {
+    window.audioDecoderFFT.init();
+    console.log('✅ AudioDecoderFFT aktiviert');
+}
+
+// Audio Reactive Engine aktivieren (KRITISCH für LED-Musik)
+if (window.audioReactiveEngine) {
+    window.audioReactiveEngine.init();
+    console.log('✅ AudioReactiveEngine aktiviert');
+}
+
+// Cloud Sync aktivieren
+if (window.cloudSync) {
+    window.cloudSync.init();
+    console.log('✅ CloudSync aktiviert');
+}
+
+// Device Manager aktivieren (KRITISCH)
+if (window.deviceManager) {
+    window.deviceManager.init();
+    console.log('✅ DeviceManager aktiviert');
+}
+
+// Equalizer Engine aktivieren (KRITISCH)
+if (window.equalizerEngine) {
+    window.equalizerEngine.init();
+    console.log('✅ EqualizerEngine aktiviert');
+}
+
+// Global Error Handler aktivieren
+if (window.globalErrorHandler) {
+    window.globalErrorHandler.init();
+    console.log('✅ GlobalErrorHandler aktiviert');
+}
+
+// LED Custom Names aktivieren
+if (window.ledCustomNames) {
+    window.ledCustomNames.init();
+    console.log('✅ LEDCustomNames aktiviert');
+}
+
+// LED Sidebar aktivieren
+if (window.ledSidebar) {
+    window.ledSidebar.init();
+    console.log('✅ LEDSidebar aktiviert');
+}
+
+// LED Sidebar Swipe aktivieren
+if (window.ledSidebarSwipe) {
+    window.ledSidebarSwipe.init();
+    console.log('✅ LEDSidebarSwipe aktiviert');
+}
+
 window.App = App;
 
 document.addEventListener('DOMContentLoaded', function () { App.initialize(); });
