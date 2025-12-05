@@ -48,6 +48,39 @@ class EventCleanupManager {
     }
 
     /**
+     * Manuelles Clear für spezifischen Interval
+     * FIX: Ermöglicht gezieltes Cleanup
+     * @param {number} intervalId - Interval ID
+     */
+    clearInterval(intervalId) {
+        try {
+            clearInterval(intervalId);
+            const index = this.intervals.indexOf(intervalId);
+            if (index > -1) {
+                this.intervals.splice(index, 1);
+            }
+        } catch (e) {
+            console.warn('Failed to clear interval:', e);
+        }
+    }
+
+    /**
+     * Manuelles Clear für spezifischen Timeout
+     * @param {number} timerId - Timer ID
+     */
+    clearTimeout(timerId) {
+        try {
+            clearTimeout(timerId);
+            const index = this.timers.indexOf(timerId);
+            if (index > -1) {
+                this.timers.splice(index, 1);
+            }
+        } catch (e) {
+            console.warn('Failed to clear timeout:', e);
+        }
+    }
+
+    /**
      * Entferne alle registrierten Event-Listener
      * FIX: Verhindert Memory Leaks
      */

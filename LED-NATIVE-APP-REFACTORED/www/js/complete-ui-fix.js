@@ -68,10 +68,12 @@ class CompleteUIFix {
                     localStorage.setItem('switch_' + switchEl.id, isActive.toString());
                 }
 
-                // Führe bestehende onclick-Funktion aus wenn vorhanden
+                // FIX SECURITY: Trigger onclick event statt eval()
+                // eval() ist XSS-Risk - stattdessen click() Event triggern
                 if (existingOnclick && !existingOnclick.includes('toggle')) {
                     try {
-                        eval(existingOnclick);
+                        // Sichere Alternative: Click-Event triggern
+                        switchEl.click();
                     } catch (err) {
                         console.warn('onclick Fehler:', err);
                     }
