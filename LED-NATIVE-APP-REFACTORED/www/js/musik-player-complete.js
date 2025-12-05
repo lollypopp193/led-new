@@ -517,6 +517,37 @@ window.playNextTrack = playNext; // Alias für Kompatibilität
 window.playPrevious = playPrevious;
 window.playPreviousTrack = playPrevious; // Alias für Kompatibilität
 window.togglePlayPause = togglePlayPause;
+/**
+ * Cleanup Audio-Player
+ * FIX: Verhindert Memory Leak beim Audio-Element
+ */
+function cleanupAudioPlayer() {
+    if (window.audioPlayer) {
+        try {
+            // Stop playback
+            window.audioPlayer.pause();
+
+            // Clear source (FIX: Memory Leak Prevention)
+            window.audioPlayer.src = '';
+            window.audioPlayer.load();
+
+            // Stop Audio Reactive Engine
+            if (window.audioReactiveEngine && window.audioReactiveEngine.stopAudioCapture) {
+                window.audioReactiveEngine.stopAudioCapture();
+            }
+
+            // Stop Advanced Visualizer
+            if (window.advancedVisualizer && window.advancedVisualizer.stop) {
+                window.advancedVisualizer.stop();
+            }
+
+            console.log('✅ Audio-Player cleanup durchgeführt');
+        } catch (e) {
+            console.warn('⚠️ Audio-Player cleanup error:', e);
+        }
+    }
+}
+
 window.toggleShuffle = toggleShuffle;
 window.toggleRepeat = toggleRepeat;
 window.initMusicPlayer = initMusicPlayer;
@@ -529,6 +560,7 @@ window.deleteCustomEQPreset = deleteCustomEQPreset;
 window.selectVisualEffect = selectVisualEffect;
 window.toggleSleepTimerSettings = toggleSleepTimerSettings;
 window.toggleMusicAlarmSettings = toggleMusicAlarmSettings;
+window.cleanupAudioPlayer = cleanupAudioPlayer;
 
 // Auto-Init
 if (document.readyState === 'loading') {

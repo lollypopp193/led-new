@@ -22,9 +22,14 @@ class BLEController {
         this.service = null;
         this.characteristic = null;
         this.isConnected = false;
+        this.isConnecting = false;
         this.protocol = 'ELK_BLEDOM';
         this.deviceName = null;
         this.deviceId = null;
+
+        // Command Queue (FIX: Prevent command overlap)
+        this.commandQueue = [];
+        this.isProcessingQueue = false;
 
         // BLE Service UUIDs
         this.SERVICES = {
@@ -136,7 +141,15 @@ class BLEController {
      * @returns {Promise<boolean>}
      */
     async connect(deviceId = null, protocol = 'ELK_BLEDOM') {
+        // FIX: Prevent multiple simultaneous connection attempts
+        if (this.isConnecting) {
+            console.warn('⚠️ Connection already in progress');
+            return false;
+        }
+
         try {
+            this.isConnecting = true;
+
             // Scan if no device available
             if (!this.device) {
                 await this.scan(protocol);
@@ -230,16 +243,65 @@ class BLEController {
 
             this.showNotification(message, 'error');
             throw error;
+        } finally {
+            // FIX: Always reset isConnecting flag
+            this.isConnecting = false;
         }
     }
 
     /**
-     * Send command to device with retry logic
+     * Add command to queue for sequential processing
+     * FIX: Prevent command overlap
+     * @param {Array} command - Command bytes
+     * @returns {Promise<boolean>}
+     */
+    async queueCommand(command) {
+        return new Promise((resolve, reject) => {
+            this.commandQueue.push({ command, resolve, reject });
+            this.processCommandQueue();
+        });
+    }
+
+    /**
+     * Process command queue sequentially
+     * FIX: Commands are sent one at a time
+     */
+    async processCommandQueue() {
+        if (this.isProcessingQueue || this.commandQueue.length === 0) {
+            return;
+        }
+
+        this.isProcessingQueue = true;
+
+        while (this.commandQueue.length > 0) {
+            const { command, resolve, reject } = this.commandQueue.shift();
+            try {
+                const result = await this.sendCommandDirect(command);
+                resolve(result);
+            } catch (error) {
+                reject(error);
+            }
+        }
+
+        this.isProcessingQueue = false;
+    }
+
+    /**
+     * Send command to device with retry logic (direct, not queued)
      * @param {Array} command - Command bytes
      * @param {number} retries - Number of retries
      * @returns {Promise<boolean>}
      */
     async sendCommand(command, retries = 3) {
+        // FIX: Route through queue to prevent overlap
+        return this.queueCommand(command);
+    }
+
+    /**
+     * Send command directly (used by queue processor)
+     * @private
+     */
+    async sendCommandDirect(command, retries = 3) {
         if (!this.isConnected || !this.characteristic) {
             console.warn('Not connected - command ignored');
             return false;
