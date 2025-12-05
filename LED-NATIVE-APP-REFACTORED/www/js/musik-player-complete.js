@@ -227,11 +227,20 @@ function playTrack(track, index) {
         // Starte Audio Reactive Engine für LED-Musik-Reaktion
         if (window.audioReactiveEngine && window.audioReactiveEngine.startAudioCapture) {
             try {
-                window.audioReactiveEngine.setAudioSource(window.audioPlayer);
-                window.audioReactiveEngine.startAudioCapture();
-                console.log('🎵 Audio Reactive Engine gestartet');
+                window.audioReactiveEngine.startAudioCapture(window.audioPlayer);
+                console.log('🎵 Audio Reactive Engine gestartet mit audioPlayer');
             } catch (e) {
                 console.warn('⚠️ Audio Reactive Engine konnte nicht gestartet werden:', e);
+            }
+        }
+
+        // Verbinde Equalizer Engine mit audioPlayer
+        if (window.equalizerEngine && window.equalizerEngine.connect) {
+            try {
+                window.equalizerEngine.connect(window.audioPlayer);
+                console.log('🎛️ Equalizer Engine verbunden mit audioPlayer');
+            } catch (e) {
+                console.warn('⚠️ Equalizer Engine konnte nicht verbunden werden:', e);
             }
         }
 
@@ -309,7 +318,7 @@ function togglePlayPause() {
 
         // Starte Audio Reactive Engine
         if (window.audioReactiveEngine && window.audioReactiveEngine.startAudioCapture) {
-            window.audioReactiveEngine.startAudioCapture();
+            window.audioReactiveEngine.startAudioCapture(window.audioPlayer);
             console.log('▶️ Audio Reactive Engine fortgesetzt');
         }
     }
