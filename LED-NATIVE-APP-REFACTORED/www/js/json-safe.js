@@ -84,19 +84,43 @@ window.safeLocalStorageSet = function (key, value) {
 
 /**
  * Safe localStorage.getItem mit JSON
- * FIX: Verhindert Crashes beim Laden
+ * FIX: Verhindert Crashes beim Laden + null-check für .property Zugriffe
  */
 window.safeLocalStorageGet = function (key, defaultValue = null) {
     try {
         const stored = localStorage.getItem(key);
-        if (stored === null) {
+        if (stored === null || stored === undefined) {
             return defaultValue;
         }
 
         const parsed = window.safeJSONParse(stored);
-        return parsed !== null ? parsed : defaultValue;
+        return parsed !== null && parsed !== undefined ? parsed : defaultValue;
     } catch (error) {
         console.error('❌ localStorage.getItem failed:', error);
+        return defaultValue;
+    }
+};
+
+/**
+ * Safe property access mit Optional Chaining Fallback
+ * FIX: localStorage.getItem().property ohne Crash
+ * @param {string} key - localStorage key
+ * @param {string} property - Property to access
+ * @param {*} defaultValue - Default value
+ */
+window.safeLocalStorageGetProperty = function (key, property, defaultValue = null) {
+    try {
+        const obj = window.safeLocalStorageGet(key, null);
+
+        // Null-check vor Property-Zugriff
+        if (!obj || typeof obj !== 'object') {
+            return defaultValue;
+        }
+
+        // Optional Chaining simulieren
+        return obj[property] !== undefined ? obj[property] : defaultValue;
+    } catch (error) {
+        console.error('❌ localStorage property access failed:', error);
         return defaultValue;
     }
 };
