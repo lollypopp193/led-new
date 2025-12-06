@@ -758,6 +758,26 @@ function initFarbeController() {
         renderScenes();
     }
 
+    // Event Listener für Buttons (ersetzt inline onclick)
+    const createSceneBtn = document.getElementById('createSceneBtn');
+    if (createSceneBtn) {
+        createSceneBtn.addEventListener('click', createSceneFromCurrent);
+    }
+
+    const moreSettingsBtn = document.getElementById('moreSettingsBtn');
+    if (moreSettingsBtn) {
+        moreSettingsBtn.addEventListener('click', () => {
+            document.getElementById('sidePanel').classList.add('active');
+        });
+    }
+
+    const closePanelBtn = document.getElementById('closePanelBtn');
+    if (closePanelBtn) {
+        closePanelBtn.addEventListener('click', () => {
+            document.getElementById('sidePanel').classList.remove('active');
+        });
+    }
+
     console.log('✅ Farbe-Controller vollständig initialisiert');
 }
 

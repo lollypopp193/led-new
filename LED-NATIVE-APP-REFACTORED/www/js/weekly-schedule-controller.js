@@ -212,11 +212,78 @@ class WeeklyScheduleController {
 window.WeeklyScheduleController = WeeklyScheduleController;
 window.weeklyScheduleController = new WeeklyScheduleController();
 
+// UI-Integration
+function initScheduleUI() {
+    const createBtn = document.getElementById('createScheduleBtn');
+    const listContainer = document.getElementById('scheduleList');
+
+    if (!createBtn || !listContainer) return;
+
+    createBtn.addEventListener('click', () => {
+        const name = prompt('Name des Zeitplans:');
+        if (!name) return;
+
+        const scheduleId = window.weeklyScheduleController.createSchedule(name);
+
+        // Beispiel-Eintrag hinzufügen
+        const day = prompt('Wochentag (mon/tue/wed/thu/fri/sat/sun):', 'mon');
+        const time = prompt('Uhrzeit (HH:MM):', '08:00');
+        const action = confirm('Aktion: OK = Einschalten, Abbrechen = Ausschalten') ? 'on' : 'off';
+
+        if (day && time) {
+            window.weeklyScheduleController.addEntry(scheduleId, { day, time, action });
+            renderScheduleList();
+        }
+    });
+
+    renderScheduleList();
+}
+
+function renderScheduleList() {
+    const listContainer = document.getElementById('scheduleList');
+    if (!listContainer) return;
+
+    const schedules = window.weeklyScheduleController.getAllSchedules();
+
+    if (schedules.length === 0) {
+        listContainer.innerHTML = '<p style="text-align: center; color: #888; padding: 20px;">Keine Zeitpläne vorhanden</p>';
+        return;
+    }
+
+    listContainer.innerHTML = schedules.map(schedule => `
+        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <strong>${schedule.name}</strong>
+                <div style="display: flex; gap: 10px;">
+                    <button onclick="window.weeklyScheduleController.toggleSchedule('${schedule.id}'); renderScheduleList();" style="padding: 8px 12px; background: ${schedule.enabled ? '#e74c3c' : '#27ae60'}; border: none; border-radius: 5px; cursor: pointer;">
+                        ${schedule.enabled ? 'Deaktivieren' : 'Aktivieren'}
+                    </button>
+                    <button onclick="window.weeklyScheduleController.deleteSchedule('${schedule.id}'); renderScheduleList();" style="padding: 8px 12px; background: #e74c3c; border: none; border-radius: 5px; cursor: pointer;">Löschen</button>
+                </div>
+            </div>
+            <div style="font-size: 0.9em; color: #aaa;">
+                ${schedule.entries.length} Einträge | ${schedule.enabled ? '✅ Aktiv' : '❌ Inaktiv'}
+            </div>
+        </div>
+    `).join('');
+}
+
+window.initScheduleUI = initScheduleUI;
+window.renderScheduleList = renderScheduleList;
+
+// Auto-Init
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScheduleUI);
+} else {
+    initScheduleUI();
+}
+
+console.log('✅ Weekly Schedule Controller geladen');
+
 // Minütliche Prüfung für geplante Einträge
 setInterval(() => {
     if (window.weeklyScheduleController) {
         window.weeklyScheduleController.checkScheduledEntries();
     }
 }, 60000); // Jede Minute
-
 console.log('✅ Weekly Schedule Controller geladen');

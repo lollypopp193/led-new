@@ -1239,7 +1239,7 @@
             <i class="fas fa-film"></i>
             Gespeicherte Szenen
             <button
-              onclick="createSceneFromCurrent()"
+              id="createSceneBtn"
               style="
                 margin-left: auto;
                 padding: 8px 15px;
@@ -1321,7 +1321,6 @@
         <button
           type="button"
           id="moreSettingsBtn"
-          onclick="document.getElementById('sidePanel').classList.add('active')"
           style="
             margin-top: 15px;
             width: 100%;
@@ -1350,12 +1349,7 @@
     <div class="side-panel" id="sidePanel">
       <div class="panel-header">
         <h2>Erweiterte Einstellungen</h2>
-        <button
-          type="button"
-          class="close-panel-btn"
-          id="closePanelBtn"
-          onclick="document.getElementById('sidePanel').classList.remove('active')"
-        >
+        <button type="button" class="close-panel-btn" id="closePanelBtn">
           &times;
         </button>
       </div>

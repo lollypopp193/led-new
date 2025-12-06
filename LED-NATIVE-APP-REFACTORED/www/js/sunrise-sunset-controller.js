@@ -231,4 +231,63 @@ setInterval(() => {
     }
 }, 60000); // Jede Minute prüfen
 
+// UI-Integration
+function initSunriseUI() {
+    const createBtn = document.getElementById('createSunriseBtn');
+    const listContainer = document.getElementById('sunriseList');
+
+    if (!createBtn || !listContainer) return;
+
+    createBtn.addEventListener('click', () => {
+        const name = prompt('Name der Simulation:');
+        if (!name) return;
+
+        const type = confirm('Sonnenaufgang? (Abbrechen = Sonnenuntergang)') ? 'sunrise' : 'sunset';
+        const duration = prompt('Dauer in Minuten:', '30');
+        const time = prompt('Startzeit (HH:MM):', '07:00');
+
+        if (duration && time) {
+            window.sunriseSunsetController.createSimulation(name, type, parseInt(duration), time);
+            renderSunriseList();
+        }
+    });
+
+    renderSunriseList();
+}
+
+function renderSunriseList() {
+    const listContainer = document.getElementById('sunriseList');
+    if (!listContainer) return;
+
+    const simulations = window.sunriseSunsetController.getAllSimulations();
+
+    if (simulations.length === 0) {
+        listContainer.innerHTML = '<p style="text-align: center; color: #888; padding: 20px;">Keine Simulationen vorhanden</p>';
+        return;
+    }
+
+    listContainer.innerHTML = simulations.map(sim => `
+        <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <strong>${sim.name}</strong>
+                <div style="font-size: 0.9em; color: #aaa;">${sim.type === 'sunrise' ? '🌅 Aufgang' : '🌇 Untergang'} | ${sim.duration}min | ${sim.scheduledTime || 'Manuell'}</div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="window.sunriseSunsetController.startSimulation('${sim.id}')" style="padding: 8px 12px; background: #4ecdc4; border: none; border-radius: 5px; cursor: pointer;">Start</button>
+                <button onclick="window.sunriseSunsetController.deleteSimulation('${sim.id}'); renderSunriseList();" style="padding: 8px 12px; background: #e74c3c; border: none; border-radius: 5px; cursor: pointer;">Löschen</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+window.initSunriseUI = initSunriseUI;
+window.renderSunriseList = renderSunriseList;
+
+// Auto-Init
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSunriseUI);
+} else {
+    initSunriseUI();
+}
+
 console.log('✅ Sunrise/Sunset Controller geladen');
