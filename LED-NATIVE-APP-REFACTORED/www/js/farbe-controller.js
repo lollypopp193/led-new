@@ -752,6 +752,12 @@ function initFarbeController() {
     initPowerToggle();
     initBasicColors();
     initSidePanel();
+
+    // Szenen laden
+    if (window.scenesManager) {
+        renderScenes();
+    }
+
     console.log('✅ Farbe-Controller vollständig initialisiert');
 }
 
@@ -783,11 +789,102 @@ function stopAllEffects() {
 
         console.log('🛑 Alle Effekte gestoppt (Wechsel zu Farbe)');
     } catch (e) {
-        console.warn('Effekte stoppen fehlgeschlagen:', e);
+        console.error('Fehler beim Stoppen:', e);
     }
 }
 
-// Global Export (escapeHtml bereits in utils.js)
+// === SZENEN-VERWALTUNG ===
+function createSceneFromCurrent() {
+    const name = prompt('Szenen-Name:');
+    if (!name) return;
+
+    const scenesManager = window.scenesManager;
+    if (!scenesManager) {
+        showNotification('Szenen-Manager nicht verfügbar', 'error');
+        return;
+    }
+
+    const data = {
+        name: name,
+        description: '',
+        color: currentColor || { r: 255, g: 255, b: 255 },
+        brightness: parseInt(document.getElementById('brightnessSlider')?.value || 100),
+        effect: 0,
+        speed: 50,
+        devices: [],
+        favorite: false,
+        category: 'Custom'
+    };
+
+    try {
+        scenesManager.createScene(data, false);
+        renderScenes();
+        showNotification('✅ Szene "' + name + '" gespeichert!', 'success');
+    } catch (e) {
+        console.error('Szene erstellen:', e);
+        showNotification('Fehler beim Erstellen', 'error');
+    }
+}
+
+function renderScenes() {
+    const scenesManager = window.scenesManager;
+    if (!scenesManager) return;
+
+    const grid = document.getElementById('scenesGrid');
+    const empty = document.getElementById('scenesEmpty');
+    if (!grid) return;
+
+    const scenes = scenesManager.getAllScenes() || [];
+
+    if (scenes.length === 0) {
+        grid.innerHTML = '';
+        if (empty) empty.style.display = 'block';
+        return;
+    }
+
+    if (empty) empty.style.display = 'none';
+
+    grid.innerHTML = scenes.map(function (scene) {
+        const bgColor = 'rgb(' + scene.color.r + ',' + scene.color.g + ',' + scene.color.b + ')';
+        return '<div class="scene-card" style="background: linear-gradient(135deg, ' + bgColor + ', rgba(0,0,0,0.3)); padding: 15px; border-radius: 12px; cursor: pointer; position: relative; border: 2px solid rgba(78, 205, 196, 0.2); transition: all 0.3s;" onclick="activateScene(\'' + scene.id + '\')" onmouseenter="this.style.transform=\'scale(1.05)\'; this.style.boxShadow=\'0 5px 20px rgba(78, 205, 196, 0.4)\';" onmouseleave="this.style.transform=\'scale(1)\'; this.style.boxShadow=\'none\';">' +
+            '<div style="font-weight: 700; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); margin-bottom: 8px;">' + scene.name + '</div>' +
+            '<div style="display: flex; gap: 5px; align-items: center; font-size: 0.75rem; color: rgba(255,255,255,0.8);"><i class="fas fa-adjust"></i>' + scene.brightness + '%</div>' +
+            '<button onclick="event.stopPropagation(); deleteScene(\'' + scene.id + '\');" style="position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.6); border: none; color: #ff6b6b; padding: 5px 8px; border-radius: 6px; cursor: pointer; font-size: 0.75rem;"><i class="fas fa-trash"></i></button>' +
+            '</div>';
+    }).join('');
+}
+
+function activateScene(sceneId) {
+    const scenesManager = window.scenesManager;
+    if (!scenesManager) return;
+
+    scenesManager.activateScene(sceneId).then(function (success) {
+        if (success) {
+            const scene = scenesManager.getScene(sceneId);
+            if (scene) {
+                showNotification(' Szene "' + scene.name + '" aktiviert', 'success');
+            }
+        }
+    });
+}
+
+function deleteScene(sceneId) {
+    if (!confirm('Szene wirklich löschen?')) return;
+
+    const scenesManager = window.scenesManager;
+    if (!scenesManager) return;
+
+    try {
+        scenesManager.deleteScene(sceneId);
+        renderScenes();
+        showNotification(' Szene gelöscht', 'success');
+    } catch (e) {
+        console.error('Szene löschen:', e);
+        showNotification('Fehler beim Löschen', 'error');
+    }
+}
+
+// Export ALL kritischen Funktionen
 window.getLEDController = getLEDController;
 window.isConnected = isConnected;
 window.initBLE = initBLE;
@@ -839,6 +936,10 @@ function saveColorPresets() {
     }
 }
 window.saveColorPresets = saveColorPresets;
+window.createSceneFromCurrent = createSceneFromCurrent;
+window.renderScenes = renderScenes;
+window.activateScene = activateScene;
+window.deleteScene = deleteScene;
 
 // Initiale Presets speichern
 if (!localStorage.getItem('colorPresets')) {
