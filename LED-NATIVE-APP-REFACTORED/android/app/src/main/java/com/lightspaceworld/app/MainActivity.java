@@ -1,4 +1,4 @@
-package com.ledcontrol.app.refactored;
+package com.lightspaceworld.app;
 
 import com.getcapacitor.BridgeActivity;
 

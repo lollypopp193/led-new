@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package com.lightspaceworld.app;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
