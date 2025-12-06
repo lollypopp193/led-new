@@ -429,14 +429,24 @@ function initMusicPlayer() {
 
 // === FEHLENDE FUNKTIONEN ===
 
-// Panel-Navigation
-function showPanel(panelId) {
-    document.querySelectorAll('.panel, .content-panel').forEach(p => p.classList.remove('active'));
-    const panel = document.getElementById(panelId);
-    if (panel) {
-        panel.classList.add('active');
-        console.log('📱 Panel gewechselt:', panelId);
-    }
+// Panel-Navigation - Nutze musik-panel-controller.js wenn verfügbar
+if (!window.showPanel) {
+    window.showPanel = function (panelId, clickedBtn) {
+        // Alle Buttons deaktivieren
+        document.querySelectorAll('.taskbar-btn').forEach(btn => btn.classList.remove('active'));
+        // Geklickten Button aktivieren
+        if (clickedBtn) clickedBtn.classList.add('active');
+
+        // Alle Panels verstecken
+        document.querySelectorAll('.panel, .content-panel').forEach(p => p.classList.remove('active'));
+
+        // Gewähltes Panel zeigen
+        const panel = document.getElementById(panelId);
+        if (panel) {
+            panel.classList.add('active');
+            console.log('📱 Panel gewechselt:', panelId);
+        }
+    };
 }
 
 // Bibliothek anzeigen
@@ -548,19 +558,45 @@ function cleanupAudioPlayer() {
     }
 }
 
+// Export LibraryManager class
+window.LibraryManager = LibraryManager;
+window.libraryManager = new LibraryManager();
+
+// Export Player State Management
+window.loadPlayerState = loadPlayerState;
+window.savePlayerState = savePlayerState;
+window.updateMediaSession = updateMediaSession;
+window.updatePlaybackState = updatePlaybackState;
+
+// Export Player Controls
+window.playTrack = playTrack;
+window.playNext = playNext;
+window.playPrevious = playPrevious;
+window.togglePlayPause = togglePlayPause;
 window.toggleShuffle = toggleShuffle;
 window.toggleRepeat = toggleRepeat;
+
+// Export UI Functions
 window.initMusicPlayer = initMusicPlayer;
 window.showPanel = showPanel;
 window.viewLibrary = viewLibrary;
 window.closeScanModal = closeScanModal;
 window.createNewPlaylist = createNewPlaylist;
+
+// Export EQ & Visualizer Functions
 window.selectEQPreset = selectEQPreset;
 window.deleteCustomEQPreset = deleteCustomEQPreset;
+window.deleteEQPresetByName = deleteEQPresetByName;
 window.selectVisualEffect = selectVisualEffect;
+
+// Export Timer Functions
 window.toggleSleepTimerSettings = toggleSleepTimerSettings;
 window.toggleMusicAlarmSettings = toggleMusicAlarmSettings;
+
+// Export Cleanup
 window.cleanupAudioPlayer = cleanupAudioPlayer;
+
+console.log('✅ Musik-Player-Complete: Alle Funktionen global exportiert');
 
 // Auto-Init
 if (document.readyState === 'loading') {

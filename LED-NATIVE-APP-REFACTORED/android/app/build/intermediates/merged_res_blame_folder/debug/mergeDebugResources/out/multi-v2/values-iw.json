@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.ledcontrol.app.refactored.app-mergeDebugResources-29:/values-iw/values-iw.xml",
+            "outputFile": "com.lightspaceworld.app-mergeDebugResources-29:/values-iw/values-iw.xml",
             "map": [
                 {
                     "source": "C:\\Users\\braun\\.gradle\\caches\\8.11.1\\transforms\\071109cc2ed0a34038101aebd18364c6\\transformed\\appcompat-1.7.0\\res\\values-iw\\values-iw.xml",

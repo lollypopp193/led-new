@@ -5,7 +5,51 @@
 'use strict';
 
 const App = {
-    ble: null, deviceManager: null, nativeBridge: null, capacitorAdapter: null, scenesManager: null, performanceOptimizer: null, ledAbstraction: null, eventManager: null, audioReactiveEngine: null, musikIntegration: null, musicLibraryManager: null, elements: {}, config: { startup_delay: 500, particle_count: 120, theme: 'dark', language: 'de', autoConnect: false, saveState: true, animations: true, notifications: true, hapticFeedback: true, soundEffects: false }, state: { currentApp: null, initialized: false, isConnected: false, currentDevice: null, brightness: 100, currentColor: { r: 255, g: 255, b: 255 }, currentEffect: null, isPlaying: false },
+    // Core Modules
+    ble: null,
+    deviceManager: null,
+    nativeBridge: null,
+    capacitorAdapter: null,
+    scenesManager: null,
+    performanceOptimizer: null,
+    ledAbstraction: null,
+    eventManager: null,
+    audioReactiveEngine: null,
+    musikIntegration: null,
+    musicLibraryManager: null,
+
+    // UI Elements Cache
+    elements: {},
+
+    // App Configuration
+    config: {
+        startup_delay: 500,
+        particle_count: 120,
+        theme: 'dark',
+        language: 'de',
+        autoConnect: false,
+        saveState: true,
+        animations: true,
+        notifications: true,
+        hapticFeedback: true,
+        soundEffects: false
+    },
+
+    // App State
+    state: {
+        currentApp: null,
+        initialized: false,
+        isConnected: false,
+        currentDevice: null,
+        brightness: 100,
+        currentColor: {
+            r: 255,
+            g: 255,
+            b: 255
+        },
+        currentEffect: null,
+        isPlaying: false
+    },
     async initialize() {
         if (this.state.initialized) { console.log('\u26a0\ufe0f App bereits initialisiert'); return; } console.log('\ud83d\ude80 LED Native App v4.0 - Zero Tolerance - Initialisierung...'); try {
             // Sequenzielle Berechtigungen (nacheinander wie bei professionellen Apps)

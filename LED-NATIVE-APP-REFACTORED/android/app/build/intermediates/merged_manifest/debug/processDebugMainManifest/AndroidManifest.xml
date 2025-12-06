@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ledcontrol.app.refactored"
+    package="com.lightspaceworld.app"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -63,10 +63,10 @@
         android:required="true" />
 
     <permission
-        android:name="com.ledcontrol.app.refactored.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+        android:name="com.lightspaceworld.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.ledcontrol.app.refactored.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+    <uses-permission android:name="com.lightspaceworld.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
 
     <application
         android:allowBackup="true"
@@ -82,22 +82,52 @@
 
         <!-- Main Activity -->
         <activity
-            android:name="com.ledcontrol.app.refactored.MainActivity"
+            android:name="com.lightspaceworld.app.MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
             android:exported="true"
             android:label="@string/title_activity_main"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBarLaunch" >
+`r`n            
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+`r`n                
+                <action android:name="android.intent.action.VIEW" />
+`r`n                
+                <category android:name="android.intent.category.DEFAULT" />
+`r`n                
+                <category android:name="android.intent.category.BROWSABLE" />
+`r`n                
+                <data android:scheme="ledcontrol" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+`r`n`r`n         <!-- LED Widget -->
+`r`n        
+        <receiver
+            android:name="com.lightspaceworld.app.LEDWidgetProvider"
+            android:exported="true" >
+`r`n            
+            <intent-filter>
+`r`n                
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+`r`n            
+            </intent-filter>
+`r`n            
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info" />
+`r`n        
+        </receiver>
 
         <!-- Bluetooth Foreground Service für persistente BLE-Verbindungen -->
         <service
-            android:name="com.ledcontrol.app.refactored.BluetoothForegroundService"
+            android:name="com.lightspaceworld.app.BluetoothForegroundService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="connectedDevice" >
@@ -105,7 +135,7 @@
 
         <!-- Boot Receiver für Auto-Connect nach Geräteneustart -->
         <receiver
-            android:name="com.ledcontrol.app.refactored.BootReceiver"
+            android:name="com.lightspaceworld.app.BootReceiver"
             android:enabled="true"
             android:exported="false" >
             <intent-filter>
@@ -121,7 +151,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.ledcontrol.app.refactored.fileprovider"
+            android:authorities="com.lightspaceworld.app.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true" >
             <meta-data
@@ -130,7 +160,7 @@
         </provider>
         <provider
             android:name="androidx.startup.InitializationProvider"
-            android:authorities="com.ledcontrol.app.refactored.androidx-startup"
+            android:authorities="com.lightspaceworld.app.androidx-startup"
             android:exported="false" >
             <meta-data
                 android:name="androidx.emoji2.text.EmojiCompatInitializer"

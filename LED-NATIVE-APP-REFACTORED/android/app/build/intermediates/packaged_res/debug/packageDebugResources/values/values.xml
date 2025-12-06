@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="ic_launcher_background">#FFFFFF</color>
-    <string name="app_name">LED Control Pro</string>
+    <string name="app_name">Light Space World</string>
     <string name="custom_url_scheme">com.ledcontrol.app.refactored</string>
     <string name="package_name">com.ledcontrol.app.refactored</string>
-    <string name="title_activity_main">LED Control Pro</string>
+    <string name="shortcut_disabled">Shortcut nicht verfügbar</string>
+    <string name="shortcut_last_scene">Letzte Szene</string>
+    <string name="shortcut_last_scene_long">Letzte Szene aktivieren</string>
+    <string name="shortcut_led_off">LED Aus</string>
+    <string name="shortcut_led_off_long">LED ausschalten</string>
+    <string name="shortcut_led_on">LED An</string>
+    <string name="shortcut_led_on_long">LED einschalten</string>
+    <string name="shortcut_party">Party-Modus</string>
+    <string name="shortcut_party_long">Party-Modus starten</string>
+    <string name="title_activity_main">Light Space World</string>
+    <string name="widget_description">LED Schnellsteuerung - An/Aus, Farben, Party</string>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         
         <item name="colorPrimary">@color/colorPrimary</item>

@@ -1,4 +1,4 @@
-com.ledcontrol.app.refactored
+com.lightspaceworld.app
 anim abc_fade_in
 anim abc_fade_out
 anim abc_grow_fade_in_from_bottom
@@ -672,6 +672,13 @@ drawable splash
 drawable test_level_drawable
 drawable tooltip_frame_dark
 drawable tooltip_frame_light
+drawable widget_background
+drawable widget_button_blue
+drawable widget_button_green
+drawable widget_button_off
+drawable widget_button_on
+drawable widget_button_party
+drawable widget_button_red
 id ALT
 id CTRL
 id FUNCTION
@@ -738,6 +745,12 @@ id async
 id beginning
 id blocking
 id bottom
+id btn_color_blue
+id btn_color_green
+id btn_color_red
+id btn_led_off
+id btn_led_on
+id btn_party
 id buttonPanel
 id center
 id center_horizontal
@@ -925,6 +938,7 @@ layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
 layout splash_screen_view
 layout support_simple_spinner_dropdown_item
+layout widget_led_control
 mipmap ic_launcher
 mipmap ic_launcher_foreground
 mipmap ic_launcher_round
@@ -968,8 +982,18 @@ string custom_url_scheme
 string no_webview_text
 string package_name
 string search_menu_title
+string shortcut_disabled
+string shortcut_last_scene
+string shortcut_last_scene_long
+string shortcut_led_off
+string shortcut_led_off_long
+string shortcut_led_on
+string shortcut_led_on_long
+string shortcut_party
+string shortcut_party_long
 string status_bar_notification_info_overflow
 string title_activity_main
+string widget_description
 style AlertDialog_AppCompat
 style AlertDialog_AppCompat_Light
 style Animation_AppCompat_Dialog
@@ -1388,3 +1412,5 @@ styleable ViewBackgroundHelper android_background backgroundTint backgroundTintM
 styleable ViewStubCompat android_id android_layout android_inflatedId
 xml config
 xml file_paths
+xml shortcuts
+xml widget_info

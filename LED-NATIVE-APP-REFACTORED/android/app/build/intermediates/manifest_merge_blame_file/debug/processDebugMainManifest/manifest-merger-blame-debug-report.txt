@@ -1,6 +1,6 @@
 1<?xml version="1.0" encoding="utf-8"?>
 2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-3    package="com.ledcontrol.app.refactored"
+3    package="com.lightspaceworld.app"
 4    android:versionCode="1"
 5    android:versionName="1.0" >
 6
@@ -109,12 +109,12 @@
 64
 65    <permission
 65-->[androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:22:5-24:47
-66        android:name="com.ledcontrol.app.refactored.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+66        android:name="com.lightspaceworld.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
 66-->[androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:23:9-81
 67        android:protectionLevel="signature" />
 67-->[androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:24:9-44
 68
-69    <uses-permission android:name="com.ledcontrol.app.refactored.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+69    <uses-permission android:name="com.lightspaceworld.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
 69-->[androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:26:5-97
 69-->[androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:26:22-94
 70
@@ -142,8 +142,8 @@
 83        <!-- Main Activity -->
 84        <activity
 84-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:14:9-27:20
-85            android:name="com.ledcontrol.app.refactored.MainActivity"
-85-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:16:13-41
+85            android:name="com.lightspaceworld.app.MainActivity"
+85-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:16:13-64
 86            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
 86-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:15:13-129
 87            android:exported="true"
@@ -154,140 +154,190 @@
 89-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:19:13-44
 90            android:theme="@style/AppTheme.NoActionBarLaunch" >
 90-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:18:13-62
-91            <intent-filter>
-91-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:22:13-25:29
-92                <action android:name="android.intent.action.MAIN" />
-92-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:17-69
-92-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:25-66
-93
-94                <category android:name="android.intent.category.LAUNCHER" />
-94-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:24:17-77
-94-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:24:27-74
-95            </intent-filter>
-96        </activity>
-97
-98        <!-- Bluetooth Foreground Service für persistente BLE-Verbindungen -->
-99        <service
-99-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:30:9-35:19
-100            android:name="com.ledcontrol.app.refactored.BluetoothForegroundService"
-100-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:31:13-55
-101            android:enabled="true"
-101-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:32:13-35
-102            android:exported="false"
-102-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:33:13-37
-103            android:foregroundServiceType="connectedDevice" >
-103-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:34:13-60
-104        </service>
-105
-106        <!-- Boot Receiver für Auto-Connect nach Geräteneustart -->
-107        <receiver
-107-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:38:9-46:20
-108            android:name="com.ledcontrol.app.refactored.BootReceiver"
-108-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:39:13-41
-109            android:enabled="true"
-109-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:40:13-35
-110            android:exported="false" >
-110-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:41:13-37
-111            <intent-filter>
-111-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:42:13-45:29
-112                <action android:name="android.intent.action.BOOT_COMPLETED" />
-112-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:43:17-79
-112-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:43:25-76
-113                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-113-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:44:17-82
-113-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:44:25-79
-114            </intent-filter>
-115        </receiver>
-116
-117        <!-- Notification Channel für Foreground Service -->
-118        <meta-data
-118-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:49:9-51:43
-119            android:name="com.google.firebase.messaging.default_notification_channel_id"
-119-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:50:13-89
-120            android:value="led_service" />
-120-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:51:13-40
-121
-122        <provider
-123            android:name="androidx.core.content.FileProvider"
-123-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:53:19-68
-124            android:authorities="com.ledcontrol.app.refactored.fileprovider"
-124-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:53:69-120
-125            android:exported="false"
-125-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:53:121-145
-126            android:grantUriPermissions="true" >
-126-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:53:146-180
-127            <meta-data
-127-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:54:13-122
-128                android:name="android.support.FILE_PROVIDER_PATHS"
-128-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:54:24-74
-129                android:resource="@xml/file_paths" />
-129-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:54:75-109
-130        </provider>
-131        <provider
-131-->[androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
-132            android:name="androidx.startup.InitializationProvider"
-132-->[androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:25:13-67
-133            android:authorities="com.ledcontrol.app.refactored.androidx-startup"
-133-->[androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:26:13-68
-134            android:exported="false" >
-134-->[androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:27:13-37
-135            <meta-data
-135-->[androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
-136                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-136-->[androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:30:17-75
-137                android:value="androidx.startup" />
-137-->[androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:31:17-49
-138            <meta-data
-138-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\c05c2abe164e84925f789d2b3c6a31c1\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:29:13-31:52
-139                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-139-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\c05c2abe164e84925f789d2b3c6a31c1\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:30:17-78
-140                android:value="androidx.startup" />
-140-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\c05c2abe164e84925f789d2b3c6a31c1\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:31:17-49
-141            <meta-data
-141-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
-142                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
-142-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
-143                android:value="androidx.startup" />
-143-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
-144        </provider>
-145
-146        <receiver
-146-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
-147            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-147-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
-148            android:directBootAware="false"
-148-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
-149            android:enabled="true"
-149-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
-150            android:exported="true"
-150-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
-151            android:permission="android.permission.DUMP" >
-151-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
-152            <intent-filter>
-152-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
-153                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-153-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
-153-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
-154            </intent-filter>
-155            <intent-filter>
-155-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
-156                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-156-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
-156-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
-157            </intent-filter>
-158            <intent-filter>
-158-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
-159                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
-159-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
-159-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
-160            </intent-filter>
-161            <intent-filter>
-161-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
-162                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
-162-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
-162-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
-163            </intent-filter>
-164        </receiver>
-165    </application>
-166
-167</manifest>
+91`r`n            
+92            <meta-data
+92-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:20:53-137
+93                android:name="android.app.shortcuts"
+93-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:20:64-100
+94                android:resource="@xml/shortcuts" />
+94-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:20:101-134
+95
+96            <intent-filter>
+96-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:22:13-25:29
+97                <action android:name="android.intent.action.MAIN" />
+97-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:17-69
+97-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:25-66
+98`r`n                
+99                <action android:name="android.intent.action.VIEW" />
+99-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:89-141
+99-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:97-138
+100`r`n                
+101                <category android:name="android.intent.category.DEFAULT" />
+101-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:161-220
+101-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:171-217
+102`r`n                
+103                <category android:name="android.intent.category.BROWSABLE" />
+103-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:240-301
+103-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:250-298
+104`r`n                
+105                <data android:scheme="ledcontrol" />
+105-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:321-357
+105-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:327-354
+106
+107                <category android:name="android.intent.category.LAUNCHER" />
+107-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:24:17-77
+107-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:24:27-74
+108            </intent-filter>
+109        </activity>
+110`r`n`r`n         <!-- LED Widget -->
+111`r`n        
+112        <receiver
+112-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:67-438
+113            android:name="com.lightspaceworld.app.LEDWidgetProvider"
+113-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:77-133
+114            android:exported="true" >
+114-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:134-157
+115`r`n            
+116            <intent-filter>
+116-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:174-308
+117`r`n                
+118                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+118-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:209-276
+118-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:217-273
+119`r`n            
+120            </intent-filter>
+121`r`n            
+122            <meta-data
+122-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:324-415
+123                android:name="android.appwidget.provider"
+123-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:335-376
+124                android:resource="@xml/widget_info" />
+124-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:377-412
+125`r`n        
+126        </receiver>
+127
+128        <!-- Bluetooth Foreground Service für persistente BLE-Verbindungen -->
+129        <service
+129-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:30:9-35:19
+130            android:name="com.lightspaceworld.app.BluetoothForegroundService"
+130-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:31:13-78
+131            android:enabled="true"
+131-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:32:13-35
+132            android:exported="false"
+132-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:33:13-37
+133            android:foregroundServiceType="connectedDevice" >
+133-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:34:13-60
+134        </service>
+135
+136        <!-- Boot Receiver für Auto-Connect nach Geräteneustart -->
+137        <receiver
+137-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:38:9-46:20
+138            android:name="com.lightspaceworld.app.BootReceiver"
+138-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:39:13-41
+139            android:enabled="true"
+139-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:40:13-35
+140            android:exported="false" >
+140-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:41:13-37
+141            <intent-filter>
+141-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:42:13-45:29
+142                <action android:name="android.intent.action.BOOT_COMPLETED" />
+142-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:43:17-79
+142-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:43:25-76
+143                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+143-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:44:17-82
+143-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:44:25-79
+144            </intent-filter>
+145        </receiver>
+146
+147        <!-- Notification Channel für Foreground Service -->
+148        <meta-data
+148-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:49:9-51:43
+149            android:name="com.google.firebase.messaging.default_notification_channel_id"
+149-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:50:13-89
+150            android:value="led_service" />
+150-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:51:13-40
+151
+152        <provider
+153            android:name="androidx.core.content.FileProvider"
+153-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:53:19-68
+154            android:authorities="com.lightspaceworld.app.fileprovider"
+154-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:53:69-120
+155            android:exported="false"
+155-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:53:121-145
+156            android:grantUriPermissions="true" >
+156-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:53:146-180
+157            <meta-data
+157-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:54:13-122
+158                android:name="android.support.FILE_PROVIDER_PATHS"
+158-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:54:24-74
+159                android:resource="@xml/file_paths" />
+159-->D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:54:75-109
+160        </provider>
+161        <provider
+161-->[androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+162            android:name="androidx.startup.InitializationProvider"
+162-->[androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:25:13-67
+163            android:authorities="com.lightspaceworld.app.androidx-startup"
+163-->[androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:26:13-68
+164            android:exported="false" >
+164-->[androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:27:13-37
+165            <meta-data
+165-->[androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+166                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+166-->[androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:30:17-75
+167                android:value="androidx.startup" />
+167-->[androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:31:17-49
+168            <meta-data
+168-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\c05c2abe164e84925f789d2b3c6a31c1\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:29:13-31:52
+169                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+169-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\c05c2abe164e84925f789d2b3c6a31c1\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:30:17-78
+170                android:value="androidx.startup" />
+170-->[androidx.lifecycle:lifecycle-process:2.6.2] C:\Users\braun\.gradle\caches\8.11.1\transforms\c05c2abe164e84925f789d2b3c6a31c1\transformed\lifecycle-process-2.6.2\AndroidManifest.xml:31:17-49
+171            <meta-data
+171-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+172                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+172-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+173                android:value="androidx.startup" />
+173-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+174        </provider>
+175
+176        <receiver
+176-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+177            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+177-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+178            android:directBootAware="false"
+178-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+179            android:enabled="true"
+179-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+180            android:exported="true"
+180-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+181            android:permission="android.permission.DUMP" >
+181-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+182            <intent-filter>
+182-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+183                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+183-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+183-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+184            </intent-filter>
+185            <intent-filter>
+185-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+186                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+186-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+186-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+187            </intent-filter>
+188            <intent-filter>
+188-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+189                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+189-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+189-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+190            </intent-filter>
+191            <intent-filter>
+191-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+192                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+192-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+192-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\braun\.gradle\caches\8.11.1\transforms\c04f02c8895db693a4ed64cc051d3907\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
+193            </intent-filter>
+194        </receiver>
+195    </application>
+196
+197</manifest>

@@ -105,7 +105,7 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\br
 		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:10:9-40
 	android:usesCleartextTraffic
 		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:11:9-44
-activity#com.ledcontrol.app.refactored.MainActivity
+activity#com.lightspaceworld.app.MainActivity
 ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:14:9-27:20
 	android:label
 		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:17:13-56
@@ -118,18 +118,58 @@ ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\
 	android:theme
 		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:18:13-62
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:16:13-41
-intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:16:13-64
+meta-data#android.app.shortcuts
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:20:53-137
+	android:resource
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:20:101-134
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:20:64-100
+intent-filter#action:name:android.intent.action.MAIN+action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+category:name:android.intent.category.LAUNCHER+data:scheme:ledcontrol
 ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:22:13-25:29
 action#android.intent.action.MAIN
 ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:17-69
 	android:name
 		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:25-66
+action#android.intent.action.VIEW
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:89-141
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:97-138
+category#android.intent.category.DEFAULT
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:161-220
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:171-217
+category#android.intent.category.BROWSABLE
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:240-301
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:250-298
+data
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:321-357
+	android:scheme
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:327-354
 category#android.intent.category.LAUNCHER
 ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:24:17-77
 	android:name
 		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:24:27-74
-service#com.ledcontrol.app.refactored.BluetoothForegroundService
+receiver#com.lightspaceworld.app.LEDWidgetProvider
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:67-438
+	android:exported
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:134-157
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:77-133
+intent-filter#action:name:android.appwidget.action.APPWIDGET_UPDATE
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:174-308
+action#android.appwidget.action.APPWIDGET_UPDATE
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:209-276
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:217-273
+meta-data#android.appwidget.provider
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:324-415
+	android:resource
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:377-412
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:335-376
+service#com.lightspaceworld.app.BluetoothForegroundService
 ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:30:9-35:19
 	android:enabled
 		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:32:13-35
@@ -138,8 +178,8 @@ ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\
 	android:foregroundServiceType
 		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:34:13-60
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:31:13-55
-receiver#com.ledcontrol.app.refactored.BootReceiver
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:31:13-78
+receiver#com.lightspaceworld.app.BootReceiver
 ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:38:9-46:20
 	android:enabled
 		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:40:13-35
@@ -415,7 +455,7 @@ ADDED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\tran
 		ADDED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:24:9-44
 	android:name
 		ADDED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:23:9-81
-permission#com.ledcontrol.app.refactored.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+permission#com.lightspaceworld.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
 ADDED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:22:5-24:47
 	android:protectionLevel
 		ADDED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:24:9-44
@@ -425,7 +465,7 @@ uses-permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
 ADDED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:26:5-97
 	android:name
 		ADDED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:26:22-94
-uses-permission#com.ledcontrol.app.refactored.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+uses-permission#com.lightspaceworld.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
 ADDED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:26:5-97
 	android:name
 		ADDED from [androidx.core:core:1.15.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\cd7c85b01ffca65c5ce0dcc0768cf1da\transformed\core-1.15.0\AndroidManifest.xml:26:22-94

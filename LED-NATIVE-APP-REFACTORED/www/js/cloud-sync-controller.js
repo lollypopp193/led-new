@@ -264,10 +264,11 @@ class CloudSyncController {
         return this.syncEnabled;
     }
 
-    loadSettings() {
-        const enabled = localStorage.getItem('cloud-sync-enabled');
-        if (enabled === 'true') {
-            this.enableSync();
+    showError(message) {
+        if (window.showNotification) {
+            window.showNotification('❌ ' + message, 'error');
+        } else {
+            console.error(message);
         }
     }
 }
@@ -275,5 +276,62 @@ class CloudSyncController {
 // Global verfügbar
 window.CloudSyncController = CloudSyncController;
 window.cloudSyncController = new CloudSyncController();
+
+// === LEGACY SUPPORT für backup.html ===
+window.cloudSync = {
+    syncNow: () => window.cloudSyncController.performSync(),
+    showSyncDialog: () => {
+        if (window.showNotification) {
+            window.showNotification('💡 Cloud-Sync aktiv - Daten werden automatisch synchronisiert', 'info');
+        }
+    }
+};
+
+// === BACKUP-FUNKTIONEN FÜR backup.html ===
+window.downloadBackup = function () {
+    window.cloudSyncController.exportData();
+};
+
+window.exportSettings = function () {
+    window.cloudSyncController.exportData();
+};
+
+window.selectFile = function () {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            await window.cloudSyncController.importData(file);
+        }
+    };
+    input.click();
+};
+
+window.syncToCloud = function () {
+    window.cloudSyncController.performSync();
+};
+
+window.configureCloud = function () {
+    if (window.showNotification) {
+        const status = window.cloudSyncController.isSyncEnabled() ? 'aktiviert' : 'deaktiviert';
+        window.showNotification('☁️ Cloud-Sync ist ' + status, 'info');
+    }
+};
+
+window.toggleAutoBackup = function () {
+    if (window.cloudSyncController.isSyncEnabled()) {
+        window.cloudSyncController.disableSync();
+    } else {
+        window.cloudSyncController.enableSync();
+    }
+};
+
+window.configureAutoBackup = function () {
+    if (window.showNotification) {
+        window.showNotification('⚙️ Auto-Backup alle 5 Minuten aktiv', 'info');
+    }
+};
 
 console.log('✅ Cloud-Sync Controller geladen');

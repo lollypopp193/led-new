@@ -1167,7 +1167,11 @@
         <div class="toggle-container">
           <span class="toggle-label" id="powerLabel">AUS</span>
           <label class="toggle-switch">
-            <label class="toggle-switch"><input type="checkbox" id="powerToggle" checked /><span class="toggle-slider"></span></label>
+            <label class="toggle-switch"
+              ><input type="checkbox" id="powerToggle" checked /><span
+                class="toggle-slider"
+              ></span
+            ></label>
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -1218,6 +1222,59 @@
               ></div>
             </div>
           </div>
+        </div>
+
+        <!-- SZENEN-VERWALTUNG -->
+        <div class="control-group" style="margin: 25px 0">
+          <h3
+            style="
+              color: #4ecdc4;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              margin-bottom: 15px;
+              font-size: 1.1rem;
+            "
+          >
+            <i class="fas fa-film"></i>
+            Gespeicherte Szenen
+            <button
+              onclick="createSceneFromCurrent()"
+              style="
+                margin-left: auto;
+                padding: 8px 15px;
+                background: linear-gradient(135deg, #4ecdc4, #00bfa5);
+                color: #0a0a0a;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: 600;
+                font-size: 0.85em;
+                box-shadow: 0 2px 10px rgba(78, 205, 196, 0.3);
+              "
+            >
+              <i class="fas fa-plus"></i> Neue Szene
+            </button>
+          </h3>
+          <div
+            id="scenesGrid"
+            style="
+              display: grid;
+              grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+              gap: 12px;
+            "
+          ></div>
+          <p
+            id="scenesEmpty"
+            style="
+              text-align: center;
+              color: #888;
+              padding: 30px;
+              display: none;
+            "
+          >
+            Keine Szenen gespeichert. Erstelle deine erste Szene!
+          </p>
         </div>
 
         <div class="color-slots-section">
@@ -1508,57 +1565,11 @@
     <script src="../js/ble-controller-pro.js"></script>
     <script src="../js/device-manager.js"></script>
 
-    <!-- FARB-PRESETS KLICKBAR MACHEN -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Alle Preset-Colors klickbar machen
-        document.querySelectorAll(".preset-color").forEach(function (preset) {
-          preset.style.cursor = "pointer";
-          preset.addEventListener("click", function () {
-            // Hole die Background-Color aus dem style
-            const bgColor = this.style.backgroundColor;
-            console.log("?? Preset angeklickt:", bgColor);
+    <!-- Farb-Presets: Funktionalität in farbe-controller.js -->
 
-            // Parse RGB aus "rgb(r, g, b)" oder "rgba(r, g, b, a)"
-            const match = bgColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
-            if (match) {
-              const r = parseInt(match[1]);
-              const g = parseInt(match[2]);
-              const b = parseInt(match[3]);
-
-              console.log("?? Farbe gew�hlt: R=" + r + ", G=" + g + ", B=" + b);
-
-              // Farbe anwenden
-              if (window.applyColor) {
-                window.applyColor(r, g, b);
-              } else if (
-                window.FarbeController &&
-                window.FarbeController.applyColor
-              ) {
-                window.FarbeController.applyColor(r, g, b);
-              }
-
-              // Visuelles Feedback
-              this.style.transform = "scale(1.2)";
-              setTimeout(() => {
-                this.style.transform = "";
-              }, 200);
-            }
-          });
-        });
-
-        console.log(
-          "? " +
-            document.querySelectorAll(".preset-color").length +
-            " Farb-Presets aktiviert"
-        );
-      });
-    </script>
-  
     <!-- Zusätzliche Module -->
     <script src="../js/gesture-controls.js"></script>
     <script src="../js/input-validator.js"></script>
     <script src="../js/animation-system.js"></script>
   </body>
 </html>
-
