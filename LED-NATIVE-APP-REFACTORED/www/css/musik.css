@@ -57,29 +57,29 @@
       }
 
       body {
-        font-family: "Inter", "SF Pro Display", -apple-system,
-          BlinkMacSystemFont, sans-serif;
-        background: #0a0a0a;
+        font-family: 'Orbitron', 'Exo 2', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
         min-height: 100vh;
         color: #ffffff;
         overflow-x: hidden;
         padding-top: 70px;
       }
 
-      /* Taskbar Styles - BlackPlayer inspired */
+      /* Taskbar Styles - Passend zur App */
       .taskbar {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
-        background: #0f0f0f;
-        border-bottom: 1px solid #1a1a1a;
+        background: linear-gradient(135deg, #1a1a2e, #16213e);
+        border-bottom: 2px solid #4ecdc4;
         padding: 12px 20px;
         z-index: 1000;
         display: flex;
         overflow-x: auto;
         scrollbar-width: none;
         height: 60px;
+        box-shadow: 0 4px 15px rgba(78, 205, 196, 0.2);
       }
 
       .taskbar::-webkit-scrollbar {
@@ -93,13 +93,14 @@
         padding: 8px 16px;
         border-radius: 8px;
         cursor: pointer;
-        transition: all 0.2s ease;
+        transition: all 0.3s ease;
         white-space: nowrap;
         margin: 0 2px;
         font-size: 0.85em;
         font-weight: 500;
         display: flex;
         align-items: center;
+        gap: 6px;
         height: 36px;
       }
 
@@ -109,17 +110,18 @@
       }
 
       .taskbar-btn:hover {
-        background: #1a1a1a;
-        color: #ffffff;
+        background: rgba(78, 205, 196, 0.1);
+        color: #4ecdc4;
+        transform: translateY(-2px);
       }
 
       .taskbar-btn.active {
-        background: #ff6b35;
-        color: #ffffff;
-        font-weight: 600;
+        background: linear-gradient(135deg, #4ecdc4, #00bfa5);
+        color: #0a0a0a;
+        font-weight: 700;
+        box-shadow: 0 4px 15px rgba(78, 205, 196, 0.5);
       }
 
-      /* Content Area */
       .content-area {
         max-width: 1200px;
         margin: 0 auto;
@@ -149,20 +151,21 @@
       }
 
       .panel-header {
-        background: #0f0f0f;
-        border-bottom: 1px solid #1a1a1a;
+        background: linear-gradient(135deg, #1a1a2e, #16213e);
+        border-bottom: 2px solid rgba(78, 205, 196, 0.3);
         padding: 20px 24px;
         position: sticky;
         top: 0;
         z-index: 10;
         display: flex;
         align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
       }
 
       .panel-header i {
         font-size: 1.2em;
         margin-right: 10px;
-        color: #ff6b35;
+        color: #4ecdc4;
       }
 
       .panel-title {
@@ -185,12 +188,12 @@
         display: flex;
         align-items: center;
         padding: 16px 20px;
-        background: #0f0f0f;
-        border-bottom: 1px solid #1a1a1a;
+        background: rgba(26, 26, 46, 0.5);
+        border-bottom: 1px solid rgba(78, 205, 196, 0.2);
       }
 
       .section-header i {
-        color: #ff6b35;
+        color: #4ecdc4;
         margin-right: 10px;
         font-size: 1em;
       }
@@ -270,17 +273,18 @@
       }
 
       .header-btn.active {
-        background: #ff6b35;
-        color: #ffffff;
-        border-color: #ff6b35;
+        background: #4ecdc4;
+        color: #0a0a0a;
+        border-color: #4ecdc4;
+        box-shadow: 0 0 15px rgba(78, 205, 196, 0.5);
       }
 
       .library-nav {
         display: flex;
         gap: 4px;
         padding: 16px 24px;
-        background: #0f0f0f;
-        border-bottom: 1px solid #1a1a1a;
+        background: linear-gradient(135deg, #1a1a2e, #16213e);
+        border-bottom: 1px solid rgba(78, 205, 196, 0.2);
         overflow-x: auto;
         scrollbar-width: none;
       }
@@ -305,15 +309,16 @@
       }
 
       .library-nav-btn:hover {
-        background: #1a1a1a;
-        color: #ffffff;
-        border-color: #3a3a3a;
+        background: rgba(78, 205, 196, 0.1);
+        color: #4ecdc4;
+        border-color: #4ecdc4;
       }
 
       .library-nav-btn.active {
-        background: rgba(255, 107, 53, 0.2);
-        color: #ff6b35;
-        border-color: #ff6b35;
+        background: rgba(78, 205, 196, 0.2);
+        color: #4ecdc4;
+        border-color: #4ecdc4;
+        box-shadow: 0 0 10px rgba(78, 205, 196, 0.3);
       }
 
       .library-search {
