@@ -2716,6 +2716,118 @@
       <script src="../js/preset-manager.js"></script>
       <script src="../js/mediastore-bridge.js"></script>
       <script src="../js/bluetooth-foreground-service.js"></script>
+
+      <!-- IFRAME-PARENT-COMMUNICATION: Importiere globale Manager vom Parent -->
+      <script>
+        (function() {
+            'use strict';
+            
+            // Prüfe ob wir im iframe sind
+            const isIframe = window.parent && window.parent !== window;
+            
+            if (isIframe) {
+                console.log('🔗 Musik-Seite läuft im iframe - importiere Parent-Module...');
+                
+                // Importiere kritische Manager vom Parent
+                try {
+                    if (window.parent.musicLibraryManager) {
+                        window.musicLibraryManager = window.parent.musicLibraryManager;
+                        console.log('✅ MusicLibraryManager vom Parent importiert');
+                    }
+                    
+                    if (window.parent.audioReactiveEngine) {
+                        window.audioReactiveEngine = window.parent.audioReactiveEngine;
+                        console.log('✅ AudioReactiveEngine vom Parent importiert');
+                    }
+                    
+                    if (window.parent.ble) {
+                        window.ble = window.parent.ble;
+                        console.log('✅ BLE-Controller vom Parent importiert');
+                    }
+                    
+                    if (window.parent.deviceManager) {
+                        window.deviceManager = window.parent.deviceManager;
+                        console.log('✅ DeviceManager vom Parent importiert');
+                    }
+                    
+                    if (window.parent.eventManager) {
+                        window.eventManager = window.parent.eventManager;
+                        console.log('✅ EventManager vom Parent importiert');
+                    }
+                } catch (e) {
+                    console.warn('⚠️ Parent-Import Fehler:', e);
+                }
+            } else {
+                console.log('📄 Musik-Seite läuft standalone (kein iframe)');
+            }
+        })();
+      </script>
+
+      <!-- INITIALISIERUNGS-SEQUENZ: Musik-Seite korrekt starten -->
+      <script>
+        (function() {
+            'use strict';
+            
+            async function initMusicPage() {
+                console.log('🎵 Musik-Seite Initialisierung startet...');
+                
+                try {
+                    // 1. Prüfe ob MusicLibraryManager verfügbar ist
+                    if (!window.musicLibraryManager) {
+                        console.error('❌ MusicLibraryManager nicht verfügbar!');
+                        console.log('🔍 Versuche vom Parent zu importieren...');
+                        
+                        if (window.parent && window.parent.musicLibraryManager) {
+                            window.musicLibraryManager = window.parent.musicLibraryManager;
+                            console.log('✅ MusicLibraryManager vom Parent importiert');
+                        } else {
+                            console.error('❌ MusicLibraryManager auch im Parent nicht gefunden');
+                            return;
+                        }
+                    }
+                    
+                    // 2. Initialisiere MusicLibraryManager falls noch nicht bereit
+                    if (window.musicLibraryManager.database && !window.musicLibraryManager.database.isReady) {
+                        console.log('🔄 Initialisiere MusicLibraryManager...');
+                        await window.musicLibraryManager.init();
+                    }
+                    
+                    // 3. Initialisiere LibraryManager (aus musik-player-complete.js)
+                    if (window.libraryManager && window.libraryManager.initializeLibrary) {
+                        console.log('📚 Initialisiere Library Manager...');
+                        await window.libraryManager.initializeLibrary();
+                    }
+                    
+                    // 4. Lade Custom EQ-Presets
+                    if (window.loadCustomEQPresets) {
+                        window.loadCustomEQPresets();
+                    }
+                    
+                    // 5. Initialisiere UI-Module
+                    if (window.sliderLiveValues && window.sliderLiveValues.init) {
+                        window.sliderLiveValues.init();
+                    }
+                    
+                    if (window.toggleSwitchManager && window.toggleSwitchManager.init) {
+                        window.toggleSwitchManager.init();
+                    }
+                    
+                    console.log('✅ Musik-Seite vollständig initialisiert');
+                    
+                } catch (error) {
+                    console.error('❌ Fehler bei Musik-Seite Initialisierung:', error);
+                }
+            }
+            
+            // Starte nach DOM-Ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initMusicPage);
+            } else {
+                // DOM ist bereits geladen
+                initMusicPage();
+            }
+        })();
+      </script>
       
     </body>
 </html>
