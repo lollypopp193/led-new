@@ -219,10 +219,47 @@ function playTrack(track, index) {
     window.currentTrack = track;
     window.currentTrackIndex = index;
 
+    // Event: onTrackChange
+    if (window.onTrackChange && typeof window.onTrackChange === 'function') {
+        window.onTrackChange(track, index);
+    }
+    window.dispatchEvent(new CustomEvent('trackchange', { detail: { track, index } }));
+
     if (window.audioPlayer) {
         window.audioPlayer.src = track.url;
         window.audioPlayer.play();
         window.isPlaying = true;
+
+        // Starte Audio Reactive Engine für LED-Musik-Reaktion
+        if (window.audioReactiveEngine && window.audioReactiveEngine.startAudioCapture) {
+            try {
+                window.audioReactiveEngine.startAudioCapture(window.audioPlayer);
+                console.log('🎵 Audio Reactive Engine gestartet mit audioPlayer');
+            } catch (e) {
+                console.warn('⚠️ Audio Reactive Engine konnte nicht gestartet werden:', e);
+            }
+        }
+
+        // Verbinde Equalizer Engine mit audioPlayer
+        if (window.equalizerEngine && window.equalizerEngine.connect) {
+            try {
+                window.equalizerEngine.connect(window.audioPlayer);
+                console.log('🎛️ Equalizer Engine verbunden mit audioPlayer');
+            } catch (e) {
+                console.warn('⚠️ Equalizer Engine konnte nicht verbunden werden:', e);
+            }
+        }
+
+        // Verbinde Advanced Visualizer mit audioPlayer
+        if (window.advancedVisualizer && window.advancedVisualizer.connectAudioElement) {
+            try {
+                window.advancedVisualizer.connectAudioElement(window.audioPlayer);
+                window.advancedVisualizer.start('bars');
+                console.log('🎨 Advanced Visualizer gestartet');
+            } catch (e) {
+                console.warn('⚠️ Advanced Visualizer konnte nicht gestartet werden:', e);
+            }
+        }
 
         // Verbinde mit Crossfade-Controller falls vorhanden
         if (window.crossfadeController && !window.crossfadeController.audioContext) {
@@ -286,9 +323,21 @@ function togglePlayPause() {
     if (window.isPlaying) {
         window.audioPlayer.pause();
         window.isPlaying = false;
+
+        // Stoppe Audio Reactive Engine
+        if (window.audioReactiveEngine && window.audioReactiveEngine.stopAudioCapture) {
+            window.audioReactiveEngine.stopAudioCapture();
+            console.log('⏸️ Audio Reactive Engine pausiert');
+        }
     } else {
         window.audioPlayer.play();
         window.isPlaying = true;
+
+        // Starte Audio Reactive Engine
+        if (window.audioReactiveEngine && window.audioReactiveEngine.startAudioCapture) {
+            window.audioReactiveEngine.startAudioCapture(window.audioPlayer);
+            console.log('▶️ Audio Reactive Engine fortgesetzt');
+        }
     }
 
     updatePlaybackState(window.isPlaying ? 'playing' : 'paused');
@@ -344,12 +393,26 @@ function initMusicPlayer() {
 
     if (window.audioPlayer) {
         window.audioPlayer.addEventListener('ended', () => {
+            // Event: onPlaybackEnd
+            if (window.onPlaybackEnd && typeof window.onPlaybackEnd === 'function') {
+                window.onPlaybackEnd(window.currentTrack);
+            }
+            window.dispatchEvent(new CustomEvent('playbackend', { detail: { track: window.currentTrack } }));
+
             if (window.isRepeatMode === 2) {
                 window.audioPlayer.currentTime = 0;
                 window.audioPlayer.play();
             } else {
                 playNext();
             }
+        });
+
+        window.audioPlayer.addEventListener('volumechange', () => {
+            // Event: onVolumeChange
+            if (window.onVolumeChange && typeof window.onVolumeChange === 'function') {
+                window.onVolumeChange(window.audioPlayer.volume);
+            }
+            window.dispatchEvent(new CustomEvent('volumechange', { detail: { volume: window.audioPlayer.volume } }));
         });
 
         window.audioPlayer.addEventListener('timeupdate', () => {
@@ -454,6 +517,37 @@ window.playNextTrack = playNext; // Alias für Kompatibilität
 window.playPrevious = playPrevious;
 window.playPreviousTrack = playPrevious; // Alias für Kompatibilität
 window.togglePlayPause = togglePlayPause;
+/**
+ * Cleanup Audio-Player
+ * FIX: Verhindert Memory Leak beim Audio-Element
+ */
+function cleanupAudioPlayer() {
+    if (window.audioPlayer) {
+        try {
+            // Stop playback
+            window.audioPlayer.pause();
+
+            // Clear source (FIX: Memory Leak Prevention)
+            window.audioPlayer.src = '';
+            window.audioPlayer.load();
+
+            // Stop Audio Reactive Engine
+            if (window.audioReactiveEngine && window.audioReactiveEngine.stopAudioCapture) {
+                window.audioReactiveEngine.stopAudioCapture();
+            }
+
+            // Stop Advanced Visualizer
+            if (window.advancedVisualizer && window.advancedVisualizer.stop) {
+                window.advancedVisualizer.stop();
+            }
+
+            console.log('✅ Audio-Player cleanup durchgeführt');
+        } catch (e) {
+            console.warn('⚠️ Audio-Player cleanup error:', e);
+        }
+    }
+}
+
 window.toggleShuffle = toggleShuffle;
 window.toggleRepeat = toggleRepeat;
 window.initMusicPlayer = initMusicPlayer;
@@ -466,6 +560,7 @@ window.deleteCustomEQPreset = deleteCustomEQPreset;
 window.selectVisualEffect = selectVisualEffect;
 window.toggleSleepTimerSettings = toggleSleepTimerSettings;
 window.toggleMusicAlarmSettings = toggleMusicAlarmSettings;
+window.cleanupAudioPlayer = cleanupAudioPlayer;
 
 // Auto-Init
 if (document.readyState === 'loading') {

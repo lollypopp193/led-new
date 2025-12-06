@@ -12,6 +12,7 @@ class BLEHealthMonitor {
         this.lastError = null;
         this.retryCount = 0;
         this.maxRetries = 3;
+        this.healthCheckInterval = null; // FIX: Timer-ID speichern
         this.init();
     }
 
@@ -78,9 +79,23 @@ class BLEHealthMonitor {
      * Startet periodische Health-Checks
      */
     startHealthCheck() {
-        setInterval(() => {
+        // FIX: Vorherigen Interval clearen falls vorhanden
+        if (this.healthCheckInterval) {
+            clearInterval(this.healthCheckInterval);
+        }
+        this.healthCheckInterval = setInterval(() => {
             this.checkBLEHealth();
         }, 10000); // Alle 10 Sekunden
+    }
+
+    /**
+     * Stoppt Health-Checks (FIX: Memory Leak Prevention)
+     */
+    stopHealthCheck() {
+        if (this.healthCheckInterval) {
+            clearInterval(this.healthCheckInterval);
+            this.healthCheckInterval = null;
+        }
     }
 
     /**

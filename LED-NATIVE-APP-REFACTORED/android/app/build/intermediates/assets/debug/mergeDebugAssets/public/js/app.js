@@ -199,8 +199,8 @@ const App = {
     async sendBrightnessCommand(brightness) { try { if (!this.state.isConnected) return false; if (this.ledAbstraction) { await this.ledAbstraction.setBrightness(brightness); } else if (window.ledDevice && window.ledDevice.characteristic) { const cmd = new Uint8Array([0x7E, 0x00, 0x0E, brightness, 0x00, 0x00, 0x00, 0xEF]); await window.ledDevice.characteristic.writeValue(cmd); } this.state.brightness = brightness; console.log('\u2705 Helligkeit gesendet:', brightness); return true; } catch (err) { console.error('\u274c Helligkeits-Befehl fehlgeschlagen:', err); return false; } },
     async sendEffectCommand(effectId) { try { if (!this.state.isConnected) return false; if (this.ledAbstraction) { await this.ledAbstraction.setEffect(effectId); } this.state.currentEffect = effectId; console.log('\u2705 Effekt gesendet:', effectId); return true; } catch (err) { console.error('\u274c Effekt-Befehl fehlgeschlagen:', err); return false; } },
     updateConnectionStatus(connected) { if (this.elements.connectionStatus) { this.elements.connectionStatus.textContent = connected ? 'Verbunden' : 'Getrennt'; this.elements.connectionStatus.className = connected ? 'connected' : 'disconnected'; } },
-    handleBLEConnected(data) { console.log('\ud83d\udce1 BLE Verbunden:', data); this.updateConnectionStatus(true); },
-    handleBLEDisconnected(data) { console.log('\ud83d\udeab BLE Getrennt'); this.updateConnectionStatus(false); },
+    handleBLEConnected(data) { console.log('\ud83d\udce1 BLE Verbunden:', data); this.updateConnectionStatus(true); if (window.onBLEConnected && typeof window.onBLEConnected === 'function') { window.onBLEConnected(data); } window.dispatchEvent(new CustomEvent('bleconnected', { detail: data })); },
+    handleBLEDisconnected(data) { console.log('\ud83d\udeab BLE Getrennt'); this.updateConnectionStatus(false); if (window.onBLEDisconnected && typeof window.onBLEDisconnected === 'function') { window.onBLEDisconnected(data); } window.dispatchEvent(new CustomEvent('bledisconnected', { detail: data })); },
     handleSceneActivated(data) { console.log('\ud83c\udfac Szene aktiviert:', data.name); },
     handleAppPause() { console.log('\u23f8\ufe0f App pausiert'); this.saveState(); if (this.audioReactiveEngine && this.audioReactiveEngine.isRunning) { this.audioReactiveEngine.stopAudioCapture(); } },
     handleAppResume() { console.log('\u25b6\ufe0f App fortgesetzt'); if (this.config.autoConnect && !this.state.isConnected) { setTimeout(function () { this.connectBLE(); }.bind(this), 1000); } },
@@ -330,7 +330,97 @@ if (window.quickActions) {
 // Share Manager aktivieren
 if (window.shareManager) {
     window.shareManager.init();
-    console.log(' ShareManager aktiviert');
+    console.log('✅ ShareManager aktiviert');
+}
+
+// Auto-Start Manager aktivieren
+if (window.autoStartManager) {
+    window.autoStartManager.init();
+    console.log('✅ AutoStartManager aktiviert');
+}
+
+// MediaStore Bridge aktivieren
+if (window.mediaStoreBridge) {
+    window.mediaStoreBridge.init();
+    console.log('✅ MediaStoreBridge aktiviert');
+}
+
+// Preset Manager aktivieren
+if (window.presetManager) {
+    window.presetManager.init();
+    console.log('✅ PresetManager aktiviert');
+}
+
+// Slider Live Value Manager aktivieren
+if (window.sliderLiveValueManager) {
+    window.sliderLiveValueManager.init();
+    console.log('✅ SliderLiveValueManager aktiviert');
+}
+
+// i18n aktivieren
+if (window.multiLang) {
+    window.multiLang.init();
+    console.log('✅ i18n aktiviert');
+}
+
+// Advanced Visualizer aktivieren
+if (window.advancedVisualizer) {
+    window.advancedVisualizer.init();
+    console.log('✅ AdvancedVisualizer aktiviert');
+}
+
+// Audio Decoder FFT aktivieren
+if (window.audioDecoderFFT) {
+    window.audioDecoderFFT.init();
+    console.log('✅ AudioDecoderFFT aktiviert');
+}
+
+// Audio Reactive Engine aktivieren (KRITISCH für LED-Musik)
+if (window.audioReactiveEngine) {
+    window.audioReactiveEngine.init();
+    console.log('✅ AudioReactiveEngine aktiviert');
+}
+
+// Cloud Sync aktivieren
+if (window.cloudSync) {
+    window.cloudSync.init();
+    console.log('✅ CloudSync aktiviert');
+}
+
+// Device Manager aktivieren (KRITISCH)
+if (window.deviceManager) {
+    window.deviceManager.init();
+    console.log('✅ DeviceManager aktiviert');
+}
+
+// Equalizer Engine aktivieren (KRITISCH)
+if (window.equalizerEngine) {
+    window.equalizerEngine.init();
+    console.log('✅ EqualizerEngine aktiviert');
+}
+
+// Global Error Handler aktivieren
+if (window.globalErrorHandler) {
+    window.globalErrorHandler.init();
+    console.log('✅ GlobalErrorHandler aktiviert');
+}
+
+// LED Custom Names aktivieren
+if (window.ledCustomNames) {
+    window.ledCustomNames.init();
+    console.log('✅ LEDCustomNames aktiviert');
+}
+
+// LED Sidebar aktivieren
+if (window.ledSidebar) {
+    window.ledSidebar.init();
+    console.log('✅ LEDSidebar aktiviert');
+}
+
+// LED Sidebar Swipe aktivieren
+if (window.ledSidebarSwipe) {
+    window.ledSidebarSwipe.init();
+    console.log('✅ LEDSidebarSwipe aktiviert');
 }
 
 window.App = App;

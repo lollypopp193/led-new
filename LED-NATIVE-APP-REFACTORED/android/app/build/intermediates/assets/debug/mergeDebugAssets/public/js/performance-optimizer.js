@@ -15,6 +15,9 @@ class PerformanceOptimizer {
         this.fpsCounter = 0;
         this.lastFpsTime = performance.now();
         this.currentFPS = 0;
+        // FIX: Timer-IDs speichern für Cleanup
+        this.memoryInterval = null;
+        this.logInterval = null;
         this.init();
         console.log('✅ Performance-Optimizer initialisiert');
     }
@@ -45,7 +48,8 @@ class PerformanceOptimizer {
         measureFPS();
 
         if (performance.memory) {
-            setInterval(function () {
+            // FIX: Timer-ID speichern
+            this.memoryInterval = setInterval(function () {
                 const mem = { used: performance.memory.usedJSHeapSize, total: performance.memory.totalJSHeapSize, limit: performance.memory.jsHeapSizeLimit };
                 self.metrics.memoryUsage.push(mem);
                 if (self.metrics.memoryUsage.length > 60) self.metrics.memoryUsage.shift();
@@ -57,7 +61,22 @@ class PerformanceOptimizer {
             }, 5000);
         }
 
-        setInterval(function () { self.logPerformanceMetrics(); }, 30000);
+        // FIX: Timer-ID speichern
+        this.logInterval = setInterval(function () { self.logPerformanceMetrics(); }, 30000);
+    }
+
+    /**
+     * Stoppt Monitoring (FIX: Memory Leak Prevention)
+     */
+    stopMonitoring() {
+        if (this.memoryInterval) {
+            clearInterval(this.memoryInterval);
+            this.memoryInterval = null;
+        }
+        if (this.logInterval) {
+            clearInterval(this.logInterval);
+            this.logInterval = null;
+        }
     }
 
     setupOptimizations() {

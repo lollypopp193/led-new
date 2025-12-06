@@ -564,6 +564,13 @@ class PresetManager {
         this.setSliderValue('effectSpeed', effect.speed);
         this.setSliderValue('effectIntensity', effect.intensity);
 
+        // Speichere effectSettings in localStorage
+        try {
+            localStorage.setItem('effectSettings', JSON.stringify(effect));
+        } catch (e) {
+            console.warn('⚠️ Konnte effectSettings nicht speichern:', e);
+        }
+
         // BLE-Controller benachrichtigen
         const bleCtrl = window.bleController || (window.parent && window.parent.bleController) || (window.top && window.top.bleController);
         if (bleCtrl && bleCtrl.isConnected) {

@@ -42,6 +42,21 @@ class AdvancedVisualizer {
         this.canvas.height = window.innerHeight;
         this.ctx = this.canvas.getContext('2d');
 
+        // FIX: Canvas Context Loss Handler (bei App-Suspend)
+        this.canvas.addEventListener('webglcontextlost', (event) => {
+            console.warn('⚠️ Canvas Context Lost');
+            event.preventDefault();
+            this.stop();
+        });
+
+        this.canvas.addEventListener('webglcontextrestored', () => {
+            console.log('✅ Canvas Context Restored');
+            this.ctx = this.canvas.getContext('2d');
+            if (this.isRunning) {
+                this.start(this.mode);
+            }
+        });
+
         // Resize handling
         window.addEventListener('resize', () => {
             this.canvas.width = window.innerWidth;

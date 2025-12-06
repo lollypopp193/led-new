@@ -38,6 +38,8 @@ class LEDCustomNames {
         try {
             const obj = Object.fromEntries(this.customNames);
             localStorage.setItem('led-custom-names', JSON.stringify(obj));
+            // Auch mit camelCase Key für cloud-sync Kompatibilität
+            localStorage.setItem('ledCustomNames', JSON.stringify(obj));
             console.log('✅ Custom-Namen gespeichert');
         } catch (error) {
             console.error('❌ Fehler beim Speichern:', error);

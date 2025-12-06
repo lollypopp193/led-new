@@ -135,7 +135,8 @@ input[type='range']::-webkit-slider-thumb {
     width: 100vw;
     height: 100vh;
     z-index: 9999;
-    background: var(--bg);
+    /* FIX: Transparenter Hintergrund damit Partikel sichtbar sind */
+    background: transparent;
     display: flex;
     flex-direction: column;
     align-items: center;
