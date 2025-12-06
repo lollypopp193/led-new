@@ -65,6 +65,22 @@ window.MusikIntegration = MusikIntegration;
 window.musikIntegration = new MusikIntegration();
 console.log('\u2705 Musik-Integration global verfügbar als window.musikIntegration');
 
+// Auto-Initialisierung wenn DOM bereit ist
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+        if (window.musikIntegration && window.musikIntegration.initialize) {
+            window.musikIntegration.initialize(window.musicLibraryManager);
+            console.log('✅ Musik-Integration auto-initialisiert');
+        }
+    });
+} else {
+    // DOM bereits geladen
+    if (window.musikIntegration && window.musikIntegration.initialize) {
+        window.musikIntegration.initialize(window.musicLibraryManager);
+        console.log('✅ Musik-Integration auto-initialisiert');
+    }
+}
+
 // Party-Modus Toggle (wird von HTML verwendet)
 let partyModeActive = false;
 function togglePartyMode(enabled) {
