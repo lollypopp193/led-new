@@ -468,9 +468,21 @@ function closeRGBPopup() {
 }
 
 function updateRGBPreview() {
-    const r = parseInt(document.getElementById('redSlider')?.value || 0);
-    const g = parseInt(document.getElementById('greenSlider')?.value || 0);
-    const b = parseInt(document.getElementById('blueSlider')?.value || 0);
+    // RGB-VALIDIERUNG: Clamp Werte auf 0-255 (ZERO TOLERANCE - FIX #5)
+    let r = parseInt(document.getElementById('redSlider')?.value || 0);
+    let g = parseInt(document.getElementById('greenSlider')?.value || 0);
+    let b = parseInt(document.getElementById('blueSlider')?.value || 0);
+
+    // Validierung & Clamping
+    r = Math.min(255, Math.max(0, r));
+    g = Math.min(255, Math.max(0, g));
+    b = Math.min(255, Math.max(0, b));
+
+    // Prüfe ob Werte valid sind
+    if (isNaN(r) || isNaN(g) || isNaN(b)) {
+        console.error('❌ Ungültige RGB-Werte:', { r, g, b });
+        return; // Abbruch bei ungültigen Werten
+    }
 
     const preview = document.getElementById('rgbPreview');
     if (preview) {
@@ -486,7 +498,7 @@ function updateRGBPreview() {
     // Aktuelle Farbe aktualisieren
     currentColor = { r, g, b };
 
-    // An Hardware senden
+    // An Hardware senden (mit validierten Werten)
     sendColorToBLE(r, g, b);
 }
 
@@ -815,11 +827,11 @@ function saveColorPresets() {
             { name: 'Weiß', r: 255, g: 255, b: 255 },
             { name: 'Orange', r: 255, g: 165, b: 0 }
         ];
-        
+
         // Lese custom presets falls vorhanden
         const customPresets = JSON.parse(localStorage.getItem('customColorPresets') || '[]');
         const allPresets = [...presets, ...customPresets];
-        
+
         localStorage.setItem('colorPresets', JSON.stringify(allPresets));
         console.log(' Color Presets gespeichert');
     } catch (e) {
