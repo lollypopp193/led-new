@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="ledGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4ecdc4;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#00bfa5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1de9b6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="glowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#4ecdc4;stop-opacity:0.3" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="innerGlow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+      <feOffset dx="0" dy="0" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="1.5"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Hintergrund Kreis (Dunkel) -->
+  <circle cx="100" cy="100" r="95" fill="#1a1a2e" stroke="url(#ledGradient)" stroke-width="3"/>
+  
+  <!-- LED Strip (gewellt) -->
+  <path d="M 40 100 Q 60 80, 80 100 T 120 100 T 160 100" 
+        stroke="url(#ledGradient)" 
+        stroke-width="8" 
+        fill="none" 
+        stroke-linecap="round"
+        filter="url(#glow)"/>
+  
+  <!-- LED Punkte (leuchtend) -->
+  <circle cx="40" cy="100" r="6" fill="#4ecdc4" filter="url(#glow)">
+    <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="70" cy="90" r="6" fill="#00bfa5" filter="url(#glow)">
+    <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="100" cy="100" r="6" fill="#1de9b6" filter="url(#glow)">
+    <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="130" cy="90" r="6" fill="#4ecdc4" filter="url(#glow)">
+    <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="160" cy="100" r="6" fill="#00bfa5" filter="url(#glow)">
+    <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Musik-Wellen (unter dem Strip) -->
+  <path d="M 50 130 Q 70 120, 90 130 T 130 130" 
+        stroke="#4ecdc4" 
+        stroke-width="2" 
+        fill="none" 
+        opacity="0.5"
+        stroke-linecap="round">
+    <animate attributeName="d" 
+             values="M 50 130 Q 70 120, 90 130 T 130 130;
+                     M 50 130 Q 70 135, 90 130 T 130 130;
+                     M 50 130 Q 70 120, 90 130 T 130 130" 
+             dur="2s" 
+             repeatCount="indefinite"/>
+  </path>
+  <path d="M 60 140 Q 80 135, 100 140 T 140 140" 
+        stroke="#00bfa5" 
+        stroke-width="2" 
+        fill="none" 
+        opacity="0.3"
+        stroke-linecap="round">
+    <animate attributeName="d" 
+             values="M 60 140 Q 80 135, 100 140 T 140 140;
+                     M 60 140 Q 80 145, 100 140 T 140 140;
+                     M 60 140 Q 80 135, 100 140 T 140 140" 
+             dur="2.5s" 
+             repeatCount="indefinite"/>
+  </path>
+  
+  <!-- Text "LED" -->
+  <text x="100" y="65" 
+        font-family="Orbitron, Arial, sans-serif" 
+        font-size="32" 
+        font-weight="700" 
+        fill="url(#ledGradient)" 
+        text-anchor="middle"
+        filter="url(#innerGlow)">LED</text>
+  
+  <!-- Text "CONTROL" -->
+  <text x="100" y="175" 
+        font-family="Orbitron, Arial, sans-serif" 
+        font-size="14" 
+        font-weight="400" 
+        fill="#4ecdc4" 
+        text-anchor="middle"
+        opacity="0.8">CONTROL</text>
+  
+  <!-- Bluetooth Symbol (klein, oben rechts) -->
+  <g transform="translate(145, 35) scale(0.6)" opacity="0.7">
+    <path d="M 10 0 L 10 20 L 20 10 L 10 0 M 10 10 L 20 20 L 10 30 L 10 10" 
+          fill="none" 
+          stroke="#4ecdc4" 
+          stroke-width="2.5" 
+          stroke-linecap="round" 
+          stroke-linejoin="round"/>
+  </g>
+</svg>
