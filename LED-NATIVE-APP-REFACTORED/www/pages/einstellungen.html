@@ -993,41 +993,5 @@
     <!-- Preset-System & MediaStore -->
     <script src="../js/preset-manager.js"></script>
     <script src="../js/mediastore-bridge.js"></script>
-    
-    <!-- SWITCH-FIX: Macht alle Switches klickbar -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // Alle div.switch Elemente klickbar machen
-        document.querySelectorAll('.switch').forEach(switchEl => {
-          if (!switchEl.hasAttribute('onclick')) {
-            switchEl.addEventListener('click', function() {
-              this.classList.toggle('active');
-              const isActive = this.classList.contains('active');
-              console.log('?? Switch:', this.id || 'unknown', '?', isActive ? 'AN' : 'AUS');
-              
-              // Speichere Status
-              if (this.id) {
-                localStorage.setItem('switch_' + this.id, isActive);
-              }
-            });
-          }
-          
-          // Lade gespeicherten Status
-          if (switchEl.id) {
-            const saved = localStorage.getItem('switch_' + switchEl.id);
-            if (saved !== null) {
-              if (saved === 'true') {
-                switchEl.classList.add('active');
-              } else {
-                switchEl.classList.remove('active');
-              }
-            }
-          }
-        });
-        
-        console.log('? Alle Einstellungen-Switches aktiviert');
-      });
-    </script>
   </body>
 </html>
-

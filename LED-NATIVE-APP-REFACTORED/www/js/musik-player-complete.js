@@ -429,14 +429,24 @@ function initMusicPlayer() {
 
 // === FEHLENDE FUNKTIONEN ===
 
-// Panel-Navigation
-function showPanel(panelId) {
-    document.querySelectorAll('.panel, .content-panel').forEach(p => p.classList.remove('active'));
-    const panel = document.getElementById(panelId);
-    if (panel) {
-        panel.classList.add('active');
-        console.log('📱 Panel gewechselt:', panelId);
-    }
+// Panel-Navigation - Nutze musik-panel-controller.js wenn verfügbar
+if (!window.showPanel) {
+    window.showPanel = function (panelId, clickedBtn) {
+        // Alle Buttons deaktivieren
+        document.querySelectorAll('.taskbar-btn').forEach(btn => btn.classList.remove('active'));
+        // Geklickten Button aktivieren
+        if (clickedBtn) clickedBtn.classList.add('active');
+
+        // Alle Panels verstecken
+        document.querySelectorAll('.panel, .content-panel').forEach(p => p.classList.remove('active'));
+
+        // Gewähltes Panel zeigen
+        const panel = document.getElementById(panelId);
+        if (panel) {
+            panel.classList.add('active');
+            console.log('📱 Panel gewechselt:', panelId);
+        }
+    };
 }
 
 // Bibliothek anzeigen
