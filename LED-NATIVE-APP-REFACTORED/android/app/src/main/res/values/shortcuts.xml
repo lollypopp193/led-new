@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shortcut Strings -->
+    <string name="shortcut_led_on">LED An</string>
+    <string name="shortcut_led_on_long">LED einschalten</string>
+    
+    <string name="shortcut_led_off">LED Aus</string>
+    <string name="shortcut_led_off_long">LED ausschalten</string>
+    
+    <string name="shortcut_last_scene">Letzte Szene</string>
+    <string name="shortcut_last_scene_long">Letzte Szene aktivieren</string>
+    
+    <string name="shortcut_party">Party-Modus</string>
+    <string name="shortcut_party_long">Party-Modus starten</string>
+    
+    <string name="shortcut_disabled">Shortcut nicht verfügbar</string>
+</resources>

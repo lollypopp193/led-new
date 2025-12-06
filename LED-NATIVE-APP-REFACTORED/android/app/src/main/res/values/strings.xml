@@ -4,4 +4,4 @@
     <string name="title_activity_main">LED Control Pro</string>
     <string name="package_name">com.ledcontrol.app.refactored</string>
     <string name="custom_url_scheme">com.ledcontrol.app.refactored</string>
-</resources>
+    <string name="widget_description">LED Schnellsteuerung - An/Aus, Farben, Party</string>`r`n</resources>

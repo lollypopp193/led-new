@@ -1224,6 +1224,59 @@
           </div>
         </div>
 
+        <!-- SZENEN-VERWALTUNG -->
+        <div class="control-group" style="margin: 25px 0">
+          <h3
+            style="
+              color: #4ecdc4;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              margin-bottom: 15px;
+              font-size: 1.1rem;
+            "
+          >
+            <i class="fas fa-film"></i>
+            Gespeicherte Szenen
+            <button
+              onclick="createSceneFromCurrent()"
+              style="
+                margin-left: auto;
+                padding: 8px 15px;
+                background: linear-gradient(135deg, #4ecdc4, #00bfa5);
+                color: #0a0a0a;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: 600;
+                font-size: 0.85em;
+                box-shadow: 0 2px 10px rgba(78, 205, 196, 0.3);
+              "
+            >
+              <i class="fas fa-plus"></i> Neue Szene
+            </button>
+          </h3>
+          <div
+            id="scenesGrid"
+            style="
+              display: grid;
+              grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+              gap: 12px;
+            "
+          ></div>
+          <p
+            id="scenesEmpty"
+            style="
+              text-align: center;
+              color: #888;
+              padding: 30px;
+              display: none;
+            "
+          >
+            Keine Szenen gespeichert. Erstelle deine erste Szene!
+          </p>
+        </div>
+
         <div class="color-slots-section">
           <div class="color-slots-grid">
             <div class="color-slot" data-slot="0"></div>

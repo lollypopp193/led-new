@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="@drawable/widget_background">
+
+    <!-- Widget Titel -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="LED Control"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#4ecdc4"
+        android:gravity="center"
+        android:paddingBottom="8dp"/>
+
+    <!-- An/Aus Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btn_led_on"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:text="AN"
+            android:textColor="#ffffff"
+            android:background="@drawable/widget_button_on"/>
+
+        <Button
+            android:id="@+id/btn_led_off"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:text="AUS"
+            android:textColor="#ffffff"
+            android:background="@drawable/widget_button_off"/>
+    </LinearLayout>
+
+    <!-- Farb-Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/btn_color_red"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:text="🔴"
+            android:textSize="24sp"
+            android:background="@drawable/widget_button_red"/>
+
+        <Button
+            android:id="@+id/btn_color_green"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:text="🟢"
+            android:textSize="24sp"
+            android:background="@drawable/widget_button_green"/>
+
+        <Button
+            android:id="@+id/btn_color_blue"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:text="🔵"
+            android:textSize="24sp"
+            android:background="@drawable/widget_button_blue"/>
+    </LinearLayout>
+
+    <!-- Party Button -->
+    <Button
+        android:id="@+id/btn_party"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:text="🎉 PARTY"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:background="@drawable/widget_button_party"/>
+
+</LinearLayout>

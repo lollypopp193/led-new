@@ -17,14 +17,14 @@
             android:label="@string/title_activity_main" 
             android:theme="@style/AppTheme.NoActionBarLaunch" 
             android:launchMode="singleTask" 
-            android:exported="true">
+            android:exported="true">`r`n            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
 
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN" />`r`n                <action android:name="android.intent.action.VIEW" />`r`n                <category android:name="android.intent.category.DEFAULT" />`r`n                <category android:name="android.intent.category.BROWSABLE" />`r`n                <data android:scheme="ledcontrol" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-        </activity>
+        </activity>`r`n`r`n        <!-- LED Widget -->`r`n        <receiver android:name=".LEDWidgetProvider" android:exported="true">`r`n            <intent-filter>`r`n                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />`r`n            </intent-filter>`r`n            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_info" />`r`n        </receiver>
 
         <!-- Bluetooth Foreground Service für persistente BLE-Verbindungen -->
         <service
