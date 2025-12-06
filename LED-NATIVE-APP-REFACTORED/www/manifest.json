@@ -1,7 +1,7 @@
 {
-    "name": "LED Control Pro",
-    "short_name": "LED Pro",
-    "description": "Professional LED control application with Bluetooth connectivity",
+    "name": "Light Space World",
+    "short_name": "LSW",
+    "description": "Professional LED control application with Bluetooth connectivity - Light Space World",
     "version": "3.0.0",
     "start_url": "/index.html",
     "display": "standalone",
