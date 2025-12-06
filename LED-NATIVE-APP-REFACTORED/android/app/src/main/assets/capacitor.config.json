@@ -1,6 +1,6 @@
 {
-	"appId": "com.ledcontrol.app.refactored",
-	"appName": "LED Control Pro",
+	"appId": "com.lightspaceworld.app",
+	"appName": "Light Space World",
 	"webDir": "www",
 	"server": {
 		"androidScheme": "https"
