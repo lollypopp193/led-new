@@ -10,8 +10,57 @@ class DeviceManager {
     constructor() { this.devices = []; this.groups = []; this.connectionHistory = []; this.currentDevice = null; this.isScanning = false; this.init(); }
     init() { this.loadDevices(); this.loadGroups(); this.loadHistory(); console.log('\u2705 Device Manager initialisiert'); }
     async scanForDevices() {
-        if (!window.bleController && !window.BLEController) throw new Error('BLE-Controller nicht verfügbar'); if (this.isScanning) throw new Error('Scan läuft bereits'); try {
-            this.isScanning = true; console.log('\ud83d\udd0d Scanne nach BLE-Geräten...'); if (window.showGlobalNotification) window.showGlobalNotification('Suche nach Geräten...', 'info', 3000); const bleCtrl = window.bleController || window.BLEController;
+        if (this.isScanning) throw new Error('Scan läuft bereits');
+
+        try {
+            this.isScanning = true;
+            console.log('🔍 Scanne nach BLE-Geräten...');
+            if (window.showGlobalNotification) window.showGlobalNotification('Suche nach Geräten...', 'info', 3000);
+
+            // PRIORITÄT: Native BLE Scanner für Android
+            if (window.nativeBLEScanner && window.Capacitor?.isNativePlatform()) {
+                console.log('📱 Verwende Native BLE Scanner');
+                const devices = [];
+
+                await window.nativeBLEScanner.startScan(10, (device) => {
+                    devices.push(device);
+                    console.log(`📱 Gefunden: ${device.name}`);
+                });
+
+                if (devices.length > 0) {
+                    const device = devices[0]; // Erstes Gerät nehmen
+                    const existingDevice = this.getDeviceById(device.id);
+                    if (existingDevice) {
+                        if (window.showGlobalNotification) window.showGlobalNotification('Gerät gefunden: ' + existingDevice.name, 'success');
+                        return existingDevice;
+                    } else {
+                        const newDevice = {
+                            id: device.id,
+                            name: device.name,
+                            originalName: device.name,
+                            mac: device.id,
+                            protocol: 'ELK_BLEDOM',
+                            autoConnect: false,
+                            group: null,
+                            favorite: false,
+                            rssi: device.rssi,
+                            lastConnected: null,
+                            connectionCount: 0,
+                            notes: '',
+                            createdAt: Date.now(),
+                            updatedAt: Date.now()
+                        };
+                        this.addDevice(newDevice);
+                        if (window.showGlobalNotification) window.showGlobalNotification('Neues Gerät: ' + newDevice.name, 'success');
+                        return newDevice;
+                    }
+                }
+                throw new Error('Keine Geräte gefunden');
+            }
+
+            // FALLBACK: Web Bluetooth API
+            if (!window.bleController && !window.BLEController) throw new Error('BLE-Controller nicht verfügbar');
+            const bleCtrl = window.bleController || window.BLEController;
             const device = await bleCtrl.scan(); if (device) { const existingDevice = this.getDeviceById(device.id); if (existingDevice) { console.log('\u2705 Bekanntes Gerät gefunden:', existingDevice.name); if (window.showGlobalNotification) window.showGlobalNotification('Gerät gefunden: ' + existingDevice.name, 'success'); return existingDevice; } else { const newDevice = { id: device.id, name: device.name, originalName: device.name, mac: device.id, protocol: 'ELK_BLEDOM', autoConnect: false, group: null, favorite: false, rssi: null, lastConnected: null, connectionCount: 0, notes: '', createdAt: Date.now(), updatedAt: Date.now() }; this.addDevice(newDevice); console.log('\u2705 Neues Gerät hinzugefügt:', newDevice.name); if (window.showGlobalNotification) window.showGlobalNotification('Neues Gerät: ' + newDevice.name, 'success'); return newDevice; } }
         } catch (err) { console.error('\u274c Scan fehlgeschlagen:', err); if (window.showGlobalNotification) { if (err.name === 'NotFoundError') window.showGlobalNotification('Keine Geräte gefunden', 'warning'); else window.showGlobalNotification('Scan fehlgeschlagen', 'error'); } throw err; } finally { this.isScanning = false; }
     }
