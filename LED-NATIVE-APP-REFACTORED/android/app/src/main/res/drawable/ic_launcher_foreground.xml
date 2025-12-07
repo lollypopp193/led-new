@@ -1,93 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Light Space World App Icon - Basiert auf logo.svg -->
+<!-- Light Space World App Icon - Minimalistisch & Professionell -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
     
-    <!-- Hintergrund Kreis -->
+    <!-- Buchstabe L - Groß und klar -->
     <path
-                                                                                                               android:fillColor="#1a1a2e"
-        android:pathData="M54,54 m-40,0 a40,40 0 1,1 80,0 a40,40 0 1,1 -80,0">
-                                                                                                               </path>
+                                                                                                        android:fillColor="#4ECDC4"
+        android:pathData="M30,28 L30,70 L50,70 L50,62 L38,62 L38,28 Z">
+                                                                                                        </path>
     
-    <!-- Kreis Rand (Gradient simuliert) -->
+    <!-- Buchstabe S - Groß und klar -->
     <path
-                                                                                                                                                                                         android:strokeColor="#4ECDC4"
-        android:strokeWidth="2"
-        android:fillColor="#00000000"
-        android:pathData="M54,54 m-40,0 a40,40 0 1,1 80,0 a40,40 0 1,1 -80,0">
-                                                                                                                                                                                         </path>
+                                                                                                                                                                android:fillColor="#00D4AA"
+        android:pathData="M54,28 L54,36 L70,36 L70,44 L54,44 L54,62 L78,62 L78,70 L46,70 L46,44 L62,44 L62,36 L46,36 L46,28 Z">
+                                                                                                                                                                </path>
     
-    <!-- LED Strip Welle -->
-    <path android:strokeColor="#4ECDC4"
-          android:strokeWidth="4"
-          android:fillColor="#00000000"
-          android:strokeLineCap="round"
-          android:pathData="M22,54 Q32,44 42,54 T62,54 T82,54">
+    <!-- LED Licht-Punkt 1 (oben links) -->
+    <path
+                                                                                                        android:fillColor="#FFD700"
+        android:pathData="M26,22 m-4,0 a4,4 0 1,1 8,0 a4,4 0 1,1 -8,0">
+                                                                                                        </path>
+    
+    <!-- LED Licht-Punkt 2 (oben mitte) -->
+    <path android:fillColor="#FF6B6B"
+          android:pathData="M54,18 m-5,0 a5,5 0 1,1 10,0 a5,5 0 1,1 -10,0">
     </path>
-    <!-- LED Punkt 1 -->
+    
+    <!-- LED Licht-Punkt 3 (oben rechts) -->
     <path
         android:fillColor="#4ECDC4"
-                                                                   android:pathData="M22,54 m-3,0 a3,3 0 1,1 6,0 a3,3 0 1,1 -6,0">
+                                                                   android:pathData="M82,22 m-4,0 a4,4 0 1,1 8,0 a4,4 0 1,1 -8,0">
                                                                    </path>
     
-    <!-- LED Punkt 2 -->
-    <path android:fillColor="#00BFA5"
-          android:pathData="M37,49 m-3,0 a3,3 0 1,1 6,0 a3,3 0 1,1 -6,0">
+    <!-- LED Licht-Punkt 4 (unten links) -->
+    <path android:fillColor="#9B59B6"
+          android:pathData="M26,86 m-4,0 a4,4 0 1,1 8,0 a4,4 0 1,1 -8,0">
     </path>
-    
-    <!-- LED Punkt 3 (Mitte) -->
-    <path android:fillColor="#1DE9B6"
-          android:pathData="M54,54 m-4,0 a4,4 0 1,1 8,0 a4,4 0 1,1 -8,0">
-    </path>
-    
-    <!-- LED Punkt 4 -->
-    <path android:fillColor="#4ECDC4"
-          android:pathData="M69,49 m-3,0 a3,3 0 1,1 6,0 a3,3 0 1,1 -6,0">
-    </path>
-    <!-- LED Punkt 5 -->
-    <path android:fillColor="#00BFA5"
-          android:pathData="M84,54 m-3,0 a3,3 0 1,1 6,0 a3,3 0 1,1 -6,0">
-    </path>
-    
-    <!-- Text LIGHT -->
+    <!-- LED Licht-Punkt 5 (unten mitte) -->
     <path
-        android:fillColor="#4ECDC4"
-                                                                                 android:pathData="M32,32 L34,32 L34,36 L38,36 L38,32 L40,32 L40,38 L32,38 Z">
-                                                                                 </path>
+                                                                                                          android:fillColor="#3498DB"
+        android:pathData="M54,90 m-5,0 a5,5 0 1,1 10,0 a5,5 0 1,1 -10,0">
+                                                                                                          </path>
     
-    <!-- Text LSW (vereinfacht) -->
-    <path android:fillColor="#4ECDC4"
-          android:pathData="M44,30 L46,30 L46,36 L50,36 L50,30 L52,30 L52,38 L44,38 Z
-                          M56,30 L64,30 L64,32 L58,32 L58,33 L62,33 L62,35 L58,35 L58,36 L64,36 L64,38 L56,38 Z
-                          M68,30 L70,30 L71,34 L72,30 L74,30 L75,34 L76,30 L78,30 L75,38 L73,38 L72,35 L71,38 L69,38 Z">
-    </path>
-    
-    <!-- Musik-Wellen unten -->
-    <path android:strokeColor="#4ECDC4"
-          android:strokeWidth="1"
-          android:fillColor="#00000000"
-          android:strokeAlpha="0.5"
-          android:pathData="M28,68 Q38,62 48,68 T68,68">
-    </path>
-
-    <path
-                                                                                                                                                                                                    android:strokeColor="#00BFA5"
-        android:strokeWidth="1"
-        android:fillColor="#00000000"
-        android:strokeAlpha="0.3"
-        android:pathData="M32,74 Q42,70 52,74 T72,74">
-                                                                                                                                                                                                    </path>
-    
-    <!-- Bluetooth Symbol -->
-    <path android:strokeColor="#4ECDC4"
-          android:strokeWidth="1.5"
-          android:fillColor="#00000000"
-          android:strokeLineCap="round"
-          android:strokeLineJoin="round"
-          android:pathData="M78,22 L78,32 L83,27 L78,22 M78,27 L83,32 L78,37">
+    <!-- LED Licht-Punkt 6 (unten rechts) -->
+    <path android:fillColor="#2ECC71"
+          android:pathData="M82,86 m-4,0 a4,4 0 1,1 8,0 a4,4 0 1,1 -8,0">
     </path>
 
 </vector>
