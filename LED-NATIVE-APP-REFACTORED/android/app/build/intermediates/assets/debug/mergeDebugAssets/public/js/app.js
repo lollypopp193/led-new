@@ -51,81 +51,169 @@ const App = {
         isPlaying: false
     },
     async initialize() {
-        if (this.state.initialized) { console.log('\u26a0\ufe0f App bereits initialisiert'); return; } console.log('\ud83d\ude80 LED Native App v4.0 - Zero Tolerance - Initialisierung...'); try {
-            // Sequenzielle Berechtigungen (nacheinander wie bei professionellen Apps)
-            if (window.permissionsSequencer) {
-                await window.permissionsSequencer.start((results) => {
-                    console.log('✅ Berechtigungen abgeschlossen:', results);
-                    // Nach Berechtigungen weiter initialisieren
-                    this.continueInitialization();
-                });
-                return; // Warte auf Berechtigungen
-            }
-            if (window.PermissionsHandler) {
-                await window.PermissionsHandler.init();
-                await window.PermissionsHandler.requestAllPermissions();
-            }
-            if (window.BluetoothForegroundService) {
-                await window.BluetoothForegroundService.init();
-                await window.BluetoothForegroundService.startForegroundService();
-                console.log('✅ Bluetooth Foreground Service gestartet');
-            }
-            if (window.AndroidMusicScanner) {
-                await window.AndroidMusicScanner.init();
-                console.log('✅ Android Music Scanner initialisiert');
-            }
-            if (window.i18n && window.i18n.init) {
-                window.i18n.init();
-                console.log('✅ i18n-System initialisiert');
-            }
-            // Auto-Scan SILENT im Hintergrund
-            if (window.LEDAutoScanner) {
-                setTimeout(function () {
-                    console.log('🔇 LED Auto-Scan (silent)...');
-                    window.LEDAutoScanner.startAutoScan();
-                }, 2000);
-            }
-            if (window.LibraryAutoScanner) {
-                setTimeout(function () {
-                    console.log('🔇 Musikbibliothek Auto-Scan (silent)...');
-                    window.LibraryAutoScanner.startAutoScan();
-                }, 3000);
-            }
-            if (window.AndroidMusicScanner) {
-                setTimeout(async function () {
-                    console.log('🔇 Android Music Scan (silent)...');
-                    try {
-                        await window.AndroidMusicScanner.scanMediaStore();
-                    } catch (e) { /* Silent fail */ }
-                }, 4000);
-            }
-            await this.initializeModules();
-            this.cacheDOMElements();
-            this.initParticles();
-            this.initNavigation();
-            this.initGlobalEventListeners();
-            this.loadSettings();
-            this.initStartupSequence();
-            this.state.initialized = true;
-            console.log('\u2705 App erfolgreich initialisiert');
-            if (this.eventManager) this.eventManager.emit('app-ready', { timestamp: Date.now() });
-        } catch (err) { console.error('\u274c Initialisierung fehlgeschlagen:', err); this.showError('Initialisierung fehlgeschlagen'); }
+        if (this.state.initialized) {
+            console.log('⚠️ App bereits initialisiert');
+            return;
+        }
+
+        console.log('🚀 LED Native App v4.0 - Zero Tolerance - Initialisierung...');
+
+        try {
+            // NOTFALL-FIX: APP STARTET SOFORT - PERMISSIONS SPÄTER!
+            console.log('⚡ DIREKTSTART - Permissions werden übersprungen');
+            await this.continueInitialization();
+
+            // Permissions NACH App-Start im Hintergrund anfordern
+            setTimeout(() => {
+                if (window.permissionsSequencer) {
+                    console.log('📋 Starte Permissions im Hintergrund...');
+                    window.permissionsSequencer.start((results) => {
+                        console.log('✅ Berechtigungen abgeschlossen:', results);
+                    });
+                }
+            }, 2000);
+
+        } catch (err) {
+            console.error('❌ Initialisierung fehlgeschlagen:', err);
+            this.showError('Initialisierung fehlgeschlagen'); 
+        }
     },
     async continueInitialization() {
+        console.log('🔧 continueInitialization() gestartet');
+
         try {
-            await this.initializeModules();
+            // 1. Erst DOM und UI vorbereiten (DAMIT DER USER WAS SIEHT!)
+            console.log('📍 Schritt 1: DOM cachen');
             this.cacheDOMElements();
+
+            console.log('📍 Schritt 2: Partikel initialisieren');
             this.initParticles();
+
+            console.log('📍 Schritt 3: Navigation initialisieren');
             this.initNavigation();
+
+            console.log('📍 Schritt 4: Event-Listener');
             this.initGlobalEventListeners();
+
+            console.log('📍 Schritt 5: Einstellungen laden');
             this.loadSettings();
+
+            // 2. Startup-Sequenz SOFORT starten (Splash ausblenden)
+            console.log('📍 Schritt 6: Startup-Sequenz');
             this.initStartupSequence();
             this.state.initialized = true;
-            console.log('\u2705 App erfolgreich initialisiert (nach Permissions)');
-            if (this.eventManager) this.eventManager.emit('app-ready', { timestamp: Date.now() });
-        } catch (err) { console.error('\u274c Fortsetzung fehlgeschlagen:', err); }
+            console.log('✅ UI gestartet - Lade Module im Hintergrund...');
+
+            // 3. Module im HINTERGRUND laden (blockiert nicht den Start!)
+            this.initializeModules().then(() => {
+                console.log('✅ Alle Module im Hintergrund geladen');
+                if (this.eventManager) this.eventManager.emit('app-ready', { timestamp: Date.now() });
+            }).catch(err => {
+                console.warn('⚠️ Modul-Laden mit Fehlern abgeschlossen:', err);
+            });
+
+        } catch (err) {
+            console.error('❌ Fortsetzung fehlgeschlagen:', err);
+            console.error('❌ Error Stack:', err.stack);
+            // Notfall-Start versuchen
+            console.log('🚨 Versuche Notfall-Start...');
+            this.initStartupSequence();
+        }
     },
-    async initializeModules() { try { console.log('\ud83d\udce6 Lade Module...'); if (window.eventManager) { this.eventManager = window.eventManager; console.log('\u2705 EventManager geladen'); } if (window.performanceOptimizer) { this.performanceOptimizer = window.performanceOptimizer; this.performanceOptimizer.init(); console.log('\u2705 PerformanceOptimizer geladen'); } if (window.ledAbstraction) { this.ledAbstraction = window.ledAbstraction; await this.ledAbstraction.detectLEDType(); console.log('\u2705 LED-Abstraction geladen'); } if (window.scenesManager) { this.scenesManager = window.scenesManager; console.log('\u2705 ScenesManager geladen'); } if (window.deviceManager) { this.deviceManager = window.deviceManager; console.log('\u2705 DeviceManager geladen'); } if (window.audioReactiveEngine) { this.audioReactiveEngine = window.audioReactiveEngine; console.log('\u2705 AudioReactiveEngine geladen'); } if (window.musikIntegration) { this.musikIntegration = window.musikIntegration; console.log('\u2705 MusikIntegration geladen'); } if (window.musicLibraryManager) { this.musicLibraryManager = window.musicLibraryManager; await this.musicLibraryManager.init(); console.log('\u2705 MusicLibraryManager geladen'); } if (typeof Capacitor !== 'undefined') { await this.initCapacitor(); } console.log('\u2705 Alle Module geladen'); } catch (err) { console.error('\u274c Modul-Initialisierung fehlgeschlagen:', err); throw err; } },
+    async initializeModules() {
+        console.log('📦 Lade Module...');
+
+        // WICHTIG: Jedes Modul hat eigenen try-catch damit ein Fehler nicht alles stoppt!
+
+        try {
+            if (window.eventManager) {
+                this.eventManager = window.eventManager;
+                console.log('✅ EventManager geladen');
+            }
+        } catch (err) {
+            console.warn('⚠️ EventManager Fehler:', err);
+        }
+
+        try {
+            if (window.performanceOptimizer) {
+                this.performanceOptimizer = window.performanceOptimizer;
+                this.performanceOptimizer.init();
+                console.log('✅ PerformanceOptimizer geladen');
+            }
+        } catch (err) {
+            console.warn('⚠️ PerformanceOptimizer Fehler:', err);
+        }
+
+        try {
+            if (window.ledAbstraction) {
+                this.ledAbstraction = window.ledAbstraction;
+                await this.ledAbstraction.detectLEDType();
+                console.log('✅ LED-Abstraction geladen');
+            }
+        } catch (err) {
+            console.warn('⚠️ LED-Abstraction Fehler:', err);
+        }
+
+        try {
+            if (window.scenesManager) {
+                this.scenesManager = window.scenesManager;
+                console.log('✅ ScenesManager geladen');
+            }
+        } catch (err) {
+            console.warn('⚠️ ScenesManager Fehler:', err);
+        }
+
+        try {
+            if (window.deviceManager) {
+                this.deviceManager = window.deviceManager;
+                console.log('✅ DeviceManager geladen');
+            }
+        } catch (err) {
+            console.warn('⚠️ DeviceManager Fehler:', err);
+        }
+
+        try {
+            if (window.audioReactiveEngine) {
+                this.audioReactiveEngine = window.audioReactiveEngine;
+                console.log('✅ AudioReactiveEngine geladen');
+            }
+        } catch (err) {
+            console.warn('⚠️ AudioReactiveEngine Fehler:', err);
+        }
+
+        try {
+            if (window.musikIntegration) {
+                this.musikIntegration = window.musikIntegration;
+                console.log('✅ MusikIntegration geladen');
+            }
+        } catch (err) {
+            console.warn('⚠️ MusikIntegration Fehler:', err);
+        }
+
+        // MusicLibraryManager ist OPTIONAL - App läuft auch ohne!
+        try {
+            if (window.musicLibraryManager) {
+                this.musicLibraryManager = window.musicLibraryManager;
+                await this.musicLibraryManager.init();
+                console.log('✅ MusicLibraryManager geladen');
+            } else {
+                console.warn('⚠️ MusicLibraryManager nicht verfügbar (optional)');
+            }
+        } catch (err) {
+            console.warn('⚠️ MusicLibraryManager Fehler (nicht kritisch):', err);
+        }
+
+    // Capacitor initialisieren
+        try {
+            if (typeof Capacitor !== 'undefined') {
+                await this.initCapacitor();
+            }
+        } catch (err) {
+            console.warn('⚠️ Capacitor Fehler:', err);
+        }
+
+        console.log('✅ Module-Initialisierung abgeschlossen');
+    },
     async initCapacitor() {
         try {
             console.log('📦 Initialisiere Capacitor...');
@@ -170,8 +258,48 @@ const App = {
             console.warn('⚠️ Capacitor-Initialisierung mit Fehlern:', err);
         }
     },
-    cacheDOMElements() { this.elements.startScreen = document.getElementById('startscreen'); this.elements.appScreen = document.getElementById('appscreen'); this.elements.navBar = document.querySelector('.nav-bar'); this.elements.appIframe = document.getElementById('app-iframe'); this.elements.particleCanvas = document.getElementById('background-canvas'); this.elements.connectionStatus = document.getElementById('connection-status'); this.elements.notificationContainer = document.getElementById('notification-container'); console.log('\u2705 DOM-Elemente gecached'); },
-    initStartupSequence() { setTimeout(function () { if (this.elements.startScreen) this.elements.startScreen.style.display = 'none'; if (this.elements.appScreen) this.elements.appScreen.style.display = 'flex'; const lastApp = localStorage.getItem('last-app') || 'farbe'; this.openApp(lastApp); console.log('\u2705 Startup-Sequenz abgeschlossen'); }.bind(this), this.config.startup_delay); },
+    cacheDOMElements() {
+        console.log('🔍 Suche DOM-Elemente...');
+        this.elements.startScreen = document.getElementById('startscreen');
+        this.elements.appScreen = document.getElementById('appscreen');
+        this.elements.navBar = document.querySelector('.nav-bar');
+        this.elements.appIframe = document.getElementById('app-iframe');
+        this.elements.particleCanvas = document.getElementById('background-canvas');
+        this.elements.connectionStatus = document.getElementById('connection-status');
+        this.elements.notificationContainer = document.getElementById('notification-container');
+
+        // DEBUG: Prüfe ob kritische Elemente gefunden wurden
+        console.log('📍 StartScreen gefunden:', !!this.elements.startScreen);
+        console.log('📍 AppScreen gefunden:', !!this.elements.appScreen);
+        console.log('📍 Canvas gefunden:', !!this.elements.particleCanvas);
+        console.log('✅ DOM-Elemente gecached');
+    },
+    initStartupSequence() {
+        console.log(`⏳ Starte Sequenz in ${this.config.startup_delay}ms...`);
+
+        setTimeout(() => {
+            console.log('🎬 Startup-Sequenz ausführen...');
+
+            // Splash ausblenden
+            if (this.elements.startScreen) {
+                this.elements.startScreen.style.display = 'none';
+                console.log('✅ Splash ausgeblendet');
+            } else {
+                console.error('❌ StartScreen Element nicht gefunden!');
+            }
+
+            // Hauptscreen anzeigen
+            if (this.elements.appScreen) {
+                this.elements.appScreen.style.display = 'flex';
+                console.log('✅ AppScreen angezeigt');
+            } else {
+                console.error('❌ AppScreen Element nicht gefunden!');
+            }
+
+            console.log('✅ Startup-Sequenz abgeschlossen - Kategorien angezeigt');
+            // KEIN openApp() hier! User soll selbst wählen.
+        }, this.config.startup_delay);
+    },
     initNavigation() { if (!this.elements.navBar) return; this.elements.navBar.addEventListener('click', function (e) { const navItem = e.target.closest('.nav-item'); if (navItem) { const appName = navItem.dataset.app; this.openApp(appName); } }.bind(this)); console.log('\u2705 Navigation initialisiert'); },
     initGlobalEventListeners() {
         // 1. Override Native Dialogs with UI Overlays (Monkey Patching)
@@ -247,7 +375,16 @@ const App = {
     handleBLEDisconnected(data) { console.log('\ud83d\udeab BLE Getrennt'); this.updateConnectionStatus(false); if (window.onBLEDisconnected && typeof window.onBLEDisconnected === 'function') { window.onBLEDisconnected(data); } window.dispatchEvent(new CustomEvent('bledisconnected', { detail: data })); },
     handleSceneActivated(data) { console.log('\ud83c\udfac Szene aktiviert:', data.name); },
     handleAppPause() { console.log('\u23f8\ufe0f App pausiert'); this.saveState(); if (this.audioReactiveEngine && this.audioReactiveEngine.isRunning) { this.audioReactiveEngine.stopAudioCapture(); } },
-    handleAppResume() { console.log('\u25b6\ufe0f App fortgesetzt'); if (this.config.autoConnect && !this.state.isConnected) { setTimeout(function () { this.connectBLE(); }.bind(this), 1000); } },
+    handleAppResume() {
+        console.log('▶️ App fortgesetzt');
+        // WICHTIG: Auto-Connect nur wenn bereits verbunden WAR oder User explizit will
+        // SecurityError vermeiden!
+        if (this.config.autoConnect && this.state.isConnected) {
+            setTimeout(function () {
+                this.connectBLE();
+            }.bind(this), 1000);
+        }
+    },
     showNotification(message, type, duration) { type = type || 'info'; duration = duration || 3000; if (window.showGlobalNotification) { window.showGlobalNotification(message, type, duration); } else { console.log('[' + type.toUpperCase() + '] ' + message); } },
     showError(message) { this.showNotification(message, 'error', 5000); console.error('\u274c Error:', message); },
     initParticles() { if (!this.elements.particleCanvas || !this.config.animations) return; try { const canvas = this.elements.particleCanvas; const ctx = canvas.getContext('2d'); canvas.width = window.innerWidth; canvas.height = window.innerHeight; const particles = []; for (let i = 0; i < this.config.particle_count; i++) { particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5, radius: Math.random() * 2 + 1 }); } function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = 'rgba(78, 205, 196, 0.5)'; particles.forEach(function (p) { p.x += p.vx; p.y += p.vy; if (p.x < 0 || p.x > canvas.width) p.vx *= -1; if (p.y < 0 || p.y > canvas.height) p.vy *= -1; ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill(); }); requestAnimationFrame(animate); } animate(); console.log('\u2705 Partikel-Animation initialisiert'); } catch (err) { console.warn('\u26a0\ufe0f Partikel-Fehler:', err); } },
@@ -326,149 +463,58 @@ function showPermissionsRequiredDialog() {
 
 window.showPermissionsRequiredDialog = showPermissionsRequiredDialog;
 
-// GestureControls initialisieren
-if (window.gestureControls) {
-    window.gestureControls.init();
-    console.log('✅ GestureControls initialisiert');
+// === MODUL-AKTIVIERUNGEN (ALLE in try-catch um App-Start nicht zu blockieren!) ===
+// KRITISCH: Wenn ein Modul fehlschlägt, muss App trotzdem starten!
+
+function safeInit(name, fn) {
+    try {
+        if (fn) {
+            fn.init();
+        }
+    } catch (e) {
+        console.error(`❌ ${name} Init-Fehler:`, e);
+    }
 }
 
-// AnimationSystem initialisieren  
-if (window.animationSystem) {
-    window.animationSystem.init();
-    console.log(' AnimationSystem initialisiert');
-}
+safeInit('GestureControls', window.gestureControls);
+safeInit('AnimationSystem', window.animationSystem);
+safeInit('InputValidator', window.inputValidator);
+safeInit('BLEHealthMonitor', window.bleHealthMonitor);
+safeInit('EqualizerUI', window.equalizerUI);
+safeInit('PlaylistDragDrop', window.playlistDragDrop);
+safeInit('QuickActions', window.quickActions);
+safeInit('ShareManager', window.shareManager);
+safeInit('AutoStartManager', window.autoStartManager);
+safeInit('MediaStoreBridge', window.mediaStoreBridge);
+safeInit('PresetManager', window.presetManager);
+safeInit('SliderLiveValueManager', window.sliderLiveValueManager);
+safeInit('MultiLang', window.multiLang);
+safeInit('AdvancedVisualizer', window.advancedVisualizer);
+safeInit('AudioDecoderFFT', window.audioDecoderFFT);
+safeInit('AudioReactiveEngine', window.audioReactiveEngine);
+safeInit('CloudSync', window.cloudSync);
+safeInit('DeviceManager', window.deviceManager);
+safeInit('EqualizerEngine', window.equalizerEngine);
+safeInit('GlobalErrorHandler', window.globalErrorHandler);
+safeInit('LEDCustomNames', window.ledCustomNames);
+safeInit('LEDSidebar', window.ledSidebar);
+safeInit('LEDSidebarSwipe', window.ledSidebarSwipe);
 
-// InputValidator initialisieren
-if (window.inputValidator) {
-    window.inputValidator.init();
-    console.log(' InputValidator initialisiert');
-}
-
-
-// === MODUL-AKTIVIERUNGEN (Auto-generiert) ===
-
-// BLE Error Fixer aktivieren
-if (window.BLEErrorFixer) {
-    window.BLEErrorFixer.init();
-    console.log('✅ BLEErrorFixer aktiviert');
-}
-
-// Equalizer UI aktivieren
-if (window.equalizerUI) {
-    window.equalizerUI.init();
-    console.log(' EqualizerUI aktiviert');
-}
-
-// Playlist Drag & Drop aktivieren
-if (window.playlistDragDrop) {
-    window.playlistDragDrop.init();
-    console.log(' PlaylistDragDrop aktiviert');
-}
-
-// Quick Actions aktivieren
-if (window.quickActions) {
-    window.quickActions.init();
-    console.log(' QuickActions aktiviert');
-}
-
-// Share Manager aktivieren
-if (window.shareManager) {
-    window.shareManager.init();
-    console.log('✅ ShareManager aktiviert');
-}
-
-// Auto-Start Manager aktivieren
-if (window.autoStartManager) {
-    window.autoStartManager.init();
-    console.log('✅ AutoStartManager aktiviert');
-}
-
-// MediaStore Bridge aktivieren
-if (window.mediaStoreBridge) {
-    window.mediaStoreBridge.init();
-    console.log('✅ MediaStoreBridge aktiviert');
-}
-
-// Preset Manager aktivieren
-if (window.presetManager) {
-    window.presetManager.init();
-    console.log('✅ PresetManager aktiviert');
-}
-
-// Slider Live Value Manager aktivieren
-if (window.sliderLiveValueManager) {
-    window.sliderLiveValueManager.init();
-    console.log('✅ SliderLiveValueManager aktiviert');
-}
-
-// i18n aktivieren
-if (window.multiLang) {
-    window.multiLang.init();
-    console.log('✅ i18n aktiviert');
-}
-
-// Advanced Visualizer aktivieren
-if (window.advancedVisualizer) {
-    window.advancedVisualizer.init();
-    console.log('✅ AdvancedVisualizer aktiviert');
-}
-
-// Audio Decoder FFT aktivieren
-if (window.audioDecoderFFT) {
-    window.audioDecoderFFT.init();
-    console.log('✅ AudioDecoderFFT aktiviert');
-}
-
-// Audio Reactive Engine aktivieren (KRITISCH für LED-Musik)
-if (window.audioReactiveEngine) {
-    window.audioReactiveEngine.init();
-    console.log('✅ AudioReactiveEngine aktiviert');
-}
-
-// Cloud Sync aktivieren
-if (window.cloudSync) {
-    window.cloudSync.init();
-    console.log('✅ CloudSync aktiviert');
-}
-
-// Device Manager aktivieren (KRITISCH)
-if (window.deviceManager) {
-    window.deviceManager.init();
-    console.log('✅ DeviceManager aktiviert');
-}
-
-// Equalizer Engine aktivieren (KRITISCH)
-if (window.equalizerEngine) {
-    window.equalizerEngine.init();
-    console.log('✅ EqualizerEngine aktiviert');
-}
-
-// Global Error Handler aktivieren
-if (window.globalErrorHandler) {
-    window.globalErrorHandler.init();
-    console.log('✅ GlobalErrorHandler aktiviert');
-}
-
-// LED Custom Names aktivieren
-if (window.ledCustomNames) {
-    window.ledCustomNames.init();
-    console.log('✅ LEDCustomNames aktiviert');
-}
-
-// LED Sidebar aktivieren
-if (window.ledSidebar) {
-    window.ledSidebar.init();
-    console.log('✅ LEDSidebar aktiviert');
-}
-
-// LED Sidebar Swipe aktivieren
-if (window.ledSidebarSwipe) {
-    window.ledSidebarSwipe.init();
-    console.log('✅ LEDSidebarSwipe aktiviert');
-}
+console.log('✅ Alle Module initialisiert (Fehler wurden abgefangen)');
 
 window.App = App;
 
-document.addEventListener('DOMContentLoaded', function () { App.initialize(); });
+// FIX: Prüfe ob DOM bereits geladen ist
+if (document.readyState === 'loading') {
+    // DOM noch nicht geladen → Event-Listener setzen
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log('🚀 DOMContentLoaded Event → App.initialize()');
+        App.initialize();
+    });
+} else {
+    // DOM IST BEREITS GELADEN → direkt starten!
+    console.log('🚀 DOM bereits geladen → App.initialize() sofort');
+    App.initialize();
+}
 
 if (typeof module !== 'undefined' && module.exports) module.exports = App;

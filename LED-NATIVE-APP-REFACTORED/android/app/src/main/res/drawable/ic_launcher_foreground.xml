@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- LED Light Space World App Icon - Foreground -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Outer Glow Ring -->
+    <path
+        android:fillColor="#4ECDC4"
+        android:fillAlpha="0.3"
+        android:pathData="M54,19 A35,35 0 1,1 54,89 A35,35 0 1,1 54,19 M54,25 A29,29 0 1,0 54,83 A29,29 0 1,0 54,25"/>
+    
+    <!-- Inner Glow Ring -->
+    <path
+        android:fillColor="#44A08D"
+        android:fillAlpha="0.5"
+        android:pathData="M54,25 A29,29 0 1,1 54,83 A29,29 0 1,1 54,25 M54,32 A22,22 0 1,0 54,76 A22,22 0 1,0 54,32"/>
+    
+    <!-- LED Strip Shape (L) -->
+    <path
+        android:fillColor="#4ECDC4"
+        android:pathData="M36,36 L36,72 L48,72 L48,60 L48,48 L42,48 L42,36 Z"/>
+    
+    <!-- LED Light 1 (Top) -->
+    <circle
+        android:fillColor="#FFD700"
+        android:pathData="M39,42 m-4,0 a4,4 0 1,1 8,0 a4,4 0 1,1 -8,0"/>
+    
+    <!-- LED Light 2 (Middle) -->
+    <circle
+        android:fillColor="#FF6B35"
+        android:pathData="M39,54 m-4,0 a4,4 0 1,1 8,0 a4,4 0 1,1 -8,0"/>
+    
+    <!-- LED Light 3 (Bottom) -->
+    <circle
+        android:fillColor="#FF4757"
+        android:pathData="M39,66 m-4,0 a4,4 0 1,1 8,0 a4,4 0 1,1 -8,0"/>
+    
+    <!-- LED Strip Shape (E) -->
+    <path
+        android:fillColor="#4ECDC4"
+        android:pathData="M52,36 L52,72 L70,72 L70,66 L58,66 L58,57 L68,57 L68,51 L58,51 L58,42 L70,42 L70,36 Z"/>
+    
+    <!-- LED Light on E (Top) -->
+    <circle
+        android:fillColor="#00D9FF"
+        android:pathData="M61,39 m-3,0 a3,3 0 1,1 6,0 a3,3 0 1,1 -6,0"/>
+    
+    <!-- LED Light on E (Middle) -->
+    <circle
+        android:fillColor="#7B68EE"
+        android:pathData="M55,54 m-3,0 a3,3 0 1,1 6,0 a3,3 0 1,1 -6,0"/>
+    
+    <!-- LED Light on E (Bottom) -->
+    <circle
+        android:fillColor="#00FF88"
+        android:pathData="M61,69 m-3,0 a3,3 0 1,1 6,0 a3,3 0 1,1 -6,0"/>
+    
+    <!-- D Shape -->
+    <path
+        android:fillColor="#4ECDC4"
+        android:pathData="M74,36 L74,72 L86,72 Q94,72 94,54 Q94,36 86,36 Z M80,42 L84,42 Q88,42 88,54 Q88,66 84,66 L80,66 Z"/>
+    
+    <!-- LED Light on D -->
+    <circle
+        android:fillColor="#FF69B4"
+        android:pathData="M84,54 m-4,0 a4,4 0 1,1 8,0 a4,4 0 1,1 -8,0"/>
+
+</vector>

@@ -535,15 +535,30 @@ function initRGBSliders() {
     }
 }
 
-// Helligkeit-Slider Init
+// Helligkeit-Slider Init mit GLOBALER Synchronisation
 function initBrightnessSlider() {
     const brightnessSlider = document.getElementById('brightnessSlider');
     const brightnessValue = document.getElementById('brightnessValue');
 
     if (brightnessSlider && brightnessValue) {
+        // GLOBAL: Helligkeit beim Start laden
+        const savedBrightness = localStorage.getItem('globalLEDBrightness');
+        if (savedBrightness) {
+            brightnessSlider.value = savedBrightness;
+            brightnessValue.textContent = savedBrightness + '%';
+        }
+
         brightnessSlider.addEventListener('input', (e) => {
             const value = e.target.value;
             brightnessValue.textContent = value + '%';
+
+            // GLOBAL: Helligkeit speichern für alle Kategorien
+            localStorage.setItem('globalLEDBrightness', value);
+
+            // Andere Frames/Tabs informieren
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({ type: 'brightnessChanged', value: value }, '*');
+            }
 
             // Farbe mit neuer Helligkeit senden
             const brightness = value / 100;
@@ -554,6 +569,22 @@ function initBrightnessSlider() {
             sendColorToBLE(adjustedR, adjustedG, adjustedB);
         });
     }
+}
+
+// GLOBAL: Geschwindigkeit speichern/laden
+function setGlobalSpeed(value) {
+    localStorage.setItem('globalLEDSpeed', value);
+    if (window.parent && window.parent !== window) {
+        window.parent.postMessage({ type: 'speedChanged', value: value }, '*');
+    }
+}
+
+function getGlobalBrightness() {
+    return parseInt(localStorage.getItem('globalLEDBrightness') || '100');
+}
+
+function getGlobalSpeed() {
+    return parseInt(localStorage.getItem('globalLEDSpeed') || '50');
 }
 
 // Power-Toggle Init
@@ -603,40 +634,45 @@ function initPowerToggle() {
 
 // Basic-Farben-Buttons Init
 function initBasicColors() {
-    const basicColors = [
-        { name: 'Rot', r: 255, g: 0, b: 0 },
-        { name: 'Grün', r: 0, g: 255, b: 0 },
-        { name: 'Blau', r: 0, g: 0, b: 255 },
-        { name: 'Gelb', r: 255, g: 255, b: 0 },
-        { name: 'Cyan', r: 0, g: 255, b: 255 },
-        { name: 'Magenta', r: 255, g: 0, b: 255 },
-        { name: 'Weiß', r: 255, g: 255, b: 255 },
-        { name: 'Orange', r: 255, g: 165, b: 0 }
-    ];
-
+    // ALLE .preset-color Elemente bekommen Event-Listener
+    // Farbe wird aus dem background-style oder CSS-Klasse gelesen
     const colorPresets = document.querySelectorAll('.preset-color');
-    colorPresets.forEach((btn, index) => {
-        if (basicColors[index]) {
-            btn.addEventListener('click', () => {
-                const color = basicColors[index];
-                currentColor = { r: color.r, g: color.g, b: color.b };
+
+    colorPresets.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            // Farbe aus dem computed style lesen
+            const computedStyle = window.getComputedStyle(btn);
+            const bgColor = computedStyle.backgroundColor;
+
+            // RGB aus "rgb(r, g, b)" oder "rgba(r, g, b, a)" extrahieren
+            const match = bgColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+            if (match) {
+                const r = parseInt(match[1]);
+                const g = parseInt(match[2]);
+                const b = parseInt(match[3]);
+
+                currentColor = { r, g, b };
 
                 // Update Vorschau
                 const colorPreview = document.getElementById('colorPreview');
                 if (colorPreview) {
-                    colorPreview.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
+                    colorPreview.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
                 }
 
                 // Farbe senden
                 const brightness = document.getElementById('brightnessSlider')?.value || 100;
-                const adjustedR = Math.round(color.r * (brightness / 100));
-                const adjustedG = Math.round(color.g * (brightness / 100));
-                const adjustedB = Math.round(color.b * (brightness / 100));
+                const adjustedR = Math.round(r * (brightness / 100));
+                const adjustedG = Math.round(g * (brightness / 100));
+                const adjustedB = Math.round(b * (brightness / 100));
 
                 sendColorToBLE(adjustedR, adjustedG, adjustedB);
-            });
-        }
+
+                console.log(`🎨 Farbe ausgewählt: RGB(${r}, ${g}, ${b})`);
+            }
+        });
     });
+
+    console.log(`✅ ${colorPresets.length} Farb-Buttons initialisiert`);
 }
 
 /**
@@ -741,9 +777,9 @@ function kelvinToRgb(kelvin) {
 }
 
 function initFarbeController() {
-    initBLE();
+    // BLE wird von ble-controller-pro.js initialisiert - nicht hier aufrufen
     // Beim Öffnen der Farbe-Seite: Stoppe alle laufenden Effekte
-    stopAllEffects();
+    try { stopAllEffects(); } catch (e) { console.warn('stopAllEffects nicht verfügbar'); }
 
     initColorWheel();
     initColorSlots();
@@ -921,6 +957,11 @@ window.openRGBPopup = openRGBPopup;
 window.closeRGBPopup = closeRGBPopup;
 window.deleteColorFromSlot = deleteColorFromSlot;
 window.stopAllEffects = stopAllEffects;
+
+// GLOBAL Helligkeit/Geschwindigkeit Exports
+window.setGlobalSpeed = setGlobalSpeed;
+window.getGlobalBrightness = getGlobalBrightness;
+window.getGlobalSpeed = getGlobalSpeed;
 
 // Auto-Init
 if (document.readyState === 'loading') {

@@ -113,29 +113,12 @@ class GestureControls {
     }
 
     registerDefaultGestures() {
-        // Swipe Left: Next Track
-        this.registerGesture('swipe-left', {
-            name: 'Next Track',
-            handler: () => {
-                console.log('👆 Gesture: Swipe Left → Next Track');
-                if (window.musikIntegration && window.musikIntegration.nextTrack) {
-                    window.musikIntegration.nextTrack();
-                }
-                this.showGestureFeedback('⏭️ Next Track');
-            }
-        });
-
-        // Swipe Right: Previous Track
-        this.registerGesture('swipe-right', {
-            name: 'Previous Track',
-            handler: () => {
-                console.log('👆 Gesture: Swipe Right → Previous Track');
-                if (window.musikIntegration && window.musikIntegration.previousTrack) {
-                    window.musikIntegration.previousTrack();
-                }
-                this.showGestureFeedback('⏮️ Previous Track');
-            }
-        });
+        // ENTFERNT: Swipe Left/Right für Track-Wechsel
+        // Diese interferieren mit der LED-Sidebar
+        // Track-Wechsel NUR über Buttons
+        
+        // Swipe Left: DEAKTIVIERT - LED-Sidebar nutzt horizontal swipe
+        // Swipe Right: DEAKTIVIERT - LED-Sidebar nutzt horizontal swipe
 
         // Swipe Up: Volume Up
         this.registerGesture('swipe-up', {

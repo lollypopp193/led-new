@@ -19,9 +19,18 @@
             android:launchMode="singleTask" 
             android:exported="true">`r`n            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
 
+            <!-- Main Launcher Intent -->
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />`r`n                <action android:name="android.intent.action.VIEW" />`r`n                <category android:name="android.intent.category.DEFAULT" />`r`n                <category android:name="android.intent.category.BROWSABLE" />`r`n                <data android:scheme="ledcontrol" />
+                <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- Deep Link Intent -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="ledcontrol" />
             </intent-filter>
 
         </activity>`r`n`r`n        <!-- LED Widget -->`r`n        <receiver android:name="com.lightspaceworld.app.LEDWidgetProvider" android:exported="true">`r`n            <intent-filter>`r`n                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />`r`n            </intent-filter>`r`n            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_info" />`r`n        </receiver>

@@ -45,6 +45,9 @@ async function autoScanLEDBands() {
                 if (window.showGlobalNotification) {
                     window.showGlobalNotification(bandCount + ' LED-Bänder automatisch erkannt', 'success');
                 }
+
+                // RENDER gefundene LED-Bänder in der UI
+                renderFoundLEDBands(discoveredBands);
             }
         }
     } catch (error) {
@@ -52,7 +55,67 @@ async function autoScanLEDBands() {
     }
 }
 
+/**
+ * Rendert gefundene LED-Bänder in der UI (foundLEDBandsList)
+ */
+function renderFoundLEDBands(bands) {
+    const container = document.getElementById('foundLEDBandsList');
+    if (!container) return;
+
+    if (!bands || bands.length === 0) {
+        container.innerHTML = '<p style="color: #888; font-style: italic;"><i class="fas fa-search"></i> Keine LED-Bänder gefunden. Bitte in Einstellungen scannen.</p>';
+        return;
+    }
+
+    container.innerHTML = '';
+    bands.forEach((device, index) => {
+        const bandElement = document.createElement('div');
+        bandElement.className = 'found-led-band';
+        bandElement.style.cssText = 'display: flex; align-items: center; justify-content: space-between; padding: 12px; background: rgba(78, 205, 196, 0.15); border-radius: 10px; margin-bottom: 10px; cursor: pointer;';
+        bandElement.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <i class="fas fa-lightbulb" style="color: #4ecdc4; font-size: 1.3rem;"></i>
+                <div>
+                    <div style="font-weight: bold; color: #fff;">${device.name || 'LED-Band ' + (index + 1)}</div>
+                    <div style="font-size: 0.8rem; color: #888;">${device.id ? device.id.substring(0, 17) : 'Unbekannte ID'}</div>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="color: #4ecdc4; font-size: 0.85rem;"><i class="fas fa-signal"></i> Verbunden</span>
+                <button type="button" onclick="configureLEDBandForMusic(${index})" style="padding: 6px 12px; background: #4ecdc4; color: #1a1a2e; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85em;">
+                    <i class="fas fa-cog"></i> Einstellen
+                </button>
+            </div>
+        `;
+        container.appendChild(bandElement);
+    });
+}
+
+/**
+ * Öffnet Konfiguration für ein LED-Band
+ */
+function configureLEDBandForMusic(bandIndex) {
+    // Scrolle zum Band-Tab und aktiviere ihn
+    const tabsContainer = document.getElementById('ledBandTabs');
+    if (tabsContainer) {
+        const tabs = tabsContainer.querySelectorAll('.band-tab');
+        if (tabs[bandIndex]) {
+            tabs[bandIndex].click();
+        }
+    }
+    if (window.showGlobalNotification) {
+        window.showGlobalNotification('Konfiguriere LED-Band ' + (bandIndex + 1), 'info');
+    }
+}
+
 function initLEDMusicControls() {
+    // Lade bereits bekannte LED-Geräte vom DeviceManager
+    if (window.deviceManager && window.deviceManager.devices && window.deviceManager.devices.length > 0) {
+        discoveredBands = window.deviceManager.devices;
+        renderFoundLEDBands(discoveredBands);
+        console.log('📱 ' + discoveredBands.length + ' bekannte LED-Geräte geladen');
+    }
+
     // Toggle-Switches Event-Listener
     const autoModeToggle = document.getElementById('ledMusicAutomaticMode');
     const syncAllToggle = document.getElementById('ledMusicSyncAll');
@@ -446,3 +509,5 @@ const LEDMusicController = {
 window.LEDMusicController = LEDMusicController;
 window.startLEDMusicAnalysis = startLEDMusicAnalysis;
 window.setLEDMusicMode = setLEDMusicMode;
+window.renderFoundLEDBands = renderFoundLEDBands;
+window.configureLEDBandForMusic = configureLEDBandForMusic;

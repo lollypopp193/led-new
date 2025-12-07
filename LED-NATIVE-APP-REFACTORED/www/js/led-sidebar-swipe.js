@@ -233,6 +233,7 @@ class LEDSidebarSwipe {
     setupSwipeGestures() {
         let touchStartX = 0;
         let touchStartY = 0;
+        const screenWidth = window.innerWidth;
 
         document.addEventListener('touchstart', (e) => {
             touchStartX = e.touches[0].clientX;
@@ -249,13 +250,18 @@ class LEDSidebarSwipe {
 
             // Nur wenn horizontal mehr als vertikal
             if (Math.abs(diffX) > Math.abs(diffY)) {
-                // Von links nach rechts wischen
+                // Von LINKS nach RECHTS wischen (LED-Sidebar öffnen)
                 if (diffX > 50 && touchStartX < 50 && !this.isOpen) {
                     this.open();
                 }
-                // Von rechts nach links wischen
-                else if (diffX < -50 && this.isOpen) {
-                    this.close();
+                // Von RECHTS nach LINKS wischen (LED-Sidebar schließen ODER Farb-Seitenpanel öffnen)
+                else if (diffX < -50) {
+                    if (this.isOpen) {
+                        this.close();
+                    } else if (touchStartX > screenWidth - 50) {
+                        // Von rechtem Rand gewischt → Farb-Seitenpanel öffnen
+                        this.openRightPanel();
+                    }
                 }
             }
         });
@@ -264,6 +270,18 @@ class LEDSidebarSwipe {
             touchStartX = 0;
             touchStartY = 0;
         });
+    }
+
+    /**
+     * Öffnet das rechte Seitenpanel (Warmtöne, Pastelltöne etc.)
+     * Nur in farbe.html vorhanden
+     */
+    openRightPanel() {
+        const sidePanel = document.getElementById('sidePanel');
+        if (sidePanel) {
+            sidePanel.classList.add('active');
+            console.log('📂 Farb-Seitenpanel geöffnet (Swipe)');
+        }
     }
 
     /**

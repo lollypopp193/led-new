@@ -25,7 +25,12 @@ class CloudSyncController {
             'weekly-schedules'
         ];
 
-        this.loadSettings();
+        // Sync-Status laden
+        const syncEnabled = localStorage.getItem('cloud-sync-enabled');
+        if (syncEnabled === 'true') {
+            this.enableSync();
+        }
+
         console.log('✅ Cloud-Sync Controller initialisiert (Device ID:', this.deviceId + ')');
     }
 
@@ -331,6 +336,30 @@ window.toggleAutoBackup = function () {
 window.configureAutoBackup = function () {
     if (window.showNotification) {
         window.showNotification('⚙️ Auto-Backup alle 5 Minuten aktiv', 'info');
+    }
+};
+
+window.createBackup = function () {
+    window.cloudSyncController.exportData();
+    if (window.showNotification) {
+        window.showNotification('💾 Backup erstellt!', 'success');
+    }
+};
+
+window.restoreBackup = function (backupId) {
+    if (confirm('Backup "' + backupId + '" wiederherstellen?')) {
+        // Versuche letztes Backup zu laden
+        const lastBackup = localStorage.getItem('cloud-sync-backup');
+        if (lastBackup) {
+            window.cloudSyncController.importData(lastBackup);
+            if (window.showNotification) {
+                window.showNotification('✅ Backup wiederhergestellt!', 'success');
+            }
+        } else {
+            if (window.showNotification) {
+                window.showNotification('⚠️ Kein Backup gefunden', 'warning');
+            }
+        }
     }
 };
 

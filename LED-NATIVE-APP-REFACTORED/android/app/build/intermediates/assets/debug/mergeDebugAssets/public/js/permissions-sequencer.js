@@ -49,6 +49,16 @@ class PermissionsSequencer {
         this.results = {};
 
         console.log('🔐 Starte sequenzielle Berechtigungsabfrage...');
+
+        // SICHERHEITS-TIMEOUT: Nach 10 Sekunden trotzdem starten!
+        this.safetyTimeout = setTimeout(() => {
+            console.warn('⚠️ Permission-Timeout - Starte App trotzdem!');
+            if (this.onComplete && !this.completed) {
+                this.completed = true;
+                this.onComplete(this.results);
+            }
+        }, 10000);
+
         await this.showNextPermission();
     }
 
@@ -272,10 +282,17 @@ class PermissionsSequencer {
             this.showWarningMessage();
         }
 
-        if (this.onComplete) {
+        // Safety-Timeout clearen
+        if (this.safetyTimeout) {
+            clearTimeout(this.safetyTimeout);
+        }
+
+        if (this.onComplete && !this.completed) {
+            this.completed = true;
+            // Sofort weitermachen, nicht 2 Sekunden warten!
             setTimeout(() => {
                 this.onComplete(this.results);
-            }, 2000);
+            }, 500);
         }
     }
 

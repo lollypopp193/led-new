@@ -8,7 +8,9 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <link rel="stylesheet" href="../css/styles.css" />
     <link rel="stylesheet" href="../css/responsive-fix.css" />
+    <link rel="stylesheet" href="../css/global-controls-fix.css" />
     <link rel="stylesheet" href="../css/musik.css" />
   </head>
 
@@ -415,7 +417,7 @@
           <i class="fas fa-sliders-h"></i>
           <h2 class="panel-title">Equalizer</h2>
           <div class="toggle-switch">
-            <label class="toggle-switch"><input type="checkbox" id="eqToggle" checked onchange="window.EqualizerEngine?.toggle(this.checked)"><span class="toggle-slider"></span></label>
+            <label class="toggle-switch"><input type="checkbox" id="eqToggle" checked onchange="if(window.equalizerEngine) window.equalizerEngine.toggle(this.checked);"><span class="toggle-slider"></span></label>
             </div></div>
 
         <div class="presets" id="eqPresetsContainer">
@@ -572,7 +574,7 @@
           <i class="fas fa-wave-square"></i>
           <h2 class="panel-title">Visualisierungseffekte</h2>
           <div class="toggle-switch" style="margin-left: auto;">
-            <label class="toggle-switch"><input type="checkbox" id="visualizerToggle" checked><span class="toggle-slider"></span></label>
+            <label class="toggle-switch"><input type="checkbox" id="visualizerToggle" checked onchange="if(window.advancedVisualizer) { this.checked ? window.advancedVisualizer.start() : window.advancedVisualizer.stop(); }"><span class="toggle-slider"></span></label>
             </div></div>
 
         <div class="visual-presets">
@@ -703,8 +705,40 @@
           <div style="display: flex; align-items: center; justify-content: space-between; padding: 15px; background: rgba(0, 0, 0, 0.3); border-radius: 10px; margin-bottom: 20px;">
             <span style="font-weight: bold">Automatischer Modus</span>
             <div class="toggle-switch">
-              <label class="toggle-switch"><input type="checkbox" id="ledMusicAutomaticMode" checked><span class="toggle-slider"></span></label>
+              <label class="toggle-switch"><input type="checkbox" id="ledMusicAutomaticMode" checked onchange="console.log('Automatik-Modus:', this.checked); if(window.audioReactiveEngine && this.checked) { const audio = document.querySelector('audio'); if(audio) window.audioReactiveEngine.startAudioCapture(audio); }"><span class="toggle-slider"></span></label>
               </div></div>
+
+          <!-- Audio-Capture Steuerung -->
+          <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+            <button type="button" id="startAudioCapture" style="flex: 1; padding: 12px; background: linear-gradient(45deg, #4ecdc4, #44a08d); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold;">
+              <i class="fas fa-play"></i> Musik-Analyse starten
+            </button>
+            <button type="button" id="stopAudioCapture" style="flex: 1; padding: 12px; background: #e74c3c; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; display: none;">
+              <i class="fas fa-stop"></i> Stoppen
+            </button>
+          </div>
+
+          <!-- Sync alle Bänder -->
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 15px; background: rgba(0, 0, 0, 0.3); border-radius: 10px; margin-bottom: 20px;">
+            <span style="font-weight: bold">Alle Bänder synchronisieren</span>
+            <div class="toggle-switch">
+              <label class="toggle-switch"><input type="checkbox" id="ledMusicSyncAll"><span class="toggle-slider"></span></label>
+            </div>
+          </div>
+
+          <!-- LED-Band Anzahl -->
+          <div style="padding: 15px; background: rgba(0, 0, 0, 0.3); border-radius: 10px; margin-bottom: 20px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+              <span style="font-weight: bold">Anzahl LED-Bänder</span>
+              <span id="ledBandCountValue" style="color: #4ecdc4; font-weight: bold;">1</span>
+            </div>
+            <input type="range" id="ledBandCount" min="1" max="10" value="1" style="width: 100%;">
+          </div>
+
+          <!-- LED-Band Tabs -->
+          <div id="ledBandTabs" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
+            <button type="button" class="band-tab active" data-band="0" style="padding: 8px 16px; background: #4ecdc4; color: #1a1a2e; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">Band 1</button>
+          </div>
 
           <!-- Gefundene LED-B?nder (automatisch aus Bluetooth-Scan) -->
           <div
@@ -1574,7 +1608,7 @@
                     <i class="fas fa-exchange-alt"></i> Crossfade
                   </h3>
                   <div class="toggle-switch">
-                    <label class="toggle-switch"><input type="checkbox" id="crossfadeToggle" onchange="const settings = document.getElementById('crossfadeSettings'); settings.style.opacity = this.checked ? '1' : '0.5'; settings.style.pointerEvents = this.checked ? 'auto' : 'none';"><span class="toggle-slider"></span></label>
+                    <label class="toggle-switch"><input type="checkbox" id="crossfadeToggle" onchange="const settings = document.getElementById('crossfadeSettings'); settings.style.opacity = this.checked ? '1' : '0.5'; settings.style.pointerEvents = this.checked ? 'auto' : 'none'; if(window.crossfadeController) window.crossfadeController.setEnabled(this.checked);"><span class="toggle-slider"></span></label>
                     </div></div>
 
                 <div
@@ -1594,7 +1628,7 @@
                         step="0.5"
                         value="3"
                         style="flex: 1"
-                        oninput="document.getElementById('crossfadeDurationValue').textContent = parseFloat(this.value).toFixed(1) + 's'"
+                        oninput="document.getElementById('crossfadeDurationValue').textContent = parseFloat(this.value).toFixed(1) + 's'; if(window.crossfadeController) window.crossfadeController.setDuration(parseFloat(this.value));"
                       />
                       <span id="crossfadeDurationValue" style="min-width: 50px"
                         >3.0s</span
@@ -1616,6 +1650,7 @@
                         color: white;
                         border: 1px solid #555;
                       "
+                      onchange="if(window.crossfadeController) window.crossfadeController.setFadeType(this.value);"
                     >
                       <option value="linear">Linear</option>
                       <option value="logarithmic" selected>
@@ -1895,14 +1930,6 @@
               <i class="fas fa-sort-alpha-down"></i>
               <span>Name</span>
             </button>
-            <div style="display: flex; gap: 10px; margin-top: 15px;">
-              <button type="button" onclick="saveCustomEQPreset()" class="action-btn" style="flex: 1;">
-                <i class="fas fa-save"></i> Speichern
-              </button>
-              <button type="button" onclick="deleteCustomEQPreset()" class="action-btn danger" style="flex: 1;">
-                <i class="fas fa-trash"></i> L?schen
-              </button>
-            </div>
             <button type="button" class="sort-btn" data-sort="artist">
               <i class="fas fa-user"></i>
               <span>Interpret</span>
@@ -2136,9 +2163,6 @@
     </button>
 
     <div class="app-header">
-      <a href="../index.html" class="back-btn">
-        <i class="fas fa-arrow-left"></i>
-      </a>
       <h1>Musik & LED</h1>
       
       <div class="header-controls">
@@ -2670,12 +2694,13 @@
       <script src="../js/utils.js"></script>
       <script src="../js/complete-ui-fix.js"></script>
       <script src="../js/notifications.js"></script>
-      <script src="../js/umlaut-fixer.js"></script>
       <script src="../js/toggle-switch-manager.js"></script>
       <script src="../js/slider-live-values.js"></script>
       <script src="../js/ui-cleanup-manager.js"></script>
       <script src="../js/multi-language-support.js"></script>
       <script src="../js/ble-error-fixer.js"></script>
+      <script src="../js/ble-controller-pro.js"></script>
+      <script src="../js/device-manager.js"></script>
       <script src="../js/visualization-manager.js"></script>
       <script src="../js/title-style-unifier.js"></script>
       <script src="../js/music-library-navigation.js"></script>

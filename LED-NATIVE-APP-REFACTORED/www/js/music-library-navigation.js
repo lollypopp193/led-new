@@ -23,21 +23,81 @@ class MusicLibraryNavigation {
         this.loadAllSongs();
         this.setupSearchListeners();
         this.setupSortListeners();
+        this.setupNavigationListeners(); // KRITISCH: Navigation-Buttons Event-Listener
         // Global verfügbar machen für HTML-Events
         window.musicNav = this;
         console.log('✅ Musik-Bibliothek-Navigation v2 initialisiert');
     }
 
+    /**
+     * KRITISCH: Event-Listener für Library Navigation Buttons
+     */
+    setupNavigationListeners() {
+        const navButtons = document.querySelectorAll('.library-nav-btn');
+        navButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Aktiven Button markieren
+                navButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Section wechseln
+                const section = btn.getAttribute('data-section');
+                if (section) {
+                    this.switchSection(section);
+                }
+            });
+        });
+        console.log(`📍 ${navButtons.length} Navigation-Buttons initialisiert`);
+
+        // KRITISCH: Scan-Button Event-Listener
+        const scanBtn = document.getElementById('libraryScanBtn');
+        if (scanBtn) {
+            scanBtn.addEventListener('click', async () => {
+                console.log('📂 Bibliothek-Scan gestartet...');
+                if (window.musicLibraryManager) {
+                    const success = await window.musicLibraryManager.requestFolderAccess();
+                    if (success) {
+                        await window.musicLibraryManager.scanFolder();
+                        // Nach Scan: Songs neu laden
+                        this.allSongs = await window.musicLibraryManager.getAllTracks();
+                        this.filteredSongs = [...this.allSongs];
+                        this.updateCounts();
+                        this.showArtists();
+                        if (window.showGlobalNotification) {
+                            window.showGlobalNotification(`${this.allSongs.length} Tracks gefunden`, 'success');
+                        }
+                    }
+                } else {
+                    console.error('❌ musicLibraryManager nicht verfügbar');
+                    if (window.showGlobalNotification) {
+                        window.showGlobalNotification('Bibliothek-Manager nicht geladen', 'error');
+                    }
+                }
+            });
+            console.log('📂 Scan-Button initialisiert');
+        }
+    }
+
     async loadAllSongs() {
-        if (window.MusicLibraryManager) {
+        // BUGFIX: musicLibraryManager (Instanz) statt MusicLibraryManager (Klasse)
+        if (window.musicLibraryManager && window.musicLibraryManager.database) {
             // Warte kurz bis DB bereit ist
             setTimeout(async () => {
-                this.allSongs = await window.MusicLibraryManager.getAllSongs();
-                this.filteredSongs = [...this.allSongs];
-                this.updateCounts();
-                this.showArtists(); // Start-Ansicht
-                console.log(`📚 ${this.allSongs.length} Lieder geladen`);
+                try {
+                    // BUGFIX: getAllTracks() statt getAllSongs()
+                    this.allSongs = await window.musicLibraryManager.getAllTracks();
+                    this.filteredSongs = [...this.allSongs];
+                    this.updateCounts();
+                    this.showArtists(); // Start-Ansicht
+                    console.log(`📚 ${this.allSongs.length} Lieder geladen`);
+                } catch (err) {
+                    console.error('Fehler beim Laden der Songs:', err);
+                    this.allSongs = [];
+                    this.filteredSongs = [];
+                }
             }, 500);
+        } else {
+            console.warn('⚠️ musicLibraryManager nicht verfügbar');
         }
     }
 
@@ -382,8 +442,10 @@ class MusicLibraryNavigation {
         const song = this.allSongs.find(s => s.id === songId);
         if (song) {
             song.favorite = !song.favorite;
-            // Persist changes via MusicLibraryManager if needed
-            window.MusicLibraryManager?.updateSong(song);
+            // BUGFIX: Persist changes via musicLibraryManager Instanz
+            if (window.musicLibraryManager && window.musicLibraryManager.database) {
+                window.musicLibraryManager.database.updateTrack(song.id, { favorite: song.favorite });
+            }
             // Refresh UI if in fav view
             if (this.currentView === 'favorites') this.showFavorites();
         }

@@ -254,3 +254,22 @@ const LibraryAutoScanner = {
 };
 
 window.LibraryAutoScanner = LibraryAutoScanner;
+
+// AUTO-INIT: Automatisch beim App-Start scannen
+document.addEventListener('DOMContentLoaded', () => {
+    // Warte kurz bis alle anderen Module geladen sind
+    setTimeout(() => {
+        console.log('🚀 Auto-Scan beim App-Start...');
+        LibraryAutoScanner.startAutoScan();
+    }, 2000); // 2 Sekunden Verzögerung
+});
+
+// Auch auf Capacitor App-Resume reagieren
+if (window.Capacitor && window.Capacitor.Plugins.App) {
+    window.Capacitor.Plugins.App.addListener('appStateChange', (state) => {
+        if (state.isActive) {
+            console.log('📱 App wieder aktiv - prüfe Bibliothek...');
+            LibraryAutoScanner.loadStoredLibrary();
+        }
+    });
+}

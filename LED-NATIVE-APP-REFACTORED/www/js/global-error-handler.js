@@ -205,8 +205,8 @@ class GlobalErrorHandler {
 }
 
 // CSS Animations
-const style = document.createElement('style');
-style.textContent = `
+const errorHandlerStyle = document.createElement('style');
+errorHandlerStyle.textContent = `
 @keyframes slideInRight {
     from {
         transform: translateX(400px);
@@ -229,7 +229,7 @@ style.textContent = `
     }
 }
 `;
-document.head.appendChild(style);
+document.head.appendChild(errorHandlerStyle);
 
 // Initialize global error handler
 window.globalErrorHandler = new GlobalErrorHandler();

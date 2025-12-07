@@ -476,13 +476,8 @@ function createNewPlaylist() {
     }
 }
 
-// EQ-Preset auswählen
-function selectEQPreset(presetName) {
-    console.log('🎛️ EQ-Preset:', presetName);
-    if (window.equalizerEngine) {
-        window.equalizerEngine.applyPreset(presetName);
-    }
-}
+// EQ-Preset auswählen - NICHT hier definieren, wird von musik-panel-controller.js bereitgestellt
+// function selectEQPreset ist in musik-panel-controller.js definiert
 
 // Custom EQ-Preset löschen (mit Name-Parameter für programmatische Nutzung)
 // Nutze window.deleteCustomEQPreset() für onclick ohne Parameter
@@ -494,24 +489,31 @@ function deleteEQPresetByName(name) {
     }
 }
 
-// Visualizer-Effekt auswählen
-function selectVisualEffect(effectName) {
-    console.log('🎨 Visual-Effekt:', effectName);
-    if (window.visualizationManager) {
-        window.visualizationManager.setEffect(effectName);
+// Visualizer-Effekt auswählen - NICHT hier definieren, wird von musik-panel-controller.js bereitgestellt
+// function selectVisualEffect ist in musik-panel-controller.js definiert
+
+// Sleep-Timer Einstellungen
+function toggleSleepTimerSettings(enabled) {
+    const panel = document.getElementById('sleepTimerSettings');
+    if (panel) {
+        panel.style.opacity = enabled ? '1' : '0.5';
+        panel.style.pointerEvents = enabled ? 'auto' : 'none';
+    }
+    if (enabled && window.sleepTimerController) {
+        console.log('💤 Sleep-Timer aktiviert');
     }
 }
 
-// Sleep-Timer Einstellungen
-function toggleSleepTimerSettings() {
-    const panel = document.getElementById('sleepTimerSettings');
-    if (panel) panel.classList.toggle('expanded');
-}
-
 // Musik-Alarm Einstellungen
-function toggleMusicAlarmSettings() {
+function toggleMusicAlarmSettings(enabled) {
     const panel = document.getElementById('musicAlarmSettings');
-    if (panel) panel.classList.toggle('expanded');
+    if (panel) {
+        panel.style.opacity = enabled ? '1' : '0.5';
+        panel.style.pointerEvents = enabled ? 'auto' : 'none';
+    }
+    if (enabled && window.musicAlarmController) {
+        console.log('⏰ Musik-Alarm aktiviert');
+    }
 }
 
 // Global Export
@@ -578,16 +580,13 @@ window.toggleRepeat = toggleRepeat;
 
 // Export UI Functions
 window.initMusicPlayer = initMusicPlayer;
-window.showPanel = showPanel;
+// showPanel wird von musik-panel-controller.js bereitgestellt
 window.viewLibrary = viewLibrary;
 window.closeScanModal = closeScanModal;
 window.createNewPlaylist = createNewPlaylist;
 
-// Export EQ & Visualizer Functions
-window.selectEQPreset = selectEQPreset;
-window.deleteCustomEQPreset = deleteCustomEQPreset;
+// EQ & Visualizer Functions werden von musik-panel-controller.js bereitgestellt
 window.deleteEQPresetByName = deleteEQPresetByName;
-window.selectVisualEffect = selectVisualEffect;
 
 // Export Timer Functions
 window.toggleSleepTimerSettings = toggleSleepTimerSettings;

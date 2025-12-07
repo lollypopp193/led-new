@@ -379,25 +379,6 @@ class StartupPermissions {
 const startupPermissions = new StartupPermissions();
 window.startupPermissions = startupPermissions;
 
-// Beim App-Start SOFORT ausführen - wie normale Android-Apps
-// Berechtigungen werden angezeigt sobald App startet
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        // SOFORT starten - wie normale Apps
-        // Kurze Verzögerung nur damit Capacitor initialisiert ist
-        setTimeout(() => {
-            startupPermissions.requestAllPermissions();
-        }, 500);
-    });
-} else {
-    // DOM schon bereit - sofort starten
-    setTimeout(() => {
-        startupPermissions.requestAllPermissions();
-    }, 500);
-}
-
-// Auch bei Capacitor deviceready Event
-document.addEventListener('deviceready', () => {
-    console.log('📱 Capacitor deviceready - Berechtigungen anfragen');
-    startupPermissions.requestAllPermissions();
-}, { once: true });
+// DEAKTIVIERT: Automatischer Start - wird jetzt von app.js gesteuert
+// Verhindert Konflikte und garantiert dass App SOFORT startet
+console.log('✅ StartupPermissions bereit (wird von App.initialize() gesteuert)');

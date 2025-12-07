@@ -1,20 +1,20 @@
 -- Merging decision tree log ---
 provider#androidx.core.content.FileProvider
-INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:53:9-55:20
+INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:62:9-64:20
 	android:grantUriPermissions
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:53:146-180
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:62:146-180
 	android:authorities
 		INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:53:69-120
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:62:69-120
 	android:exported
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:53:121-145
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:62:121-145
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:53:19-68
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:62:19-68
 manifest
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:2:1-101:12
-INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:2:1-101:12
-INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:2:1-101:12
-INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:2:1-101:12
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:2:1-110:12
+INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:2:1-110:12
+INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:2:1-110:12
+INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:2:1-110:12
 MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-27:12
 MERGED from [:capacitor-app] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\app\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-7:12
 MERGED from [:capacitor-filesystem] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\filesystem\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-7:12
@@ -71,8 +71,8 @@ MERGED from [org.apache.cordova:framework:10.1.1] C:\Users\braun\.gradle\caches\
 	xmlns:android
 		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:2:11-69
 application
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:4:5-56:19
-INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:4:5-56:19
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:4:5-65:19
+INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:4:5-65:19
 MERGED from [:capacitor-cordova-android-plugins] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\capacitor-cordova-android-plugins\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:5-9:19
 MERGED from [:capacitor-cordova-android-plugins] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\capacitor-cordova-android-plugins\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:5-9:19
 MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\braun\.gradle\caches\8.11.1\transforms\ae4ae414a102f4f3737ebe06267007d1\transformed\emoji2-1.3.0\AndroidManifest.xml:23:5-33:19
@@ -106,7 +106,7 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\br
 	android:usesCleartextTraffic
 		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:11:9-44
 activity#com.lightspaceworld.app.MainActivity
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:14:9-27:20
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:14:9-36:20
 	android:label
 		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:17:13-56
 	android:launchMode
@@ -125,200 +125,202 @@ ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\
 		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:20:101-134
 	android:name
 		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:20:64-100
-intent-filter#action:name:android.intent.action.MAIN+action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+category:name:android.intent.category.LAUNCHER+data:scheme:ledcontrol
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:22:13-25:29
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:13-26:29
 action#android.intent.action.MAIN
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:17-69
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:24:17-69
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:25-66
-action#android.intent.action.VIEW
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:89-141
-	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:97-138
-category#android.intent.category.DEFAULT
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:161-220
-	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:171-217
-category#android.intent.category.BROWSABLE
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:240-301
-	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:250-298
-data
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:321-357
-	android:scheme
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:23:327-354
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:24:25-66
 category#android.intent.category.LAUNCHER
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:24:17-77
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:25:17-77
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:24:27-74
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:25:27-74
+intent-filter#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+data:scheme:ledcontrol
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:29:13-34:29
+action#android.intent.action.VIEW
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:30:17-69
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:30:25-66
+category#android.intent.category.DEFAULT
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:31:17-76
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:31:27-73
+category#android.intent.category.BROWSABLE
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:32:17-78
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:32:27-75
+data
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:33:17-53
+	android:scheme
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:33:23-50
 receiver#com.lightspaceworld.app.LEDWidgetProvider
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:67-438
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:36:67-438
 	android:exported
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:134-157
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:36:134-157
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:77-133
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:36:77-133
 intent-filter#action:name:android.appwidget.action.APPWIDGET_UPDATE
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:174-308
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:36:174-308
 action#android.appwidget.action.APPWIDGET_UPDATE
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:209-276
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:36:209-276
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:217-273
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:36:217-273
 meta-data#android.appwidget.provider
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:324-415
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:36:324-415
 	android:resource
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:377-412
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:36:377-412
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:27:335-376
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:36:335-376
 service#com.lightspaceworld.app.BluetoothForegroundService
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:30:9-35:19
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:39:9-44:19
 	android:enabled
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:32:13-35
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:41:13-35
 	android:exported
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:33:13-37
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:42:13-37
 	android:foregroundServiceType
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:34:13-60
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:43:13-60
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:31:13-78
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:40:13-78
 receiver#com.lightspaceworld.app.BootReceiver
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:38:9-46:20
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:47:9-55:20
 	android:enabled
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:40:13-35
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:49:13-35
 	android:exported
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:41:13-37
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:50:13-37
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:39:13-41
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:48:13-41
 intent-filter#action:name:android.intent.action.BOOT_COMPLETED+action:name:android.intent.action.QUICKBOOT_POWERON
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:42:13-45:29
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:51:13-54:29
 action#android.intent.action.BOOT_COMPLETED
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:43:17-79
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:52:17-79
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:43:25-76
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:52:25-76
 action#android.intent.action.QUICKBOOT_POWERON
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:44:17-82
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:53:17-82
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:44:25-79
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:53:25-79
 meta-data#com.google.firebase.messaging.default_notification_channel_id
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:49:9-51:43
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:58:9-60:43
 	android:value
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:51:13-40
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:60:13-40
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:50:13-89
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:59:13-89
 uses-permission#android.permission.INTERNET
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:59:5-67
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:68:5-67
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:59:22-64
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:68:22-64
 uses-permission#android.permission.BLUETOOTH
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:62:5-95
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:71:5-95
 MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:10:5-12:38
 MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:10:5-12:38
 	android:maxSdkVersion
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:62:66-92
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:71:66-92
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:62:22-65
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:71:22-65
 uses-permission#android.permission.BLUETOOTH_ADMIN
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:63:5-101
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:72:5-101
 MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:13:5-15:38
 MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:13:5-15:38
 	android:maxSdkVersion
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:63:72-98
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:72:72-98
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:63:22-71
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:72:22-71
 uses-permission#android.permission.BLUETOOTH_SCAN
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:64:5-73
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:73:5-73
 MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:16:5-18:31
 MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:16:5-18:31
 	tools:targetApi
 		ADDED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:18:9-28
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:64:22-70
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:73:22-70
 uses-permission#android.permission.BLUETOOTH_CONNECT
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:65:5-76
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:74:5-76
 MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:19:5-21:31
 MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:19:5-21:31
 	tools:targetApi
 		ADDED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:21:9-28
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:65:22-73
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:74:22-73
 uses-permission#android.permission.ACCESS_FINE_LOCATION
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:68:5-79
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:77:5-79
 MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:9:5-79
 MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:9:5-79
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:68:22-76
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:77:22-76
 uses-permission#android.permission.ACCESS_COARSE_LOCATION
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:69:5-81
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:78:5-81
 MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:5-81
 MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:5-81
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:69:22-78
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:78:22-78
 uses-permission#android.permission.READ_EXTERNAL_STORAGE
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:72:5-107
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:81:5-107
 	android:maxSdkVersion
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:72:78-104
-	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:72:22-77
-uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:73:5-108
-	android:maxSdkVersion
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:73:79-105
-	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:73:22-78
-uses-permission#android.permission.READ_MEDIA_AUDIO
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:76:5-75
-	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:76:22-72
-uses-permission#android.permission.READ_MEDIA_IMAGES
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:77:5-76
-	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:77:22-73
-uses-permission#android.permission.RECORD_AUDIO
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:80:5-71
-	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:80:22-68
-uses-permission#android.permission.MODIFY_AUDIO_SETTINGS
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:81:5-80
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:81:78-104
 	android:name
 		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:81:22-77
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:82:5-108
+	android:maxSdkVersion
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:82:79-105
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:82:22-78
+uses-permission#android.permission.READ_MEDIA_AUDIO
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:85:5-75
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:85:22-72
+uses-permission#android.permission.READ_MEDIA_IMAGES
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:86:5-76
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:86:22-73
+uses-permission#android.permission.RECORD_AUDIO
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:89:5-71
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:89:22-68
+uses-permission#android.permission.MODIFY_AUDIO_SETTINGS
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:90:5-80
+	android:name
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:90:22-77
 uses-permission#android.permission.POST_NOTIFICATIONS
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:84:5-77
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:93:5-77
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:84:22-74
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:93:22-74
 uses-permission#android.permission.FOREGROUND_SERVICE
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:87:5-77
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:96:5-77
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:87:22-74
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:96:22-74
 uses-permission#android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:88:5-94
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:97:5-94
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:88:22-91
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:97:22-91
 uses-permission#android.permission.VIBRATE
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:91:5-66
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:100:5-66
 MERGED from [:capacitor-haptics] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\haptics\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:7:5-66
 MERGED from [:capacitor-haptics] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor\haptics\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:7:5-66
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:91:22-63
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:100:22-63
 uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:94:5-81
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:103:5-81
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:94:22-78
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:103:22-78
 uses-permission#android.permission.WAKE_LOCK
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:97:5-68
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:106:5-68
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:97:22-65
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:106:22-65
 uses-feature#android.hardware.bluetooth_le
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:100:5-90
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:109:5-90
 MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:23:5-25:36
 MERGED from [:capacitor-community-bluetooth-le] D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\node_modules\@capacitor-community\bluetooth-le\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:23:5-25:36
 	android:required
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:100:64-87
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:109:64-87
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:100:19-63
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:109:19-63
 meta-data#android.support.FILE_PROVIDER_PATHS
-ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:54:13-122
+ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:63:13-122
 	android:resource
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:54:75-109
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:63:75-109
 	android:name
-		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:54:24-74
+		ADDED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml:63:24-74
 uses-sdk
 INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from D:\eigene apps\end led\led-new\LED-NATIVE-APP-REFACTORED\android\app\src\main\AndroidManifest.xml

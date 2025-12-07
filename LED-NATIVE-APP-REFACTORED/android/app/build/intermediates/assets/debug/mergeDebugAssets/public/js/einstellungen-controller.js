@@ -137,6 +137,30 @@ function updateDeviceList() {
     const deviceList = document.getElementById('deviceList');
     if (!deviceList) return;
 
+    // KRITISCH: Gefundene Geräte zum DeviceManager hinzufügen für persistente Speicherung!
+    if (window.deviceManager && devices.length > 0) {
+        devices.forEach((device) => {
+            const deviceData = {
+                id: device.mac || device.id,
+                name: device.name || 'LED-Band',
+                originalName: device.name,
+                mac: device.mac || device.id,
+                protocol: 'ELK_BLEDOM',
+                autoConnect: false,
+                group: null,
+                favorite: false,
+                rssi: device.rssi || null,
+                lastConnected: device.connected ? Date.now() : null,
+                connectionCount: 0,
+                notes: '',
+                createdAt: Date.now(),
+                updatedAt: Date.now()
+            };
+            window.deviceManager.addDevice(deviceData);
+        });
+        console.log('✅ ' + devices.length + ' Geräte zum DeviceManager hinzugefügt (persistent gespeichert)');
+    }
+
     if (devices.length === 0) {
         showNoDevices();
         return;

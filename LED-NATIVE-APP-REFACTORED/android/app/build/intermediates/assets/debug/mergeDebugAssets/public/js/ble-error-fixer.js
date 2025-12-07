@@ -38,20 +38,30 @@ class BLEHealthMonitor {
      */
     async checkBLEHealth() {
         try {
-            // 1. Prüfe Web Bluetooth API Verfügbarkeit
-            if (!navigator.bluetooth) {
+            // 1. Prüfe ob wir in Capacitor Native App laufen
+            const isNative = window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform();
+
+            // In nativer App: Capacitor BLE Plugin nutzen, NICHT navigator.bluetooth
+            if (isNative) {
+                // Native App - Capacitor BLE Plugin ist verfügbar
+                this.bleAvailable = true;
+                console.log('✅ Native App erkannt - Capacitor BLE Plugin wird verwendet');
+            } else if (!navigator.bluetooth) {
+            // Web Browser ohne Bluetooth Support
                 this.bleAvailable = false;
-                this.showUserMessage('Bluetooth wird von diesem Browser/Gerät nicht unterstützt. Bitte nutze Chrome auf Android.', 'error');
-                return false;
+                console.warn('⚠️ Web Browser ohne Bluetooth - In der APK funktioniert es!');
+                // KEINE Fehlermeldung zeigen in nativer App!
+                return true; // Nicht abbrechen
+            } else {
+                this.bleAvailable = true;
             }
 
-            // 2. Prüfe ob echter BLE-Controller geladen ist
+            // 2. Prüfe ob echter BLE-Controller geladen ist (mit Verzögerung für spätes Laden)
             const controller = window.bleController || window.BLEControllerPro;
             if (!controller) {
-                this.bleAvailable = false;
-                this.showUserMessage('BLE-Controller nicht geladen. Bitte App neu starten.', 'error');
-                console.error('❌ BLE-Controller nicht gefunden in window');
-                return false;
+                // Controller noch nicht geladen - warte und versuche später erneut (kein Fehler anzeigen!)
+                console.log('⏳ BLE-Controller noch nicht geladen - wird später geprüft');
+                return true; // Nicht als Fehler behandeln
             }
 
             // 3. Prüfe Verbindungsstatus
@@ -196,6 +206,15 @@ if (document.readyState === 'loading') {
 
 window.BLEHealthMonitor = BLEHealthMonitor;
 
-// Entferne alte Referenzen
-window.BLEErrorFixer = BLEHealthMonitor; // Kompatibilität
+// Kompatibilität: BLEErrorFixer muss ein Objekt mit init() sein, wenn es so aufgerufen wird!
+window.BLEErrorFixer = {
+    init: function () {
+        if (window.bleHealthMonitor) {
+            window.bleHealthMonitor.init();
+        } else {
+            console.warn('BLEHealthMonitor nicht verfügbar für BLEErrorFixer-Fallback');
+        }
+    }
+};
+
 window.bleErrorFixer = bleHealthMonitor;

@@ -127,7 +127,7 @@ input[type='range']::-webkit-slider-thumb {
 }
 
 /* =========================================
-   START SCREEN (Kein Gr�nes K�rtchen!)
+   START SCREEN - Original mit Canvas-Partikeln
    ========================================= */
 #startscreen {
     position: fixed;
@@ -136,12 +136,50 @@ input[type='range']::-webkit-slider-thumb {
     width: 100vw;
     height: 100vh;
     z-index: 9999;
-    /* FIX: Transparenter Hintergrund damit Partikel sichtbar sind */
-    background: transparent;
+    background: transparent; /* Transparent für Canvas-Partikel dahinter */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+#startscreen .title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    letter-spacing: 8px;
+    color: #fff;
+    text-align: center;
+    text-shadow: 0 0 30px rgba(78, 205, 196, 0.8);
+    animation: titleGlow 2s ease-in-out infinite alternate;
+}
+
+#startscreen .title .line2 {
+    display: block;
+    font-size: 3.5rem;
+    letter-spacing: 15px;
+    background: linear-gradient(135deg, #4ecdc4, #00bfa5, #1de9b6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-top: 10px;
+}
+
+@keyframes titleGlow {
+    from { text-shadow: 0 0 20px rgba(78, 205, 196, 0.5); }
+    to { text-shadow: 0 0 40px rgba(78, 205, 196, 1), 0 0 60px rgba(78, 205, 196, 0.5); }
+}
+
+#startscreen .subtitle {
+    font-size: 1rem;
+    color: rgba(78, 205, 196, 0.8);
+    letter-spacing: 3px;
+    margin-top: 20px;
+    animation: subtitleFade 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes subtitleFade {
+    from { opacity: 0.6; }
+    to { opacity: 1; }
 }
 
 .start-card, .ready-card {
@@ -154,8 +192,9 @@ input[type='range']::-webkit-slider-thumb {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
-    background: radial-gradient(circle, var(--bg2) 0%, var(--bg) 100%);
+    z-index: 1;
+    pointer-events: none;
+    background: transparent;
 }
 
 /* =========================================

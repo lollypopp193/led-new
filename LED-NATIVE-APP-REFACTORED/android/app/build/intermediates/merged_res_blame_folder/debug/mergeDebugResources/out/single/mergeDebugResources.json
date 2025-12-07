@@ -64,6 +64,10 @@
         "source": "com.lightspaceworld.app-main-33:/drawable-land-hdpi/splash.png"
     },
     {
+        "merged": "com.lightspaceworld.app-debug-31:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.lightspaceworld.app-main-33:/drawable/ic_launcher_foreground.xml"
+    },
+    {
         "merged": "com.lightspaceworld.app-debug-31:/drawable_widget_background.xml.flat",
         "source": "com.lightspaceworld.app-main-33:/drawable/widget_background.xml"
     },
@@ -74,10 +78,6 @@
     {
         "merged": "com.lightspaceworld.app-debug-31:/mipmap-xxhdpi_ic_launcher_foreground.png.flat",
         "source": "com.lightspaceworld.app-main-33:/mipmap-xxhdpi/ic_launcher_foreground.png"
-    },
-    {
-        "merged": "com.lightspaceworld.app-debug-31:/drawable-anydpi-v24_ic_launcher_foreground.xml.flat",
-        "source": "com.lightspaceworld.app-pngs-27:/drawable-anydpi-v24/ic_launcher_foreground.xml"
     },
     {
         "merged": "com.lightspaceworld.app-debug-31:/drawable-port-xxxhdpi_splash.png.flat",
