@@ -59,19 +59,20 @@ const App = {
         console.log('🚀 LED Native App v4.0 - Zero Tolerance - Initialisierung...');
 
         try {
-            // NOTFALL-FIX: APP STARTET SOFORT - PERMISSIONS SPÄTER!
-            console.log('⚡ DIREKTSTART - Permissions werden übersprungen');
-            await this.continueInitialization();
+            // PERMISSIONS BEIM START ABFRAGEN!
+            console.log('📋 Starte Permissions-Abfrage...');
 
-            // Permissions NACH App-Start im Hintergrund anfordern
-            setTimeout(() => {
-                if (window.permissionsSequencer) {
-                    console.log('📋 Starte Permissions im Hintergrund...');
-                    window.permissionsSequencer.start((results) => {
-                        console.log('✅ Berechtigungen abgeschlossen:', results);
-                    });
-                }
-            }, 2000);
+            if (window.StartupPermissions) {
+                const startupPerms = new window.StartupPermissions();
+                await startupPerms.requestAllPermissions();
+                console.log('✅ Berechtigungen abgefragt');
+            } else if (window.PermissionsHandler) {
+                await window.PermissionsHandler.init();
+                await window.PermissionsHandler.requestAllPermissions();
+                console.log('✅ Berechtigungen abgefragt (Fallback)');
+            }
+
+            await this.continueInitialization();
 
         } catch (err) {
             console.error('❌ Initialisierung fehlgeschlagen:', err);
