@@ -23,7 +23,7 @@ const App = {
 
     // App Configuration
     config: {
-        startup_delay: 500,
+        startup_delay: 3000,
         particle_count: 120,
         theme: 'dark',
         language: 'de',
@@ -282,10 +282,21 @@ const App = {
 
             // Splash ausblenden
             if (this.elements.startScreen) {
-                this.elements.startScreen.style.display = 'none';
+                this.elements.startScreen.style.opacity = '0';
+                this.elements.startScreen.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => {
+                    this.elements.startScreen.style.display = 'none';
+                }, 500);
                 console.log('✅ Splash ausgeblendet');
             } else {
                 console.error('❌ StartScreen Element nicht gefunden!');
+            }
+
+            // PARTIKEL STOPPEN nach Splash!
+            if (this.elements.particleCanvas) {
+                this.elements.particleCanvas.style.display = 'none';
+                this.stopParticles = true;
+                console.log('✅ Partikel gestoppt');
             }
 
             // Hauptscreen anzeigen
@@ -387,7 +398,53 @@ const App = {
     },
     showNotification(message, type, duration) { type = type || 'info'; duration = duration || 3000; if (window.showGlobalNotification) { window.showGlobalNotification(message, type, duration); } else { console.log('[' + type.toUpperCase() + '] ' + message); } },
     showError(message) { this.showNotification(message, 'error', 5000); console.error('\u274c Error:', message); },
-    initParticles() { if (!this.elements.particleCanvas || !this.config.animations) return; try { const canvas = this.elements.particleCanvas; const ctx = canvas.getContext('2d'); canvas.width = window.innerWidth; canvas.height = window.innerHeight; const particles = []; for (let i = 0; i < this.config.particle_count; i++) { particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5, radius: Math.random() * 2 + 1 }); } function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = 'rgba(78, 205, 196, 0.5)'; particles.forEach(function (p) { p.x += p.vx; p.y += p.vy; if (p.x < 0 || p.x > canvas.width) p.vx *= -1; if (p.y < 0 || p.y > canvas.height) p.vy *= -1; ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill(); }); requestAnimationFrame(animate); } animate(); console.log('\u2705 Partikel-Animation initialisiert'); } catch (err) { console.warn('\u26a0\ufe0f Partikel-Fehler:', err); } },
+    initParticles() {
+        if (!this.elements.particleCanvas || !this.config.animations) return;
+        try {
+            const canvas = this.elements.particleCanvas;
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const particles = [];
+            const self = this;
+            this.stopParticles = false;
+
+            for (let i = 0; i < this.config.particle_count; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    radius: Math.random() * 2 + 1
+                });
+            }
+
+            function animate() {
+                // STOPP wenn Flag gesetzt
+                if (self.stopParticles) {
+                    console.log('🛑 Partikel-Animation gestoppt');
+                    return;
+                }
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = 'rgba(78, 205, 196, 0.5)';
+                particles.forEach(function (p) {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+            console.log('✅ Partikel-Animation initialisiert');
+        } catch (err) {
+            console.warn('⚠️ Partikel-Fehler:', err);
+        }
+    },
     loadSettings() { try { const stored = localStorage.getItem('app-settings'); if (stored) { const settings = JSON.parse(stored); Object.assign(this.config, settings); /* console.log('✅ Einstellungen geladen'); */ } } catch (err) { console.warn('⚠️ Fehler beim Laden der Einstellungen:', err); } },
     saveSettings() { try { localStorage.setItem('app-settings', JSON.stringify(this.config)); /* console.log('✅ Einstellungen gespeichert'); */ } catch (err) { console.warn('⚠️ Fehler beim Speichern der Einstellungen:', err); } },
     saveState() { try { const state = { currentApp: this.state.currentApp, isConnected: this.state.isConnected, currentDevice: this.state.currentDevice ? this.state.currentDevice.id : null, brightness: this.state.brightness, currentColor: this.state.currentColor, currentEffect: this.state.currentEffect, timestamp: Date.now() }; localStorage.setItem('app-state', JSON.stringify(state)); console.log('\u2705 App-State gespeichert'); } catch (err) { console.warn('\u26a0\ufe0f Fehler beim Speichern des States:', err); } },
