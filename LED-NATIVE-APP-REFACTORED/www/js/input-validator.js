@@ -294,15 +294,20 @@ class InputValidator {
     sanitize(input) {
         if (typeof input !== 'string') return input;
 
-        // HTML Tags entfernen
-        let sanitized = input.replace(/<[^>]*>/g, '');
+        let sanitized = input;
 
-        // Script Tags entfernen (robust gegen mehrfache/verschachtelte Vorkommen)
+        // Vollständige <script>-Blöcke inkl. Inhalt entfernen (auch verschachtelt / mehrfach)
         let previous;
         do {
             previous = sanitized;
-            sanitized = sanitized.replace(/<script/gi, '');
+            sanitized = sanitized.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');
         } while (sanitized !== previous);
+
+        // Verbleibende HTML-Tags entfernen
+        sanitized = sanitized.replace(/<[^>]*>/g, '');
+
+        // Sicherheitshalber alle verbleibenden "<script" Fragmente entfernen
+        sanitized = sanitized.replace(/<script/gi, '');
 
         // SQL Injection verhindern
         sanitized = sanitized.replace(/('|"|;|--|\/\*|\*\/)/g, '');
